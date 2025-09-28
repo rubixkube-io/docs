@@ -131,5 +131,3 @@ If your infra breaks, your **revenue breaks**.
 RubixKube exists to make sure that never happens.
 
 ---
-
-Would you like me to also **propose a docs.json navigation tree** (Mintlify side) that mirrors this README structure into a live navigation sidebar? That way your starter kit becomes RubixKube-ready end-to-end.

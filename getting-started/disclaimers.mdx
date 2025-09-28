@@ -1,0 +1,70 @@
+---
+title: "Disclaimers (Alpha)"
+description: "Important limitations and safety notes for the RubixKube early release."
+---
+
+# Disclaimers
+
+RubixKube is in an early Alpha. The software is evolving and may contain defects or incomplete features. Please read and accept the following before proceeding.
+
+<Callout type="warning" title="Not for production use">
+  Do not deploy RubixKube to production environments during the Alpha. Use only on test clusters, sandboxes, or local environments.
+</Callout>
+
+<Callout type="info" title="Best-effort support">
+  Alpha builds are provided on a best-effort basis. Breaking changes may occur, and behavior can change without notice.
+</Callout>
+
+## Safety and Guardrails
+
+RubixKube includes guardrails to reduce risk, but autonomy is limited in Alpha.
+
+- Default mode is observe-first. Any action that can modify cluster state should be opt-in and explicitly confirmed.
+- Role-Based Access Control (RBAC) should grant the minimum permissions required for evaluation.
+- All actions should be visible in logs for review and rollback.
+
+<Callout type="warning" title="Change control">
+  Treat RubixKube as change-bearing software. Ensure you have backups, rollbacks, or cluster snapshots before experimentation.
+</Callout>
+
+## Data and Privacy
+
+- Keep evaluation data non-sensitive. Do not connect confidential or regulated datasets in Alpha.
+- Logs and diagnostics are intended for troubleshooting. Redact secrets and keys before sharing.
+- If you need to share logs with the team, prefer redacted bundles.
+
+## Compatibility
+
+- Kubernetes versions: target recent stable releases only.
+- Cluster type: evaluation is recommended on disposable clusters, e.g., local Kind or a non-production managed cluster.
+- Third-party integrations: only those explicitly documented as supported in Alpha should be enabled.
+
+## Expected Behavior
+
+During Alpha, you may encounter:
+
+- Installation issues on specific cluster versions or providers
+- Limited autofix coverage
+- Incomplete dashboards or views
+- Performance variability on large clusters
+
+<Callout type="info" title="Reporting issues">
+  Please capture the cluster version, provider, RubixKube version, and a minimal reproduction. This accelerates fixes.
+</Callout>
+
+## Your Responsibility
+
+- You are responsible for the security and stability of your environment.
+- Use RubixKube only where failure has no customer impact.
+- Review and approve any proposed changes before execution.
+
+## Next step
+
+<Card
+  title="Sign Up and Access"
+  icon="id-card"
+  href="/getting-started/sign-up"
+  horizontal
+>
+  Create your account, obtain your access token, and prepare your first evaluation environment.
+</Card>

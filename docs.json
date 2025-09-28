@@ -20,7 +20,47 @@
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "development",
+              "getting-started/introduction",
+              "getting-started/disclaimers",
+              "getting-started/sign-up",
+              "getting-started/installation-cloud",
+              "getting-started/installation-kind"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/what-is-sri",
+              "concepts/agent-mesh",
+              "concepts/memory-engine",
+              "concepts/guardrails"
+            ]
+          },
+          {
+            "group": "Hands-On Tutorials",
+            "pages": [
+              "tutorials/first-steps",
+              "tutorials/break-pod-image-error",
+              "tutorials/break-pod-memory-oom",
+              "tutorials/rubixkube-in-action",
+              "tutorials/talk-to-infra"
+            ]
+          },
+          {
+            "group": "Using RubixKube",
+            "pages": [
+              "using/observing-infra",
+              "using/root-cause-analysis",
+              "using/autofix-remediation",
+              "using/business-insights"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "support/troubleshooting",
+              "support/faq"
             ]
           },
           {
@@ -45,26 +85,6 @@
               "ai-tools/cursor",
               "ai-tools/claude-code",
               "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
             ]
           }
         ]
@@ -98,8 +118,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "console",
+      "href": "https://console.rubixkube.ai"
     }
   },
   "contextual": {

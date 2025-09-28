@@ -1,0 +1,120 @@
+---
+title: "Introduction"
+description: "In a world where AI builds your product, RubixKube™ keeps it alive."
+---
+
+# Welcome to RubixKube Docs
+
+RubixKube™ is the **Reliability Layer for the AI Era** — an AI-native mesh of agents that prevents downtime, safeguards revenue, and gives peace of mind at scale.  
+
+Think of it as your **second brain for infra**:
+- 🧠 Observes and understands your systems like a seasoned SRE  
+- 🔍 Diagnoses issues and shows you the blast radius  
+- ⚡ Proposes or applies safe fixes before customers notice  
+- 📊 Connects infrastructure failures to **real business impact**  
+
+---
+
+## Getting Started
+
+Choose your path to begin with RubixKube.
+
+<Card
+  title="Quickstart"
+  icon="rocket"
+  href="/getting-started/quickstart"
+  horizontal
+>
+  Install RubixKube in minutes and run your first cluster check.
+</Card>
+
+---
+
+## Install Options
+
+<Columns cols={2}>
+  <Card
+    title="Cloud Installation"
+    icon="cloud"
+    href="/getting-started/installation-cloud"
+  >
+    Set up RubixKube on your existing Kubernetes clusters in the cloud.
+  </Card>
+  <Card
+    title="Local with Kind"
+    icon="laptop"
+    href="/getting-started/installation-kind"
+  >
+    No Kubernetes? No problem. Install Kind and run RubixKube locally.
+  </Card>
+</Columns>
+
+---
+
+## Learn the Basics
+
+<Columns cols={2}>
+  <Card
+    title="What is SRI?"
+    icon="lightbulb"
+    href="/concepts/what-is-sri"
+  >
+    Understand Site Reliability Intelligence — the category RubixKube is defining.
+  </Card>
+  <Card
+    title="Agent Mesh"
+    icon="network-wired"
+    href="/concepts/agent-mesh"
+  >
+    Discover how RubixKube’s modular AI agents collaborate to keep systems alive.
+  </Card>
+  <Card
+    title="Memory Engine"
+    icon="brain"
+    href="/concepts/memory-engine"
+  >
+    See how RubixKube learns from every incident and never forgets.
+  </Card>
+  <Card
+    title="Guardrails"
+    icon="shield"
+    href="/concepts/guardrails"
+  >
+    Autonomous doesn’t mean out of control. Learn about RubixKube’s safety checks.
+  </Card>
+</Columns>
+
+---
+
+## Hands-On Tutorials
+
+<Card
+  title="Break Things, Watch RubixKube Fix Them"
+  icon="flask"
+  href="/tutorials/first-steps"
+>
+  Run guided experiments — like breaking pods with OOM errors — and watch RubixKube detect, diagnose, and remediate.
+</Card>
+
+---
+
+## ⚠️ Alpha Disclaimer
+
+RubixKube is currently in **Alpha**.  
+That means:
+- Expect rough edges  
+- Do **not** use in production yet  
+- Your feedback will directly shape the future  
+
+---
+
+## Next Steps
+
+<Card
+  title="Continue to Disclaimers"
+  icon="triangle-exclamation"
+  href="/getting-started/disclaimers"
+  horizontal
+>
+  Understand the limitations and safety notes before you dive in.
+</Card>

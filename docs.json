@@ -2,12 +2,11 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "RubixKube Docs",
+  "description": "In a world where AI builds your product, RubixKube™ keeps it alive.",
 "colors": {
   "primary": "#2563EB",   
   "light": "#3B82F6",    
-  "dark": "#1E3A8A",      
-  "info": "#0891B2",
-  "success": "#0D9488" 
+  "dark": "#1E3A8A"
 },
 
   "favicon": "/favicon.svg",

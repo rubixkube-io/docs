@@ -1,64 +1,83 @@
 ---
 title: "Disclaimers (Alpha)"
-description: "Important limitations and safety notes for the RubixKube early release."
+description: "Critical safety limitations and high-risk notes for the RubixKube early release."
 ---
 
-# Disclaimers
+# Disclaimers (Alpha)
 
-RubixKube is in an early Alpha. The software is evolving and may contain defects or incomplete features. Please read and accept the following before proceeding.
+RubixKube is in an early **Alpha** stage. The software is experimental, evolving, and may contain serious defects or incomplete features.  
+**Do not treat this release as production-ready.** Please read and accept the following before proceeding.
 
-<Callout type="warning" title="Not for production use">
-  Do not deploy RubixKube to production environments during the Alpha. Use only on test clusters, sandboxes, or local environments.
+<Callout type="danger" title="Not for production use">
+  RubixKube Alpha must **never** be deployed in production environments.  
+  Use only on disposable clusters, sandboxes, or safe local environments.  
+  Failure to follow this warning can cause outages, instability, or data loss.
 </Callout>
 
-<Callout type="info" title="Best-effort support">
-  Alpha builds are provided on a best-effort basis. Breaking changes may occur, and behavior can change without notice.
+<Callout type="warning" title="Unstable and changing">
+  Alpha builds may break without notice. APIs, behaviors, and configurations can change frequently.  
+  Expect instability, incompatibility, and limited support.
 </Callout>
+
+---
 
 ## Safety and Guardrails
 
-RubixKube includes guardrails to reduce risk, but autonomy is limited in Alpha.
+RubixKube includes safety guardrails, but Alpha autonomy is intentionally **limited**.
 
-- Default mode is observe-first. Any action that can modify cluster state should be opt-in and explicitly confirmed.
-- Role-Based Access Control (RBAC) should grant the minimum permissions required for evaluation.
-- All actions should be visible in logs for review and rollback.
+- Default mode is **observe-only**. Any action that can modify cluster state must be explicitly approved.  
+- Apply **minimal RBAC permissions** — never grant cluster-admin.  
+- All actions are logged — always review logs for accuracy and rollback readiness.  
+- Treat RubixKube as a **change-bearing system**: backups, snapshots, and rollbacks are **mandatory**.
 
-<Callout type="warning" title="Change control">
-  Treat RubixKube as change-bearing software. Ensure you have backups, rollbacks, or cluster snapshots before experimentation.
+<Callout type="danger" title="Assume failure first">
+  Always operate under the assumption that RubixKube Alpha may fail.  
+  Safeguard your environment before enabling autonomous features.
 </Callout>
+
+---
 
 ## Data and Privacy
 
-- Keep evaluation data non-sensitive. Do not connect confidential or regulated datasets in Alpha.
-- Logs and diagnostics are intended for troubleshooting. Redact secrets and keys before sharing.
-- If you need to share logs with the team, prefer redacted bundles.
+- **Do not connect** sensitive, regulated, or customer data during Alpha.  
+- Redact API keys, secrets, and credentials before sharing logs.  
+- Logs and diagnostics are for troubleshooting only — never for production reporting.  
+
+---
 
 ## Compatibility
 
-- Kubernetes versions: target recent stable releases only.
-- Cluster type: evaluation is recommended on disposable clusters, e.g., local Kind or a non-production managed cluster.
-- Third-party integrations: only those explicitly documented as supported in Alpha should be enabled.
+- Supported: recent stable Kubernetes versions only.  
+- Recommended: disposable clusters (Kind, dev EKS/GKE/AKS, or non-production).  
+- Integrations: only those explicitly marked as **Alpha supported**.  
+
+---
 
 ## Expected Behavior
 
-During Alpha, you may encounter:
+During Alpha, you may encounter:  
 
-- Installation issues on specific cluster versions or providers
-- Limited autofix coverage
-- Incomplete dashboards or views
-- Performance variability on large clusters
+- Installation issues on certain clusters or providers  
+- Limited autofix capability  
+- Incomplete dashboards or missing views  
+- Performance variability on larger clusters  
 
 <Callout type="info" title="Reporting issues">
-  Please capture the cluster version, provider, RubixKube version, and a minimal reproduction. This accelerates fixes.
+  Please capture: Kubernetes version, provider, RubixKube version, and minimal reproduction steps.  
+  Detailed reports accelerate fixes and improve Alpha stability.
 </Callout>
+
+---
 
 ## Your Responsibility
 
-- You are responsible for the security and stability of your environment.
-- Use RubixKube only where failure has no customer impact.
-- Review and approve any proposed changes before execution.
+- You are fully responsible for the safety and stability of your environment.  
+- Only use RubixKube Alpha where **failure has zero customer impact**.  
+- Always review, confirm, and approve proposed changes before execution.  
 
-## Next step
+---
+
+## Next Step
 
 <Card
   title="Sign Up and Access"
@@ -66,5 +85,5 @@ During Alpha, you may encounter:
   href="/getting-started/sign-up"
   horizontal
 >
-  Create your account, obtain your access token, and prepare your first evaluation environment.
+  Create your account, obtain your access token, and prepare a safe evaluation environment.
 </Card>

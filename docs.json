@@ -14,67 +14,55 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Getting Started",
+            "group": "Getting started",
             "pages": [
               "index",
               "quickstart",
-              "installation",
               "development"
             ]
           },
           {
-            "group": "Core Concepts",
+            "group": "Customization",
             "pages": [
-              "concepts/overview",
-              "concepts/sri",
-              "concepts/agent-mesh",
-              "concepts/memory-engine",
-              "concepts/guardrails"
+              "essentials/settings",
+              "essentials/navigation"
             ]
           },
           {
-            "group": "Integrations",
+            "group": "Writing content",
             "pages": [
-              "integrations/kubernetes",
-              "integrations/gitops",
-              "integrations/observability",
-              "integrations/cloud-providers"
+              "essentials/markdown",
+              "essentials/code",
+              "essentials/images",
+              "essentials/reusable-snippets"
             ]
           },
           {
-            "group": "Troubleshooting",
+            "group": "AI tools",
             "pages": [
-              "troubleshooting/common-issues",
-              "troubleshooting/faq"
+              "ai-tools/cursor",
+              "ai-tools/claude-code",
+              "ai-tools/windsurf"
             ]
           }
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "API reference",
         "groups": [
           {
-            "group": "Introduction",
+            "group": "API documentation",
             "pages": [
-              "api/introduction"
+              "api-reference/introduction"
             ]
           },
           {
-            "group": "CLI Reference",
+            "group": "Endpoint examples",
             "pages": [
-              "api/cli/overview",
-              "api/cli/connect",
-              "api/cli/observe",
-              "api/cli/autofix"
-            ]
-          },
-          {
-            "group": "REST Endpoints",
-            "pages": [
-              "api/rest/get-status",
-              "api/rest/submit-incident",
-              "api/rest/resolve",
-              "api/rest/webhook"
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/webhook"
             ]
           }
         ]
@@ -83,8 +71,8 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Docs",
-          "href": "https://rubixkube.ai/docs",
+          "anchor": "Documentation",
+          "href": "https://mintlify.com/docs",
           "icon": "book-open-cover"
         },
         {
@@ -96,35 +84,36 @@
     }
   },
   "logo": {
-    "light": "/logo/rubixkube-light.svg",
-    "dark": "/logo/rubixkube-dark.svg"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@rubixkube.ai"
+        "href": "mailto:connect@rubixkube.ai"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Get Started",
-      "href": "https://rubixkube.ai/get-started"
+      "label": "Dashboard",
+      "href": "https://dashboard.mintlify.com"
     }
   },
   "contextual": {
     "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "cursor",
-      "vscode"
-    ]
+     "copy",
+     "view",
+     "chatgpt",
+     "claude",
+     "perplexity",
+     "mcp",
+     "cursor",
+     "vscode"
+   ]
   },
   "footer": {
-    "socials": {
+  "socials": {
       "x": "https://x.com/RubixKubeHQ",
       "github": "https://github.com/rubixkube-io",
       "linkedin": "https://linkedin.com/company/rubixkube"

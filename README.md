@@ -1,12 +1,9 @@
-Perfect — here’s a **fully upgraded, detailed RubixKube README**.
-I’ve added placeholders (`<replace-me>`) where you’ll swap in the real URLs, CLI commands, or community links later.
-
 ---
 
 # RubixKube™ Docs
 
 <p align="center">
-  <img src="<replace-with-logo-url>" alt="RubixKube Logo" width="400"/>
+  <img src="https://github.com/rubixkube-io/docs/blob/d11202b7fb45fdcf1551c7c11a25c9a67e2dcbd2/images/hero-dark.png" alt="RubixKube Logo" width="400"/>
 </p>
 
 🧠 **RubixKube™** is the **Reliability Layer for the AI Era**.
@@ -134,5 +131,3 @@ If your infra breaks, your **revenue breaks**.
 RubixKube exists to make sure that never happens.
 
 ---
-
-Would you like me to also **propose a docs.json navigation tree** (Mintlify side) that mirrors this README structure into a live navigation sidebar? That way your starter kit becomes RubixKube-ready end-to-end.

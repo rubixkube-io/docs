@@ -1,10 +1,9 @@
-````md
 ---
 title: 'Sign up'
 description: 'Create your RubixKube account and prepare a safe evaluation environment'
 ---
 
-## Step 1: Create an account
+## Step 1: Create an account
 
 To sign up for RubixKube:
 
@@ -13,30 +12,28 @@ To sign up for RubixKube:
 3. Fill in your profile details — name, team and organisation.
 4. Review and accept the Alpha terms and disclaimer.
 
-![title](/images/signup-form.png)
-
-<Image
-  src="../images/signup-form.png"
-  alt="RubixKube sign‑up form"
+  <img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/signup-form.png"
 />
 
 <Warning>
 Use only non‑production email addresses and cluster names during Alpha. Do not include any sensitive details.
 </Warning>
 
-## Step 2: Generate an access token
+## Step 2: Generate an access token
 
 After your account is created:
 
-1. Navigate to **Dashboard → Access tokens**.
+1. Navigate to **Dashboard → Access tokens**.
 2. Create a new token for your evaluation cluster.
-3. Copy the token and store it securely; you’ll need it to authenticate CLI and API requests.
+3. Copy the token and store it securely; you'll need it to authenticate CLI and API requests.
 
 <Note>
 Treat access tokens like passwords. Do not share them. If a token is compromised, revoke it immediately and generate a new one.
 </Note>
 
-## Step 3: Prepare an evaluation cluster
+## Step 3: Prepare an evaluation cluster
 
 RubixKube Alpha must run on safe, disposable clusters:
 
@@ -44,14 +41,14 @@ RubixKube Alpha must run on safe, disposable clusters:
 - Not allowed: Production workloads or regulated datasets.
 - Ensure you have `kubectl` access to the cluster from your local machine.
 
-## Step 4: Install the RubixKube CLI
+## Step 4: Install the RubixKube CLI
 
 Install the CLI and authenticate with your token:
 
 ```bash
 curl -sSL <replace-with-cli-install-script> | bash
 rubixkube version
-````
+```
 
 Authenticate:
 
@@ -62,11 +59,10 @@ rubixkube auth --token <your-access-token>
 ## Next step
 
 <Card
-title="Quickstart guide"
-icon="rocket"
-href="/getting-started/quickstart"
-horizontal
-
+  title="Quickstart guide"
+  icon="rocket"
+  href="/getting-started/quickstart"
+  horizontal
 >
-
-Once authenticated, follow the Quickstart to connect RubixKube to your evaluation cluster. </Card>
+Once authenticated, follow the Quickstart to connect RubixKube to your evaluation cluster.
+</Card>

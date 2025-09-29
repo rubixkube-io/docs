@@ -1,46 +1,98 @@
 ---
 title: "Sign Up and Access"
-description: "Create your RubixKube account, obtain your access token, and prepare your first environment."
+description: "Create your RubixKube account, obtain your access token, and prepare your evaluation environment."
 ---
 
 # Sign Up and Access
 
-Before installing RubixKube, you need to create an account and obtain your credentials. These will allow you to connect your clusters securely.
+To begin using **RubixKube Alpha**, you’ll need to create an account, generate your access token, and set up your evaluation environment.
 
-## Create an Account
+---
 
-<Card
-  title="Sign Up"
-  icon="user-plus"
-  href="https://console.rubixkube.ai"
-  horizontal
->
-  Visit the sign-up page to register. Use a valid email address that you control. Verification is required.
-</Card>
+## Step 1: Create an Account
 
-Once registered:
+1. Visit the [RubixKube Sign Up Portal](<replace-with-signup-url>).  
+2. Enter your work email and verify it.  
+3. Complete your profile details — name, team, and organization.  
+4. Accept the **Alpha Terms & Disclaimers** before proceeding.  
 
-1. Verify your email address by clicking the link in your inbox.  
-2. Log in to the [RubixKube Console](https://console.rubixkube.ai).  
-3. Navigate to **Access Tokens** in your profile.
+<Image
+  src="/images/signup-form.png"
+  alt="RubixKube Sign Up Form"
+/>
 
-## Generate an Access Token
+<Warning>
+  Use only non-production email and cluster information during Alpha.  
+  Production accounts and sensitive data are not supported.
+</Warning>
 
-Tokens are required for installation and CLI use.
+---
 
-<Callout type="info" title="Token scope">
-  Tokens are environment-specific. For Alpha, generate a **sandbox** token and avoid production clusters.
-</Callout>
+## Step 2: Obtain Your Access Token
 
-Steps:
+Once your account is created:
 
-1. In the Console, go to **Access Tokens → Generate New Token**.  
-2. Name the token (e.g., `alpha-kind-cluster`).  
-3. Copy the generated token. Store it securely — you will not see it again.
+1. Navigate to **Dashboard → Access Tokens**.  
+2. Generate a new token labeled for your evaluation cluster.  
+3. Copy and store the token securely — you will need it for CLI or API authentication.  
 
-## CLI Setup
+<Image
+  src="/images/access-token.png"
+  alt="RubixKube Access Token Generation"
+/>
 
-During installation, you will use the token to connect RubixKube to your cluster:
+<Note>
+  Treat access tokens like passwords. Do not share them in logs or screenshots.  
+  If compromised, revoke immediately and generate a new one.
+</Note>
+
+---
+
+## Step 3: Prepare Your Evaluation Environment
+
+RubixKube Alpha should run only on safe, disposable clusters.
+
+- **Recommended:** Kind, Minikube, or a non-production EKS/GKE/AKS cluster.  
+- **Not allowed:** Production workloads, sensitive datasets, or regulated environments.  
+- Ensure your cluster is reachable from your local machine and has kubectl access.  
+
+<Image
+  src="/images/cluster-setup.png"
+  alt="Cluster Setup for RubixKube Evaluation"
+/>
+
+---
+
+## Step 4: Install the RubixKube CLI
+
+Download and install the CLI to interact with your account and clusters.
 
 ```bash
-rubixkube login --token <YOUR_TOKEN>
+curl -sSL <replace-with-cli-install-script> | bash
+rubixkube version
+````
+
+Authenticate with your token:
+
+```bash
+rubixkube auth --token <your-access-token>
+```
+
+<Image
+src="/images/cli-auth.png"
+alt="RubixKube CLI Authentication"
+/>
+
+---
+
+## Next Step
+
+<Card
+title="Quickstart Guide"
+icon="rocket"
+href="/getting-started/quickstart"
+horizontal
+
+>
+
+Once signed up and authenticated, head to the Quickstart guide to connect RubixKube to your first cluster. </Card>

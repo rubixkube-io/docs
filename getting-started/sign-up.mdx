@@ -3,58 +3,80 @@ title: 'Sign up'
 description: 'Create your RubixKube account and prepare a safe evaluation environment'
 ---
 
-## Step 1: Create an account
+## Step 1: Choose your sign‑up method
 
-To sign up for RubixKube:
+On the RubixKube sign‑up portal you have three options: sign up with GitHub, sign up with Google, or create an account directly. Select **Create an account** to register with your email and organisation.
 
-1. Go to the sign‑up portal: [RubixKube sign‑up](<replace-with-signup-url>).
-2. Enter your work email and verify it.
-3. Fill in your profile details — name, team and organisation.
-4. Review and accept the Alpha terms and disclaimer.
-
-  <img
+<img
   style={{ borderRadius: '0.5rem' }}
-  src="/images/signup-form.png"
+  src="/images/d891ad7c-9546-4428-a3e7-0a2cfa85de6f.png"
+  alt="RubixKube sign‑up options"
+/>
+
+## Step 2: Provide your organisation and accept terms
+
+On the **Join RubixKube** screen:
+
+- Enter your organisation or team name (optional). If left blank, RubixKube will generate a name automatically.
+- Read and agree to the Terms of Service and Privacy Policy.
+- Click **Create account** to proceed, or choose GitHub or Google sign‑up if you prefer.
+
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/53f53fb4-5446-444b-b5f2-e4c07f218803.png"
+  alt="Join RubixKube form"
 />
 
 <Warning>
-Use only non‑production email addresses and cluster names during Alpha. Do not include any sensitive details.
+Use only non‑production details during Alpha. Do not sign up with production cluster names or sensitive information.
 </Warning>
 
-## Step 2: Generate an access token
+## Step 3: Enter your email
 
-After your account is created:
+Next, enter your work email address and click **Continue**. This verifies that the account belongs to you.
 
-1. Navigate to **Dashboard → Access tokens**.
-2. Create a new token for your evaluation cluster.
-3. Copy the token and store it securely; you'll need it to authenticate CLI and API requests.
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/c49030d3-0584-41ef-b287-58b9f5be309d.png"
+  alt="Email entry form"
+/>
+
+## Step 4: Set your password
+
+You will be asked to choose a strong password. It must:
+
+- Be at least 8 characters long
+- Contain at least three of the following character types: lowercase letters, uppercase letters, numbers and special characters.
+
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/6ecabe9f-7ba3-4a8a-bf6b-e5c37f68f991.png"
+  alt="Password requirements"
+/>
 
 <Note>
-Treat access tokens like passwords. Do not share them. If a token is compromised, revoke it immediately and generate a new one.
+Keep your password safe. Do not share it. If you suspect it’s compromised, reset it immediately.
 </Note>
 
-## Step 3: Prepare an evaluation cluster
+## Step 5: Enable quick login (optional)
 
-RubixKube Alpha must run on safe, disposable clusters:
+RubixKube may prompt you to enable quick login using your device’s fingerprint or face recognition. This step is optional. You can choose **Continue** to enable it, **Remind me later**, or **Not on this device** to decline.
 
-- Recommended: Kind, Minikube or a non‑production EKS/GKE/AKS cluster.
-- Not allowed: Production workloads or regulated datasets.
-- Ensure you have `kubectl` access to the cluster from your local machine.
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/49b93ed8-bf9f-4042-a3a4-b9d02a3096e3.png"
+  alt="Quick login prompt"
+/>
 
-## Step 4: Install the RubixKube CLI
+## After sign‑up
 
-Install the CLI and authenticate with your token:
+Once your account is created, you’ll land on the RubixKube dashboard. To start monitoring your infrastructure, connect your first cluster by running the `kubectl apply` command shown on the page. This installs the RubixKube observer agent in your cluster.
 
-```bash
-curl -sSL <replace-with-cli-install-script> | bash
-rubixkube version
-```
-
-Authenticate:
-
-```bash
-rubixkube auth --token <your-access-token>
-```
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/screencapture-staging-rubixkube-ai-2025-09-29-14_31_31.png"
+  alt="RubixKube dashboard and cluster connection instructions"
+/>
 
 ## Next step
 
@@ -64,5 +86,5 @@ rubixkube auth --token <your-access-token>
   href="/getting-started/quickstart"
   horizontal
 >
-Once authenticated, follow the Quickstart to connect RubixKube to your evaluation cluster.
+Follow the Quickstart guide to connect a cluster and run your first evaluation.
 </Card>

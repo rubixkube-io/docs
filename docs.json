@@ -24,6 +24,7 @@
               "getting-started/introduction",
               "getting-started/disclaimers",
               "getting-started/sign-up",
+              "getting-started/login",
               "getting-started/installation-cloud",
               "getting-started/installation-kind"
             ]

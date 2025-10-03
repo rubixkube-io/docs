@@ -1,90 +1,242 @@
 ---
-title: 'Sign up'
-description: 'Create your RubixKube account and prepare a safe evaluation environment'
+title: 'Sign Up'
+description: 'Create your RubixKube account in minutes and start your Site Reliability Intelligence journey'
 ---
 
-## Step 1: Choose your sign‑up method
+Welcome to RubixKube! Creating your account takes just a few minutes. This guide walks you through the complete signup process, including all available authentication methods.
 
-On the RubixKube sign‑up portal you have three options: sign up with GitHub, sign up with Google, or create an account directly. Select **Create an account** to register with your email and organisation.
+<Info>
+**Estimated time:** 5 minutes (including email verification)
+</Info>
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/d891ad7c-9546-4428-a3e7-0a2cfa85de6f.png"
-  alt="RubixKube sign‑up options"
-/>
+## Authentication Options
 
-## Step 2: Provide your organisation and accept terms
+RubixKube offers three convenient ways to create your account:
 
-On the **Join RubixKube** screen:
+<CardGroup cols={3}>
+  <Card title="Email" icon="envelope">
+    Sign up with your work email address
+  </Card>
+  <Card title="GitHub" icon="github">
+    Use your GitHub account for instant access
+  </Card>
+  <Card title="Google" icon="google">
+    Sign in with your Google workspace account
+  </Card>
+</CardGroup>
 
-- Enter your organisation or team name (optional). If left blank, RubixKube will generate a name automatically.
-- Read and agree to the Terms of Service and Privacy Policy.
-- Click **Create account** to proceed, or choose GitHub or Google sign‑up if you prefer.
+---
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/53f53fb4-5446-444b-b5f2-e4c07f218803.png"
-  alt="Join RubixKube form"
-/>
+## Email Signup (Step-by-Step)
+
+This guide covers the email signup process. For GitHub or Google signup, simply click the respective button and follow the OAuth flow.
+
+### Step 1: Navigate to Sign Up
+
+Visit [console.rubixkube.ai](https://console.rubixkube.ai) and click **"Create an account"** from the login page.
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/getting-started/login-page.png"
+    alt="RubixKube login page with sign-up option"
+  />
+</Frame>
+
+### Step 2: Enter Your Email
+
+On the **Create Your Account** page, you'll see three options:
+
+1. **Email address** - Enter your work or personal email
+2. **Continue with Google** - Instant signup using Google OAuth
+3. **Continue with GitHub** - Instant signup using GitHub OAuth
+
+For email signup, enter your email address and click **Continue**.
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/getting-started/signup-01-create-account.png"
+    alt="RubixKube sign-up page showing all authentication options"
+  />
+</Frame>
+
+<Tip>
+**Recommended:** Use your work email address to easily collaborate with your team later.
+</Tip>
+
+### Step 3: Create Your Password
+
+Set a strong password for your account. Your password must meet these requirements:
+
+- Minimum **8 characters** long
+- Contains at least **6 character types** (lowercase, uppercase, numbers, special characters)
+
+The page displays your email address with an option to edit if needed.
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/getting-started/signup-03-create-password.png"
+    alt="Password creation screen with requirements"
+  />
+</Frame>
 
 <Warning>
-Use only non‑production details during Alpha. Do not sign up with production cluster names or sensitive information.
+**Security Best Practice:** Use a unique password that you don't use elsewhere. Consider using a password manager like 1Password, LastPass, or Bitwarden.
 </Warning>
 
-## Step 3: Enter your email
+### Step 4: Biometric Authentication (Optional)
 
-Next, enter your work email address and click **Continue**. This verifies that the account belongs to you.
+After creating your password, RubixKube offers to enable **quick login** using your device's biometric authentication (fingerprint or face recognition).
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/c49030d3-0584-41ef-b287-58b9f5be309d.png"
-  alt="Email entry form"
-/>
+You have three options:
+- **Continue** - Enable biometric login for this device
+- **Remind me later** - Skip for now, ask again next time
+- **Not on this device** - Decline permanently for this device
 
-## Step 4: Set your password
-
-You will be asked to choose a strong password. It must:
-
-- Be at least 8 characters long
-- Contain at least three of the following character types: lowercase letters, uppercase letters, numbers and special characters.
-
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/6ecabe9f-7ba3-4a8a-bf6b-e5c37f68f991.png"
-  alt="Password requirements"
-/>
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/getting-started/signup-05-biometric-setup.png"
+    alt="Biometric authentication setup prompt"
+  />
+</Frame>
 
 <Note>
-Keep your password safe. Do not share it. If you suspect it’s compromised, reset it immediately.
+This feature enhances security while making future logins faster. You can enable it later from your account settings.
 </Note>
 
-## Step 5: Enable quick login (optional)
+### Step 5: Verify Your Email
 
-RubixKube may prompt you to enable quick login using your device’s fingerprint or face recognition. This step is optional. You can choose **Continue** to enable it, **Remind me later**, or **Not on this device** to decline.
+RubixKube requires email verification to ensure account security. You'll see a confirmation screen indicating:
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/49b93ed8-bf9f-4042-a3a4-b9d02a3096e3.png"
-  alt="Quick login prompt"
-/>
+- ✅ **Verification email sent** to your email address
+- 📧 Instructions to check your inbox
+- 🔄 Option to resend the verification email
 
-## After sign‑up
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/getting-started/signup-06-email-verification-required.png"
+    alt="Email verification required screen"
+  />
+</Frame>
 
-Once your account is created, you’ll land on the RubixKube dashboard. To start monitoring your infrastructure, connect your first cluster by running the `kubectl apply` command shown on the page. This installs the RubixKube observer agent in your cluster.
+**What to do next:**
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/screencapture-staging-rubixkube-ai-2025-09-29-14_31_31.png"
-  alt="RubixKube dashboard and cluster connection instructions"
-/>
+1. **Check your email inbox** (including spam/junk folders)
+2. **Click the verification link** in the email from RubixKube
+3. **Return to this page** and click **"Continue (After Verification)"**
 
-## Next step
+<Accordion title="Didn't receive the email?">
+  If you don't see the verification email after a few minutes:
+  
+  - Check your **spam or junk folder**
+  - Ensure you entered the correct email address
+  - Click **"Resend Email"** on the verification page
+  - Wait 2-3 minutes and check again
+  - Contact support at connect@rubixkube.ai if issues persist
+</Accordion>
+
+---
+
+## Social Login Options
+
+### GitHub Signup
+
+1. Click **"Continue with GitHub"** on the signup page
+2. Authorize RubixKube to access your GitHub account
+3. You'll be automatically logged in (no email verification needed)
+4. GitHub email will be used for your RubixKube account
+
+<Tip>
+**Perfect for developers:** GitHub signup is the fastest way to get started if you already use GitHub for work.
+</Tip>
+
+### Google Signup
+
+1. Click **"Continue with Google"** on the signup page
+2. Select your Google account from the picker
+3. Grant RubixKube the necessary permissions
+4. You'll be automatically logged in
+5. Your Google workspace email will be used
+
+<Tip>
+**Enterprise-friendly:** Ideal if your organization uses Google Workspace.
+</Tip>
+
+---
+
+## After Signup: What's Next?
+
+Once you've successfully signed up and verified your email, you'll:
+
+1. **Access your dashboard** - See your RubixKube console for the first time
+2. **Complete onboarding** - Follow the guided setup to connect your first cluster
+3. **Invite team members** - Add colleagues to collaborate on infrastructure reliability
 
 <Card
-  title="Quickstart guide"
-  icon="rocket"
-  href="/getting-started/quickstart"
+  title="Next: Connect Your First Cluster"
+  icon="link"
+  href="/getting-started/installation-cloud"
   horizontal
 >
-Follow the Quickstart guide to connect a cluster and run your first evaluation.
+  Learn how to install RubixKube agents in your Kubernetes cluster to start monitoring.
 </Card>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Email verification link expired">
+    Verification links expire after 24 hours for security. Simply:
+    1. Return to the signup page
+    2. Click "Resend Email"
+    3. Use the new verification link
+  </Accordion>
+
+  <Accordion title="Password doesn't meet requirements">
+    Ensure your password has:
+    - At least 8 characters
+    - Mix of uppercase and lowercase letters
+    - At least one number
+    - At least one special character (!, @, #, $, etc.)
+  </Accordion>
+
+  <Accordion title="OAuth (GitHub/Google) login not working">
+    Common issues:
+    - **Pop-up blocked:** Allow pop-ups for console.rubixkube.ai
+    - **Organization restrictions:** Your GitHub org may restrict OAuth apps
+    - **Google workspace policies:** Check with your IT admin
+    
+    If social login fails, use email signup as an alternative.
+  </Accordion>
+
+  <Accordion title="Can't access account after signup">
+    Ensure you:
+    1. Verified your email address
+    2. Used the correct email/password combination
+    3. Are not behind a VPN that blocks access
+    
+    Try the "Forgot Password" option if you can't remember your credentials.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Security & Privacy
+
+<CardGroup cols={2}>
+  <Card title="Data Security" icon="shield-halved">
+    Your credentials are encrypted using industry-standard protocols. We never store passwords in plain text.
+  </Card>
+  <Card title="Privacy First" icon="user-shield">
+    RubixKube is GDPR and SOC 2 compliant. We never share your data with third parties.
+  </Card>
+</CardGroup>
+
+<Note>
+Have questions about security? Visit our [Security FAQ](/support/faq) or contact security@rubixkube.ai
+</Note>

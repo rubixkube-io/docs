@@ -18,9 +18,6 @@
           {
             "group": "Getting started",
             "pages": [
-              "index",
-              "quickstart",
-              "development",
               "getting-started/introduction",
               "getting-started/disclaimers",
               "getting-started/sign-up",

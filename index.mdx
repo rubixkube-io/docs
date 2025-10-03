@@ -1,97 +1,313 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "RubixKube Documentation"
+description: "In a world where AI builds your product, RubixKube™ keeps it alive."
 ---
 
-## Setting up
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/hero-dark.png"
+    alt="RubixKube - Site Reliability Intelligence"
+  />
+</Frame>
 
-Get your documentation site up and running in minutes.
+# Welcome to RubixKube™
+
+**The Reliability Layer for the AI Era**
+
+RubixKube is an AI-native mesh of agents that prevents downtime, safeguards revenue, and gives you peace of mind at scale. Think of it as your **second brain for infrastructure** — one that never sleeps, never forgets, and always protects your uptime.
+
+<Info>
+**🚀 Currently in Beta** - RubixKube is ready for testing on dev/staging environments. Production-ready release coming soon!
+</Info>
+
+---
+
+## What is RubixKube?
+
+RubixKube combines **AI agents, deep Kubernetes knowledge, and automated remediation** to create a self-healing infrastructure layer:
+
+<CardGroup cols={2}>
+  <Card title="Observes Like an SRE" icon="eye">
+    Continuously monitors your infrastructure, understanding context and dependencies
+  </Card>
+  <Card title="Diagnoses Root Causes" icon="magnifying-glass">
+    Automatically analyzes failures with dependency graphs and timelines
+  </Card>
+  <Card title="Prevents Incidents" icon="shield">
+    Detects risky deployments and configuration drift before they cause outages
+  </Card>
+  <Card title="Fixes Issues Autonomously" icon="wand-magic-sparkles">
+    Proposes or applies safe remediations with built-in guardrails
+  </Card>
+</CardGroup>
+
+---
+
+## Quick Start Guide
+
+Get up and running with RubixKube in just a few steps:
+
+<Steps>
+  <Step title="Create Your Account">
+    Sign up for free at [console.rubixkube.ai](https://console.rubixkube.ai)
+    
+    <Card
+      title="Sign Up Guide"
+      icon="user-plus"
+      href="/getting-started/sign-up"
+    >
+      Step-by-step account creation with email, GitHub, or Google
+    </Card>
+  </Step>
+
+  <Step title="Choose Your Installation Method">
+    Install RubixKube on a Kubernetes cluster - local or cloud
+    
+    <CardGroup cols={2}>
+      <Card
+        title="Local with KIND"
+        icon="laptop"
+        href="/getting-started/installation-kind"
+      >
+        Perfect for learning and testing on your laptop
+      </Card>
+      <Card
+        title="Cloud (AWS/GKE/AKS)"
+        icon="cloud"
+        href="/getting-started/installation-cloud"
+      >
+        Test on real cloud infrastructure (Beta)
+      </Card>
+    </CardGroup>
+  </Step>
+
+  <Step title="Start Monitoring">
+    Watch RubixKube observe your infrastructure and detect issues
+    
+    <Card
+      title="First Steps Tutorial"
+      icon="compass"
+      href="/tutorials/first-steps"
+    >
+      Your first 15 minutes with RubixKube
+    </Card>
+  </Step>
+
+  <Step title="See It in Action">
+    Break things on purpose and watch RubixKube fix them
+    
+    <Card
+      title="Try Breaking a Pod"
+      icon="flask"
+      href="/tutorials/break-pod-image-error"
+    >
+      Learn by watching RubixKube detect and remediate issues
+    </Card>
+  </Step>
+</Steps>
+
+---
+
+## Core Concepts
+
+Understand the technology powering RubixKube:
+
+<CardGroup cols={2}>
+  <Card
+    title="Site Reliability Intelligence (SRI)"
+    icon="brain"
+    href="/concepts/what-is-sri"
+  >
+    Learn about the new category RubixKube is defining
+  </Card>
+  <Card
+    title="Agent Mesh Architecture"
+    icon="diagram-project"
+    href="/concepts/agent-mesh"
+  >
+    How specialized AI agents collaborate to solve problems
+  </Card>
+  <Card
+    title="Memory Engine"
+    icon="database"
+    href="/concepts/memory-engine"
+  >
+    How RubixKube learns from every incident
+  </Card>
+  <Card
+    title="Safety Guardrails"
+    icon="shield-halved"
+    href="/concepts/guardrails"
+  >
+    Built-in safety mechanisms for autonomous operations
+  </Card>
+</CardGroup>
+
+---
+
+## Popular Tutorials
+
+Hands-on guides to help you master RubixKube:
+
+<CardGroup cols={3}>
+  <Card
+    title="First Steps"
+    icon="shoe-prints"
+    href="/tutorials/first-steps"
+  >
+    Navigate the dashboard and run your first queries
+  </Card>
+  <Card
+    title="Fix ImagePullBackOff"
+    icon="image"
+    href="/tutorials/break-pod-image-error"
+  >
+    Watch RubixKube detect and fix container issues
+  </Card>
+  <Card
+    title="Fix OOMKilled Pods"
+    icon="memory"
+    href="/tutorials/break-pod-memory-oom"
+  >
+    See memory analysis and auto-remediation
+  </Card>
+  <Card
+    title="RubixKube in Action"
+    icon="play"
+    href="/tutorials/rubixkube-in-action"
+  >
+    Real-world production scenario walkthrough
+  </Card>
+  <Card
+    title="Talk to Your Infrastructure"
+    icon="comments"
+    href="/tutorials/talk-to-infra"
+  >
+    Use natural language to query your cluster
+  </Card>
+</CardGroup>
+
+---
+
+## Key Features
+
+What makes RubixKube different:
+
+<AccordionGroup>
+  <Accordion title="🤖 AI-Native Agent Mesh" icon="network-wired">
+    Specialized AI agents work together:
+    - **Detective Agent** - Investigates root causes
+    - **Remediation Agent** - Proposes and applies fixes
+    - **Memory Agent** - Learns from past incidents
+    - **Guardian Agent** - Enforces safety policies
+  </Accordion>
+
+  <Accordion title="🔍 Evidence-Linked Root Cause Analysis" icon="magnifying-glass-chart">
+    Every incident comes with:
+    - Dependency graphs showing impact radius
+    - Timeline of events leading to failure
+    - Logs and metrics correlated automatically
+    - AI-generated explanations in plain English
+  </Accordion>
+
+  <Accordion title="⚡ Predictive Failure Prevention" icon="triangle-exclamation">
+    Catch issues before they impact users:
+    - Detect risky deployments
+    - Identify configuration drift
+    - Spot resource exhaustion early
+    - Alert on anomalous patterns
+  </Accordion>
+
+  <Accordion title="💬 Conversational Infrastructure Control" icon="message">
+    Manage your cluster using natural language:
+    - "Why is my checkout service slow?"
+    - "Show me pods with high memory usage"
+    - "What changed in the last hour?"
+    - "Restart the payment service"
+  </Accordion>
+
+  <Accordion title="📊 Business Impact Metrics" icon="chart-line">
+    Connect infrastructure to revenue:
+    - MTTR and MTTD tracking
+    - Cost of downtime calculations
+    - Reliability scores and trends
+    - Executive-friendly reports
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Who is RubixKube For?
+
+<CardGroup cols={3}>
+  <Card title="DevOps Engineers" icon="server">
+    Automate incident response and reduce toil
+  </Card>
+  <Card title="Site Reliability Engineers" icon="gauge">
+    Enhance observability and cut MTTR
+  </Card>
+  <Card title="Platform Engineers" icon="layer-group">
+    Build self-healing infrastructure at scale
+  </Card>
+  <Card title="Junior Developers" icon="graduation-cap">
+    Learn SRE practices with AI guidance
+  </Card>
+  <Card title="Engineering Managers" icon="users">
+    Reduce on-call burden and improve velocity
+  </Card>
+  <Card title="CTOs & VPs" icon="briefcase">
+    Protect revenue and improve reliability metrics
+  </Card>
+</CardGroup>
+
+---
+
+## Important: Beta Software
+
+<Warning>
+**Not Production Ready**
+
+RubixKube is currently in **Beta**. While powerful, it should only be deployed on:
+- ✅ Development environments
+- ✅ Staging clusters  
+- ✅ Testing environments
+- ✅ Local KIND clusters
+- ❌ **NOT** on production infrastructure (yet)
+
+Read our [Beta Disclaimers](/getting-started/disclaimers) before proceeding.
+</Warning>
+
+---
+
+## Support & Community
+
+Need help? We're here for you:
+
+<CardGroup cols={2}>
+  <Card title="Email Support" icon="envelope">
+    connect@rubixkube.ai
+  </Card>
+  <Card title="Documentation" icon="book">
+    Browse comprehensive guides and tutorials
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com/rubixkube-io">
+    Open source components and examples
+  </Card>
+  <Card title="Community Slack" icon="slack">
+    Join fellow SREs and platform engineers
+  </Card>
+</CardGroup>
+
+---
+
+## Ready to Get Started?
 
 <Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
+  title="Read Beta Disclaimers First"
+  icon="triangle-exclamation"
+  href="/getting-started/disclaimers"
   horizontal
 >
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
+  Understand the limitations and safety notes before diving in
 </Card>

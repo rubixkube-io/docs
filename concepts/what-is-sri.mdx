@@ -50,15 +50,6 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
     - Integrates with existing tools (Prometheus, Loki, Grafana)
     - Understands context, not just metrics
     - Tracks changes (deploys, configs, scaling events)
-    
-    <Accordion title="What makes observation intelligent?">
-      Unlike traditional monitoring that just collects metrics, SRI **understands relationships**:
-      - "This deployment depends on that database"
-      - "These three services form a checkout flow"
-      - "This spike correlates with that code change"
-      
-      It's observability with comprehension.
-    </Accordion>
   </Step>
 
   <Step title="Plan">
@@ -68,16 +59,6 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
     - Agents reason over live data AND historical patterns
     - Propose safe, auditable remediation actions
     - Calculate blast radius and risk
-    
-    <Accordion title="How does the Agent Mesh plan?">
-      Different agents have different expertise:
-      - **Detective Agent** - Investigates root causes
-      - **Remediation Agent** - Proposes fixes
-      - **Memory Agent** - Recalls similar past incidents
-      - **Guardian Agent** - Assesses safety and risk
-      
-      They collaborate like a distributed SRE team.
-    </Accordion>
   </Step>
 
   <Step title="Execute">
@@ -87,16 +68,6 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
     - Approve PRs or apply controlled changes
     - Policy checks before any action
     - Rollback capability built-in
-    
-    <Accordion title="What about autonomous mode?">
-      **You control the autonomy level:**
-      - **Observe-only** - Just watch and alert (default)
-      - **Suggest** - Propose fixes, require approval
-      - **Auto-fix (scoped)** - Fix low-risk issues automatically
-      - **Full autonomy** - Handle incidents end-to-end (with guardrails)
-      
-      Start conservative, increase trust gradually.
-    </Accordion>
   </Step>
 
   <Step title="Learn">
@@ -106,18 +77,12 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
     - RCAs become institutional knowledge
     - Playbooks refine automatically
     - Pattern recognition improves over time
-    
-    <Accordion title="How does learning work?">
-      The Memory Engine stores:
-      - **What happened** - Full incident timeline
-      - **Why it happened** - Root cause analysis
-      - **How it was fixed** - Remediation steps
-      - **What we learned** - Patterns and insights
-      
-      Future incidents check this knowledge first.
-    </Accordion>
   </Step>
 </Steps>
+
+<Note>
+**Deep Dive:** Each step of the OPEL loop involves sophisticated AI reasoning. The Agent Mesh coordinates across all steps, and the Memory Engine provides historical context to improve decisions over time.
+</Note>
 
 ---
 

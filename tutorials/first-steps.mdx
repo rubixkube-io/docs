@@ -1,0 +1,531 @@
+---
+title: 'First Steps with RubixKube'
+description: 'Your first 15 minutes - explore the dashboard, understand the interface, and see RubixKube in action'
+---
+
+# Your First 15 Minutes with RubixKube
+
+Welcome! You've installed RubixKube and connected your cluster. Now let's explore the interface and see what RubixKube can do. This tutorial takes about **15 minutes** and gives you a solid foundation.
+
+<Info>
+**Prerequisites:**
+- ✅ RubixKube account created
+- ✅ Observer agent installed on your cluster (KIND or cloud)
+- ✅ Logged into [console.rubixkube.ai](https://console.rubixkube.ai)
+</Info>
+
+---
+
+## Step 1: Understanding the Dashboard
+
+After logging in, you'll land on the **Dashboard** - your command center for infrastructure reliability.
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/dashboard-02-full-view-no-chat.png"
+    alt="RubixKube Dashboard overview"
+  />
+</Frame>
+
+### Main Metrics at a Glance
+
+The dashboard shows 4 key metrics:
+
+<CardGroup cols={2}>
+  <Card title="System Health" icon="heart-pulse">
+    **100% = Healthy**
+    
+    Overall health of your infrastructure based on pod status, resource usage, and incident history
+  </Card>
+  
+  <Card title="Active Insights" icon="lightbulb">
+    **Number of issues detected**
+    
+    Current problems RubixKube has identified that need attention (pods failing, resource issues, etc.)
+  </Card>
+  
+  <Card title="Intelligent Analysis" icon="brain">
+    **RCA Reports generated**
+    
+    Root Cause Analysis reports created by the RCA Pipeline Agent
+  </Card>
+  
+  <Card title="Agents" icon="robot">
+    **3/3 Active**
+    
+    Status of AI agents monitoring your cluster (Observer, RCA Pipeline, Memory, SRI)
+  </Card>
+</CardGroup>
+
+---
+
+## Step 2: Check Your Cluster Connection
+
+Scroll down to the **Infrastructure** panel to verify your cluster is connected:
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/clusters-01-list-view.png"
+    alt="Connected cluster showing resources"
+  />
+</Frame>
+
+**What you'll see:**
+- ✅ **Connected** status (green indicator)
+- **Node count** - How many nodes in your cluster
+- **Pod count** - Total pods running
+- **Deployments** - Number of deployments
+- **Services** - Exposed services
+
+<Tip>
+**First time?** If you just installed, you might see low numbers. Deploy some workloads to see RubixKube monitor them!
+</Tip>
+
+---
+
+## Step 3: Explore the Navigation
+
+RubixKube's interface is organized into logical sections:
+
+### **Core Section**
+
+<AccordionGroup>
+  <Accordion title="Dashboard" icon="gauge">
+    **What:** Overview of system health and recent activity  
+    **When to use:** Daily check-in, incident triage  
+    **Key info:** Metrics, insights, activity feed
+  </Accordion>
+
+  <Accordion title="Chat" icon="comments">
+    **What:** Conversational interface with SRI Agent  
+    **When to use:** Query your infrastructure using natural language  
+    **Try asking:** "What pods are failing?" or "Show me memory usage"
+  </Accordion>
+</AccordionGroup>
+
+### **Monitoring Section**
+
+<AccordionGroup>
+  <Accordion title="Insights" icon="lightbulb">
+    **What:** Detailed view of all detected issues  
+    **When to use:** Investigate specific incidents  
+    **Shows:** Incident details, RCA analysis, suggestions
+  </Accordion>
+
+  <Accordion title="Infrastructure" icon="diagram-project">
+    **What:** Topology and resource visualization  
+    **When to use:** Understand service dependencies  
+    **Shows:** Infrastructure graph, resource relationships
+  </Accordion>
+</AccordionGroup>
+
+### **Management Section**
+
+<AccordionGroup>
+  <Accordion title="Clusters" icon="server">
+    **What:** List of connected Kubernetes clusters  
+    **When to use:** Manage multi-cluster setups  
+    **Shows:** Cluster health, version, resources
+  </Accordion>
+
+  <Accordion title="Agents" icon="robot">
+    **What:** Status of all AI agents  
+    **When to use:** Verify agents are active and healthy  
+    **Shows:** Agent list, capabilities, last activity
+  </Accordion>
+
+  <Accordion title="Workspace" icon="layer-group">
+    **What:** Custom dashboards and visualizations  
+    **When to use:** Create personalized views  
+    **Status:** Beta feature, coming soon
+  </Accordion>
+
+  <Accordion title="Integrations" icon="plug">
+    **What:** Third-party tool connections  
+    **When to use:** Configure Slack, Prometheus, etc.  
+    **Shows:** 17 available integrations
+  </Accordion>
+
+  <Accordion title="Settings" icon="gear">
+    **What:** Organization and user configuration  
+    **When to use:** Update profile, preferences, API settings  
+    **Tabs:** Organization, Preferences, System, Security
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Step 4: View Active Agents
+
+Navigate to **Agents** to see your AI team:
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/agents-01-list-view.png"
+    alt="Active AI agents in RubixKube"
+  />
+</Frame>
+
+**You should see 3 active agents:**
+
+| Agent | Role | Status |
+|-------|------|--------|
+| **RCA Pipeline Agent** | Analyzes incidents and generates root cause reports | ✅ Active |
+| **RubixKube Observer Agent** | Monitors your cluster continuously | ✅ Active |
+| **SRI Agent** | Provides conversational interface via Chat | ✅ Active |
+
+<Note>
+**All agents active = RubixKube is fully operational!** They work together to detect, analyze, and help you resolve issues.
+</Note>
+
+---
+
+## Step 5: Try the Chat Interface
+
+Click **Chat** in the navigation to access the conversational interface:
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/chat-01-main-interface.png"
+    alt="RubixKube Chat interface with SRI Agent"
+  />
+</Frame>
+
+### Quick Actions Available
+
+The Chat interface offers pre-built action categories:
+
+<CardGroup cols={2}>
+  <Card title="Infrastructure" icon="server">
+    Manage clusters, nodes, and resources
+  </Card>
+  <Card title="Security" icon="shield">
+    Security analysis and compliance checks
+  </Card>
+  <Card title="Monitoring" icon="chart-line">
+    Performance metrics and alerts
+  </Card>
+  <Card title="Troubleshoot" icon="wrench">
+    Debug issues and analyze logs
+  </Card>
+  <Card title="Networking" icon="network-wired">
+    Network policies and connectivity
+  </Card>
+</CardGroup>
+
+### Try Your First Query
+
+Type a question in the chat box:
+
+**Example queries to try:**
+```
+"What pods are running in my cluster?"
+"Show me any failing pods"
+"What's the memory usage across all pods?"
+"Are there any recent events I should know about?"
+```
+
+<Tip>
+**Pro Tip:** Use natural language! The SRI Agent understands questions the way you'd ask a colleague.
+</Tip>
+
+---
+
+## Step 6: Understanding the Activity Feed
+
+Back on the **Dashboard**, the **Activity Feed** shows recent events:
+
+**What you'll see:**
+- 🔴 **Incidents detected** - Pod crashes, resource issues
+- 📊 **Insights generated** - AI analysis of problems
+- ✅ **Resolution events** - When issues are fixed
+- 📝 **Configuration changes** - Deployments, scaling events
+
+**Example Activity:**
+```
+🔴 Container experiencing repeated crashes in crash-loop-demo
+   Severity: medium | Status: active | 2 minutes ago
+
+⚠️ Out of memory (OOMKilled) detected on Pod/memory-hog-demo
+   Severity: HIGH | Status: active | 2 minutes ago
+```
+
+<Note>
+**Activity Feed is live** - it updates in real-time as RubixKube detects issues. No refresh needed!
+</Note>
+
+---
+
+## Step 7: Check the RCA Live Stream
+
+The **RCA Live Stream** shows the RCA Pipeline Agent working in real-time:
+
+**What you'll see:**
+- Function calls being made
+- Analysis in progress
+- Evidence gathering
+- Pattern matching
+
+**This is the AI at work!** 🤖
+
+<Accordion title="What does 'RCA_IN_PROGRESS' mean?">
+  When RubixKube detects an incident, the RCA Pipeline Agent immediately starts analyzing:
+  
+  1. **Gathering evidence** - Logs, metrics, events
+  2. **Correlating data** - Finding relationships
+  3. **Identifying root cause** - Determining what went wrong
+  4. **Generating suggestions** - Proposing fixes
+  
+  This usually takes **30-90 seconds**. You'll see the progress percentage.
+</Accordion>
+
+---
+
+## Step 8: Explore Settings
+
+Navigate to **Settings** to configure your RubixKube instance:
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/settings/settings-01-main-page.png"
+    alt="RubixKube Settings page"
+  />
+</Frame>
+
+**Available tabs:**
+
+<Tabs>
+  <Tab title="Organization">
+    - Workspace name and plan
+    - Active users and clusters
+    - Contact information
+    - User profile details
+    - Account role and permissions
+  </Tab>
+
+  <Tab title="Preferences">
+    - Theme (Light/Dark/System)
+    - Language selection
+    - Timezone settings
+    - Date format
+    - Notification preferences
+  </Tab>
+
+  <Tab title="System">
+    - API version configuration
+    - Rate limiting
+    - System settings
+  </Tab>
+
+  <Tab title="Security">
+    - Coming soon in Beta
+  </Tab>
+
+  <Tab title="Integrations">
+    - Integration-specific settings
+    - Coming soon in Beta
+  </Tab>
+</Tabs>
+
+---
+
+## What You've Learned
+
+After these first steps, you now know:
+
+<CardGroup cols={2}>
+  <Card title="Dashboard Navigation" icon="map">
+    How to navigate RubixKube's interface and find what you need
+  </Card>
+  
+  <Card title="Key Metrics" icon="chart-bar">
+    What System Health, Insights, and Agents mean
+  </Card>
+  
+  <Card title="Chat Interface" icon="comments">
+    How to query your infrastructure using natural language
+  </Card>
+  
+  <Card title="Agent System" icon="robot">
+    Which AI agents are monitoring your cluster
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+Now that you understand the basics, try these tutorials:
+
+<CardGroup cols={2}>
+  <Card 
+    title="Detect ImagePullBackOff" 
+    icon="image"
+    href="/tutorials/break-pod-image-error"
+  >
+    See how RubixKube detects container image issues
+  </Card>
+  
+  <Card 
+    title="Detect OOMKilled Pods" 
+    icon="memory"
+    href="/tutorials/break-pod-memory-oom"
+  >
+    Watch memory analysis and detection in action
+  </Card>
+  
+  <Card 
+    title="Chat with Your Cluster" 
+    icon="comments"
+    href="/tutorials/talk-to-infra"
+  >
+    Learn advanced Chat queries and tips
+  </Card>
+  
+  <Card 
+    title="Understand Core Concepts" 
+    icon="brain"
+    href="/concepts/what-is-sri"
+  >
+    Deep dive into how RubixKube works
+  </Card>
+</CardGroup>
+
+---
+
+## Common Questions
+
+<AccordionGroup>
+  <Accordion title="Why are my Insights empty?">
+    **Answer:** If everything is healthy, you won't see insights! RubixKube only alerts on actual issues.
+    
+    **To test:** Deploy our tutorial scenarios to see detection in action.
+  </Accordion>
+
+  <Accordion title="How often does the dashboard refresh?">
+    **Answer:** Real-time via WebSocket connection. You'll see updates within seconds of changes.
+    
+    **Manual refresh:** Click the "Refresh all data" button.
+  </Accordion>
+
+  <Accordion title="Can I customize the dashboard?">
+    **Answer:** The Workspace feature (coming soon) will let you create custom dashboards.
+    
+    **Beta:** Use the Chat to query specific data you want to see.
+  </Accordion>
+
+  <Accordion title="What does '20 notifications' mean?">
+    **Answer:** Total events detected by RubixKube. Click the notification bell to see details.
+    
+    **Includes:** Incidents, insights, agent activity, system events.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Pro Tips
+
+<CardGroup cols={2}>
+  <Card title="Use Keyboard Shortcuts" icon="keyboard">
+    - `⌘K` - Open search
+    - Quick navigation to any page
+  </Card>
+  
+  <Card title="Bookmark Important Views" icon="bookmark">
+    - Dashboard for daily check-ins
+    - Insights for incident review
+    - Chat for quick queries
+  </Card>
+  
+  <Card title="Check Agents Daily" icon="robot">
+    Ensure all 3 agents show "Just now" for last activity
+  </Card>
+  
+  <Card title="Explore Integrations" icon="plug">
+    Connect Slack for notifications or Prometheus for enhanced metrics
+  </Card>
+</CardGroup>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Dashboard shows 'Initializing...' forever">
+    **Possible causes:**
+    - Observer agent not connected
+    - Network connectivity issue
+    - Browser cache problem
+    
+    **Solutions:**
+    1. Check observer pod: `kubectl get pods -n rubixkube`
+    2. Verify it's running (STATUS = Running)
+    3. Clear browser cache and refresh
+    4. Try different browser
+  </Accordion>
+
+  <Accordion title="Agents showing as offline">
+    **Check:**
+    1. Navigate to Agents page
+    2. Look for "Last active" timestamp
+    3. If >5 minutes ago, agent may be unhealthy
+    
+    **Fix:**
+    ```bash
+    kubectl logs -n rubixkube deployment/rubixkube-observer
+    kubectl rollout restart deployment/rubixkube-observer -n rubixkube
+    ```
+  </Accordion>
+
+  <Accordion title="No insights showing despite pod failures">
+    **RubixKube takes 1-2 minutes to detect and analyze issues.**
+    
+    If failures are immediate but no insights after 5 minutes:
+    - Check observer agent is running
+    - Verify namespace is being watched (default: all namespaces)
+    - Check RubixKube dashboard for agent status
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## What's Next?
+
+You've completed the basics! Now it's time to see RubixKube detect real issues:
+
+<Card
+  title="Continue to: Detecting Pod Failures"
+  icon="flask"
+  href="/tutorials/break-pod-image-error"
+  horizontal
+>
+  Learn by watching RubixKube detect and analyze common Kubernetes failures
+</Card>
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Support" icon="envelope">
+    Email: connect@rubixkube.ai
+  </Card>
+  
+  <Card title="Documentation" icon="book">
+    Browse our [complete guides](/getting-started/introduction)
+  </Card>
+  
+  <Card title="Concepts" icon="brain">
+    Understand [how RubixKube works](/concepts/what-is-sri)
+  </Card>
+  
+  <Card title="Community" icon="users">
+    Join our Slack community
+  </Card>
+</CardGroup>
+

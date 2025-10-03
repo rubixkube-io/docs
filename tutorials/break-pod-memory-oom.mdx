@@ -1,0 +1,507 @@
+---
+title: 'Detecting OOMKilled Pods'
+description: 'See how RubixKube detects memory issues and provides memory analysis'
+---
+
+# Detecting Memory Issues (OOMKilled)
+
+**Out of Memory (OOM) errors** are critical failures that cause pods to be killed by Kubernetes. Let's see how RubixKube detects memory issues, analyzes them, and suggests solutions.
+
+<Info>
+**What you'll learn:**
+- Creating a memory-constrained pod
+- How RubixKube detects OOMKilled events
+- Reading memory usage analysis
+- Understanding resource limit recommendations
+- Fixing memory issues
+</Info>
+
+<Warning>
+**Real Impact:** OOMKilled errors cause:
+- Immediate pod termination
+- Service degradation (if all replicas affected)
+- Data loss (if not using persistent storage)
+- Customer-facing errors
+
+RubixKube helps you catch and fix these quickly.
+</Warning>
+
+---
+
+## The Scenario: Memory Overflow
+
+We'll create a pod that intentionally exceeds its memory limit to trigger an **OOMKilled** event.
+
+### Create the Memory Hog Pod
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memory-hog-demo
+  namespace: rubixkube-tutorials
+spec:
+  containers:
+  - name: stress
+    image: polinux/stress
+    resources:
+      limits:
+        memory: "50Mi"       # Only 50MB allowed
+      requests:
+        memory: "50Mi"
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "100M"]  # Try to use 100MB!
+```
+
+**What this does:**
+- Requests 50Mi of memory
+- Tries to allocate 100Mi (double the limit)
+- Kubernetes kills it when memory exceeds limit
+
+**Deploy it:**
+
+```bash
+kubectl apply -f memory-hog-pod.yaml
+```
+
+---
+
+## Watch the OOM Cycle
+
+The pod will go through a cycle:
+
+```bash
+kubectl get pods -n rubixkube-tutorials -w
+```
+
+**You'll see:**
+
+```
+NAME              READY   STATUS              RESTARTS   AGE
+memory-hog-demo   0/1     ContainerCreating   0          5s
+memory-hog-demo   0/1     OOMKilled           0          10s
+memory-hog-demo   0/1     CrashLoopBackOff    1          20s
+memory-hog-demo   0/1     OOMKilled           1          35s
+memory-hog-demo   0/1     CrashLoopBackOff    2          50s
+```
+
+**The pattern:**
+1. **ContainerCreating** - Kubernetes starts the container
+2. **OOMKilled** - Container exceeds memory, Kubernetes kills it
+3. **CrashLoopBackOff** - Kubernetes waits before restarting
+4. **Repeat** - Cycle continues forever
+
+<Note>
+**This is a real production problem!** Pods stuck in this cycle waste resources and cause service degradation.
+</Note>
+
+---
+
+## RubixKube Detection (Within 2 Minutes)
+
+Open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
+
+**What you'll see:**
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/tutorials/tutorial-02-dashboard-with-failures.png"
+    alt="Dashboard detecting OOMKilled pod"
+  />
+</Frame>
+
+### Detection Indicators
+
+**Activity Feed shows TWO related incidents:**
+
+1. **"Out of memory (OOMKilled) detected on Pod/memory-hog-demo"**
+   - **Severity:** HIGH 🔴
+   - **Status:** Active
+   - **Detected:** Immediately after first OOM
+
+2. **"Container experiencing repeated crashes in memory-hog-demo"**
+   - **Severity:** Medium  
+   - **Status:** Active
+   - **Restart count:** Tracked automatically
+
+<Tip>
+**RubixKube correlates events!** It understands that the crashes are CAUSED BY the OOM condition. This is intelligent detection, not just alert noise.
+</Tip>
+
+---
+
+## Viewing Detailed Analysis
+
+Navigate to **Insights** to see the full analysis:
+
+### Incident Details
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/tutorials/tutorial-03-insights-with-detections.png"
+    alt="Insights showing OOMKilled analysis"
+  />
+</Frame>
+
+**What RubixKube shows:**
+
+<CardGroup cols={2}>
+  <Card title="Root Cause" icon="magnifying-glass">
+    **OOMKilled** - Container exceeded memory limits
+  </Card>
+  
+  <Card title="Affected Resource" icon="server">
+    **Pod/memory-hog-demo** in namespace rubixkube-tutorials
+  </Card>
+  
+  <Card title="Restart Count" icon="rotate">
+    **3 restarts** (and counting) - Problem persists
+  </Card>
+  
+  <Card title="Confidence" icon="percentage">
+    **90%+** - RubixKube is highly confident about the diagnosis
+  </Card>
+</CardGroup>
+
+### Memory Analysis
+
+**RubixKube's analysis includes:**
+
+```yaml
+Current Configuration:
+  memory.limits: 50Mi
+  memory.requests: 50Mi
+
+Actual Usage:
+  Attempted allocation: ~100Mi
+  Limit exceeded by: ~100% (2x over)
+
+Pattern:
+  - Pod starts
+  - Memory usage spikes immediately
+  - Kubernetes OOMKills at ~50Mi
+  - Pod restarts
+  - Cycle repeats
+```
+
+---
+
+## AI-Generated Suggestions
+
+Based on the analysis, RubixKube suggests:
+
+<Steps>
+  <Step title="Increase Memory Limits">
+    **Recommended action:** Double the memory limit
+    
+    ```yaml
+    resources:
+      limits:
+        memory: "100Mi"  # Was 50Mi
+      requests:
+        memory: "100Mi"
+    ```
+    
+    **Why:** Application needs ~100Mi based on observed behavior
+  </Step>
+
+  <Step title="Check for Memory Leaks">
+    **If restarts continue after increasing limits:**
+    
+    - Monitor memory usage over time
+    - Look for gradual increase (leak pattern)
+    - Check application code for issues
+    
+    **RubixKube helps:** Memory Engine will track usage trends
+  </Step>
+
+  <Step title="Consider Resource Quotas">
+    **Verify namespace limits:**
+    
+    ```bash
+    kubectl describe resourcequota -n rubixkube-tutorials
+    ```
+    
+    Ensure namespace has enough memory available
+  </Step>
+</Steps>
+
+---
+
+## Fixing the Memory Issue
+
+### Method 1: Delete and Recreate (Easiest)
+
+```bash
+# Delete the broken pod
+kubectl delete pod memory-hog-demo -n rubixkube-tutorials
+
+# Create new pod with correct limits
+cat > fixed-memory-pod.yaml << EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memory-fixed-demo
+  namespace: rubixkube-tutorials
+spec:
+  containers:
+  - name: stress
+    image: polinux/stress
+    resources:
+      limits:
+        memory: "150Mi"      # Increased from 50Mi
+      requests:
+        memory: "150Mi"
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "100M"]
+EOF
+
+kubectl apply -f fixed-memory-pod.yaml
+```
+
+### Method 2: Update Deployment (Production Approach)
+
+If this were a Deployment (not a standalone Pod):
+
+```bash
+kubectl set resources deployment/my-app \
+  --limits=memory=150Mi \
+  --requests=memory=150Mi \
+  -n rubixkube-tutorials
+```
+
+This triggers a rolling update with new resource limits.
+
+---
+
+## Verify the Fix
+
+Check the new pod:
+
+```bash
+kubectl get pods -n rubixkube-tutorials
+```
+
+**Success looks like:**
+
+```
+NAME                 READY   STATUS    RESTARTS   AGE
+memory-fixed-demo    1/1     Running   0          45s
+```
+
+**Monitor memory usage:**
+
+```bash
+kubectl top pod memory-fixed-demo -n rubixkube-tutorials
+```
+
+**Expected output:**
+
+```
+NAME                 CPU(cores)   MEMORY(bytes)
+memory-fixed-demo    50m          98Mi
+```
+
+✅ **Memory usage (98Mi) is under the limit (150Mi)** - Problem solved!
+
+---
+
+## RubixKube Confirms Resolution
+
+Back in the **Dashboard:**
+
+**Within 1-2 minutes:**
+- ✅ **Active Insights decreases** (OOMKilled incident marked resolved)
+- ✅ **Activity Feed** shows "Incident resolved" event
+- ✅ **System Health** improves
+- ✅ **Memory Engine** records: "OOMKilled fixed by increasing memory 50Mi → 150Mi"
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/dashboard-02-full-view-no-chat.png"
+    alt="Dashboard after resolution"
+  />
+</Frame>
+
+---
+
+## What the Memory Engine Learned
+
+RubixKube now knows:
+
+**Pattern Recognized:**
+```
+Pod: memory-hog-demo
+Issue: OOMKilled (memory limit too low)
+Attempted allocation: ~100Mi
+Original limit: 50Mi
+Fix applied: Increased to 150Mi
+Result: Successful (pod stable)
+Time to resolution: 3 minutes
+
+Lesson: If pod needs ~100Mi, set limit to 150Mi (50% buffer)
+```
+
+**Next time a similar OOM occurs:**
+- RubixKube will recall this pattern
+- Suggest the proven fix immediately
+- Calculate appropriate memory based on actual usage
+- Recommend buffer (typically 30-50% over observed peak)
+
+---
+
+## Memory Best Practices
+
+<AccordionGroup>
+  <Accordion title="Set Requests = Limits for Critical Pods">
+    **Guaranteed QoS:**
+    
+    ```yaml
+    resources:
+      requests:
+        memory: "1Gi"
+      limits:
+        memory: "1Gi"  # Same value
+    ```
+    
+    **Benefit:** Kubernetes won't evict these pods under memory pressure
+  </Accordion>
+
+  <Accordion title="Use Requests < Limits for Burstable Workloads">
+    **Burstable QoS:**
+    
+    ```yaml
+    resources:
+      requests:
+        memory: "512Mi"  # Baseline
+      limits:
+        memory: "1Gi"    # Peak allowed
+    ```
+    
+    **Benefit:** Efficient resource usage, can handle spikes
+  </Accordion>
+
+  <Accordion title="Monitor Actual Usage Over Time">
+    **Right-sizing:**
+    
+    ```bash
+    # Check current usage
+    kubectl top pods -n production
+    
+    # Set limits to 95th percentile + 30% buffer
+    ```
+    
+    **RubixKube helps:** Memory Engine tracks usage trends over weeks/months
+  </Accordion>
+
+  <Accordion title="Enable Horizontal Pod Autoscaling (HPA)">
+    **Auto-scaling:**
+    
+    ```yaml
+    apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: my-app-hpa
+    spec:
+      scaleTargetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: my-app
+      minReplicas: 2
+      maxReplicas: 10
+      metrics:
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 70
+    ```
+    
+    **Benefit:** Kubernetes scales replicas before OOM occurs
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Cleanup
+
+Remove the demo pods:
+
+```bash
+kubectl delete namespace rubixkube-tutorials
+```
+
+This removes:
+- All demo pods
+- Associated events
+- Namespace resources
+
+**RubixKube retains:**
+- ✅ Incident history in Memory Engine
+- ✅ Learned patterns
+- ✅ RCA reports for future reference
+
+---
+
+## Key Takeaways
+
+<CardGroup cols={2}>
+  <Card title="Fast Detection" icon="bolt">
+    RubixKube detected OOMKilled within 2 minutes - no configuration needed
+  </Card>
+  
+  <Card title="Intelligent Analysis" icon="brain">
+    Correlated OOM event with crash loop - showed ROOT CAUSE
+  </Card>
+  
+  <Card title="Actionable Suggestions" icon="list-check">
+    Specific recommendations: increase memory, check for leaks, verify quotas
+  </Card>
+  
+  <Card title="Learning System" icon="graduation-cap">
+    Memory Engine stored the pattern for faster resolution next time
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card 
+    title="Try CrashLoopBackOff Detection" 
+    icon="rotate"
+    href="/tutorials/rubixkube-in-action"
+  >
+    See how RubixKube handles application crashes
+  </Card>
+  
+  <Card 
+    title="Chat with Your Cluster" 
+    icon="comments"
+    href="/tutorials/talk-to-infra"
+  >
+    Use natural language to query infrastructure
+  </Card>
+  
+  <Card 
+    title="Understand the Memory Engine" 
+    icon="database"
+    href="/concepts/memory-engine"
+  >
+    Learn how RubixKube learns from every incident
+  </Card>
+  
+  <Card 
+    title="Read About the Agent Mesh" 
+    icon="diagram-project"
+    href="/concepts/agent-mesh"
+  >
+    Understand how AI agents collaborate
+  </Card>
+</CardGroup>
+

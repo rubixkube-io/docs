@@ -1,0 +1,354 @@
+---
+title: 'Detecting ImagePullBackOff Errors'
+description: 'Watch RubixKube detect and analyze container image issues in real-time'
+---
+
+# Detecting Container Image Issues
+
+One of the most common Kubernetes failures is **ImagePullBackOff** - when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
+
+<Info>
+**What you'll learn:**
+- How RubixKube detects image pull failures
+- Reading the incident details
+- Understanding AI-generated suggestions
+- Fixing the issue manually
+- Verifying the resolution
+</Info>
+
+---
+
+## The Scenario
+
+We'll intentionally create a pod with an invalid container image to trigger an **ImagePullBackOff** error, then watch RubixKube detect it.
+
+### Create the Failing Pod
+
+Deploy a pod with a non-existent image:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-image-demo
+  namespace: rubixkube-tutorials
+spec:
+  containers:
+  - name: app
+    image: nonexistent-registry.io/invalid-image:v1.0
+    imagePullPolicy: Always
+```
+
+**Apply it:**
+
+```bash
+kubectl create namespace rubixkube-tutorials
+kubectl apply -f broken-image-pod.yaml
+```
+
+---
+
+## Watch Kubernetes Fail
+
+Check the pod status:
+
+```bash
+kubectl get pods -n rubixkube-tutorials
+```
+
+**Expected output:**
+
+```
+NAME                READY   STATUS             RESTARTS   AGE
+broken-image-demo   0/1     ImagePullBackOff   0          2m
+```
+
+**What's happening:**
+1. Kubernetes tries to pull `nonexistent-registry.io/invalid-image:v1.0`
+2. Registry doesn't exist → Pull fails
+3. Kubernetes retries with exponential backoff
+4. Status cycles: **Pending** → **ErrImagePull** → **ImagePullBackOff**
+
+<Accordion title="See the Kubernetes events">
+  ```bash
+  kubectl describe pod broken-image-demo -n rubixkube-tutorials
+  ```
+  
+  **Key events:**
+  ```
+  Warning  Failed     2m (x4 over 3m)  kubelet
+           Failed to pull image "nonexistent-registry.io/invalid-image:v1.0": 
+           failed to resolve reference: failed to do request: 
+           Head "https://nonexistent-registry.io/...": 
+           dial tcp: lookup nonexistent-registry.io: no such host
+  
+  Warning  Failed     2m (x4 over 3m)  kubelet
+           Error: ErrImagePull
+  
+  Warning  Failed     1m (x8 over 3m)  kubelet
+           Error: ImagePullBackOff
+  ```
+</Accordion>
+
+---
+
+## RubixKube Detection (1-2 Minutes)
+
+Now open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
+
+**Within 1-2 minutes, you'll see:**
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/tutorials/tutorial-02-dashboard-with-failures.png"
+    alt="Dashboard showing detected ImagePullBackOff"
+  />
+</Frame>
+
+### What RubixKube Detected
+
+**Activity Feed shows:**
+- 🔴 New incident appeared
+- **Type:** Image pull failure  
+- **Severity:** Medium (not critical, but needs fixing)
+- **Status:** Active
+
+**Active Insights increased** from 0 to 1+ (or higher if multiple issues)
+
+<Tip>
+**Detection is automatic!** You didn't configure any alerts or rules. RubixKube's Observer Agent continuously watches your cluster and reports anomalies.
+</Tip>
+
+---
+
+## Viewing the Incident Details
+
+Click on **Insights** in the navigation to see detailed analysis:
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/tutorials/tutorial-03-insights-with-detections.png"
+    alt="Insights page showing incident analysis"
+  />
+</Frame>
+
+### Incident Information
+
+**You'll see:**
+
+| Field | Value | Meaning |
+|-------|-------|---------|
+| **Type** | ImagePullBackOff | Kubernetes can't pull the image |
+| **Severity** | Medium | Not critical but needs attention |
+| **Affected Resource** | Pod/broken-image-demo | Which pod is impacted |
+| **Namespace** | rubixkube-tutorials | Where the pod lives |
+| **Detected** | 2 minutes ago | When RubixKube first saw it |
+| **Confidence** | 90%+ | How certain RubixKube is about the diagnosis |
+
+### AI-Generated Suggestions
+
+RubixKube provides actionable recommendations:
+
+<AccordionGroup>
+  <Accordion title="✅ Verify the image name and tag">
+    **Why:** Typos in image names are the #1 cause of ImagePullBackOff
+    
+    **Check:**
+    - Is the registry URL correct?
+    - Does the image exist in that registry?
+    - Is the tag valid? (`:latest`, `:v1.0`, etc.)
+  </Accordion>
+
+  <Accordion title="✅ Check registry accessibility">
+    **Why:** Private registries require authentication
+    
+    **Verify:**
+    - Can your cluster reach the registry?
+    - Are imagePullSecrets configured?
+    - Does the service account have access?
+  </Accordion>
+
+  <Accordion title="✅ Review imagePullPolicy">
+    **Why:** Policy affects when Kubernetes pulls images
+    
+    **Options:**
+    - `Always` - Pull on every pod start (good for `:latest`)
+    - `IfNotPresent` - Use cached image if available
+    - `Never` - Only use local images
+  </Accordion>
+
+  <Accordion title="✅ Check for network policies blocking egress">
+    **Why:** Network policies might prevent outbound connections
+    
+    **Test:**
+    ```bash
+    kubectl run test-curl --rm -i --image=curlimages/curl -- \
+      curl -I https://registry-1.docker.io
+    ```
+    
+    If this fails, network policies may be blocking registry access.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Fixing the Issue
+
+For our scenario, the image simply doesn't exist. Let's fix it:
+
+### Option 1: Use a Valid Image
+
+```bash
+kubectl delete pod broken-image-demo -n rubixkube-tutorials
+```
+
+Then deploy with a real image:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fixed-image-demo
+  namespace: rubixkube-tutorials
+spec:
+  containers:
+  - name: app
+    image: nginx:latest  # Valid image
+    imagePullPolicy: IfNotPresent
+```
+
+```bash
+kubectl apply -f fixed-pod.yaml
+```
+
+### Option 2: Fix In-Place (if image was a typo)
+
+```bash
+kubectl edit pod broken-image-demo -n rubixkube-tutorials
+```
+
+Change `image:` to a valid one, save, and Kubernetes will recreate the container.
+
+---
+
+## Verify the Fix
+
+Check the pod status:
+
+```bash
+kubectl get pods -n rubixkube-tutorials
+```
+
+**Success looks like:**
+
+```
+NAME              READY   STATUS    RESTARTS   AGE
+fixed-image-demo   1/1     Running   0          30s
+```
+
+**In RubixKube Dashboard:**
+- ✅ **Active Insights** decreases (issue resolved)
+- ✅ **Activity Feed** shows resolution event
+- ✅ **System Health** improves
+
+<Note>
+**RubixKube tracks resolution!** Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
+</Note>
+
+---
+
+## What RubixKube Learned
+
+After you fix this issue, the **Memory Engine** stores:
+
+<CardGroup cols={2}>
+  <Card title="The Problem" icon="triangle-exclamation">
+    ImagePullBackOff on pod `broken-image-demo` due to non-existent registry
+  </Card>
+  
+  <Card title="The Fix" icon="check">
+    Replaced with valid image `nginx:latest` → Pod started successfully
+  </Card>
+  
+  <Card title="Time to Resolve" icon="clock">
+    Detection: 2 minutes, Manual fix: 30 seconds, Total: 2.5 minutes
+  </Card>
+  
+  <Card title="Pattern Stored" icon="database">
+    If similar error occurs again, RubixKube will recognize the pattern faster
+  </Card>
+</CardGroup>
+
+**This knowledge helps with future incidents!**
+
+---
+
+## Common ImagePullBackOff Causes
+
+Based on RubixKube's Memory Engine and common patterns:
+
+| Cause | Frequency | Fix Time | Prevention |
+|-------|-----------|----------|------------|
+| **Typo in image name** | 40% | 1 min | Automation, validation |
+| **Missing image tag** | 25% | 2 min | Always specify tags |
+| **Private registry auth** | 20% | 5 min | Configure imagePullSecrets |
+| **Network policy blocking** | 10% | 10 min | Allow egress to registries |
+| **Registry rate limiting** | 5% | 15 min | Use image caching |
+
+<Tip>
+**Pro Tip:** Always use specific image tags (`:v1.2.3`) instead of `:latest`. This prevents unexpected changes and makes rollbacks easier.
+</Tip>
+
+---
+
+## Real-World Impact
+
+**Before RubixKube:**
+- Engineer notices pod not starting (manual check)
+- Runs `kubectl describe pod` to find error
+- Googles "ImagePullBackOff kubernetes"
+- Tries various fixes
+- **Time: 10-15 minutes** (if experienced)
+
+**With RubixKube:**
+- Automatic detection within 2 minutes
+- Incident appears in dashboard automatically
+- AI suggests likely causes
+- Relevant documentation linked
+- **Time: 2-3 minutes** (with clear guidance)
+
+**Time saved: 70-80%** even for simple issues!
+
+---
+
+## Next Tutorial
+
+Now that you've seen image pull detection, let's look at a more complex failure:
+
+<Card
+  title="Next: Detecting OOMKilled Pods"
+  icon="memory"
+  href="/tutorials/break-pod-memory-oom"
+  horizontal
+>
+  Learn how RubixKube analyzes memory issues and suggests right-sizing
+</Card>
+
+---
+
+## Summary
+
+You learned:
+
+✅ How to intentionally create an ImagePullBackOff error  
+✅ How RubixKube automatically detects the failure  
+✅ How to read incident details in the Insights page  
+✅ What AI-generated suggestions look like  
+✅ How to fix the issue manually  
+✅ How RubixKube verifies resolution  
+✅ How the Memory Engine learns from incidents  
+
+**Next:** Try detecting memory issues with OOMKilled pods!
+

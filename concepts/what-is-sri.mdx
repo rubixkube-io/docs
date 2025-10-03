@@ -1,0 +1,439 @@
+---
+title: 'What is Site Reliability Intelligence (SRI)?'
+description: 'Understanding the new category RubixKube is defining - where AI meets Site Reliability Engineering'
+---
+
+# What is Site Reliability Intelligence?
+
+**Site Reliability Intelligence (SRI)** is the next evolution of Site Reliability Engineering (SRE). It's an AI-native approach to infrastructure reliability that combines autonomous agents, deep system understanding, and continuous learning to predict, prevent, and safely fix failures before they impact customers.
+
+<Info>
+**In Simple Terms:** If traditional SRE is about having skilled engineers watch and fix your infrastructure, SRI is about having an **AI-powered second brain** that never sleeps, never forgets, and gets smarter with every incident.
+</Info>
+
+---
+
+## The Problem with Traditional SRE
+
+Traditional Site Reliability Engineering faces increasing challenges:
+
+<CardGroup cols=2}>
+  <Card title="Alert Fatigue" icon="bell">
+    SREs drown in thousands of alerts daily. Most are noise, a few are critical - but which ones?
+  </Card>
+  <Card title="Manual Toil" icon="gears">
+    Repetitive troubleshooting and remediation tasks consume 40-60% of SRE time
+  </Card>
+  <Card title="Knowledge Loss" icon="brain">
+    When engineers leave, their tribal knowledge disappears. New incidents repeat old patterns.
+  </Card>
+  <Card title="Scaling Limits" icon="chart-line">
+    You can't hire SREs fast enough to match infrastructure growth. The ratio is broken.
+  </Card>
+</CardGroup>
+
+---
+
+## How SRI Solves This
+
+Site Reliability Intelligence introduces **autonomous, intelligent systems** that work alongside your SRE team:
+
+### The OPEL Loop
+
+RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mimics and augments expert SRE thinking:
+
+<Steps>
+  <Step title="Observe">
+    **Continuous Infrastructure Mapping**
+    
+    - Maps your entire infrastructure (Kubernetes, cloud, code)
+    - Integrates with existing tools (Prometheus, Loki, Grafana)
+    - Understands context, not just metrics
+    - Tracks changes (deploys, configs, scaling events)
+    
+    <Accordion title="What makes observation intelligent?">
+      Unlike traditional monitoring that just collects metrics, SRI **understands relationships**:
+      - "This deployment depends on that database"
+      - "These three services form a checkout flow"
+      - "This spike correlates with that code change"
+      
+      It's observability with comprehension.
+    </Accordion>
+  </Step>
+
+  <Step title="Plan">
+    **AI Agent Mesh Reasoning**
+    
+    - Multiple specialized AI agents analyze the situation
+    - Agents reason over live data AND historical patterns
+    - Propose safe, auditable remediation actions
+    - Calculate blast radius and risk
+    
+    <Accordion title="How does the Agent Mesh plan?">
+      Different agents have different expertise:
+      - **Detective Agent** - Investigates root causes
+      - **Remediation Agent** - Proposes fixes
+      - **Memory Agent** - Recalls similar past incidents
+      - **Guardian Agent** - Assesses safety and risk
+      
+      They collaborate like a distributed SRE team.
+    </Accordion>
+  </Step>
+
+  <Step title="Execute">
+    **Controlled, Safe Remediation**
+    
+    - Execute fixes behind safety guardrails
+    - Approve PRs or apply controlled changes
+    - Policy checks before any action
+    - Rollback capability built-in
+    
+    <Accordion title="What about autonomous mode?">
+      **You control the autonomy level:**
+      - **Observe-only** - Just watch and alert (default)
+      - **Suggest** - Propose fixes, require approval
+      - **Auto-fix (scoped)** - Fix low-risk issues automatically
+      - **Full autonomy** - Handle incidents end-to-end (with guardrails)
+      
+      Start conservative, increase trust gradually.
+    </Accordion>
+  </Step>
+
+  <Step title="Learn">
+    **Evolving Intelligence**
+    
+    - Every incident updates the Memory Engine
+    - RCAs become institutional knowledge
+    - Playbooks refine automatically
+    - Pattern recognition improves over time
+    
+    <Accordion title="How does learning work?">
+      The Memory Engine stores:
+      - **What happened** - Full incident timeline
+      - **Why it happened** - Root cause analysis
+      - **How it was fixed** - Remediation steps
+      - **What we learned** - Patterns and insights
+      
+      Future incidents check this knowledge first.
+    </Accordion>
+  </Step>
+</Steps>
+
+---
+
+## SRI vs Traditional SRE
+
+| Aspect | Traditional SRE | Site Reliability Intelligence |
+|--------|----------------|-------------------------------|
+| **Incident Detection** | Manual monitoring, alert rules | AI-powered anomaly detection with context |
+| **Root Cause Analysis** | Manual investigation (hours) | Automated RCA with evidence (minutes) |
+| **Remediation** | Manual fixes, runbooks | AI-proposed fixes with guardrails |
+| **Knowledge Retention** | Tribal knowledge, wikis | Automated memory graph, always accessible |
+| **Scaling** | Hire more SREs | AI scales infinitely |
+| **Learning** | Humans document lessons | System learns automatically |
+| **Availability** | Business hours, on-call rotation | 24/7/365, no breaks |
+| **Speed** | Minutes to hours | Seconds to minutes |
+
+<Note>
+**SRI doesn't replace SREs** - it amplifies them. Your engineers focus on high-value work while SRI handles repetitive toil.
+</Note>
+
+---
+
+## Real-World Benefits
+
+### Time Savings
+
+<CardGroup cols={2}>
+  <Card title="MTTR Reduction" icon="clock">
+    **Before:** 45 minutes average time to recovery  
+    **With SRI:** 8 minutes average time to recovery  
+    **Savings:** 82% faster incident resolution
+  </Card>
+  <Card title="Toil Elimination" icon="robot">
+    **Before:** 40% of SRE time on repetitive tasks  
+    **With SRI:** 10% of time on toil  
+    **Result:** 30% more time for strategic work
+  </Card>
+</CardGroup>
+
+### Business Impact
+
+<AccordionGroup>
+  <Accordion title="Revenue Protection" icon="dollar-sign">
+    **Downtime = Lost Revenue**
+    
+    For a service generating $1M/hour:
+    - 1 hour outage = $1M lost
+    - SRI catches issues in minutes, not hours
+    - Average savings: $800K per prevented major incident
+  </Accordion>
+
+  <Accordion title="Customer Trust" icon="heart">
+    **Reliability = Retention**
+    
+    - 40% of users abandon apps after one crash
+    - SRI prevents customer-visible failures
+    - Maintains SLOs consistently (99.9%+ uptime)
+  </Accordion>
+
+  <Accordion title="Team Productivity" icon="users">
+    **Happy SREs = Better Results**
+    
+    - Reduced on-call burden (50% fewer pages)
+    - Less burnout, higher retention
+    - Teams ship features faster with confidence
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Who Needs SRI?
+
+Site Reliability Intelligence is essential for:
+
+<CardGroup cols={3}>
+  <Card title="E-commerce Platforms" icon="shopping-cart">
+    Downtime directly impacts revenue. Every minute counts during peak sales.
+  </Card>
+  <Card title="Financial Services" icon="building-columns">
+    Compliance requirements + zero downtime tolerance. SRI provides audit trails.
+  </Card>
+  <Card title="SaaS Companies" icon="cloud">
+    Customer retention depends on reliability. SRI maintains SLOs at scale.
+  </Card>
+  <Card title="Healthcare Tech" icon="heart-pulse">
+    Lives depend on uptime. SRI ensures critical systems stay available.
+  </Card>
+  <Card title="Gaming Platforms" icon="gamepad">
+    User experience degrades instantly. SRI prevents lag and crashes.
+  </Card>
+  <Card title="IoT & Edge" icon="microchip">
+    Distributed infrastructure at massive scale. SRI manages complexity.
+  </Card>
+</CardGroup>
+
+---
+
+## Core Principles of SRI
+
+### 1. Proactive, Not Reactive
+
+Traditional SRE **reacts** to incidents.  
+SRI **predicts and prevents** them.
+
+- Detect risky deployments before they cause outages
+- Identify configuration drift early
+- Spot resource exhaustion trends
+- Flag anomalous patterns before they cascade
+
+### 2. Evidence-Based Decisions
+
+Every action is backed by:
+- ✅ **Logs** - What the system said
+- ✅ **Metrics** - What the numbers show
+- ✅ **Traces** - How requests flowed
+- ✅ **Events** - What changed and when
+- ✅ **History** - Similar incidents in the past
+
+No guesswork. No hunches. Just evidence.
+
+### 3. Safe Autonomy
+
+Autonomous doesn't mean reckless:
+
+<CardGroup cols={2}>
+  <Card title="Blast Radius Limits" icon="circle-radiation">
+    Actions are scoped - never cluster-wide unless approved
+  </Card>
+  <Card title="Human-in-the-Loop" icon="hand">
+    High-risk actions require explicit approval
+  </Card>
+  <Card title="Dry-Run First" icon="play">
+    Simulate changes before applying them
+  </Card>
+  <Card title="Instant Rollback" icon="rotate-left">
+    Every change is reversible
+  </Card>
+</CardGroup>
+
+### 4. Continuous Learning
+
+The system gets smarter every day:
+
+```
+Incident Happens → RCA Generated → Fix Applied → 
+Memory Updated → Future Incidents Faster → Patterns Recognized → 
+Prevention Improves → Fewer Incidents Over Time
+```
+
+This is the virtuous cycle of SRI.
+
+---
+
+## How RubixKube Implements SRI
+
+RubixKube is the **first production implementation** of Site Reliability Intelligence:
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/dashboard-02-full-view-no-chat.png"
+    alt="RubixKube Dashboard showing SRI in action"
+  />
+</Frame>
+
+### Architecture Components
+
+<CardGroup cols={2}>
+  <Card title="Agent Mesh" icon="diagram-project" href="/concepts/agent-mesh">
+    Distributed AI agents that specialize and collaborate
+  </Card>
+  <Card title="Memory Engine" icon="database" href="/concepts/memory-engine">
+    Knowledge graph that learns from every incident
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/concepts/guardrails">
+    Safety mechanisms for autonomous operations
+  </Card>
+  <Card title="Observer Network" icon="eye">
+    Deep infrastructure monitoring across all layers
+  </Card>
+</CardGroup>
+
+---
+
+## SRI in Action: A Real Scenario
+
+**Before SRI (Traditional):**
+
+1. ⏰ **12:03 AM** - PagerDuty alert: "Checkout service down"
+2. 😴 **12:05 AM** - On-call engineer wakes up, logs in
+3. 🔍 **12:10 AM** - Starts investigation (logs, metrics, traces)
+4. 🤔 **12:25 AM** - Identifies issue: OOMKilled pod
+5. 🛠️ **12:35 AM** - Increases memory limits, redeploys
+6. ✅ **12:45 AM** - Service recovered
+7. 📝 **Next day** - Writes postmortem (if there's time)
+
+**Total downtime: 42 minutes**  
+**Revenue lost: $70,000** (for $100K/hour service)  
+**Engineer sleep lost: Entire night**
+
+---
+
+**With SRI (RubixKube):**
+
+1. 🤖 **12:03 AM** - RubixKube detects anomaly (pod OOMKilled)
+2. 🧠 **12:03:10 AM** - RCA Pipeline identifies root cause instantly
+3. 💡 **12:03:15 AM** - Proposes fix: increase memory 512Mi → 1Gi
+4. ⚡ **12:03:20 AM** - Auto-applies fix (within guardrails)
+5. ✅ **12:04 AM** - Service recovered, customers unaffected
+6. 📊 **12:04 AM** - RCA report generated automatically
+7. 🧠 **12:04 AM** - Pattern stored in Memory Engine
+8. 😴 **Engineer** - Sleeps soundly, reviews RCA in morning
+
+**Total downtime: 1 minute**  
+**Revenue saved: $68,000+**  
+**Engineer sleep: Uninterrupted**  
+**Future similar incidents: Prevented entirely**
+
+---
+
+## Getting Started with SRI
+
+Ready to implement Site Reliability Intelligence in your stack?
+
+<CardGroup cols={2}>
+  <Card 
+    title="Try RubixKube Free" 
+    icon="rocket"
+    href="/getting-started/sign-up"
+  >
+    Sign up and install on your test cluster in minutes
+  </Card>
+  
+  <Card 
+    title="Learn the Agent Mesh" 
+    icon="diagram-project"
+    href="/concepts/agent-mesh"
+  >
+    Understand how AI agents collaborate to solve problems
+  </Card>
+  
+  <Card 
+    title="Explore Memory Engine" 
+    icon="brain"
+    href="/concepts/memory-engine"
+  >
+    See how RubixKube learns from every incident
+  </Card>
+  
+  <Card 
+    title="Understand Guardrails" 
+    icon="shield"
+    href="/concepts/guardrails"
+  >
+    Learn about safety mechanisms for autonomous operations
+  </Card>
+</CardGroup>
+
+---
+
+## Key Takeaways
+
+<AccordionGroup>
+  <Accordion title="SRI is SRE + AI" icon="robot">
+    Site Reliability Intelligence augments traditional SRE practices with AI agents that can observe, reason, act, and learn autonomously.
+  </Accordion>
+
+  <Accordion title="OPEL Loop is the Engine" icon="rotate">
+    **Observe → Plan → Execute → Learn** creates a virtuous cycle where the system gets better over time.
+  </Accordion>
+
+  <Accordion title="Safety First, Always" icon="shield-halved">
+    Autonomous doesn't mean uncontrolled. Guardrails, approvals, and blast radius limits ensure safe operations.
+  </Accordion>
+
+  <Accordion title="Evidence Over Guesswork" icon="magnifying-glass-chart">
+    Every decision is backed by logs, metrics, traces, and historical patterns - never speculation.
+  </Accordion>
+
+  <Accordion title="Learning Never Stops" icon="graduation-cap">
+    The Memory Engine ensures institutional knowledge grows continuously, even as team members change.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Further Reading
+
+<Card
+  title="Read: The Age of Site Reliability Intelligence"
+  icon="newspaper"
+  href="https://rubixkube.ai/blog/the-age-of-site-reliability-intelligence-sri"
+  horizontal
+>
+  Deep dive into why SRI is the future of infrastructure reliability
+</Card>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Install RubixKube"
+    icon="download"
+    href="/getting-started/installation-kind"
+  >
+    Get started with a local KIND cluster
+  </Card>
+  
+  <Card
+    title="See It in Action"
+    icon="play"
+    href="/tutorials/first-steps"
+  >
+    Watch SRI detect and fix issues in real-time
+  </Card>
+</CardGroup>
+

@@ -1,0 +1,433 @@
+---
+title: 'Agent Mesh Architecture'
+description: 'How specialized AI agents collaborate to investigate, remediate, and protect your infrastructure'
+---
+
+# Agent Mesh: Distributed Intelligence for Reliability
+
+The **Agent Mesh** is RubixKube's core architectural pattern - a network of specialized AI agents that work together like a distributed SRE team, each bringing unique expertise to infrastructure reliability.
+
+<Info>
+**Think of it like this:** Instead of one overworked engineer handling everything, you have a team of specialists - one investigates issues, one proposes fixes, one ensures safety, and one remembers everything. They never sleep, never forget, and always collaborate perfectly.
+</Info>
+
+---
+
+## Why a Mesh of Agents?
+
+### The Problem with Monolithic AI
+
+A single "do-everything" AI faces fundamental limitations:
+
+- ❌ **Jack of all trades, master of none** - Can't specialize deeply
+- ❌ **Single point of failure** - If it fails, everything stops
+- ❌ **Slow decision-making** - Must consider everything at once
+- ❌ **Hard to trust** - Black box with unclear reasoning
+
+### The Agent Mesh Solution
+
+Multiple specialized agents working together:
+
+- ✅ **Deep expertise** - Each agent masters one domain
+- ✅ **Distributed resilience** - System continues if one agent fails
+- ✅ **Parallel processing** - Agents work simultaneously
+- ✅ **Transparent reasoning** - See which agent did what and why
+
+---
+
+## Core Agents in the Mesh
+
+RubixKube's Agent Mesh includes several specialized agents:
+
+<CardGroup cols={2}>
+  <Card title="RCA Pipeline Agent" icon="magnifying-glass">
+    **Role:** Root Cause Analysis
+    
+    - Investigates incidents systematically
+    - Builds dependency graphs
+    - Correlates logs, metrics, and events
+    - Generates evidence-linked RCA reports
+  </Card>
+  
+  <Card title="Observer Agent" icon="eye">
+    **Role:** Infrastructure Monitoring
+    
+    - Watches cluster resources continuously
+    - Collects metrics and events
+    - Detects anomalies and deviations
+    - Reports to other agents
+  </Card>
+  
+  <Card title="SRI Agent" icon="comments">
+    **Role:** Conversational Interface
+    
+    - Provides natural language interaction
+    - Translates questions into actions
+    - Explains system state in plain English
+    - Guides troubleshooting workflows
+  </Card>
+  
+  <Card title="Remediation Agent" icon="wand-magic-sparkles">
+    **Role:** Fix Proposals & Execution
+    
+    - Proposes safe remediation actions
+    - Calculates risk and blast radius
+    - Applies fixes (with approval)
+    - Verifies remediation success
+  </Card>
+  
+  <Card title="Memory Agent" icon="database">
+    **Role:** Knowledge Management
+    
+    - Stores incident history
+    - Recalls similar past events
+    - Suggests fixes from memory
+    - Updates knowledge graph
+  </Card>
+  
+  <Card title="Guardian Agent" icon="shield">
+    **Role:** Safety & Policy Enforcement
+    
+    - Enforces guardrails
+    - Assesses action risk
+    - Requires approvals when needed
+    - Prevents dangerous operations
+  </Card>
+</CardGroup>
+
+---
+
+## How Agents Collaborate
+
+### Example: Pod Crashes with OOMKilled
+
+Here's how the Agent Mesh handles a memory overflow incident:
+
+<Steps>
+  <Step title="Detection (Observer Agent)">
+    ```
+    Observer Agent: "Pod 'checkout-service-7f9d' crashed at 14:23:15"
+    Status: OOMKilled
+    Namespace: production
+    → Alert sent to RCA Pipeline Agent
+    ```
+  </Step>
+
+  <Step title="Investigation (RCA Pipeline Agent)">
+    ```
+    RCA Pipeline Agent: "Analyzing incident..."
+    
+    Evidence gathered:
+    - Container memory limit: 512Mi
+    - Actual memory used at crash: 487Mi (95%)
+    - Memory usage growing 50Mi/hour
+    - Recent code deploy 2 hours ago increased payload size
+    
+    Root Cause: Memory leak in v2.3.1 + undersized container
+    Confidence: 94%
+    
+    → Forward to Remediation Agent
+    ```
+  </Step>
+
+  <Step title="Memory Recall (Memory Agent)">
+    ```
+    Memory Agent: "Checking similar incidents..."
+    
+    Found: 3 similar OOMKilled events in last 30 days
+    Previous fix: Increased memory 512Mi → 1Gi
+    Success rate: 100% (3/3 incidents resolved)
+    
+    → Suggest proven fix to Remediation Agent
+    ```
+  </Step>
+
+  <Step title="Fix Proposal (Remediation Agent)">
+    ```
+    Remediation Agent: "Proposing remediation..."
+    
+    Action: Update deployment 'checkout-service'
+    Change: memory.limits: 512Mi → 1Gi
+    Blast Radius: Single deployment (low risk)
+    Expected Impact: Pod restart (~10s downtime)
+    Rollback Plan: Revert to previous deployment manifest
+    
+    → Submit to Guardian Agent for approval
+    ```
+  </Step>
+
+  <Step title="Safety Check (Guardian Agent)">
+    ```
+    Guardian Agent: "Evaluating safety..."
+    
+    Risk Assessment:
+    - Scope: Single deployment ✓
+    - Change type: Resource adjustment (low risk) ✓
+    - Rollback available: Yes ✓
+    - Production impact: Minimal ✓
+    - Policy compliance: Within limits ✓
+    
+    Decision: APPROVED (auto-fix authorized)
+    
+    → Execute
+    ```
+  </Step>
+
+  <Step title="Execution & Learning">
+    ```
+    Remediation Agent: Applying fix...
+    ✓ Deployment updated
+    ✓ Pod restarted
+    ✓ Memory usage stabilized at 680Mi
+    ✓ Service healthy
+    
+    Memory Agent: Storing learning...
+    ✓ Pattern recorded
+    ✓ Fix validated
+    ✓ Knowledge graph updated
+    
+    Total resolution time: 42 seconds
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+**This entire process happened automatically** while your SRE team slept. They wake up to a complete RCA report and a fixed system.
+</Tip>
+
+---
+
+## Agent Communication Protocols
+
+### How Agents Talk to Each Other
+
+Agents communicate through:
+
+1. **Event Bus** - Asynchronous message passing
+2. **Shared Context** - Common understanding of cluster state
+3. **Priority Queuing** - Critical incidents get immediate attention
+4. **Feedback Loops** - Agents learn from each other's successes
+
+```yaml
+# Example Agent Communication Flow
+
+Observer → Detection Event → {
+  "type": "pod_crash",
+  "severity": "high",
+  "pod": "checkout-7f9d",
+  "reason": "OOMKilled",
+  "timestamp": "2025-10-03T14:23:15Z"
+}
+
+RCA Pipeline → Investigation Result → {
+  "root_cause": "memory_leak + undersized_container",
+  "evidence": ["logs", "metrics", "deployment_diff"],
+  "confidence": 0.94
+}
+
+Memory Agent → Historical Context → {
+  "similar_incidents": 3,
+  "proven_fix": "increase_memory_512_to_1024",
+  "success_rate": 1.0
+}
+
+Remediation → Fix Proposal → {
+  "action": "update_deployment",
+  "changes": {"memory.limits": "1Gi"},
+  "risk": "low",
+  "blast_radius": "single_deployment"
+}
+
+Guardian → Safety Decision → {
+  "approved": true,
+  "reason": "within_policy_limits"
+}
+```
+
+---
+
+## Agent Mesh vs Traditional Approaches
+
+| Feature | Traditional Monitoring | Single AI Bot | Agent Mesh (SRI) |
+|---------|----------------------|---------------|------------------|
+| **Specialization** | Tools per domain | One system does all | Agents per expertise |
+| **Reasoning** | Rule-based | Generic AI | Domain-specific intelligence |
+| **Collaboration** | Manual integration | N/A | Native mesh communication |
+| **Fault Tolerance** | Tool outages break flow | Single point of failure | Distributed resilience |
+| **Scalability** | Add more tools | Scale up one system | Add more agents |
+| **Transparency** | Logs everywhere | Black box | Agent-level audit trails |
+| **Learning** | Humans update rules | Model retraining | Continuous agent learning |
+
+---
+
+## Agent States and Health
+
+### Monitoring Your Agents
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/agents-01-list-view.png"
+    alt="RubixKube Agents dashboard showing active agents"
+  />
+</Frame>
+
+Each agent reports:
+- **Status** - Active, idle, or error
+- **Last Activity** - When it last performed work
+- **Capabilities** - What it can do
+- **Type** - System agent vs custom agent
+
+### Agent Health Indicators
+
+<AccordionGroup>
+  <Accordion title="✅ Healthy Agent">
+    - Status: **Active**
+    - Last seen: **Just now** (within 60 seconds)
+    - Response time: < 2 seconds
+    - Error rate: < 1%
+  </Accordion>
+
+  <Accordion title="⚠️ Degraded Agent">
+    - Status: **Slow response**
+    - Last seen: 1-5 minutes ago
+    - Response time: 2-10 seconds
+    - Error rate: 1-5%
+    
+    **Action:** Monitor, may self-recover
+  </Accordion>
+
+  <Accordion title="❌ Failed Agent">
+    - Status: **Error** or **Offline**
+    - Last seen: >5 minutes ago
+    - No responses
+    - Error rate: >5%
+    
+    **Action:** Alert sent, manual intervention may be needed
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Extensibility: Custom Agents
+
+### Adding Your Own Agents
+
+The Agent Mesh is extensible - you can add custom agents for your specific needs:
+
+**Example Use Cases:**
+- **Compliance Agent** - Ensures changes meet regulatory requirements
+- **Cost Agent** - Optimizes resource usage for budget targets
+- **Security Agent** - Scans for vulnerabilities and misconfigurations
+- **Performance Agent** - Optimizes application response times
+
+**Coming in Future Releases:** Full SDK for custom agent development
+
+---
+
+## Agent Mesh Benefits
+
+<CardGroup cols={2}>
+  <Card title="Speed" icon="bolt">
+    **Parallel Processing**
+    
+    Multiple agents work simultaneously, not sequentially. Investigation, planning, and safety checks happen in parallel.
+  </Card>
+  
+  <Card title="Accuracy" icon="bullseye">
+    **Specialized Knowledge**
+    
+    Each agent is expert in its domain, leading to better decisions than generalist systems.
+  </Card>
+  
+  <Card title="Resilience" icon="shield">
+    **No Single Point of Failure**
+    
+    If one agent fails, others continue working. System degradation is gradual, not catastrophic.
+  </Card>
+  
+  <Card title="Evolution" icon="seedling">
+    **Independent Improvement**
+    
+    Each agent can be upgraded independently without affecting the mesh.
+  </Card>
+</CardGroup>
+
+---
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="How many agents run in my cluster?">
+    **In your cluster:** Just the **Observer Agent** runs (lightweight, ~100MB RAM).
+    
+    **In RubixKube Cloud:** All other agents (RCA, Remediation, Memory, Guardian) run centrally - no additional load on your infrastructure.
+    
+    This hybrid architecture gives you powerful AI without cluster overhead.
+  </Accordion>
+
+  <Accordion title="Can agents act without permission?">
+    **By default: NO.**
+    
+    Agents operate in **observe-only mode** initially. They will:
+    - ✅ Detect issues
+    - ✅ Investigate root causes
+    - ✅ Propose fixes
+    - ❌ **NOT** apply changes without approval
+    
+    You enable auto-remediation gradually as trust builds.
+  </Accordion>
+
+  <Accordion title="What if an agent makes a mistake?">
+    **Multiple safety layers:**
+    
+    1. **Guardian Agent** - Reviews all actions before execution
+    2. **Blast Radius Limits** - Actions are scoped, never cluster-wide
+    3. **Dry-Run Mode** - Test changes before applying
+    4. **Instant Rollback** - Every change is reversible
+    5. **Audit Logs** - Complete trail of who did what
+    
+    Plus: All high-risk actions require human approval.
+  </Accordion>
+
+  <Accordion title="How do I see what agents are doing?">
+    Three ways:
+    
+    1. **Agents Page** - Real-time status of all agents
+    2. **Activity Feed** - Stream of agent actions and decisions
+    3. **RCA Reports** - Detailed explanation of agent reasoning
+    
+    Full transparency into the mesh.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Related Concepts
+
+<CardGroup cols={3}>
+  <Card 
+    title="What is SRI?" 
+    icon="brain"
+    href="/concepts/what-is-sri"
+  >
+    Learn about Site Reliability Intelligence
+  </Card>
+  
+  <Card 
+    title="Memory Engine" 
+    icon="database"
+    href="/concepts/memory-engine"
+  >
+    How agents learn and remember
+  </Card>
+  
+  <Card 
+    title="Guardrails" 
+    icon="shield-halved"
+    href="/concepts/guardrails"
+  >
+    Safety mechanisms for autonomous ops
+  </Card>
+</CardGroup>
+

@@ -1,0 +1,665 @@
+---
+title: 'Chat with Your Infrastructure'
+description: 'Learn to use natural language to query, troubleshoot, and understand your Kubernetes cluster'
+---
+
+# Talk to Your Infrastructure
+
+The **Chat interface** lets you interact with your infrastructure using natural language - no kubectl commands needed. Ask questions like you would to a colleague, and the SRI Agent responds with actual data from your cluster.
+
+<Info>
+**What makes it special:** The SRI Agent understands context, remembers your conversation, and can execute queries across your entire infrastructure.
+</Info>
+
+---
+
+## Accessing the Chat
+
+Click **Chat** in the navigation or press `⌘K` and type "chat".
+
+<Frame>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/dashboard/chat-01-main-interface.png"
+    alt="RubixKube Chat interface"
+  />
+</Frame>
+
+**What you'll see:**
+- 💬 **Message box** - Type your questions here
+- 🤖 **SRI Agent** - Your AI infrastructure assistant
+- 📎 **Attachment button** - Upload YAML files for analysis
+- 🚀 **Quick actions** - Pre-built query categories
+
+---
+
+## Quick Action Categories
+
+The Chat offers 5 pre-built categories to get you started:
+
+<CardGroup cols={2}>
+  <Card title="Infrastructure" icon="server">
+    **What it does:** Manage clusters, nodes, resources
+    
+    **Example queries:**
+    - "List all pods in production namespace"
+    - "Show me node resource usage"
+    - "What deployments are running?"
+  </Card>
+  
+  <Card title="Security" icon="shield">
+    **What it does:** Security analysis and compliance
+    
+    **Example queries:**
+    - "Are there any pods running as root?"
+    - "Check for exposed secrets"
+    - "Audit RBAC permissions"
+  </Card>
+  
+  <Card title="Monitoring" icon="chart-line">
+    **What it does:** Performance metrics and alerts
+    
+    **Example queries:**
+    - "What's the CPU usage across all pods?"
+    - "Show me memory trends"
+    - "Any pods restarting frequently?"
+  </Card>
+  
+  <Card title="Troubleshoot" icon="wrench">
+    **What it does:** Debug issues and analyze logs
+    
+    **Example queries:**
+    - "Why is my checkout service slow?"
+    - "Show me failing pods"
+    - "What errors occurred in the last hour?"
+    - "Diagnose pod crash-loop-demo"
+  </Card>
+  
+  <Card title="Networking" icon="network-wired">
+    **What it does:** Network policies and connectivity
+    
+    **Example queries:**
+    - "What services are exposed?"
+    - "Check ingress configurations"
+    - "Are there any network policy blocks?"
+  </Card>
+</CardGroup>
+
+---
+
+## Example Queries
+
+### Basic Infrastructure Queries
+
+<Tabs>
+  <Tab title="Pod Status">
+    **Query:**
+    ```
+    "What pods are running in my cluster?"
+    ```
+    
+    **Response:**
+    ```
+    I found 12 pods across 7 namespaces:
+    
+    ✅ Healthy (9):
+    - kube-system: 4 pods
+    - default: 3 pods
+    - rubixkube: 2 pods
+    
+    ❌ Unhealthy (3):
+    - rubixkube-tutorials: 3 pods (all failing)
+      • broken-image-demo: ImagePullBackOff
+      • memory-hog-demo: OOMKilled
+      • crash-loop-demo: CrashLoopBackOff
+    
+    Would you like details on any specific pod?
+    ```
+  </Tab>
+
+  <Tab title="Failures">
+    **Query:**
+    ```
+    "Show me any failing pods"
+    ```
+    
+    **Response:**
+    ```
+    Found 3 failing pods in namespace rubixkube-tutorials:
+    
+    1. broken-image-demo
+       Status: ImagePullBackOff
+       Issue: Image "nonexistent-registry.io/invalid-image:v1.0" not found
+       Age: 5 minutes
+       Restarts: 0
+       
+    2. memory-hog-demo
+       Status: OOMKilled → CrashLoopBackOff
+       Issue: Container exceeded 50Mi memory limit
+       Age: 3 minutes
+       Restarts: 5
+       
+    3. crash-loop-demo
+       Status: CrashLoopBackOff
+       Issue: Container exits with code 1
+       Age: 3 minutes
+       Restarts: 4
+    
+    I can help debug any of these. Which would you like to investigate?
+    ```
+  </Tab>
+
+  <Tab title="Memory Usage">
+    **Query:**
+    ```
+    "What's the memory usage across all pods?"
+    ```
+    
+    **Response:**
+    ```
+    Memory usage summary across 12 pods:
+    
+    High usage (>80%):
+    - None currently
+    
+    Moderate usage (50-80%):
+    - memory-hog-demo: 98Mi / 50Mi (196% - OOMKilled!)
+    
+    Normal usage (<50%):
+    - All other pods within limits
+    
+    ⚠️ Alert: memory-hog-demo is over limit and being killed repeatedly.
+    Suggestion: Increase memory limit to at least 150Mi.
+    ```
+  </Tab>
+
+  <Tab title="Recent Events">
+    **Query:**
+    ```
+    "What happened in the last hour?"
+    ```
+    
+    **Response:**
+    ```
+    Events in the last 60 minutes:
+    
+    01:58 AM - 3 new pod failures detected:
+    - broken-image-demo: ImagePullBackOff
+    - memory-hog-demo: OOMKilled (HIGH severity)
+    - crash-loop-demo: CrashLoopBackOff
+    
+    01:55 AM - Observer agent connected successfully
+    
+    01:50 AM - Cluster sync completed
+    - Discovered 6 namespaces, 1 node, 11 pods
+    
+    All RCA Pipeline Agent analyses completed within 90 seconds.
+    Memory Engine stored 3 new incident patterns.
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Advanced Queries
+
+### Troubleshooting Specific Issues
+
+**Query:**
+```
+"Why is memory-hog-demo failing?"
+```
+
+**Detailed Response:**
+```
+Analysis of memory-hog-demo:
+
+ROOT CAUSE: Out of Memory (OOMKilled)
+
+Evidence:
+- Memory limit: 50Mi
+- Container attempted to allocate: ~100Mi
+- Kubernetes killed container at 50Mi usage
+- Pod has restarted 5 times in 3 minutes
+
+Timeline:
+01:58:00 - Pod started
+01:58:05 - Memory usage reached 50Mi
+01:58:05 - OOMKilled by kernel
+01:58:10 - Kubernetes restarted container
+01:58:15 - Memory usage reached 50Mi again
+01:58:15 - OOMKilled again
+[Pattern continues...]
+
+Recommendation:
+1. Increase memory limit to 150Mi (50% buffer)
+2. Monitor actual usage with: kubectl top pod memory-hog-demo
+3. Consider HPA if load varies
+4. Check for memory leaks in application code
+
+Would you like me to help you fix this?
+```
+
+---
+
+## Conversation Context
+
+The SRI Agent **remembers your conversation:**
+
+**Example flow:**
+
+```
+You: "What pods are failing?"
+Agent: "Found 3 failing pods: broken-image-demo, memory-hog-demo, crash-loop-demo"
+
+You: "Tell me more about the memory one"
+Agent: [Provides detailed OOMKilled analysis]
+
+You: "How do I fix it?"
+Agent: "I recommend increasing memory limit to 150Mi. Here's the kubectl command..."
+
+You: "What if that doesn't work?"
+Agent: "Monitor for memory leaks. If usage keeps growing, check application code..."
+```
+
+**No need to repeat context** - the agent tracks the conversation.
+
+---
+
+## Query Best Practices
+
+<AccordionGroup>
+  <Accordion title="Be Specific About Scope">
+    **Good:**
+    - "Show me pods in production namespace"
+    - "What's failing in my cluster?"
+    - "Memory usage for payment-service deployment"
+    
+    **Too Vague:**
+    - "Everything"
+    - "Problems"
+    - "Fix it"
+  </Accordion>
+
+  <Accordion title="Use Natural Language">
+    **You can say:**
+    - "Which pods are unhealthy?"
+    - "Show me pods that aren't working"
+    - "What's broken right now?"
+    
+    **All mean the same thing** - SRI Agent understands intent
+  </Accordion>
+
+  <Accordion title="Ask Follow-Up Questions">
+    **Build on previous queries:**
+    - "Tell me more about that"
+    - "Why is that happening?"
+    - "How do I fix it?"
+    - "What should I do next?"
+    
+    Agent maintains context throughout the conversation
+  </Accordion>
+
+  <Accordion title="Request Specific Data">
+    **Ask for what you need:**
+    - "Show me logs for pod X"
+    - "What's the YAML for deployment Y?"
+    - "Give me the events for namespace Z"
+    - "CPU usage for all pods"
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## File Upload Feature
+
+Click the **📎 attachment button** to upload YAML files:
+
+**Use cases:**
+- **Validate manifests** before deploying
+- **Analyze configuration** for issues
+- **Get deployment suggestions**
+- **Check security best practices**
+
+**Example:**
+```
+[Upload deployment.yaml]
+
+Agent: "Analyzed your deployment manifest:
+
+✅ Valid YAML syntax
+✅ Resource limits defined
+⚠️ Warning: No liveness probe configured
+⚠️ Warning: Running as root user
+❌ Error: Image pull secret missing for private registry
+
+Recommendations:
+1. Add livenessProbe for health checks
+2. Set securityContext.runAsNonRoot: true
+3. Create imagePullSecret for registry access
+
+Would you like me to generate a fixed version?"
+```
+
+---
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Enter` | Send message |
+| `Shift + Enter` | New line in message |
+| `⌘K` | Open search (from anywhere) |
+| `Esc` | Close chat panel |
+
+---
+
+## Current Limitations (Beta)
+
+<Note>
+**What Chat CAN do (Beta):**
+- ✅ Query cluster state (pods, deployments, services)
+- ✅ Show failures and events
+- ✅ Provide troubleshooting suggestions
+- ✅ Explain RCA reports
+- ✅ Answer "what/why/when" questions
+
+**What's Coming (Q1 2026):**
+- 🔜 Execute kubectl commands via chat
+- 🔜 Apply fixes automatically (with approval)
+- 🔜 Create deployments from descriptions
+- 🔜 Generate runbooks and documentation
+</Note>
+
+---
+
+## Example Workflows
+
+### Workflow 1: Daily Health Check
+
+```
+Morning standup queries:
+
+"Good morning! What's the cluster health?"
+→ Overview of pods, nodes, recent incidents
+
+"Any issues overnight?"
+→ Activity from last 8 hours
+
+"Show me resource usage trends"
+→ CPU/memory over time
+
+"All clear?"
+→ Confirmation or list of action items
+```
+
+### Workflow 2: Incident Investigation
+
+```
+Alert received - investigating:
+
+"What just failed?"
+→ List of recent failures
+
+"Why did payment-service crash?"
+→ RCA with root cause
+
+"Show me the logs"
+→ Relevant log excerpts
+
+"Has this happened before?"
+→ Memory Engine recall of similar incidents
+
+"How was it fixed last time?"
+→ Historical resolution steps
+```
+
+### Workflow 3: Deployment Validation
+
+```
+Before deploying new version:
+
+"What's the current state of checkout-service?"
+→ Current pods, replicas, resource usage
+
+"Any recent issues with checkout-service?"
+→ Incident history check
+
+[Upload new-deployment.yaml]
+"Validate this deployment"
+→ Manifest analysis and suggestions
+
+"What's the risk of deploying this?"
+→ Change impact assessment
+
+"Okay, I'm deploying. Monitor it"
+→ Agent watches for issues post-deploy
+```
+
+---
+
+## Tips for Effective Chat Usage
+
+<CardGroup cols={2}>
+  <Card title="Start Broad, Then Narrow" icon="funnel">
+    1. "What's failing?"
+    2. "Tell me about memory-hog-demo"
+    3. "Show me the exact memory usage"
+    4. "How do I increase the limit?"
+  </Card>
+  
+  <Card title="Use for Learning" icon="graduation-cap">
+    Ask "why" and "how" questions:
+    - "Why did this pod fail?"
+    - "How does HPA work?"
+    - "What's a good memory limit?"
+  </Card>
+  
+  <Card title="Combine with Dashboard" icon="table-columns">
+    - See insight in dashboard
+    - Click "Provide to Chat Context"
+    - Ask follow-up questions in Chat
+  </Card>
+  
+  <Card title="Export Conversations" icon="download">
+    - Chat history persists
+    - Reference past conversations
+    - Share with team members
+  </Card>
+</CardGroup>
+
+---
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Can the SRI Agent execute commands?">
+    **Currently (Beta):** No, the agent provides information and suggestions only.
+    
+    **Coming (Production):** Yes, with your approval, the agent will be able to execute kubectl commands, apply fixes, and make changes.
+  </Accordion>
+
+  <Accordion title="How does the agent know about my cluster?">
+    **The Observer Agent** continuously monitors your cluster and reports to the SRI Agent.
+    
+    The SRI Agent has access to:
+    - Real-time pod/deployment/service state
+    - Recent events and logs
+    - Memory Engine historical data
+    - RCA reports and insights
+  </Accordion>
+
+  <Accordion title="Is my data secure?">
+    **Yes!** All communication is:
+    - Encrypted in transit (TLS 1.3)
+    - Authenticated (your API key)
+    - Scoped to your tenant only
+    
+    The agent **never** sees:
+    - Application logs with business data
+    - Secrets or passwords
+    - Customer PII
+  </Accordion>
+
+  <Accordion title="Can I share chat conversations?">
+    **Currently:** Chat history is personal to your session.
+    
+    **Coming:** Export conversations, share with team, create runbooks from chats.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Power User Tips
+
+### 1. Reference Incidents by Name
+
+```
+"Analyze incident crash-loop-demo"
+```
+
+The agent knows all active incidents from the Insights page.
+
+### 2. Ask for Comparisons
+
+```
+"Compare memory usage between dev and prod namespaces"
+"Which deployment uses the most CPU?"
+"Show me the difference between v1.2 and v1.3 configs"
+```
+
+### 3. Request Historical Data
+
+```
+"Have we seen OOMKilled errors before?"
+"What incidents happened last week?"
+"Show me the pattern of crashes over time"
+```
+
+The agent queries the Memory Engine for historical context.
+
+### 4. Get Explanations
+
+```
+"Explain what CrashLoopBackOff means"
+"Why does Kubernetes kill OOM pods?"
+"What's the difference between limits and requests?"
+```
+
+Educational mode - perfect for learning.
+
+---
+
+## Sample Conversation
+
+Here's a real conversation flow:
+
+```
+You: "Good morning! How's my cluster?"
+
+SRI Agent: "Good morning! Your cluster is mostly healthy:
+- System Health: 100%
+- 12 pods running (9 healthy, 3 failing)
+- 3 active insights requiring attention
+- All agents operational
+
+The 3 failures are in rubixkube-tutorials namespace:
+1. ImagePullBackOff (medium)
+2. OOMKilled (HIGH)
+3. CrashLoop (medium)
+
+Would you like me to explain any of these?"
+
+You: "What's the OOMKilled issue?"
+
+SRI Agent: "The OOMKilled incident is on pod 'memory-hog-demo':
+
+Root Cause: Container exceeded memory limit
+- Limit set: 50Mi
+- Attempted to use: ~100Mi
+- Result: Kubernetes killed it to protect the node
+- Restarts: 5 times in 3 minutes
+
+This is HIGH severity because:
+- Indicates resource misconfiguration
+- Could affect node stability if many pods OOMKill
+- Causes service downtime
+
+Fix: Increase memory limit to 150Mi
+Command: kubectl set resources pod memory-hog-demo --limits=memory=150Mi
+
+Shall I walk you through the fix?"
+
+You: "Yes, how do I fix it?"
+
+SRI Agent: "Here's the step-by-step fix:
+
+1. Delete the current pod:
+   kubectl delete pod memory-hog-demo -n rubixkube-tutorials
+
+2. Create new pod with correct memory:
+   [Shows corrected YAML]
+
+3. Verify it's running:
+   kubectl get pod memory-fixed-demo -n rubixkube-tutorials
+   
+4. Monitor memory usage:
+   kubectl top pod memory-fixed-demo -n rubixkube-tutorials
+
+Expected: Memory usage will be ~98Mi, well under the 150Mi limit.
+
+I'll monitor this for you and alert if it fails again."
+```
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card 
+    title="Practice Queries" 
+    icon="keyboard"
+    href="/tutorials/first-steps"
+  >
+    Go back to basics and try more queries
+  </Card>
+  
+  <Card 
+    title="Understand SRI Agent" 
+    icon="robot"
+    href="/concepts/agent-mesh"
+  >
+    Learn how the conversational agent works
+  </Card>
+  
+  <Card 
+    title="See Detection in Action" 
+    icon="eye"
+    href="/tutorials/break-pod-image-error"
+  >
+    Watch RubixKube detect failures
+  </Card>
+  
+  <Card 
+    title="Memory Engine" 
+    icon="database"
+    href="/concepts/memory-engine"
+  >
+    How Chat leverages historical knowledge
+  </Card>
+</CardGroup>
+
+---
+
+## Summary
+
+The Chat interface gives you:
+
+✅ **Natural language access** to your infrastructure  
+✅ **Context-aware responses** based on real cluster data  
+✅ **Troubleshooting guidance** from AI analysis  
+✅ **Historical insights** from Memory Engine  
+✅ **Learning tool** for Kubernetes concepts  
+
+**It's like having an expert SRE available 24/7 via chat!** 🚀
+

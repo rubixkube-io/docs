@@ -227,10 +227,18 @@ This query attempts to get an overview of ALL problems at once.
 
 <Frame>
   <img
-    src="/images/chat/scenario1-response-complete.png"
-    alt="Agent response after analyzing"
+    src="/images/chat/REAL-all-failing-pods-COMPLETE.png"
+    alt="Agent successfully found all 3 failing pods with details"
   />
 </Frame>
+
+**Agent Response:**
+
+The agent successfully identified all 3 failing pods:
+
+1. **`broken-image-demo`** - Status: `Pending`, Reason: `ImagePullBackOff`
+2. **`crash-loop-demo`** - Status: `CrashLoopBackOff`, Restarts: 142
+3. **`memory-hog-demo`** - Status: `CrashLoopBackOff`, Restarts: 142 (OOMKilled)
 
 ---
 

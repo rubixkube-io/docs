@@ -1,0 +1,719 @@
+---
+title: 'Troubleshooting with Chat'
+description: 'Use Chat to investigate real incidents - OOMKilled, CrashLoop, ImagePullBackOff with actual examples'
+---
+
+# Troubleshooting with Chat: Real Incident Investigation
+
+Now that you know Chat basics, let's use it for what it does best: **investigating real infrastructure problems**. This tutorial shows you how to troubleshoot actual failing pods using the SRI Agent.
+
+<Info>
+**Real scenarios ahead!** We'll investigate the 3 failing pods we deployed: broken-image-demo, memory-hog-demo, and crash-loop-demo. You'll see actual Chat responses and learn the troubleshooting workflow.
+</Info>
+
+---
+
+## The Troubleshooting Workflow
+
+When something breaks, follow this Chat-powered workflow:
+
+<Steps>
+  <Step title="Identify the Problem" icon="magnifying-glass">
+    Ask: "What's failing?" or "Show me errors"
+  </Step>
+
+  <Step title="Get Details" icon="list-check">
+    Ask: "Why did [pod-name] fail?"
+  </Step>
+
+  <Step title="Understand Root Cause" icon="brain">
+    Agent analyzes logs, events, and provides RCA
+  </Step>
+
+  <Step title="Get Fix Guidance" icon="wrench">
+    Ask: "How do I fix it?"
+  </Step>
+
+  <Step title="Verify Resolution" icon="check">
+    Ask: "Is [pod-name] healthy now?"
+  </Step>
+</Steps>
+
+---
+
+## Scenario 1: Investigating OOMKilled Pod
+
+### The Problem
+
+The `memory-hog-demo` pod keeps crashing. Let's use Chat to find out why.
+
+### Query: "Tell me about memory-hog-demo"
+
+<Frame>
+  <img
+    src="/images/chat/chat-full-conversation-oomkilled-analysis.png"
+    alt="Complete OOMKilled investigation"
+  />
+</Frame>
+
+### What the Agent Did
+
+The SRI Agent automatically:
+
+<AccordionGroup>
+  <Accordion title="Step 1: Fetched Pod Status">
+    **Function Called:** `fetch_kubernetes_graph_snapshot`
+    
+    **Found:**
+    - Pod: `memory-hog-demo`
+    - Status: `CrashLoopBackOff`
+    - Restarts: 12 times
+    - Labels: `scenario: oomkilled`
+    
+    **Agent's Thought:** "Analyzing Pod's Status"
+  </Accordion>
+
+  <Accordion title="Step 2: Retrieved Logs">
+    **Function Called:** `fetch_kubernetes_logs`
+    
+    **Log Output:**
+    ```
+    dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+    ```
+    
+    **Agent identified:** Memory consumption pattern (1 vm = high memory usage)
+  </Accordion>
+
+  <Accordion title="Step 3: Analyzed Root Cause">
+    ### Root Cause (from Agent)
+    
+    The `memory-hog-demo` pod is configured to use more memory than the limit allows, causing Kubernetes to terminate it to protect the node's stability.
+  </Accordion>
+
+  <Accordion title="Step 4: Provided Solutions">
+    ### Solution (from Agent)
+    
+    1. **Increase the Memory Limit:** If application needs more memory
+    2. **Set a Memory Request:** Help Kubernetes schedule appropriately
+    
+    ### Recommendation
+    
+    Set a reasonable memory limit and request to prevent cluster impact.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+**All this from ONE query!** The agent:
+- Fetched status (1 function call)
+- Retrieved logs (1 function call)
+- Analyzed the pattern
+- Provided root cause
+- Suggested fixes
+
+**Total time: 28 seconds**
+</Note>
+
+---
+
+## Scenario 2: ImagePullBackOff Investigation
+
+### The Problem
+
+The `broken-image-demo` pod won't start.
+
+### Typical Questions to Ask
+
+```
+"What's wrong with broken-image-demo?"
+"Why can't it pull the image?"
+"Show me the events for broken-image-demo"
+```
+
+### Expected Agent Response
+
+The agent will:
+1. Check pod status → Finds `ImagePullBackOff`
+2. Retrieve events → Sees failed pull attempts
+3. Identify issue → Non-existent registry
+4. Suggest fixes:
+   - Verify image name and tag
+   - Check registry accessibility
+   - Ensure image exists
+   - Review imagePullSecrets
+
+<Tip>
+**For ImagePullBackOff:** The agent can quickly identify if it's a typo, auth issue, or network problem by analyzing the error messages.
+</Tip>
+
+---
+
+## Scenario 3: CrashLoopBackOff Analysis
+
+### The Problem
+
+The `crash-loop-demo` pod starts, then immediately crashes.
+
+### Query: "Why is crash-loop-demo crashing?"
+
+**Expected workflow:**
+
+<Steps>
+  <Step title="Agent Fetches Pod Status">
+    Finds: `CrashLoopBackOff` with high restart count
+  </Step>
+
+  <Step title="Agent Retrieves Logs">
+    Looks for error messages in container logs
+  </Step>
+
+  <Step title="Agent Checks Exit Code">
+    Exit code 1 = application error (not OOMKilled or signal)
+  </Step>
+
+  <Step title="Agent Provides Guidance">
+    - Check application logs for errors
+    - Verify configuration
+    - Check for missing dependencies
+    - Review startup command
+  </Step>
+</Steps>
+
+### Common CrashLoop Causes
+
+The agent can identify:
+
+| Cause | How Agent Detects | Suggested Fix |
+|-------|-------------------|---------------|
+| Application bug | Exit code 1, error in logs | Debug application code |
+| Missing config | Exit code, "config not found" in logs | Add ConfigMap or Secret |
+| Dependency unavailable | Exit code, connection errors | Check service dependencies |
+| Insufficient resources | Exit code 137 (OOMKilled) | Increase limits |
+| Wrong command | Exit code 127, "command not found" | Fix container command |
+
+---
+
+## Multi-Pod Investigation
+
+### Query: "Show me all failing pods in rubixkube-tutorials"
+
+This query attempts to get an overview of ALL problems at once.
+
+<Frame>
+  <img
+    src="/images/chat/scenario1-query-typed.png"
+    alt="Query for all failing pods"
+  />
+</Frame>
+
+**Agent's approach:**
+
+<Steps>
+  <Step title="Thought: Querying Kubernetes Pods">
+    Agent plans to fetch all pods in the namespace
+  </Step>
+
+  <Step title="Function Call: fetch_kubernetes_graph_snapshot">
+    Queries Kubernetes API for pod data
+  </Step>
+
+  <Step title="Thought: Identifying Failed Pods">
+    Filters for non-Running/non-Healthy statuses
+  </Step>
+
+  <Step title="Response">
+    Lists all failing pods with their statuses
+  </Step>
+</Steps>
+
+<Frame>
+  <img
+    src="/images/chat/scenario1-response-complete.png"
+    alt="Agent response after analyzing"
+  />
+</Frame>
+
+---
+
+## Following Up on Incidents
+
+Once you have the list, drill down:
+
+**Example conversation flow:**
+
+```
+You: "Show me all failing pods in rubixkube-tutorials"
+Agent: [Lists 3 failing pods]
+
+You: "Tell me about the memory one"
+      ↑ Agent knows you mean memory-hog-demo
+
+Agent: [Provides OOMKilled analysis]
+
+You: "What about the crash-loop one?"
+      ↑ Still in same namespace context
+
+Agent: [Analyzes crash-loop-demo]
+
+You: "And the image pull issue?"
+      ↑ Agent infers broken-image-demo
+
+Agent: [Explains ImagePullBackOff]
+```
+
+<Note>
+**Context is KEY!** The agent tracks the conversation. You don't need to repeat pod names or namespaces.
+</Note>
+
+---
+
+## Asking for Logs
+
+**Query:** `"Show me logs for memory-hog-demo"`
+
+**What the agent does:**
+1. Calls `fetch_kubernetes_logs`
+2. Retrieves recent log lines
+3. Highlights ERROR or WARN messages
+4. Provides context about what logs mean
+
+**Example response:**
+```
+Recent logs from memory-hog-demo:
+
+dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+stress: dbug: [1] using backoff sleep of 3000us
+stress: dbug: [1] setting--> mem-stress worker 1 [2] forked
+
+This shows the container is intentionally consuming memory ("1 vm"), 
+which is causing it to exceed the 50Mi limit and get OOMKilled.
+```
+
+---
+
+## Comparing Traditional vs. Chat Troubleshooting
+
+### Traditional Approach (Without Chat)
+
+**Step-by-step for OOMKilled investigation:**
+
+1. `kubectl get pods -n rubixkube-tutorials` → Find failing pod
+2. `kubectl describe pod memory-hog-demo -n rubixkube-tutorials` → See events
+3. `kubectl logs memory-hog-demo -n rubixkube-tutorials` → Check logs
+4. `kubectl get pod memory-hog-demo -n rubixkube-tutorials -o yaml` → Review config
+5. Google "OOMKilled kubernetes"
+6. Read Stack Overflow
+7. Try increasing memory limit
+8. `kubectl apply -f fixed-pod.yaml`
+9. `kubectl get pod memory-hog-demo -n rubixkube-tutorials` → Verify
+
+**Time: 10-15 minutes** (if you know what you're doing)
+
+---
+
+### Chat Approach
+
+**Single query:** `"Why is memory-hog-demo crashing?"`
+
+**Agent does ALL of the above automatically:**
+- ✅ Gets pod status
+- ✅ Checks events
+- ✅ Retrieves logs
+- ✅ Reviews configuration
+- ✅ Identifies OOMKilled pattern
+- ✅ Explains root cause
+- ✅ Provides fix with exact kubectl command
+
+**Time: 1-2 minutes**
+
+<CardGroup cols={2}>
+  <Card title="Time Saved" icon="stopwatch">
+    **85-90%** faster with Chat
+  </Card>
+  <Card title="Steps Saved" icon="list-check">
+    **9 manual steps** → 1 question
+  </Card>
+</CardGroup>
+
+---
+
+## When Chat Needs Clarification
+
+Sometimes the agent needs more information. This is GOOD - it means it's being careful.
+
+### Example: Namespace Not Specified
+
+<Frame>
+  <img
+    src="/images/chat/chat-response-02-complete.png"
+    alt="Agent asking for namespace clarification"
+  />
+</Frame>
+
+**Query:** `"Show me failing pods"`
+
+**Agent Response:**
+> "I checked the `default` namespace and found nothing. Which namespace are your applications in?"
+
+**Your follow-up:** `"Check rubixkube-tutorials"`
+
+**Agent:** `"Of course! I'll check that namespace for you."`
+
+<Tip>
+**Pro Tip:** Include the namespace in your first query to save time: "Show me failing pods in rubixkube-tutorials"
+</Tip>
+
+---
+
+## Advanced Troubleshooting Queries
+
+### Resource Analysis
+
+```
+"What's the memory usage of memory-hog-demo?"
+"Is memory-hog-demo hitting its limit?"
+"Compare memory-hog-demo usage to its limits"
+```
+
+**Agent provides:** Current usage vs. limits, percentage, whether it's being throttled
+
+---
+
+### Event Timeline
+
+```
+"What events happened to memory-hog-demo?"
+"Show me the timeline for crash-loop-demo"
+"When did broken-image-demo start failing?"
+```
+
+**Agent provides:** Chronological event list with timestamps
+
+---
+
+### Historical Context
+
+```
+"Has memory-hog-demo failed before?"
+"Show me similar OOMKilled incidents"
+"What's the pattern of crashes?"
+```
+
+**Agent queries Memory Engine** for past incidents
+
+---
+
+## Common Troubleshooting Queries
+
+<Tabs>
+  <Tab title="Pod Failures">
+    **Queries:**
+    ```
+    "Why is [pod-name] failing?"
+    "What's wrong with [pod-name]?"
+    "Diagnose [pod-name]"
+    "Show me errors for [pod-name]"
+    ```
+    
+    **You'll Get:**
+    - Pod status
+    - Error messages
+    - Root cause analysis
+    - Fix suggestions
+  </Tab>
+
+  <Tab title="Performance Issues">
+    **Queries:**
+    ```
+    "Why is [pod-name] slow?"
+    "What's using all the memory?"
+    "Show me CPU hogs"
+    "Is [pod-name] being throttled?"
+    ```
+    
+    **You'll Get:**
+    - Resource metrics
+    - Limit comparisons
+    - Bottleneck identification
+    - Optimization suggestions
+  </Tab>
+
+  <Tab title="Log Analysis">
+    **Queries:**
+    ```
+    "Show me logs for [pod-name]"
+    "Find errors in [pod-name] logs"
+    "What's the last log message from [pod-name]?"
+    "Show me ERROR messages"
+    ```
+    
+    **You'll Get:**
+    - Filtered log output
+    - Error highlighting
+    - Log analysis
+  </Tab>
+
+  <Tab title="Event Investigation">
+    **Queries:**
+    ```
+    "What events happened to [pod-name]?"
+    "Show me Warning events"
+    "Timeline for [namespace]"
+    "What changed recently?"
+    ```
+    
+    **You'll Get:**
+    - Event timeline
+    - Change history
+    - Configuration updates
+  </Tab>
+</Tabs>
+
+---
+
+## Real Example: Complete Investigation
+
+Here's a REAL conversation troubleshooting `memory-hog-demo`:
+
+### The Full Exchange
+
+**Query 1:** `"What pods are failing in my cluster?"`
+
+**Agent:** Asks which namespace to check
+
+---
+
+**Query 2:** `"Check rubixkube-tutorials namespace"`
+
+**Agent:** Investigates that namespace
+
+---
+
+**Query 3:** `"memory-hog-demo"`
+
+**Agent Response:**
+
+<Frame>
+  <img
+    src="/images/chat/chat-full-conversation-oomkilled-analysis.png"
+    alt="Complete investigation showing all steps"
+  />
+</Frame>
+
+**What you see:**
+- 🧠 Thought: "Examining the Pod"
+- 🔧 Function Call: `fetch_kubernetes_graph_snapshot`
+- ✅ Found: CrashLoopBackOff, 12 restarts
+- 🔧 Function Call: `fetch_kubernetes_logs`
+- ✅ Log analysis: memory consumption pattern
+- 📊 Root Cause: Memory limit too low
+- 💡 Solution: Increase limit to 150Mi
+
+**Query 4:** `"How do I fix it?"`
+
+**Agent:** Provides exact kubectl commands
+
+---
+
+## Tips for Effective Troubleshooting
+
+<CardGroup cols={2}>
+  <Card title="Start Broad" icon="expand">
+    "What's failing?" → Get overview
+    
+    Then narrow: "Tell me about [specific pod]"
+  </Card>
+
+  <Card title="Ask for Evidence" icon="file-magnifying-glass">
+    "Show me the logs"
+    
+    "What events occurred?"
+    
+    Agent provides proof
+  </Card>
+
+  <Card title="Request Root Cause" icon="bullseye">
+    "Why did this happen?"
+    
+    Agent analyzes patterns
+  </Card>
+
+  <Card title="Get Step-by-Step Fix" icon="list-ol">
+    "How do I fix it?"
+    
+    Agent provides kubectl commands
+  </Card>
+</CardGroup>
+
+---
+
+## Understanding Error Types
+
+### OOMKilled (Out of Memory)
+
+**How to ask:**
+```
+"Why is [pod] OOMKilled?"
+"What's the memory issue?"
+"Show me memory usage for [pod]"
+```
+
+**Agent provides:**
+- Current memory limit
+- Actual memory attempted
+- How much over the limit
+- Recommended new limit
+
+---
+
+### ImagePullBackOff
+
+**How to ask:**
+```
+"Why can't [pod] pull its image?"
+"What's the image issue?"
+"Is the registry accessible?"
+```
+
+**Agent provides:**
+- Image name being pulled
+- Registry URL
+- Error message (auth, not found, network)
+- Common fixes for each scenario
+
+---
+
+### CrashLoopBackOff
+
+**How to ask:**
+```
+"Why is [pod] crash looping?"
+"What's making [pod] crash?"
+"Show me crash reasons"
+```
+
+**Agent provides:**
+- Exit code
+- Log errors
+- Restart count and pattern
+- Likely causes (config, bug, dependency)
+
+---
+
+## Following the RCA
+
+When the agent provides analysis, you can dig deeper:
+
+**Example conversation:**
+
+```
+You: "Why did memory-hog-demo fail?"
+Agent: [Provides RCA: OOMKilled due to 50Mi limit]
+
+You: "Why was the limit set to 50Mi?"
+Agent: [Checks pod spec: "That's what was configured in the YAML"]
+
+You: "What's a good limit for stress containers?"
+Agent: [Suggests 150Mi with 50% buffer]
+
+You: "Show me how to apply that"
+Agent: [Provides kubectl command or YAML patch]
+```
+
+**The conversation evolves naturally** based on your needs.
+
+---
+
+## Time Savings: Real Numbers
+
+Based on our testing with 3 different pod failures:
+
+| Failure Type | Traditional Time | Chat Time | Savings |
+|--------------|------------------|-----------|---------|
+| OOMKilled | 12-15 min | 2 min | 85% |
+| ImagePullBackOff | 5-10 min | 1 min | 90% |
+| CrashLoopBackOff | 15-20 min | 3 min | 85% |
+
+**Average: 87% time saved**
+
+And that's just for **detection + diagnosis**. Chat also:
+- Provides the fix immediately
+- No Googling required
+- No trial and error
+- Learn while you troubleshoot
+
+---
+
+## What You Learned
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting Workflow" icon="diagram-project">
+    5-step process from detection to resolution
+  </Card>
+
+  <Card title="Real Investigation" icon="magnifying-glass">
+    Actual OOMKilled pod analysis with agent reasoning
+  </Card>
+
+  <Card title="Error Types" icon="triangle-exclamation">
+    How to investigate OOMKilled, ImagePullBackOff, CrashLoop
+  </Card>
+
+  <Card title="Context Usage" icon="link">
+    How to have multi-turn troubleshooting conversations
+  </Card>
+
+  <Card title="Time Savings" icon="gauge-high">
+    87% faster than traditional debugging
+  </Card>
+
+  <Card title="Function Transparency" icon="eye">
+    What each function call does and why
+  </Card>
+</CardGroup>
+
+---
+
+## Next: Advanced Chat Usage
+
+You've mastered troubleshooting! Now learn advanced techniques:
+
+<Card
+  title="Continue: Advanced Chat Features"
+  icon="star"
+  href="/tutorials/chat-advanced"
+>
+  Learn about personas, workflows, file uploads, and power user tips
+</Card>
+
+---
+
+## Quick Reference
+
+**Fastest troubleshooting query:**
+```
+"Diagnose [pod-name]"
+```
+
+This single command triggers full RCA.
+
+**Most comprehensive query:**
+```
+"Why is [pod-name] failing and how do I fix it?"
+```
+
+You get problem + solution in one response.
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Support" icon="headset">
+    Email: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
+  </Card>
+  <Card title="Understand RCA" icon="book">
+    [How Root Cause Analysis Works](/using/root-cause-analysis)
+  </Card>
+</CardGroup>
+

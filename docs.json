@@ -35,16 +35,23 @@
               "concepts/guardrails"
             ]
           },
-          {
-            "group": "Hands-On Tutorials",
-            "pages": [
-              "tutorials/first-steps",
-              "tutorials/break-pod-image-error",
-              "tutorials/break-pod-memory-oom",
-              "tutorials/rubixkube-in-action",
-              "tutorials/talk-to-infra"
-            ]
-          },
+    {
+      "group": "Hands-On Tutorials",
+      "pages": [
+        "tutorials/first-steps",
+        "tutorials/break-pod-image-error",
+        "tutorials/break-pod-memory-oom",
+        "tutorials/rubixkube-in-action",
+        {
+          "group": "Chat Interface",
+          "pages": [
+            "tutorials/chat-basics",
+            "tutorials/chat-troubleshooting",
+            "tutorials/chat-advanced"
+          ]
+        }
+      ]
+    },
           {
             "group": "Using RubixKube",
             "pages": [

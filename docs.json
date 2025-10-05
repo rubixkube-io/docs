@@ -47,7 +47,8 @@
           "pages": [
             "tutorials/chat-basics",
             "tutorials/chat-troubleshooting",
-            "tutorials/chat-advanced"
+            "tutorials/chat-advanced",
+            "tutorials/chat-cost-analysis"
           ]
         }
       ]

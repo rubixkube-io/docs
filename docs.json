@@ -48,7 +48,11 @@
           {
             "group": "Using RubixKube",
             "pages": [
-              
+              "using/dashboard",
+              "using/observing-infra",
+              "using/root-cause-analysis",
+              "using/autofix-remediation",
+              "using/business-insights"
             ]
           },
           {

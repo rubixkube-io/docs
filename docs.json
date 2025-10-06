@@ -3,93 +3,84 @@
   "theme": "mint",
   "name": "RubixKube Docs",
   "description": "In a world where AI builds your product, RubixKube™ keeps it alive.",
-"colors": {
-  "primary": "#2563EB",   
-  "light": "#3B82F6",    
-  "dark": "#1E3A8A"
-},
+  "colors": {
+    "primary": "#2563EB",
+    "light": "#3B82F6",
+    "dark": "#1E3A8A"
+  },
 
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "getting-started/introduction",
-              "getting-started/disclaimers",
-              "getting-started/sign-up",
-              "getting-started/login",
-              "getting-started/installation-cloud",
-              "getting-started/installation-kind"
-            ]
-          },
-         
-    {
-      "group": "Hands-On Tutorials",
-      "pages": [
-        "tutorials/first-steps",
-        "tutorials/break-pod-image-error",
-        "tutorials/break-pod-memory-oom",
-        "tutorials/rubixkube-in-action",
-        {
-          "group": "Chat Interface",
+    "tabs": [{
+      "tab": "Guides",
+      "groups": [{
+          "group": "Getting started",
           "pages": [
-            "tutorials/chat-basics",
-            "tutorials/chat-troubleshooting",
-            "tutorials/chat-advanced",
-            "tutorials/chat-cost-analysis"
+            "getting-started/introduction",
+            "getting-started/disclaimers",
+            "getting-started/sign-up",
+            "getting-started/login",
+            "getting-started/installation-cloud",
+            "getting-started/installation-kind"
+          ]
+        },
+
+        {
+          "group": "Hands-On Tutorials",
+          "pages": [
+            "tutorials/first-steps",
+            "tutorials/break-pod-image-error",
+            "tutorials/break-pod-memory-oom",
+            "tutorials/rubixkube-in-action",
+            {
+              "group": "Chat Interface",
+              "pages": [
+                "tutorials/chat-basics",
+                "tutorials/chat-troubleshooting",
+                "tutorials/chat-advanced",
+                "tutorials/chat-cost-analysis"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Using RubixKube",
+          "pages": [
+            "using/dashboard"
+          ]
+        },
+        {
+          "group": "Core Concepts",
+          "pages": [
+            "concepts/what-is-sri",
+            "concepts/agent-mesh",
+            "concepts/memory-engine",
+            "concepts/guardrails"
+          ]
+        },
+        {
+          "group": "Support",
+          "pages": [
+            "support/troubleshooting",
+            "support/faq"
+          ]
+        },
+        {
+          "group": "AI tools",
+          "pages": [
+            "ai-tools/cursor",
+            "ai-tools/claude-code",
+            "ai-tools/windsurf"
           ]
         }
       ]
-    },
-          {
-            "group": "Using RubixKube",
-            "pages": [
-              "using/dashboard",
-              "using/observing-infra",
-              "using/root-cause-analysis",
-              "using/autofix-remediation",
-              "using/business-insights"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "concepts/what-is-sri",
-              "concepts/agent-mesh",
-              "concepts/memory-engine",
-              "concepts/guardrails"
-            ]
-          },
-          {
-            "group": "Support",
-            "pages": [
-              "support/troubleshooting",
-              "support/faq"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      }
-    ],
+    }],
     "global": {
-      "anchors": [
-        {
-          "anchor": "Blog",
-          "href": "https://rubixkube.ai/blog",
-          "icon": "newspaper"
-        }
-      ]
+      "anchors": [{
+        "anchor": "Blog",
+        "href": "https://rubixkube.ai/blog",
+        "icon": "newspaper"
+      }]
     }
   },
   "logo": {
@@ -97,12 +88,10 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:connect@rubixkube.ai"
-      }
-    ],
+    "links": [{
+      "label": "Support",
+      "href": "mailto:connect@rubixkube.ai"
+    }],
     "primary": {
       "type": "button",
       "label": "console",
@@ -111,18 +100,18 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
-  "socials": {
+    "socials": {
       "x": "https://x.com/RubixKubeHQ",
       "github": "https://github.com/rubixkube-io",
       "linkedin": "https://linkedin.com/company/rubixkube"

@@ -1,0 +1,64 @@
+---
+title: 'Managing Clusters'
+description: 'Connect, configure, and manage your Kubernetes clusters in RubixKube'
+---
+
+# Managing Clusters
+
+The **Clusters** page is where you connect your Kubernetes clusters to RubixKube and manage their connections.
+
+---
+
+## Connecting a Cluster
+
+<Steps>
+  <Step title="Click Connect Cluster">
+    Opens installation dialog with your unique command
+  </Step>
+
+  <Step title="Copy kubectl Command">
+    Command includes your API key pre-configured
+  </Step>
+
+  <Step title="Run in Your Cluster">
+    ```bash
+    kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=YOUR_KEY"
+    ```
+  </Step>
+
+  <Step title="Verify Connection">
+    Cluster appears in list within 1-2 minutes
+  </Step>
+</Steps>
+
+---
+
+## Cluster Status
+
+| Status | Meaning |
+|--------|---------|
+| 🟢 **Connected** | Healthy, actively monitored |
+| 🟡 **Degraded** | Partial connectivity |
+| 🔴 **Disconnected** | No connection |
+
+---
+
+## Managing Clusters
+
+**View cluster details:**
+- Click cluster name
+- See nodes, pods, deployments
+- View recent events
+
+**Remove cluster:**
+- Click cluster → Delete
+- Removes from RubixKube (doesn't affect actual cluster)
+
+---
+
+## What You Learned
+
+✅ How to connect clusters  
+✅ Status indicators  
+✅ Managing connections  
+

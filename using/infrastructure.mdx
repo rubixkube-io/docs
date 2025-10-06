@@ -1,0 +1,114 @@
+---
+title: 'Using Infrastructure Topology'
+description: 'Visualize and monitor your Kubernetes cluster resources with interactive topology views'
+---
+
+# Using Infrastructure Topology
+
+The **Infrastructure** page provides a comprehensive view of your Kubernetes cluster topology - showing all resources, their relationships, and health status in multiple visualization modes.
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-01-overview.png"
+    alt="Infrastructure topology page"
+  />
+</Frame>
+
+---
+
+## Overview
+
+**What you see:**
+- **Total Resources:** Complete count across all namespaces
+- **Namespaces:** Number of namespaces
+- **Healthy Resources:** How many are running correctly
+- **Resource Table:** Detailed list of all resources
+
+---
+
+## View Modes
+
+<Tabs>
+  <Tab title="Table View">
+    **Best for:** Quick scanning and filtering
+    
+    Shows: Name, Type, Namespace, Status, Actions
+  </Tab>
+
+  <Tab title="Graph View">
+    **Best for:** Understanding dependencies
+    
+    Shows: Visual node graph with connections
+  </Tab>
+
+  <Tab title="Tree View">
+    **Best for:** Hierarchical organization
+    
+    Shows: Resources organized by namespace
+  </Tab>
+
+  <Tab title="Dashboard View">
+    **Best for:** High-level metrics
+    
+    Shows: Summary cards and statistics
+  </Tab>
+</Tabs>
+
+---
+
+## Resource Types
+
+| Type | What It Is | Example |
+|------|------------|---------|
+| **Node** | Physical/VM machines | kind-control-plane |
+| **Pod** | Running containers | nginx-7d8b49-xyz |
+| **Deployment** | Managed pod sets | api-gateway |
+| **ReplicaSet** | Pod version control | api-gateway-7d8b49 |
+| **Service** | Network endpoints | kubernetes, kube-dns |
+
+---
+
+## Filtering Resources
+
+**Search box:** Type pod name, namespace, or resource type
+
+**View filters:**
+- By resource type (Pods, Deployments, etc.)
+- By namespace
+- By status (Running, Pending, Failed)
+
+**Quick actions:**
+- Click "View" on any resource for details
+- Filter to show only unhealthy resources
+
+---
+
+## Use Cases
+
+### Find Failing Pods
+1. Click Table view
+2. Sort by Status
+3. Look for CrashLoopBackOff, ImagePullBackOff
+
+### Understand Dependencies
+1. Click Graph view
+2. Select a service
+3. See all connected pods
+
+### Namespace Overview
+1. Filter by namespace (e.g., production)
+2. See all resources in that namespace
+
+---
+
+## What You Learned
+
+✅ Multiple view modes  
+✅ Resource types  
+✅ Filtering and search  
+✅ Quick actions  
+
+---
+
+## Next: [Using Agents](/using/agents)
+

@@ -1,0 +1,103 @@
+---
+title: 'Using Agents & Tools'
+description: 'Monitor and manage RubixKube AI agents that power your infrastructure intelligence'
+---
+
+# Using Agents & Tools
+
+The **Agents** page shows all AI agents working on your behalf - their health, status, and activity.
+
+<Frame>
+  <img
+    src="/images/using/using-agents-01-overview.png"
+    alt="Agents page showing system agents"
+  />
+</Frame>
+
+---
+
+## Agent Types
+
+### System Agents
+
+<CardGroup cols={2}>
+  <Card title="RubixKube Observer" icon="eye">
+    **Role:** Monitors your cluster continuously
+    
+    **What it does:**
+    - Watches pod health
+    - Collects metrics
+    - Detects failures
+    - Sends events to RCA Pipeline
+  </Card>
+
+  <Card title="RCA Pipeline Agent" icon="magnifying-glass-chart">
+    **Role:** Analyzes incidents and generates RCA reports
+    
+    **What it does:**
+    - Receives events from Observer
+    - Gathers logs and metrics
+    - Correlates patterns
+    - Generates root cause reports
+  </Card>
+
+  <Card title="Memory Agent" icon="database">
+    **Role:** Stores and learns from incidents
+    
+    **What it does:**
+    - Stores RCA reports
+    - Builds knowledge graph
+    - Recalls similar past incidents
+    - Improves over time
+  </Card>
+
+  <Card title="SRI Agent" icon="comments">
+    **Role:** Powers the Chat interface
+    
+    **What it does:**
+    - Answers your questions
+    - Queries cluster data
+    - Provides recommendations
+    - Explains incidents
+  </Card>
+</CardGroup>
+
+---
+
+## Agent Health Status
+
+| Status | Meaning | What to Do |
+|--------|---------|------------|
+| ✅ **Active** | Agent running normally | Nothing - all good |
+| ⚠️ **Degraded** | Slow or intermittent | Monitor, may self-recover |
+| ❌ **Offline** | Agent not responding | Check pod, restart if needed |
+
+---
+
+## Monitoring Agents
+
+**Total Agents:** Should match your deployment (usually 3-4)
+
+**System Agents:** Core RubixKube agents
+
+**Active Agents:** Currently operational
+
+**If an agent goes offline:**
+1. Check the Agents page
+2. Identify which one
+3. Click "View" for logs
+4. Restart pod if necessary
+
+---
+
+## What You Learned
+
+✅ 4 core agents  
+✅ Their roles  
+✅ Health statuses  
+✅ What to do when offline  
+
+---
+
+## Next: [Using Settings](/using/settings)
+

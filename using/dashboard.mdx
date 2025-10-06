@@ -1,0 +1,380 @@
+---
+title: 'Using the Dashboard'
+description: 'Your command center for infrastructure health monitoring and real-time insights'
+---
+
+# Using the Dashboard
+
+The **Dashboard** is your central command center in RubixKube - providing at-a-glance system health, active incidents, agent status, and real-time activity feeds.
+
+<Info>
+**What you'll learn:** How to interpret each dashboard panel, what the metrics mean, and how to use the dashboard for daily monitoring.
+</Info>
+
+---
+
+## Dashboard Overview
+
+<Frame>
+  <img
+    src="/images/using/using-dashboard-01-overview.png"
+    alt="RubixKube Dashboard with all panels visible"
+  />
+</Frame>
+
+The dashboard is organized into key sections:
+
+<CardGroup cols={2}>
+  <Card title="Key Metrics" icon="gauge-high">
+    System Health, Active Insights, Intelligent Analysis, Agents
+  </Card>
+  <Card title="Infrastructure Panel" icon="server">
+    Connected clusters, nodes, pods, deployments, services
+  </Card>
+  <Card title="Activity Feed" icon="list">
+    Recent incidents, insights, and system events
+  </Card>
+  <Card title="RCA Live Stream" icon="chart-network">
+    Real-time root cause analysis in progress
+  </Card>
+</CardGroup>
+
+---
+
+## Key Metrics Explained
+
+### System Health
+
+**What it shows:** Overall infrastructure health percentage
+
+**Calculation:**
+- 100% = All pods healthy, no incidents
+- 90-99% = Minor issues detected
+- 75-89% = Active incidents requiring attention
+- Below 75% = Multiple critical issues
+
+**When to worry:** Below 90% means you should check Active Insights.
+
+---
+
+### Active Insights
+
+**What it shows:** Number of issues currently requiring attention
+
+**Examples:**
+- Pod failures (CrashLoopBackOff, ImagePullBackOff)
+- Resource issues (OOMKilled)
+- Configuration problems
+- Deployment failures
+
+**Action:** Click the number to go to Insights page for details.
+
+---
+
+### Intelligent Analysis
+
+**What it shows:** Number of RCA reports generated
+
+**What it means:**
+- RubixKube's RCA Pipeline Agent has analyzed incidents
+- Complete root cause reports available
+- Evidence and timelines documented
+
+**Action:** Click to view RCA reports in Insights.
+
+---
+
+### Agents
+
+**What it shows:** Active agents / Total agents
+
+**Example:** "3/4 Active" means:
+- 3 agents running normally
+- 1 agent offline or degraded
+
+**Action:** Click to go to Agents page for health details.
+
+---
+
+## Infrastructure Panel
+
+Shows your connected cluster summary:
+
+| Metric | What It Means |
+|--------|---------------|
+| **Nodes** | Physical/virtual machines in cluster |
+| **Pods** | Running application containers |
+| **Deployments** | Managed application sets |
+| **Services** | Network endpoints |
+
+**Status Indicator:**
+- 🟢 **Connected** - Healthy cluster connection
+- 🟡 **Degraded** - Partial connectivity
+- 🔴 **Disconnected** - No connection to cluster
+
+**Click "View page"** to see full Infrastructure topology.
+
+---
+
+## Activity Feed
+
+Real-time stream of events and insights:
+
+### Event Types
+
+<Tabs>
+  <Tab title="Incidents">
+    🔴 **Critical failures detected**
+    
+    Example: "Out of memory (OOMKilled) detected on Pod/memory-hog-demo"
+    
+    - Shows severity (HIGH, medium, low)
+    - Status (active, resolved)
+    - Time detected
+  </Tab>
+
+  <Tab title="Insights">
+    📊 **AI analysis generated**
+    
+    Example: "Container experiencing repeated crashes in crash-loop-demo"
+    
+    - Shows restart count
+    - Identifies patterns
+    - Links to RCA if available
+  </Tab>
+
+  <Tab title="Resolutions">
+    ✅ **Issues fixed**
+    
+    Example: "Incident resolved: ImagePullBackOff on broken-image-demo"
+    
+    - Shows resolution time
+    - Links to what was fixed
+  </Tab>
+
+  <Tab title="Configuration Changes">
+    📝 **Cluster updates**
+    
+    Example: "Deployment scaled: api-gateway 3→5 replicas"
+    
+    - Tracks deployments
+    - Shows scaling events
+    - Records config changes
+  </Tab>
+</Tabs>
+
+**The feed updates in real-time** - no refresh needed!
+
+---
+
+## RCA Live Stream
+
+Shows the RCA Pipeline Agent working in real-time:
+
+**What you'll see:**
+- Function calls being executed
+- Evidence being gathered
+- Pattern matching in progress
+- Analysis completion percentage
+
+**Statuses:**
+- **RCA_IN_PROGRESS** - Currently analyzing (shows %)
+- **RCA_COMPLETE** - Analysis finished, report available
+- **RCA_FAILED** - Analysis couldn't complete
+
+**Click on any item** to see full RCA report.
+
+---
+
+## Daily Dashboard Workflow
+
+### Morning Check (30 seconds)
+
+<Steps>
+  <Step title="Check System Health">
+    100%? All clear. Below 100%? Investigate.
+  </Step>
+
+  <Step title="Review Active Insights">
+    0? Perfect. 1+? Check what needs attention.
+  </Step>
+
+  <Step title="Verify All Agents Active">
+    Should show "3/3" or "4/4" depending on configuration.
+  </Step>
+
+  <Step title="Scan Activity Feed">
+    Any new incidents overnight? Any resolutions?
+  </Step>
+</Steps>
+
+**Result:** Confident understanding of cluster state in under 1 minute.
+
+---
+
+## Understanding Dashboard Updates
+
+**Refresh frequency:**
+- **Metrics:** Every 30 seconds
+- **Activity Feed:** Real-time (SSE)
+- **Infrastructure:** Every 60 seconds
+- **RCA Stream:** Real-time
+
+**Manual refresh:** Click the refresh button in any panel
+
+---
+
+## Common Dashboard Scenarios
+
+### Scenario 1: System Health Drops
+
+**What you see:** System Health: 85%
+
+**What to do:**
+1. Check **Active Insights** number
+2. Scroll to **Activity Feed**
+3. Identify recent incidents (marked 🔴)
+4. Click incident for details
+
+---
+
+### Scenario 2: Active Insights Increases
+
+**What you see:** Active Insights: 3 (was 0)
+
+**What to do:**
+1. Note the number jumped
+2. Check **Activity Feed** for what was detected
+3. Click **Insights** in navigation for full details
+4. Prioritize by severity (HIGH first)
+
+---
+
+### Scenario 3: Agent Goes Offline
+
+**What you see:** Agents: 2/3 Active
+
+**What to do:**
+1. Click "Agents" number or navigate to Agents page
+2. Identify which agent is offline
+3. Check agent logs
+4. May need to restart agent pod
+
+---
+
+## Dashboard Best Practices
+
+<Accordion title="Use as Daily Starting Point">
+**Every morning:**
+1. Open Dashboard
+2. 30-second scan
+3. Identify any issues
+4. Drill into details as needed
+
+**Benefit:** Early detection before issues escalate
+</Accordion>
+
+<Accordion title="Keep Dashboard Open in a Tab">
+**Why:** Real-time updates alert you to new incidents
+
+**Pro tip:** Use browser notifications for activity feed updates
+</Accordion>
+
+<Accordion title="Understand Your Baseline">
+**Learn what's normal for YOUR cluster:**
+- Typical System Health %
+- Average Active Insights count
+- Normal activity feed volume
+
+**Benefit:** Spot anomalies faster
+</Accordion>
+
+---
+
+## What You Learned
+
+<CardGroup cols={2}>
+  <Card title="4 Key Metrics" icon="gauge">
+    System Health, Insights, Analysis, Agents
+  </Card>
+
+  <Card title="Infrastructure Summary" icon="server">
+    Nodes, Pods, Deployments, Services
+  </Card>
+
+  <Card title="Activity Feed" icon="list">
+    Real-time incident stream
+  </Card>
+
+  <Card title="RCA Live Stream" icon="brain">
+    Watch AI analyze in real-time
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Explore Insights"
+    icon="chart-line"
+    href="/using/insights"
+  >
+    Deep dive into incident analysis and RCA reports
+  </Card>
+
+  <Card
+    title="Monitor Infrastructure"
+    icon="sitemap"
+    href="/using/infrastructure"
+  >
+    View topology and resource details
+  </Card>
+
+  <Card
+    title="Manage Agents"
+    icon="robot"
+    href="/using/agents"
+  >
+    Check AI agent health and status
+  </Card>
+
+  <Card
+    title="Use Chat"
+    icon="comments"
+    href="/tutorials/chat-basics"
+  >
+    Query dashboard data using natural language
+  </Card>
+</CardGroup>
+
+---
+
+## Quick Reference
+
+**Dashboard at a glance:**
+
+| Panel | Purpose | Action When... |
+|-------|---------|----------------|
+| System Health | Overall status | Drops below 100% → Check insights |
+| Active Insights | Issue count | Increases → Investigate incidents |
+| RCA Analysis | Report count | New report → Review findings |
+| Agents | Agent health | Not all active → Check agent status |
+| Infrastructure | Cluster summary | Shows unexpected numbers → Verify cluster |
+| Activity Feed | Event stream | New incidents → Click for details |
+| RCA Stream | Live analysis | Shows IN_PROGRESS → Watch completion |
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Support" icon="headset">
+    Email: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
+  </Card>
+  <Card title="Concepts" icon="book">
+    [Understand the Agent Mesh](/concepts/agent-mesh)
+  </Card>
+</CardGroup>
+

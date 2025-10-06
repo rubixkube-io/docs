@@ -46,7 +46,14 @@
         {
           "group": "Using RubixKube",
           "pages": [
-            "using/dashboard"
+            "using/dashboard",
+            "using/insights",
+            "using/infrastructure",
+            "using/agents",
+            "using/clusters",
+            "using/workspace",
+            "using/settings",
+            "using/integrations"
           ]
         },
         {

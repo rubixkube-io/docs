@@ -83,11 +83,6 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
           "anchor": "Blog",
           "href": "https://rubixkube.ai/blog",
           "icon": "newspaper"

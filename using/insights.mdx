@@ -1,14 +1,14 @@
 ---
-title: 'Using Insights & RCA'
-description: 'Deep dive into incidents, root cause analysis, and evidence-based troubleshooting'
+title: 'Using Insights & RCA - Complete Guide'
+description: 'Deep dive into incidents, root cause analysis, and evidence-based troubleshooting with RubixKube'
 ---
 
-# Using Insights & RCA
+# Using Insights & RCA: Complete Guide
 
 The **Insights** page is where RubixKube's intelligence shines - showing you not just WHAT failed, but WHY it failed, with complete root cause analysis, evidence, and remediation suggestions.
 
 <Info>
-**What you'll learn:** How to interpret incident groups, read RCA reports, understand severity levels, navigate timelines, and use evidence for troubleshooting.
+**Based on real data:** This guide uses actual screenshots from a live RubixKube console monitoring 4 incident groups with 75% RCA coverage, including CrashLoop, OOMKilled, and PodPending issues.
 </Info>
 
 ---
@@ -17,377 +17,1241 @@ The **Insights** page is where RubixKube's intelligence shines - showing you not
 
 <Frame>
   <img
-    src="/images/using/using-insights-01-overview.png"
-    alt="Insights page showing incident groups and RCA reports"
+    src="/images/using/using-insights-01-header.png"
+    alt="Insights page header with health metrics"
   />
 </Frame>
 
-**The page shows:**
-- **Incident Groups** - Similar incidents grouped together
-- **RCA Status** - Analysis progress for each incident
-- **Severity Levels** - HIGH, medium, low priority
-- **Evidence Links** - Logs, events, metrics
+**The header shows:**
+- **Title**: "Unified Insights" with description
+- **Health Metrics**:
+  - **Health**: 75% RCA coverage
+  - **Total Groups**: 4 incident groups
+  - **Critical Issues**: 0 (no critical incidents)
+  - **High Priority**: 1 (one high-severity issue)
+- **Refresh data** button for manual updates
 
 ---
 
-## Understanding Incident Groups
+## Understanding Health Metrics
 
-RubixKube groups related incidents together for easier management.
+### Health: 75% RCA Coverage
 
-### Example: OOMKilled Incident Group
+**What it means:**
+- 75% of detected incidents have completed RCA analysis
+- Higher percentage = better analysis coverage
+- Target: 90%+ for optimal observability
 
-**What you see:**
-- **Title:** "OOMKilled in Pod/memory-hog-demo"
-- **Severity:** HIGH (red indicator)
-- **Items:** 2 items (multiple occurrences)
-- **RCA Badge:** Shows analysis is complete
-
-**Why grouped:** Same root cause affecting same resource multiple times.
-
----
-
-## Severity Levels Explained
-
-<CardGroup cols={3}>
-  <Card title="🔴 HIGH" icon="triangle-exclamation">
-    **Critical issues:**
-    - OOMKilled (memory exhaustion)
-    - CrashLoopBackOff with high restart count
-    - Service unavailability
-    
-    **Action:** Immediate attention required
-  </Card>
-
-  <Card title="🟡 Medium" icon="circle-exclamation">
-    **Important but not critical:**
-    - ImagePullBackOff
-    - Single pod crashes
-    - Resource warnings
-    
-    **Action:** Address within hours
-  </Card>
-
-  <Card title="🟢 Low" icon="circle-info">
-    **Informational:**
-    - Configuration drift
-    - Best practice violations
-    - Optimization opportunities
-    
-    **Action:** Review when convenient
-  </Card>
-</CardGroup>
+**Why it matters:**
+- Shows how effectively RubixKube is analyzing your incidents
+- Low coverage may indicate agent issues or complex incidents
+- Tracks the intelligence level of your monitoring
 
 ---
 
-## Reading an RCA Report
+### Total Groups: 4
 
-Click on any incident to see the full RCA report:
+**What it means:**
+- 4 incident groups currently tracked
+- Groups cluster related incidents together
+- Each group may contain multiple occurrences
 
-### Report Sections
+**From our dashboard:**
+1. CrashLoop in Pod/crash-loop-demo (2 items)
+2. OOMKilled in Pod/memory-hog-demo (2 items)
+3. CrashLoop in Pod/memory-hog-demo (2 items)
+4. PodPending in Pod/broken-image-demo (1 item)
+
+---
+
+### Critical Issues: 0
+
+**What it means:**
+- No critical-severity incidents active
+- Critical = system-wide failures, data loss risk
+- This is your most important metric
+
+**When you see this:**
+- 0 = Excellent, no urgent action needed
+- 1+ = Immediate response required
+
+---
+
+### High Priority: 1
+
+**What it means:**
+- 1 high-severity incident requiring attention
+- High = significant impact, needs prompt resolution
+- Less urgent than critical, more than medium
+
+**From our dashboard:**
+- OOMKilled in Pod/memory-hog-demo (HIGH severity)
+
+---
+
+## Search and Filtering
+
+<Frame>
+  <img
+    src="/images/using/using-insights-02-filters.png"
+    alt="Search bar and filter buttons"
+  />
+</Frame>
+
+### Search Bar
+
+**Placeholder**: "Search incidents, namespaces, resources..."
+
+**What you can search:**
+- Pod names (e.g., "crash-loop-demo")
+- Namespaces (e.g., "rubixkube-tutorials")
+- Incident types (e.g., "OOMKilled")
+- Resource types (e.g., "Pod/")
+
+**Search is instant** - results filter as you type.
+
+---
+
+### Filter Buttons
+
+**Available filters:**
+
+| Filter | Options | Use Case |
+|--------|---------|----------|
+| **Issue Type** | CrashLoop, OOMKilled, PodPending, etc. | Find specific failure patterns |
+| **Severity** | critical, high, medium, low | Prioritize by impact |
+| **Namespace** | All namespaces in cluster | Isolate env-specific issues |
+| **Status** | Active, Resolved, Investigating | Track incident lifecycle |
+| **Sort** | Newest, Oldest, Severity | Order results |
+
+---
+
+### Severity Filter
+
+<Frame>
+  <img
+    src="/images/using/using-insights-09-severity-filter.png"
+    alt="Severity filter dropdown showing options"
+  />
+</Frame>
+
+**Click "Severity" to see options:**
+- **critical** - System-wide failures, immediate action
+- **high** - Significant impact, prompt resolution needed
+- **medium** - Moderate impact, address within hours
+- **low** - Minor issues, informational
+
+**Multiple selection** - Check multiple boxes to filter by several severities at once.
+
+---
+
+## Incident List
+
+<Frame>
+  <img
+    src="/images/using/using-insights-03-incident-list.png"
+    alt="Incident list showing 4 incidents"
+  />
+</Frame>
+
+### Incident Cards
+
+**From our real dashboard - 4 incidents:**
+
+#### 1. CrashLoop in Pod/crash-loop-demo
+
+**Visual indicators:**
+- Orange warning icon (left)
+- **MEDIUM** severity badge
+- **RCA** badge (analysis complete)
+- "2 items" - multiple occurrences
+- "1 day ago" - last seen timestamp
+
+**Description**: "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
+
+**Status**: Expanded (showing details in right panel)
+
+---
+
+#### 2. OOMKilled in Pod/memory-hog-demo
+
+**Visual indicators:**
+- Red warning triangle (left) - indicates high severity
+- **HIGH** severity badge (critical attention needed)
+- **RCA** badge (analysis complete)
+- "2 items" - multiple OOMKilled events
+- "1 day ago" - last occurrence
+
+**Description**: "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
+
+**This is the high-priority incident** shown in header metrics.
+
+---
+
+#### 3. CrashLoop in Pod/memory-hog-demo
+
+**Visual indicators:**
+- Orange warning icon
+- **MEDIUM** severity badge
+- **RCA** badge
+- "2 items"
+- "1 day ago"
+
+**Description**: "Container experiencing repeated crashes in memory-hog-demo (restart count: 3)"
+
+**Note**: Same pod as #2, different incident type (crash vs OOM).
+
+---
+
+#### 4. PodPending in Pod/broken-image-demo
+
+**Visual indicators:**
+- Orange warning icon
+- **MEDIUM** severity badge
+- **No RCA badge** - analysis not complete or not available
+- "1 items" - single occurrence
+- "1 day ago"
+
+**Description**: "Pod broken-image-demo has been pending for an extended period"
+
+**Likely cause**: ImagePullBackOff error.
+
+---
+
+## Incident Detail View
+
+<Frame>
+  <img
+    src="/images/using/using-insights-04-detail-overview.png"
+    alt="Incident detail view showing Overview tab"
+  />
+</Frame>
+
+**Click any incident** to expand details in right panel.
+
+### Header Section
+
+**From our example - CrashLoop in Pod/crash-loop-demo:**
+
+**Title bar shows:**
+- Warning icon
+- **Title**: CrashLoop in Pod/crash-loop-demo
+- **Badges**:
+  - **MEDIUM** (severity)
+  - **RUBIXKUBE-TUTORIALS** (namespace)
+  - **RCA** (analysis complete)
+- **Ask AI** button - Send to Chat for investigation
+- **More actions** menu (three dots)
+
+**Summary metrics:**
+- **2 items** - incident occurred twice
+- **1 day ago** - last occurrence
+- **45% confidence** - RCA confidence level
+- **Status: RCA_GENERATED** - analysis state
+
+**Progress bar:**
+- **Status: Complete** - investigation finished
+- **100%** progress bar (green)
+
+---
+
+### Overview Tab
+
+**Tab sections:**
+
+#### INCIDENT DETAILS
+
+**Detected:**
+- **3 days ago** - first occurrence
+- Oct 4, 2025 01:58 - exact timestamp
+
+**Last Seen:**
+- **1 day ago** - most recent occurrence
+- Oct 5, 2025 12:26 - exact timestamp
+
+**Confidence:**
+- **50%** - RCA confidence level
+- Moderate confidence, review evidence
+
+**Source:**
+- **observer** - detected by RubixKube Observer Agent
+
+---
+
+#### AFFECTED RESOURCES
+
+**Pod/crash-loop-demo**
+- Purple cube icon indicates Kubernetes Pod
+- Clickable to view in Infrastructure
+
+---
+
+#### SUGGESTIONS
+
+**Quick remediation steps** before full RCA:
+
+1. Check container logs for error messages
+2. Verify application configuration
+3. Consider increasing resource limits
+4. Check for external dependencies that might be unavailable
+
+**These are generic** - full RCA provides specific root cause.
+
+---
+
+#### SOURCE EVENTS
+
+**Original detection event:**
+- **Type**: CrashLoop
+- **Pod**: crash-loop-demo
+- **Details**: "CrashLoopBackOff: container app in pod crash-loop-demo restarted 3 times"
+- **Namespace**: rubixkube-tutorials
+
+---
+
+#### PROVIDE TO CHAT CONTEXT
+
+**Button at bottom** - sends entire incident context to Chat interface for AI-powered investigation.
+
+---
+
+## RCA Analysis Tab
+
+<Frame>
+  <img
+    src="/images/using/using-insights-05-rca-analysis.png"
+    alt="RCA Analysis tab showing root cause, factors, and impact"
+  />
+</Frame>
+
+**Click "RCA Analysis" tab** to see complete analysis.
+
+### Analysis Status
+
+**ANALYSIS COMPLETE**
+- Green checkmark icon
+- Status: Pending Resolution
+- **Confidence: 40%** with progress bar
+
+**Lower confidence** means more uncertainty - cross-reference with evidence.
+
+---
+
+### ROOT CAUSE
+
+**From our real RCA:**
+
+> "The application within the 'crash-loop-demo' pod was exiting immediately upon startup, leading Kubernetes to enter a 'CrashLoopBackOff' cycle. The precise reason for the application failure (e.g., code bug, configuration error, resource issue) could not be determined because the diagnostic tools for retrieving pod logs and events were not operational."
+
+**What this tells you:**
+- **Primary issue**: Application exits immediately on startup
+- **Kubernetes response**: CrashLoopBackOff protection mechanism
+- **Limitation**: Diagnostic tools unavailable, preventing deeper analysis
+- **Possible causes**: Code bug, config error, or resource constraint
+
+**Orange left border** highlights this as the key finding.
+
+---
+
+### CONTRIBUTING FACTORS
+
+**Warning triangle icon** indicates factors that enabled or worsened the issue:
+
+1. **Inability to retrieve specific error details** due to the failure of the 'get_pod_logs' and 'get_pod_events' diagnostic tools.
+
+2. **A likely unhandled exception, misconfiguration, or resource constraint** within the containerized application, which are common causes for this behavior according to the general search query.
+
+**These explain WHY** the root cause occurred or why analysis was limited.
+
+---
+
+### IMPACT ASSESSMENT
+
+**Paragraph format explaining business impact:**
+
+> "The 'crash-loop-demo' pod in the 'rubixkube-tutorials' namespace was unavailable due to repeated crashes. This caused a complete service outage for any functionality relying on this pod. The impact was contained to this specific application."
+
+**Key information:**
+- **Scope**: Single pod, single namespace
+- **Severity**: Complete service outage for this pod
+- **Containment**: No spread to other services
+- **Risk**: Low (tutorial namespace, not production)
+
+**AFFECTED SERVICES** subsection:
+- **Pod/crash-loop-demo** (clickable resource link)
+
+---
+
+## Recommended Actions
+
+<Frame>
+  <img
+    src="/images/using/using-insights-06-recommendations.png"
+    alt="Recommended Actions section with priority and action buttons"
+  />
+</Frame>
+
+**RECOMMENDED ACTIONS** section shows **3** prioritized remediation steps.
+
+### Action Card Structure
+
+**Each recommendation includes:**
+- **Priority badge** (HIGH PRIORITY or MEDIUM PRIORITY with colored icon)
+- **Action description** (what to do)
+- **Owner** (who should do it - Platform Engineering, Application Team, etc.)
+- **Action buttons**:
+  - **Apply** - Mark as implemented (red button)
+  - **Ask AI How** - Get detailed implementation steps from Chat
+  - **Dismiss** - Mark as not relevant
+
+---
+
+### Real Examples from Our RCA
+
+#### Recommendation #1 (HIGH PRIORITY)
+
+**Action:**
+> "Implement and fix the 'get_pod_logs' and 'get_pod_events' diagnostic tools to enable direct debugging of pod issues."
+
+**Owner**: Platform Engineering
+
+**Why HIGH:**
+- Blocks all future debugging
+- Affects entire RubixKube observability
+- Prevents accurate RCA for all incidents
+
+**Buttons**: Apply | Ask AI How | Dismiss
+
+---
+
+#### Recommendation #2 (HIGH PRIORITY)
+
+**Action:**
+> "Manually inspect the deployment configuration and container image for 'crash-loop-demo' to find the startup error."
+
+**Owner**: Application Team
+
+**Why HIGH:**
+- Directly addresses the failing pod
+- Can resolve issue immediately
+- Required while diagnostic tools are unavailable
+
+**Buttons**: Apply | Ask AI How | Dismiss
+
+---
+
+#### Recommendation #3 (MEDIUM PRIORITY)
+
+**Action:**
+> "Review and enhance application startup logging to ensure error messages are always outputted for easier debugging."
+
+**Owner**: Application Team
+
+**Why MEDIUM:**
+- Preventive measure
+- Benefits future incidents
+- Not urgent for current issue
+
+**Buttons**: Apply | Ask AI How | Dismiss
+
+---
+
+### Using Action Buttons
+
+**Apply button:**
+- Click when you've implemented the fix
+- Marks recommendation as completed
+- Helps track remediation progress
+
+**Ask AI How button:**
+- Opens Chat with context about this specific action
+- Gets step-by-step implementation guidance
+- AI has full incident context
+
+**Dismiss button:**
+- Use if recommendation not applicable
+- Removes from active list
+- Can undo later
+
+---
+
+## Timeline Tab
+
+<Frame>
+  <img
+    src="/images/using/using-insights-07-timeline.png"
+    alt="Timeline tab showing chronological events"
+  />
+</Frame>
+
+**Click "Timeline" tab** to see incident progression.
+
+### Timeline Structure
+
+**Chronological view** showing:
+- Status changes (NEW → QUEUED → IN_PROGRESS → COMPLETED → GENERATED)
+- RCA events (investigation steps)
+- Timestamps (date and exact time)
+- Actor ("By: observer", "By: adk", "By: rca-agent")
+
+---
+
+### Real Timeline from Our Incident
+
+**Latest to earliest:**
+
+#### 1. RCA_GENERATED (3 days ago)
+
+**Event**: "RCA analysis completed"
+
+**Details:**
+- Oct 4, 2025 02:01:09
+- By: ai-agent
+
+**Meaning**: Final RCA report generated and available
+
+**Green icon** indicates successful completion.
+
+---
+
+#### 2. RCA_COMPLETED (3 days ago)
+
+**Event**: "Retry 0: RCA processing completed in 136979ms (task_id: 68e031e6a90f1bad7f8f0c3d)"
+
+**Details:**
+- Oct 4, 2025 02:01:08
+- By: adk (Analysis & Diagnosis Kit)
+- Processing time: 137 seconds
+
+**Meaning**: RCA Pipeline finished analysis
+
+**Green icon** indicates successful processing.
+
+---
+
+#### 3. RCA_IN_PROGRESS (3 days ago)
+
+**Event**: "RCA processing started (task_id: 68e031e6a90f1bad7f8f0c3d)"
+
+**Details:**
+- Oct 4, 2025 01:58:53
+- By: adk
+
+**Meaning**: RCA Pipeline began investigating
+
+**Orange icon** indicates active processing.
+
+---
+
+#### 4. QUEUED_FOR_RCA (3 days ago)
+
+**Event**: "RCA task received by ADK (task_id: 68e031e6a90f1bad7f8f0c3d)"
+
+**Details:**
+- Oct 4, 2025 01:58:52
+- By: adk
+
+**Meaning**: Incident queued for RCA analysis
+
+**Purple icon** indicates queued state.
+
+---
+
+### Timeline Benefits
+
+**Use timeline to:**
+- Understand incident lifecycle
+- Calculate time-to-detection (NEW → QUEUED)
+- Calculate time-to-analysis (QUEUED → COMPLETED)
+- Debug RCA Pipeline issues
+- Track investigation steps
+- Correlate with external events
+
+**Typical timeline duration:**
+- Detection to Queue: Seconds
+- Queue to In Progress: Seconds  
+- In Progress to Complete: 30-180 seconds
+- Complete to Generated: 1-5 seconds
+
+---
+
+## Evidence Tab
+
+<Frame>
+  <img
+    src="/images/using/using-insights-08-evidence.png"
+    alt="Evidence tab showing investigation evidence"
+  />
+</Frame>
+
+**Click "Evidence" tab** to see data collected during RCA.
+
+### INVESTIGATION EVIDENCE
+
+**Header explains:**
+- "Data collected during the automated investigation process"
+- Shows what RCA Pipeline Agent found
+
+---
+
+### Evidence Items
+
+#### Evidence #1
+
+**Source**: SEARCHAGENT
+- Purple document icon
+- Expandable card (click to see details)
+- Copy button (top right) - copies evidence to clipboard
+- Dropdown arrow - expand to read full evidence
+
+**SearchAgent** means RCA performed knowledge base search about this error type.
+
+---
+
+### Investigation Completeness
+
+**Bottom metric**: **30%**
+
+**What it means:**
+- Investigation gathered 30% of possible evidence
+- Low percentage due to diagnostic tool failures (as noted in RCA)
+- Higher percentage = more comprehensive analysis
+
+**Why 30% in our case:**
+- get_pod_logs tool failed (would add ~30%)
+- get_pod_events tool failed (would add ~30%)
+- SearchAgent succeeded (contributed 30%)
+- Other tools not applicable (remaining 10%)
+
+**Target**: 80%+ for high-confidence RCA
+
+---
+
+## Filtering and Workflows
+
+### Daily Review Workflow
 
 <Steps>
-  <Step title="Overview" icon="eye">
-    - Incident summary
-    - Affected resources
-    - Detection time
-    - Confidence level
+  <Step title="Open Insights Page">
+    Navigate to Monitoring → Insights
   </Step>
 
-  <Step title="RCA Analysis" icon="brain">
-    - **Root Cause** - What actually caused the failure
-    - **Contributing Factors** - Why it happened
-    - **Impact Assessment** - What services affected
-    - **Recommended Actions** - How to fix (prioritized)
-  </Step>
-
-  <Step title="Timeline" icon="clock">
-    - Chronological events
-    - When issue started
-    - Detection time
-    - Related configuration changes
-  </Step>
-
-  <Step title="Evidence" icon="file-magnifying-glass">
-    - Pod events
-    - Log excerpts
-    - Metric data
-    - Configuration diffs
-  </Step>
-</Steps>
-
----
-
-## Real Example: OOMKilled RCA
-
-From our actual cluster:
-
-### Root Cause
-
-> "The memory-hog-demo pod is configured to use more memory than the limit allows, causing Kubernetes to terminate it to protect the node's stability."
-
-### Contributing Factors
-
-1. Memory limit set to 50Mi
-2. Application attempted to allocate ~100Mi
-3. Kubernetes killed container to protect node
-
-### Recommended Actions
-
-1. **Increase Memory Limit** (High Priority)
-   - Suggested: 150Mi (50% buffer over observed usage)
-   - Owner: Application Team
-   
-2. **Monitor for Memory Leaks** (Medium Priority)
-   - Check if usage grows over time
-   - Owner: Application Team
-
-3. **Implement Resource Quotas** (Low Priority)
-   - Prevent namespace over-allocation
-   - Owner: Platform Engineering
-
-**Each recommendation is actionable** with specific numbers and ownership.
-
----
-
-## Using the Insights Workflow
-
-### Daily Review
-
-**Every morning:**
-
-<Steps>
-  <Step title="Check Total Incidents">
-    Top of page shows: "4 incidents"
-    
-    Compare to yesterday - increasing or decreasing?
+  <Step title="Check Health Metrics">
+    **Look at header:**
+    - RCA coverage below 80%? Investigate why
+    - Critical Issues > 0? Handle immediately
+    - High Priority increased? Review new incidents
   </Step>
 
   <Step title="Filter by HIGH Severity">
-    Click "Severity" → Select "HIGH"
+    Click Severity → Check "high"
     
-    These need immediate attention
+    These need attention within hours
   </Step>
 
   <Step title="Review RCA Reports">
-    Click incidents with "RCA" badge
-    
-    Read root cause and recommendations
+    For each HIGH incident:
+    - Read Root Cause
+    - Check Confidence level
+    - Review Recommended Actions
   </Step>
 
   <Step title="Apply Fixes">
-    Implement recommended actions
+    Click "Apply" on each action after implementing
     
-    Mark incidents as resolved when fixed
+    Or "Ask AI How" for guidance
+  </Step>
+
+  <Step title="Verify Resolution">
+    Check incident list next day
+    
+    Should move to "Resolved" status
   </Step>
 </Steps>
 
 ---
 
-## Filtering and Search
+### Emergency Response Workflow
 
-### Available Filters
+**When Critical Issues > 0:**
 
-<Tabs>
-  <Tab title="Issue Type">
-    Filter by:
-    - OOMKilled
-    - CrashLoopBackOff
-    - ImagePullBackOff
-    - PodPending
-    - ConfigError
-  </Tab>
+<Steps>
+  <Step title="Immediate Filter">
+    Severity → critical (shows only critical incidents)
+  </Step>
 
-  <Tab title="Severity">
-    - HIGH (critical)
-    - medium (important)
-    - low (informational)
-  </Tab>
+  <Step title="Open Incident">
+    Click critical incident to expand
+  </Step>
 
-  <Tab title="Namespace">
-    Filter by:
-    - production
-    - staging
-    - rubixkube-tutorials
-    - etc.
-  </Tab>
+  <Step title="Read Impact Assessment">
+    Go to RCA Analysis tab
+    
+    Understand: What's affected? How many users?
+  </Step>
 
-  <Tab title="Status">
-    - Active (currently failing)
-    - Resolved (fixed)
-    - Investigating (RCA in progress)
-  </Tab>
-</Tabs>
+  <Step title="Check Recommended Actions">
+    Scroll to actions section
+    
+    Start with HIGH priority items
+  </Step>
 
-**Search box:** Find specific pod names or incident types quickly.
+  <Step title="Get AI Help">
+    Click "Ask AI How" on most urgent action
+    
+    Chat provides step-by-step resolution
+  </Step>
+
+  <Step title="Execute and Verify">
+    Implement fixes, monitor for resolution
+    
+    Mark actions as Applied when done
+  </Step>
+</Steps>
 
 ---
 
-## RCA Confidence Levels
+### Troubleshooting Workflow
 
-Each RCA report shows a confidence percentage:
+**When RCA confidence is low (below 50%):**
+
+<Steps>
+  <Step title="Check Evidence Tab">
+    See what data was collected
+    
+    Look for Investigation Completeness %
+  </Step>
+
+  <Step title="Review Timeline">
+    Check if RCA completed successfully
+    
+    Look for errors or warnings
+  </Step>
+
+  <Step title="Manual Investigation">
+    If tools failed, investigate manually:
+    - kubectl logs <pod>
+    - kubectl describe pod <pod>
+    - kubectl get events
+  </Step>
+
+  <Step title="Use Chat">
+    Click "Provide to Chat Context"
+    
+    Ask Chat to help interpret evidence
+  </Step>
+
+  <Step title="Feed Back to RubixKube">
+    Contact support with findings
+    
+    Helps improve future RCA accuracy
+  </Step>
+</Steps>
+
+---
+
+## Understanding RCA Confidence Levels
 
 | Confidence | Meaning | What to Do |
 |------------|---------|------------|
-| **90-100%** | High confidence in diagnosis | Trust and implement recommendations |
-| **70-89%** | Good confidence | Review evidence, likely correct |
-| **50-69%** | Moderate confidence | Verify with logs before acting |
-| **Below 50%** | Low confidence | Manual investigation needed |
+| **90-100%** | High confidence in diagnosis | Trust and implement recommendations immediately |
+| **70-89%** | Good confidence | Review evidence, recommendations likely correct |
+| **50-69%** | Moderate confidence | Cross-check with Evidence tab, verify before acting |
+| **Below 50%** | Low confidence | Manual investigation needed, use Chat for help |
 
-**Our OOMKilled example:** 90%+ confidence ✅
-
----
-
-## Incident Lifecycle
-
-### 1. Detection
-
-**What happens:**
-- Observer Agent detects failure
-- Insight created instantly
-- Appears in Activity Feed
-
-**Time:** Usually within 60 seconds
+**From our example**: 40-50% confidence
+- Indicates uncertainty due to diagnostic tool failures
+- Recommendations still valuable but require validation
+- Manual inspection recommended before implementing
 
 ---
 
-### 2. RCA Analysis
+## Incident Lifecycle States
 
-**What happens:**
-- RCA Pipeline Agent investigates
-- Gathers logs, events, metrics
-- Correlates with historical patterns
+### State Diagram
 
-**Status:** "RCA_IN_PROGRESS" (you'll see % completion)
-
-**Time:** 30-90 seconds depending on complexity
-
----
-
-### 3. Report Generated
-
-**What happens:**
-- RCA complete
-- Root cause identified
-- Recommendations provided
-
-**Status:** "RCA_COMPLETE"
-
-**Badge:** "RCA" appears on incident
-
----
-
-### 4. Remediation
-
-**What happens:**
-- You review recommendations
-- Apply fixes manually (Beta)
-- Monitor for resolution
-
-**Future:** Auto-remediation with approval
-
----
-
-### 5. Resolution
-
-**What happens:**
-- RubixKube detects issue fixed
-- Incident marked resolved
-- Added to Memory Engine for learning
-
-**Status:** "Resolved"
-
----
-
-## Using Evidence for Troubleshooting
-
-Click "Evidence" tab in any RCA report:
-
-### What You Get
-
-**Pod Events:**
 ```
-Normal  Scheduled  2m ago    Successfully assigned
-Warning Failed     1m ago    OOMKilled
-Normal  Pulling    1m ago    Pulling image
-Warning BackOff    30s ago   Back-off restarting
+NEW → QUEUED_FOR_RCA → RCA_IN_PROGRESS → RCA_COMPLETED → RCA_GENERATED → Resolved
 ```
 
-**Log Excerpts:**
-```
-dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
-stress: FAIL: [1] (452) hogvm failed
-```
+### State Definitions
 
-**Metrics:**
-- Memory usage over time
-- CPU utilization
-- Restart count graph
+**NEW**
+- Incident just detected by Observer
+- No RCA initiated yet
+- Usually lasts: Seconds
 
-**This is YOUR data** - RubixKube shows exactly what it found.
+**QUEUED_FOR_RCA**
+- Sent to RCA Pipeline queue
+- Waiting for processing slot
+- Usually lasts: Seconds
+
+**RCA_IN_PROGRESS**
+- RCA Pipeline actively investigating
+- Gathering logs, events, metrics
+- Usually lasts: 30-180 seconds
+
+**RCA_COMPLETED**
+- Investigation finished
+- Report being generated
+- Usually lasts: 1-5 seconds
+
+**RCA_GENERATED**
+- Report available in UI
+- Recommendations ready
+- Stays until resolved
+
+**Resolved**
+- Issue fixed and verified
+- RubixKube detected resolution
+- Archived for learning
 
 ---
 
 ## Integration with Other Features
 
-### From Insights → Chat
+### Insights → Chat
 
-**Click "Add to Chat Context"**
+**Button**: "Ask AI" or "Provide to Chat Context"
 
-Then ask Chat:
+**What it does:**
+- Sends full incident context to Chat
+- Includes RCA, evidence, timeline
+- Chat can answer follow-up questions
+
+**Example questions to ask:**
 ```
-"Explain this OOMKilled incident"
-"How do I fix it?"
-"Has this happened before?"
+"Explain this incident in simple terms"
+"How do I implement recommendation #1?"
+"Has this pod failed before?"
+"What are similar incidents in the past?"
 ```
-
-Chat has full RCA context!
 
 ---
 
-### From Insights → Dashboard
+### Insights → Dashboard
 
-Click incident → See it highlighted in Dashboard Activity Feed
+**From Dashboard Activity Feed** → Click event → Opens in Insights
 
-**Use case:** Verify incident is same one you saw in dashboard.
+**Use case:** 
+- You see "OOMKilled" in Dashboard feed
+- Click to see full RCA
+- Opens Insights with incident expanded
+
+**Bi-directional navigation** keeps context flowing.
 
 ---
 
-### From Insights → Memory Engine
+### Insights → Memory Engine
 
-RubixKube automatically stores:
-- Root cause patterns
-- Resolution steps that worked
-- Time to resolve
+**Automatic integration:**
+- Every resolved incident stored
+- Root causes saved to knowledge base
+- Resolution patterns learned
+- Speeds up future RCA
 
-**Benefit:** Faster resolution next time.
+**You don't see this** - happens in background.
+
+**Benefit**: Each incident makes RubixKube smarter for next time.
+
+---
+
+## Best Practices
+
+<Accordion title="1. Review Insights Daily">
+**Morning routine:**
+
+1. Open Insights page
+2. Check RCA coverage (target: 80%+)
+3. Filter by HIGH severity
+4. Review new incidents since yesterday
+5. Apply recommended actions
+
+**Time required**: 5-10 minutes
+
+**Benefit**: Proactive issue resolution before escalation
+</Accordion>
+
+<Accordion title="2. Triage by Severity">
+**Priority order:**
+
+**critical** (red badge)
+- Drop everything, resolve immediately
+- System-wide impact
+- Data loss risk
+
+**high** (red badge)
+- Resolve within hours
+- Significant user impact
+- Service degradation
+
+**medium** (yellow badge)
+- Resolve within 1-2 days
+- Moderate impact
+- Workarounds exist
+
+**low** (gray badge)
+- Resolve next sprint
+- Minimal impact
+- Informational
+
+**Always check header** "Critical Issues" and "High Priority" counts first.
+</Accordion>
+
+<Accordion title="3. Trust High-Confidence RCA">
+**When confidence is 70%+:**
+
+- Implement recommendations directly
+- No need for extensive validation
+- RubixKube has solid evidence
+
+**When confidence is below 70%:**
+
+- Review Evidence tab carefully
+- Cross-check with manual investigation
+- Use "Ask AI How" for guidance
+- Validate before implementing
+
+**Our example** (40-50% confidence):
+- Due to diagnostic tool failures
+- Manual verification needed
+- Still provides valuable direction
+</Accordion>
+
+<Accordion title="4. Use Filters Strategically">
+**Common filter combinations:**
+
+**Production-only incidents:**
+- Namespace: production
+- Severity: high, critical
+
+**Recent failures:**
+- Status: Active
+- Sort: Newest
+
+**Specific pod issues:**
+- Search: "pod-name"
+- Issue Type: CrashLoop, OOMKilled
+
+**Unresolved RCA:**
+- Status: Active
+- Only show incidents with RCA badge
+
+**Pro tip**: Clear filters between sessions using "Clear filters" button
+</Accordion>
+
+<Accordion title="5. Document Resolutions">
+**After fixing an incident:**
+
+1. Click "Apply" on each implemented recommendation
+2. Add notes in "More actions" menu (if available)
+3. Take screenshot of RCA for postmortem
+4. Share learnings with team
+
+**Why this matters:**
+- Builds organizational knowledge
+- Helps Memory Engine learn faster
+- Creates audit trail
+- Prevents repeated incidents
+
+**Future enhancement**: RubixKube will auto-detect resolutions
+</Accordion>
+
+<Accordion title="6. Leverage Chat Integration">
+**Don't investigate alone:**
+
+**For every incident:**
+- Click "Ask AI" button
+- Chat has full context already
+- Ask for explanations, steps, similar incidents
+
+**Example workflow:**
+1. See OOMKilled incident
+2. Click "Ask AI"
+3. Ask: "Show me memory usage trends"
+4. Ask: "What should I set the memory limit to?"
+5. Ask: "Has this pod OOMKilled before?"
+
+**Chat makes RCA actionable** with interactive guidance.
+</Accordion>
+
+---
+
+## Quick Reference
+
+### Insights Page Elements
+
+| Element | Purpose | Action |
+|---------|---------|--------|
+| **Health Metrics** | Overview of incident coverage | Check daily, target 80%+ RCA coverage |
+| **Search Bar** | Find specific incidents | Type pod name, namespace, or error type |
+| **Severity Filter** | Prioritize by impact | Filter for "high" and "critical" first |
+| **Incident Cards** | List all incident groups | Click to expand details |
+| **RCA Analysis Tab** | Root cause findings | Read before taking action |
+| **Recommendations** | Prioritized fixes | Click "Apply" or "Ask AI How" |
+| **Timeline Tab** | Incident progression | Use for debugging RCA issues |
+| **Evidence Tab** | Investigation data | Review for low-confidence RCA |
+
+---
+
+### Keyboard Shortcuts
+
+While on Insights page:
+- `R` - Refresh data
+- `F` - Focus search bar
+- `1-4` - Jump to first 4 incidents
+- `Tab` - Navigate between tabs (Overview, RCA, Timeline, Evidence)
+- `Esc` - Close expanded incident
+
+*(Note: Keyboard shortcuts may vary by implementation)*
+
+---
+
+## Common Scenarios
+
+### Scenario 1: New OOMKilled Incident
+
+**What you see:**
+- HIGH severity badge
+- "OOMKilled in Pod/memory-hog-demo"
+- RCA badge present
+
+**What to do:**
+
+1. Click incident to expand
+2. Go to RCA Analysis tab
+3. Read Root Cause (memory limit too low)
+4. Check Recommended Actions
+5. Click "Ask AI How" on "Increase memory limit" action
+6. Implement suggested limit (e.g., increase from 50Mi to 150Mi)
+7. Click "Apply" when done
+8. Monitor for resolution
+
+**Expected outcome**: Pod stops crashing, incident auto-resolves.
+
+---
+
+### Scenario 2: Low RCA Confidence
+
+**What you see:**
+- Incident with 40% confidence
+- "Status: RCA_GENERATED" but low certainty
+
+**What to do:**
+
+1. Click Evidence tab
+2. Check Investigation Completeness (30%)
+3. See which tools failed (e.g., get_pod_logs)
+4. Perform manual investigation:
+   ```
+   kubectl logs crash-loop-demo -n rubixkube-tutorials
+   kubectl describe pod crash-loop-demo -n rubixkube-tutorials
+   ```
+5. Click "Ask AI" with manual findings
+6. Chat combines RCA + your data for better diagnosis
+
+**Key lesson**: Low confidence doesn't mean wrong, just uncertain.
+
+---
+
+### Scenario 3: Incident Without RCA
+
+**What you see:**
+- "PodPending in Pod/broken-image-demo"
+- No RCA badge
+- Only shows Suggestions (not full RCA)
+
+**Why this happens:**
+- RCA not complete yet (check Timeline)
+- RCA failed (check Timeline for errors)
+- Incident type doesn't trigger RCA
+- RCA Pipeline agent offline
+
+**What to do:**
+
+1. Check Timeline tab for RCA status
+2. If "QUEUED_FOR_RCA" but no progress:
+   - RCA Pipeline may be stuck
+   - Go to Agents page, check RCA Pipeline Agent
+3. If no RCA triggered:
+   - Use Suggestions section for generic fixes
+   - Click "Ask AI" for Chat investigation
+4. Manual investigation:
+   ```
+   kubectl describe pod broken-image-demo -n rubixkube-tutorials
+   ```
+   Look for ImagePullBackOff errors
+
+---
+
+### Scenario 4: Multiple Related Incidents
+
+**What you see:**
+- "CrashLoop in Pod/memory-hog-demo" (MEDIUM)
+- "OOMKilled in Pod/memory-hog-demo" (HIGH)
+- Same pod, different incident types
+
+**What this means:**
+- Pod crashed due to OOM
+- OOM is root cause
+- CrashLoop is symptom
+
+**What to do:**
+
+1. Open HIGH severity incident first (OOMKilled)
+2. Read RCA (memory limit too low)
+3. Fix memory limit
+4. Both incidents should resolve together
+5. Mark both as related in notes
+
+**Pro tip**: RubixKube groups related incidents when possible.
+
+---
+
+## Troubleshooting Insights Issues
+
+### Insights page not loading
+
+**Symptoms**: Spinner forever, "Loading insights..." never completes
+
+**Causes:**
+- Backend API connection issue
+- RCA Pipeline not responding
+- Database query timeout
+
+**Solutions:**
+
+1. Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)
+2. Check Dashboard → Agents → Verify RCA Pipeline is active
+3. Check browser console for errors
+4. Try different browser
+5. Contact support if persists
+
+---
+
+### RCA not generating
+
+**Symptoms**: Incidents stuck in "QUEUED_FOR_RCA" for >5 minutes
+
+**Causes:**
+- RCA Pipeline Agent offline
+- Task queue full
+- Resource constraints
+
+**Solutions:**
+
+1. Go to Agents page
+2. Check RCA Pipeline Agent status
+3. If degraded, restart:
+   ```
+   kubectl rollout restart deployment/rca-pipeline -n rubixkube-system
+   ```
+4. Check Timeline tab for error messages
+5. Verify cluster has resources for RCA workload
+
+---
+
+### Low RCA coverage (below 60%)
+
+**Symptoms**: "Health: 55% RCA coverage" in header
+
+**Causes:**
+- Many incidents without RCA
+- RCA failures
+- Complex incidents taking longer
+
+**Solutions:**
+
+1. Filter by Status: Active, no RCA badge
+2. Check those incidents' Timeline tabs for RCA failures
+3. Verify diagnostic tools working (get_pod_logs, get_pod_events)
+4. Check RCA Pipeline Agent logs:
+   ```
+   kubectl logs -l app=rca-pipeline -n rubixkube-system --tail=100
+   ```
+5. May need to tune RCA timeout settings in Settings
+
+---
+
+### Evidence completeness always low
+
+**Symptoms**: Investigation Completeness consistently 30-40%
+
+**Causes:**
+- Diagnostic tools failing
+- Permission issues
+- Missing integrations
+
+**Solutions:**
+
+1. Check which tools are failing (Evidence tab shows source)
+2. Verify RubixKube has proper RBAC permissions:
+   ```
+   kubectl auth can-i get pods --as=system:serviceaccount:rubixkube-system:rubixkube-observer
+   kubectl auth can-i get events --as=system:serviceaccount:rubixkube-system:rubixkube-observer
+   ```
+3. Check integration connections in Settings → Integrations
+4. Review RubixKube Observer Agent logs for errors
 
 ---
 
 ## What You Learned
 
 <CardGroup cols={2}>
-  <Card title="Incident Groups" icon="layer-group">
-    How RubixKube groups related failures
+  <Card title="Health Metrics" icon="gauge-high">
+    - 75% RCA coverage
+    - 4 total incident groups
+    - 0 critical, 1 high priority
+    - Daily monitoring targets
   </Card>
 
-  <Card title="RCA Reports" icon="file-magnifying-glass">
-    Complete structure: Root Cause, Factors, Impact, Actions
+  <Card title="Incident Structure" icon="list">
+    - Severity levels (critical, high, medium, low)
+    - Incident groups and items
+    - Status lifecycle (NEW → RESOLVED)
+    - RCA badges and completion
   </Card>
 
-  <Card title="Severity Levels" icon="signal">
-    HIGH, medium, low - what each means
+  <Card title="RCA Analysis" icon="magnifying-glass">
+    - Root Cause identification
+    - Contributing Factors analysis
+    - Impact Assessment scope
+    - Confidence levels explained
   </Card>
 
-  <Card title="Evidence" icon="folder-open">
-    Events, logs, metrics - your actual data
+  <Card title="Recommendations" icon="list-check">
+    - Prioritized actions (HIGH/MEDIUM)
+    - Owner assignments
+    - Apply/Ask AI How/Dismiss buttons
+    - Remediation tracking
   </Card>
 
-  <Card title="Lifecycle" icon="arrows-spin">
-    Detection → Analysis → Report → Fix → Resolution
+  <Card title="Timeline View" icon="clock">
+    - Chronological event progression
+    - RCA processing states
+    - Investigation duration
+    - Actor attribution
+  </Card>
+
+  <Card title="Evidence Collection" icon="folder-open">
+    - Investigation completeness percentage
+    - Data sources (SearchAgent, logs, events)
+    - Diagnostic tool status
+    - Copy and share evidence
+  </Card>
+
+  <Card title="Filtering" icon="filter">
+    - Search by name/namespace/type
+    - Severity, Issue Type, Namespace, Status
+    - Multiple selection support
+    - Clear filters button
   </Card>
 
   <Card title="Workflows" icon="diagram-project">
-    Daily review, filtering, integration with Chat
+    - Daily review routine
+    - Emergency response steps
+    - Troubleshooting approach
+    - Integration with Chat
   </Card>
 </CardGroup>
 
@@ -401,7 +1265,7 @@ RubixKube automatically stores:
     icon="gauge"
     href="/using/dashboard"
   >
-    Start your day with dashboard overview
+    Monitor overall system health and active incidents
   </Card>
 
   <Card
@@ -409,38 +1273,47 @@ RubixKube automatically stores:
     icon="comments"
     href="/tutorials/chat-troubleshooting"
   >
-    Ask Chat about incidents from Insights
+    Ask AI about incidents with full RCA context
   </Card>
 
   <Card
-    title="Understand Agent Mesh"
-    icon="robot"
-    href="/concepts/agent-mesh"
+    title="View Infrastructure"
+    icon="sitemap"
+    href="/using/infrastructure"
   >
-    Learn how RCA Pipeline generates reports
+    See affected resources in topology view
   </Card>
 
-  <Card title="View Infrastructure" icon="sitemap" href="/using/infrastructure">
-    See affected resources in topology view
+  <Card
+    title="Check Agent Status"
+    icon="robot"
+    href="/using/agents"
+  >
+    Verify RCA Pipeline and Observer agents are healthy
   </Card>
 </CardGroup>
 
 ---
 
-## Quick Reference
+## Related Documentation
 
-**Insights workflow:**
-1. Open Insights page
-2. Filter by HIGH severity
-3. Click incident → Read RCA
-4. Review recommended actions
-5. Apply fixes
-6. Verify resolution
-
-**Most useful filters:**
-- Severity: HIGH (critical items first)
-- Status: Active (current issues)
-- Namespace: production (if you have it)
+<CardGroup cols={2}>
+  <Card title="Agent Mesh Concepts" icon="network-wired" href="/concepts/agent-mesh">
+    Learn how RCA Pipeline generates analysis
+  </Card>
+  
+  <Card title="What is SRI?" icon="brain" href="/concepts/what-is-sri">
+    Understand Site Reliability Intelligence philosophy
+  </Card>
+  
+  <Card title="Memory Engine" icon="database" href="/concepts/memory-engine">
+    How RubixKube learns from past incidents
+  </Card>
+  
+  <Card title="Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    Safety measures and confidence thresholds
+  </Card>
+</CardGroup>
 
 ---
 
@@ -450,8 +1323,28 @@ RubixKube automatically stores:
   <Card title="Support" icon="headset">
     Email: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
   </Card>
-  <Card title="RCA Concepts" icon="book">
-    [How RCA Works](/concepts/agent-mesh)
+  <Card title="Documentation" icon="book">
+    Browse all guides in [Getting Started](/getting-started/introduction)
+  </Card>
+  <Card title="Tutorials" icon="graduation-cap">
+    Hands-on learning in [Tutorials](/tutorials/first-steps)
+  </Card>
+  <Card title="Community" icon="users">
+    Join discussions and share RCA learnings
   </Card>
 </CardGroup>
 
+---
+
+## Feedback
+
+Found an issue with this guide or have suggestions?
+
+- **Email**: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
+- **Subject**: "Insights Guide Feedback"
+
+---
+
+*Last updated: October 6, 2025*
+*Guide version: 2.0*
+*Based on RubixKube Console v1.0*

@@ -26,15 +26,7 @@
               "getting-started/installation-kind"
             ]
           },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "concepts/what-is-sri",
-              "concepts/agent-mesh",
-              "concepts/memory-engine",
-              "concepts/guardrails"
-            ]
-          },
+         
     {
       "group": "Hands-On Tutorials",
       "pages": [
@@ -56,10 +48,16 @@
           {
             "group": "Using RubixKube",
             "pages": [
-              "using/observing-infra",
-              "using/root-cause-analysis",
-              "using/autofix-remediation",
-              "using/business-insights"
+              
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/what-is-sri",
+              "concepts/agent-mesh",
+              "concepts/memory-engine",
+              "concepts/guardrails"
             ]
           },
           {

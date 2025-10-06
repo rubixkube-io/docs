@@ -1,0 +1,294 @@
+---
+title: "Beta Disclaimers"
+description: "Important safety information and limitations for RubixKube Beta release"
+---
+
+RubixKube is currently in **Beta**. While significantly more stable than Alpha, the software is still evolving and should be used with appropriate caution.  
+
+**This is NOT a production-ready release.** Please read and understand the following before proceeding.
+
+<Warning>
+**⚠️ Not for Production Environments**
+
+RubixKube Beta must **NOT** be deployed in production environments or on critical infrastructure.  
+
+**Safe for:**
+- ✅ Development clusters
+- ✅ Staging environments  
+- ✅ Testing and evaluation
+- ✅ Local KIND clusters
+- ✅ Non-critical cloud clusters
+
+**NOT safe for:**
+- ❌ Production workloads
+- ❌ Customer-facing infrastructure
+- ❌ Revenue-critical systems
+- ❌ Regulated environments (until compliance certification)
+
+Failure to follow this guidance may result in outages, data loss, or service disruptions.
+</Warning>
+
+<Info>
+**Beta vs Alpha:** Beta builds are more stable than Alpha, but still undergo active development. Features may change, and some functionality may be incomplete.
+</Info>
+
+
+## Safety and Guardrails
+
+RubixKube includes multiple layers of safety guardrails to protect your infrastructure:
+
+<CardGroup cols={2}>
+  <Card title="Observe-Only by Default" icon="eye">
+    Default mode is **read-only observation**. Any action that modifies cluster state requires explicit approval.
+  </Card>
+  <Card title="Minimal Permissions" icon="key">
+    RubixKube operates with **least-privilege RBAC**. Never requires or requests cluster-admin access.
+  </Card>
+  <Card title="Full Audit Logging" icon="list">
+    Every action is logged with timestamps, user context, and rationale. Complete audit trail maintained.
+  </Card>
+  <Card title="Rollback Ready" icon="rotate-left">
+    All changes are reversible. RubixKube tracks configuration history for instant rollbacks.
+  </Card>
+</CardGroup>
+
+### Autonomous Mode Safety
+
+When you enable autonomous remediation (optional):
+
+- **Blast Radius Limits** - Only fixes scoped resources, never cluster-wide changes
+- **Approval Workflows** - High-risk actions require manual approval
+- **Dry-Run First** - RubixKube simulates changes before applying
+- **Circuit Breakers** - Automatic pause if multiple failures detected
+
+<Warning>
+**Best Practice:** Start with observe-only mode, then gradually enable auto-remediation for low-risk scenarios only.
+</Warning>
+
+
+## Data and Privacy
+
+### What RubixKube Collects
+
+<AccordionGroup>
+  <Accordion title="✅ Data We Collect" icon="check">
+    RubixKube observer collects:
+    - **Kubernetes metadata** - Pod names, namespaces, labels, annotations
+    - **Metrics** - CPU, memory, network usage, health checks
+    - **Events** - Kubernetes events and state changes
+    - **Resource status** - Deployment health, replica counts
+    
+    All data is encrypted in transit (TLS 1.3) and at rest (AES-256).
+  </Accordion>
+
+  <Accordion title="❌ Data We NEVER Collect" icon="xmark">
+    RubixKube does **NOT** collect:
+    - ❌ Application logs or stdout/stderr
+    - ❌ Kubernetes secrets or ConfigMap data
+    - ❌ Environment variables containing sensitive data
+    - ❌ Your actual business/customer data
+    - ❌ Code or container contents
+    
+    **Privacy First:** We only collect what's necessary for reliability monitoring.
+  </Accordion>
+
+  <Accordion title="🔒 Security Best Practices" icon="lock">
+    **For Beta Testing:**
+    - Use non-production data only
+    - Avoid clusters with PII or regulated data
+    - Redact sensitive information before sharing logs with support
+    - Review RubixKube's RBAC permissions regularly
+    - Use separate API keys for each environment
+  </Accordion>
+</AccordionGroup>  
+
+---
+
+## Compatibility & Requirements
+
+### Supported Kubernetes Versions
+
+<Accordion title="Kubernetes Versions">
+  **Supported:**
+  - Kubernetes 1.24+
+  - Kubernetes 1.25, 1.26, 1.27, 1.28 (tested)
+  - Latest stable versions recommended
+  
+  **Not supported:**
+  - Kubernetes 1.23 and older
+  - Beta/alpha Kubernetes releases
+</Accordion>
+
+### Supported Platforms
+
+<Accordion title="Cloud Providers">
+  **Fully Supported:**
+  - ✅ Amazon EKS
+  - ✅ Google GKE
+  - ✅ Azure AKS
+  - ✅ DigitalOcean Kubernetes
+  - ✅ Linode LKE
+  
+  **Local Development:**
+  - ✅ KIND (Kubernetes in Docker)
+  - ✅ Minikube
+  - ✅ k3s/k3d
+  
+  **Limited/Experimental:**
+  - ⚠️ OpenShift (basic support)
+  - ⚠️ Rancher (basic support)
+</Accordion>
+
+### Integrations
+
+During Beta, the following integrations are available:
+
+- ✅ **Observability:** Prometheus, Grafana
+- ✅ **Notifications:** Slack (coming soon: PagerDuty, Teams)
+- ✅ **GitOps:** Basic support
+- ⚠️ **Service Mesh:** Istio/Linkerd (experimental)
+
+---
+
+## Expected Behavior & Known Limitations
+
+### What to Expect During Beta
+
+<AccordionGroup>
+  <Accordion title="✅ What Works Well">
+    - Infrastructure monitoring and observability
+    - Issue detection and alerting
+    - Root cause analysis with timelines
+    - Chat-based infrastructure queries
+    - Manual remediation suggestions
+    - Dashboard and visualizations
+  </Accordion>
+
+  <Accordion title="⚠️ Known Limitations">
+    - **Auto-remediation:** Limited to specific issue types
+    - **Dashboard:** Some advanced features still in development
+    - **Scaling:** Tested up to moderate cluster sizes (~100 nodes)
+    - **Integrations:** Limited third-party integrations
+    - **Documentation:** Some tutorials still being created
+  </Accordion>
+
+  <Accordion title="🐛 You May Encounter">
+    - Occasional UI glitches or slow loading
+    - Some features behind "Beta" flags
+    - Edge cases in complex multi-cluster setups
+    - Performance variations on very large clusters
+    - Minor API changes between updates
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+**Bug Reporting:** Please report issues to bugs@rubixkube.ai with:
+- Kubernetes version
+- Cloud provider (or KIND)
+- RubixKube version
+- Reproduction steps
+- Logs from observer pod
+
+Detailed reports help us fix issues faster!
+</Note>
+
+---
+
+## Your Responsibility as a Beta Tester
+
+By using RubixKube Beta, you acknowledge:
+
+<CardGroup cols={2}>
+  <Card title="Environment Safety" icon="shield">
+    You are responsible for choosing appropriate test environments and ensuring RubixKube is not deployed on production systems.
+  </Card>
+  <Card title="Review Actions" icon="eye">
+    Always review and approve proposed changes before execution. Never blindly trust automated suggestions.
+  </Card>
+  <Card title="Backup & Rollback" icon="database">
+    Maintain backups and rollback plans. RubixKube helps, but you own your infrastructure safety.
+  </Card>
+  <Card title="Provide Feedback" icon="comment">
+    Report bugs, suggest features, and help us make RubixKube production-ready faster.
+  </Card>
+</CardGroup>
+
+---
+
+## Getting Support During Beta
+
+<CardGroup cols={3}>
+  <Card title="Email Support" icon="envelope">
+    **support@rubixkube.ai**
+    
+    Response time: 24-48 hours
+  </Card>
+  <Card title="Bug Reports" icon="bug">
+    **bugs@rubixkube.ai**
+    
+    Critical bugs: <24 hour response
+  </Card>
+  <Card title="Feature Requests" icon="lightbulb">
+    **features@rubixkube.ai**
+    
+    We love hearing your ideas!
+  </Card>
+</CardGroup>
+
+<Tip>
+**Priority Support:** Beta testers providing detailed feedback get prioritized support and early access to new features.
+</Tip>
+
+---
+
+## Release Roadmap
+
+### Current: Beta (Q4 2025)
+- ✅ Core monitoring and detection
+- ✅ Root cause analysis
+- ✅ Chat-based queries
+- ✅ Manual remediation suggestions
+- ⚠️ Limited auto-remediation
+
+### Coming Soon: Production-Ready (Q1 2026)
+- 🔜 Full auto-remediation capabilities
+- 🔜 Multi-cluster management
+- 🔜 Advanced integrations
+- 🔜 SLA guarantees
+- 🔜 Enterprise support tiers
+- 🔜 SOC 2 & ISO certifications
+
+---
+
+## I Understand and Accept
+
+Before proceeding, confirm you understand:
+
+- ✅ RubixKube is in **Beta** - not production-ready
+- ✅ I will only use it on **test/dev/staging** environments
+- ✅ I will **not** deploy to production or critical infrastructure
+- ✅ I understand features may change and bugs may occur
+- ✅ I will provide feedback to help improve RubixKube
+
+---
+
+## Ready to Start?
+
+<CardGroup cols={2}>
+  <Card
+    title="Create Your Account"
+    icon="user-plus"
+    href="/getting-started/sign-up"
+    horizontal
+  >
+    Sign up for free and get your API key
+  </Card>
+  <Card
+    title="Install RubixKube"
+    icon="download"
+    href="/getting-started/installation-kind"
+    horizontal
+  >
+    Start with a local KIND cluster or jump to cloud
+  </Card>
+</CardGroup>

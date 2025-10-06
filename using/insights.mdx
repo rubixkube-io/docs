@@ -1,0 +1,457 @@
+---
+title: 'Using Insights & RCA'
+description: 'Deep dive into incidents, root cause analysis, and evidence-based troubleshooting'
+---
+
+# Using Insights & RCA
+
+The **Insights** page is where RubixKube's intelligence shines - showing you not just WHAT failed, but WHY it failed, with complete root cause analysis, evidence, and remediation suggestions.
+
+<Info>
+**What you'll learn:** How to interpret incident groups, read RCA reports, understand severity levels, navigate timelines, and use evidence for troubleshooting.
+</Info>
+
+---
+
+## Insights Overview
+
+<Frame>
+  <img
+    src="/images/using/using-insights-01-overview.png"
+    alt="Insights page showing incident groups and RCA reports"
+  />
+</Frame>
+
+**The page shows:**
+- **Incident Groups** - Similar incidents grouped together
+- **RCA Status** - Analysis progress for each incident
+- **Severity Levels** - HIGH, medium, low priority
+- **Evidence Links** - Logs, events, metrics
+
+---
+
+## Understanding Incident Groups
+
+RubixKube groups related incidents together for easier management.
+
+### Example: OOMKilled Incident Group
+
+**What you see:**
+- **Title:** "OOMKilled in Pod/memory-hog-demo"
+- **Severity:** HIGH (red indicator)
+- **Items:** 2 items (multiple occurrences)
+- **RCA Badge:** Shows analysis is complete
+
+**Why grouped:** Same root cause affecting same resource multiple times.
+
+---
+
+## Severity Levels Explained
+
+<CardGroup cols={3}>
+  <Card title="🔴 HIGH" icon="triangle-exclamation">
+    **Critical issues:**
+    - OOMKilled (memory exhaustion)
+    - CrashLoopBackOff with high restart count
+    - Service unavailability
+    
+    **Action:** Immediate attention required
+  </Card>
+
+  <Card title="🟡 Medium" icon="circle-exclamation">
+    **Important but not critical:**
+    - ImagePullBackOff
+    - Single pod crashes
+    - Resource warnings
+    
+    **Action:** Address within hours
+  </Card>
+
+  <Card title="🟢 Low" icon="circle-info">
+    **Informational:**
+    - Configuration drift
+    - Best practice violations
+    - Optimization opportunities
+    
+    **Action:** Review when convenient
+  </Card>
+</CardGroup>
+
+---
+
+## Reading an RCA Report
+
+Click on any incident to see the full RCA report:
+
+### Report Sections
+
+<Steps>
+  <Step title="Overview" icon="eye">
+    - Incident summary
+    - Affected resources
+    - Detection time
+    - Confidence level
+  </Step>
+
+  <Step title="RCA Analysis" icon="brain">
+    - **Root Cause** - What actually caused the failure
+    - **Contributing Factors** - Why it happened
+    - **Impact Assessment** - What services affected
+    - **Recommended Actions** - How to fix (prioritized)
+  </Step>
+
+  <Step title="Timeline" icon="clock">
+    - Chronological events
+    - When issue started
+    - Detection time
+    - Related configuration changes
+  </Step>
+
+  <Step title="Evidence" icon="file-magnifying-glass">
+    - Pod events
+    - Log excerpts
+    - Metric data
+    - Configuration diffs
+  </Step>
+</Steps>
+
+---
+
+## Real Example: OOMKilled RCA
+
+From our actual cluster:
+
+### Root Cause
+
+> "The memory-hog-demo pod is configured to use more memory than the limit allows, causing Kubernetes to terminate it to protect the node's stability."
+
+### Contributing Factors
+
+1. Memory limit set to 50Mi
+2. Application attempted to allocate ~100Mi
+3. Kubernetes killed container to protect node
+
+### Recommended Actions
+
+1. **Increase Memory Limit** (High Priority)
+   - Suggested: 150Mi (50% buffer over observed usage)
+   - Owner: Application Team
+   
+2. **Monitor for Memory Leaks** (Medium Priority)
+   - Check if usage grows over time
+   - Owner: Application Team
+
+3. **Implement Resource Quotas** (Low Priority)
+   - Prevent namespace over-allocation
+   - Owner: Platform Engineering
+
+**Each recommendation is actionable** with specific numbers and ownership.
+
+---
+
+## Using the Insights Workflow
+
+### Daily Review
+
+**Every morning:**
+
+<Steps>
+  <Step title="Check Total Incidents">
+    Top of page shows: "4 incidents"
+    
+    Compare to yesterday - increasing or decreasing?
+  </Step>
+
+  <Step title="Filter by HIGH Severity">
+    Click "Severity" → Select "HIGH"
+    
+    These need immediate attention
+  </Step>
+
+  <Step title="Review RCA Reports">
+    Click incidents with "RCA" badge
+    
+    Read root cause and recommendations
+  </Step>
+
+  <Step title="Apply Fixes">
+    Implement recommended actions
+    
+    Mark incidents as resolved when fixed
+  </Step>
+</Steps>
+
+---
+
+## Filtering and Search
+
+### Available Filters
+
+<Tabs>
+  <Tab title="Issue Type">
+    Filter by:
+    - OOMKilled
+    - CrashLoopBackOff
+    - ImagePullBackOff
+    - PodPending
+    - ConfigError
+  </Tab>
+
+  <Tab title="Severity">
+    - HIGH (critical)
+    - medium (important)
+    - low (informational)
+  </Tab>
+
+  <Tab title="Namespace">
+    Filter by:
+    - production
+    - staging
+    - rubixkube-tutorials
+    - etc.
+  </Tab>
+
+  <Tab title="Status">
+    - Active (currently failing)
+    - Resolved (fixed)
+    - Investigating (RCA in progress)
+  </Tab>
+</Tabs>
+
+**Search box:** Find specific pod names or incident types quickly.
+
+---
+
+## RCA Confidence Levels
+
+Each RCA report shows a confidence percentage:
+
+| Confidence | Meaning | What to Do |
+|------------|---------|------------|
+| **90-100%** | High confidence in diagnosis | Trust and implement recommendations |
+| **70-89%** | Good confidence | Review evidence, likely correct |
+| **50-69%** | Moderate confidence | Verify with logs before acting |
+| **Below 50%** | Low confidence | Manual investigation needed |
+
+**Our OOMKilled example:** 90%+ confidence ✅
+
+---
+
+## Incident Lifecycle
+
+### 1. Detection
+
+**What happens:**
+- Observer Agent detects failure
+- Insight created instantly
+- Appears in Activity Feed
+
+**Time:** Usually within 60 seconds
+
+---
+
+### 2. RCA Analysis
+
+**What happens:**
+- RCA Pipeline Agent investigates
+- Gathers logs, events, metrics
+- Correlates with historical patterns
+
+**Status:** "RCA_IN_PROGRESS" (you'll see % completion)
+
+**Time:** 30-90 seconds depending on complexity
+
+---
+
+### 3. Report Generated
+
+**What happens:**
+- RCA complete
+- Root cause identified
+- Recommendations provided
+
+**Status:** "RCA_COMPLETE"
+
+**Badge:** "RCA" appears on incident
+
+---
+
+### 4. Remediation
+
+**What happens:**
+- You review recommendations
+- Apply fixes manually (Beta)
+- Monitor for resolution
+
+**Future:** Auto-remediation with approval
+
+---
+
+### 5. Resolution
+
+**What happens:**
+- RubixKube detects issue fixed
+- Incident marked resolved
+- Added to Memory Engine for learning
+
+**Status:** "Resolved"
+
+---
+
+## Using Evidence for Troubleshooting
+
+Click "Evidence" tab in any RCA report:
+
+### What You Get
+
+**Pod Events:**
+```
+Normal  Scheduled  2m ago    Successfully assigned
+Warning Failed     1m ago    OOMKilled
+Normal  Pulling    1m ago    Pulling image
+Warning BackOff    30s ago   Back-off restarting
+```
+
+**Log Excerpts:**
+```
+dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+stress: FAIL: [1] (452) hogvm failed
+```
+
+**Metrics:**
+- Memory usage over time
+- CPU utilization
+- Restart count graph
+
+**This is YOUR data** - RubixKube shows exactly what it found.
+
+---
+
+## Integration with Other Features
+
+### From Insights → Chat
+
+**Click "Add to Chat Context"**
+
+Then ask Chat:
+```
+"Explain this OOMKilled incident"
+"How do I fix it?"
+"Has this happened before?"
+```
+
+Chat has full RCA context!
+
+---
+
+### From Insights → Dashboard
+
+Click incident → See it highlighted in Dashboard Activity Feed
+
+**Use case:** Verify incident is same one you saw in dashboard.
+
+---
+
+### From Insights → Memory Engine
+
+RubixKube automatically stores:
+- Root cause patterns
+- Resolution steps that worked
+- Time to resolve
+
+**Benefit:** Faster resolution next time.
+
+---
+
+## What You Learned
+
+<CardGroup cols={2}>
+  <Card title="Incident Groups" icon="layer-group">
+    How RubixKube groups related failures
+  </Card>
+
+  <Card title="RCA Reports" icon="file-magnifying-glass">
+    Complete structure: Root Cause, Factors, Impact, Actions
+  </Card>
+
+  <Card title="Severity Levels" icon="signal">
+    HIGH, medium, low - what each means
+  </Card>
+
+  <Card title="Evidence" icon="folder-open">
+    Events, logs, metrics - your actual data
+  </Card>
+
+  <Card title="Lifecycle" icon="arrows-spin">
+    Detection → Analysis → Report → Fix → Resolution
+  </Card>
+
+  <Card title="Workflows" icon="diagram-project">
+    Daily review, filtering, integration with Chat
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Back to Dashboard"
+    icon="gauge"
+    href="/using/dashboard"
+  >
+    Start your day with dashboard overview
+  </Card>
+
+  <Card
+    title="Use Chat for Investigation"
+    icon="comments"
+    href="/tutorials/chat-troubleshooting"
+  >
+    Ask Chat about incidents from Insights
+  </Card>
+
+  <Card
+    title="Understand Agent Mesh"
+    icon="robot"
+    href="/concepts/agent-mesh"
+  >
+    Learn how RCA Pipeline generates reports
+  </Card>
+
+  <Card title="View Infrastructure" icon="sitemap" href="/using/infrastructure">
+    See affected resources in topology view
+  </Card>
+</CardGroup>
+
+---
+
+## Quick Reference
+
+**Insights workflow:**
+1. Open Insights page
+2. Filter by HIGH severity
+3. Click incident → Read RCA
+4. Review recommended actions
+5. Apply fixes
+6. Verify resolution
+
+**Most useful filters:**
+- Severity: HIGH (critical items first)
+- Status: Active (current issues)
+- Namespace: production (if you have it)
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Support" icon="headset">
+    Email: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
+  </Card>
+  <Card title="RCA Concepts" icon="book">
+    [How RCA Works](/concepts/agent-mesh)
+  </Card>
+</CardGroup>
+

@@ -3,24 +3,21 @@ title: "Beta Disclaimers"
 description: "Important safety information and limitations for RubixKube Beta release"
 ---
 
-RubixKube is currently in **Beta**. While significantly more stable than Alpha, the software is still evolving and should be used with appropriate caution.  
+RubixKube is currently in**Beta**. While significantly more stable than Alpha, the software is still evolving and should be used with appropriate caution.  
 
-**This is NOT a production-ready release.** Please read and understand the following before proceeding.
+**This is NOT a production-ready release.**Please read and understand the following before proceeding.
 
 <Warning>
-** Not for Production Environments**
+**Not for Production Environments**
+RubixKube Beta must**NOT**be deployed in production environments or on critical infrastructure.  
 
-RubixKube Beta must **NOT** be deployed in production environments or on critical infrastructure.  
-
-**Safe for:**
--  Development clusters
+**Safe for:**-  Development clusters
 -  Staging environments  
 -  Testing and evaluation
 -  Local KIND clusters
 -  Non-critical cloud clusters
 
-**NOT safe for:**
--  Production workloads
+**NOT safe for:**-  Production workloads
 -  Customer-facing infrastructure
 -  Revenue-critical systems
 -  Regulated environments (until compliance certification)
@@ -29,7 +26,7 @@ Failure to follow this guidance may result in outages, data loss, or service dis
 </Warning>
 
 <Info>
-**Beta vs Alpha:** Beta builds are more stable than Alpha, but still undergo active development. Features may change, and some functionality may be incomplete.
+**Beta vs Alpha:**Beta builds are more stable than Alpha, but still undergo active development. Features may change, and some functionality may be incomplete.
 </Info>
 
 
@@ -39,10 +36,10 @@ RubixKube includes multiple layers of safety guardrails to protect your infrastr
 
 <CardGroup cols={2}>
   <Card title="Observe-Only by Default" icon="eye">
-    Default mode is **read-only observation**. Any action that modifies cluster state requires explicit approval.
+    Default mode is**read-only observation**. Any action that modifies cluster state requires explicit approval.
   </Card>
   <Card title="Minimal Permissions" icon="key">
-    RubixKube operates with **least-privilege RBAC**. Never requires or requests cluster-admin access.
+    RubixKube operates with**least-privilege RBAC**. Never requires or requests cluster-admin access.
   </Card>
   <Card title="Full Audit Logging" icon="list">
     Every action is logged with timestamps, user context, and rationale. Complete audit trail maintained.
@@ -56,13 +53,13 @@ RubixKube includes multiple layers of safety guardrails to protect your infrastr
 
 When you enable autonomous remediation (optional):
 
-- **Blast Radius Limits** - Only fixes scoped resources, never cluster-wide changes
-- **Approval Workflows** - High-risk actions require manual approval
-- **Dry-Run First** - RubixKube simulates changes before applying
-- **Circuit Breakers** - Automatic pause if multiple failures detected
+-**Blast Radius Limits**- Only fixes scoped resources, never cluster-wide changes
+-**Approval Workflows**- High-risk actions require manual approval
+-**Dry-Run First**- RubixKube simulates changes before applying
+-**Circuit Breakers**- Automatic pause if multiple failures detected
 
 <Warning>
-**Best Practice:** Start with observe-only mode, then gradually enable auto-remediation for low-risk scenarios only.
+**Best Practice:**Start with observe-only mode, then gradually enable auto-remediation for low-risk scenarios only.
 </Warning>
 
 
@@ -73,28 +70,27 @@ When you enable autonomous remediation (optional):
 <AccordionGroup>
   <Accordion title=" Data We Collect" icon="check">
     RubixKube observer collects:
-    - **Kubernetes metadata** - Pod names, namespaces, labels, annotations
-    - **Metrics** - CPU, memory, network usage, health checks
-    - **Events** - Kubernetes events and state changes
-    - **Resource status** - Deployment health, replica counts
+    -**Kubernetes metadata**- Pod names, namespaces, labels, annotations
+    -**Metrics**- CPU, memory, network usage, health checks
+    -**Events**- Kubernetes events and state changes
+    -**Resource status**- Deployment health, replica counts
     
     All data is encrypted in transit (TLS 1.3) and at rest (AES-256).
   </Accordion>
 
   <Accordion title=" Data We NEVER Collect" icon="xmark">
-    RubixKube does **NOT** collect:
+    RubixKube does**NOT**collect:
     -  Application logs or stdout/stderr
     -  Kubernetes secrets or ConfigMap data
     -  Environment variables containing sensitive data
     -  Your actual business/customer data
     -  Code or container contents
     
-    **Privacy First:** We only collect what's necessary for reliability monitoring.
+**Privacy First:**We only collect what's necessary for reliability monitoring.
   </Accordion>
 
   <Accordion title=" Security Best Practices" icon="lock">
-    **For Beta Testing:**
-    - Use non-production data only
+**For Beta Testing:**    - Use non-production data only
     - Avoid clusters with PII or regulated data
     - Redact sensitive information before sharing logs with support
     - Review RubixKube's RBAC permissions regularly
@@ -109,33 +105,28 @@ When you enable autonomous remediation (optional):
 ### Supported Kubernetes Versions
 
 <Accordion title="Kubernetes Versions">
-  **Supported:**
-  - Kubernetes 1.24+
+**Supported:**  - Kubernetes 1.24+
   - Kubernetes 1.25, 1.26, 1.27, 1.28 (tested)
   - Latest stable versions recommended
   
-  **Not supported:**
-  - Kubernetes 1.23 and older
+**Not supported:**  - Kubernetes 1.23 and older
   - Beta/alpha Kubernetes releases
 </Accordion>
 
 ### Supported Platforms
 
 <Accordion title="Cloud Providers">
-  **Fully Supported:**
-  -  Amazon EKS
+**Fully Supported:**  -  Amazon EKS
   -  Google GKE
   -  Azure AKS
   -  DigitalOcean Kubernetes
   -  Linode LKE
   
-  **Local Development:**
-  -  KIND (Kubernetes in Docker)
+**Local Development:**  -  KIND (Kubernetes in Docker)
   -  Minikube
   -  k3s/k3d
   
-  **Limited/Experimental:**
-  -  OpenShift (basic support)
+**Limited/Experimental:**  -  OpenShift (basic support)
   -  Rancher (basic support)
 </Accordion>
 
@@ -143,10 +134,10 @@ When you enable autonomous remediation (optional):
 
 During Beta, the following integrations are available:
 
--  **Observability:** Prometheus, Grafana
--  **Notifications:** Slack (coming soon: PagerDuty, Teams)
--  **GitOps:** Basic support
--  **Service Mesh:** Istio/Linkerd (experimental)
+-**Observability:**Prometheus, Grafana
+-**Notifications:**Slack (coming soon: PagerDuty, Teams)
+-**GitOps:**Basic support
+-**Service Mesh:**Istio/Linkerd (experimental)
 
 ---
 
@@ -165,11 +156,11 @@ During Beta, the following integrations are available:
   </Accordion>
 
   <Accordion title=" Known Limitations">
-    - **Auto-remediation:** Limited to specific issue types
-    - **Dashboard:** Some advanced features still in development
-    - **Scaling:** Tested up to moderate cluster sizes (~100 nodes)
-    - **Integrations:** Limited third-party integrations
-    - **Documentation:** Some tutorials still being created
+    -**Auto-remediation:**Limited to specific issue types
+    -**Dashboard:**Some advanced features still in development
+    -**Scaling:**Tested up to moderate cluster sizes (~100 nodes)
+    -**Integrations:**Limited third-party integrations
+    -**Documentation:**Some tutorials still being created
   </Accordion>
 
   <Accordion title=" You May Encounter">
@@ -182,7 +173,7 @@ During Beta, the following integrations are available:
 </AccordionGroup>
 
 <Note>
-**Bug Reporting:** Please report issues to bugs@rubixkube.ai with:
+**Bug Reporting:**Please report issues to bugs@rubixkube.ai with:
 - Kubernetes version
 - Cloud provider (or KIND)
 - RubixKube version
@@ -219,24 +210,21 @@ By using RubixKube Beta, you acknowledge:
 
 <CardGroup cols={3}>
   <Card title="Email Support" icon="envelope">
-    **support@rubixkube.ai**
-    
+**support@rubixkube.ai**    
     Response time: 24-48 hours
   </Card>
   <Card title="Bug Reports" icon="bug">
-    **bugs@rubixkube.ai**
-    
+**bugs@rubixkube.ai**    
     Critical bugs: under 24 hour response
   </Card>
   <Card title="Feature Requests" icon="lightbulb">
-    **features@rubixkube.ai**
-    
+**features@rubixkube.ai**    
     We love hearing your ideas!
   </Card>
 </CardGroup>
 
 <Tip>
-**Priority Support:** Beta testers providing detailed feedback get prioritized support and early access to new features.
+**Priority Support:**Beta testers providing detailed feedback get prioritized support and early access to new features.
 </Tip>
 
 ---
@@ -264,9 +252,9 @@ By using RubixKube Beta, you acknowledge:
 
 Before proceeding, confirm you understand:
 
--  RubixKube is in **Beta** - not production-ready
--  I will only use it on **test/dev/staging** environments
--  I will **not** deploy to production or critical infrastructure
+-  RubixKube is in**Beta**- not production-ready
+-  I will only use it on**test/dev/staging**environments
+-  I will**not**deploy to production or critical infrastructure
 -  I understand features may change and bugs may occur
 -  I will provide feedback to help improve RubixKube
 

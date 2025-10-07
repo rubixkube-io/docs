@@ -5,31 +5,28 @@ description: 'How RubixKube ensures safe autonomous operations through multi-lay
 
 # Safety Guardrails: Trust Through Control
 
-**Guardrails** are RubixKube's multi-layered safety system that ensures autonomous operations remain safe, controlled, and reversible. They're the reason you can trust AI agents to act on your infrastructure without constant supervision.
+**Guardrails**are RubixKube's multi-layered safety system that ensures autonomous operations remain safe, controlled, and reversible. They're the reason you can trust AI agents to act on your infrastructure without constant supervision.
 
 <Info>
-**The Core Principle:** Autonomous doesn't mean uncontrolled. Every action happens within strict safety boundaries, with human oversight available when needed.
+**The Core Principle:**Autonomous doesn't mean uncontrolled. Every action happens within strict safety boundaries, with human oversight available when needed.
 </Info>
 
 <Warning>
-** Coming in Future Release**
+**Coming in Future Release**
+**Full guardrail system is under development**for the production release. RubixKube Beta currently operates in**observe-only mode**with basic safety mechanisms.
 
-**Full guardrail system is under development** for the production release. RubixKube Beta currently operates in **observe-only mode** with basic safety mechanisms.
+**Active NOW (Beta):**-**Observe-Only Mode**- No automated changes to your cluster
+-**Read-Only RBAC**- Observer agent has no write permissions
+-**Audit Logging**- All detections and suggestions logged
+-**Manual Approval Required**- You control all actions
 
-**Active NOW (Beta):**
--  **Observe-Only Mode** - No automated changes to your cluster
--  **Read-Only RBAC** - Observer agent has no write permissions
--  **Audit Logging** - All detections and suggestions logged
--  **Manual Approval Required** - You control all actions
-
-**Coming Q1 2026 (Production):**
--  Full 7-layer guardrail system
+**Coming Q1 2026 (Production):**-  Full 7-layer guardrail system
 -  Automated remediation with safety checks
 -  Blast radius calculation and enforcement
 -  Circuit breakers and rate limiting
 -  Customizable policies per environment
 
-**This page describes the complete guardrail architecture** being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
+**This page describes the complete guardrail architecture**being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
 </Warning>
 
 ---
@@ -59,28 +56,25 @@ Autonomous systems without guardrails are dangerous:
 </CardGroup>
 
 **Guardrails prevent all of these.**
-
 ---
 
 ## The Seven Layers of Guardrails
 
-RubixKube implements **defense in depth** with multiple safety layers:
+RubixKube implements**defense in depth**with multiple safety layers:
 
 ### 1. Scope Limiting
 
-**Principle:** Actions are confined to the smallest possible scope.
+**Principle:**Actions are confined to the smallest possible scope.
 
 <Tabs>
   <Tab title="What It Does">
-    **Blast Radius Containment:**
+**Blast Radius Containment:**    
+    - Changes affect**one pod**→ not the deployment
+    - Changes affect**one deployment**→ not the namespace
+    - Changes affect**one namespace**→ not the cluster
+    - Changes affect**one cluster**→ not all clusters
     
-    - Changes affect **one pod** → not the deployment
-    - Changes affect **one deployment** → not the namespace
-    - Changes affect **one namespace** → not the cluster
-    - Changes affect **one cluster** → not all clusters
-    
-    **Example:**
-    ```yaml
+**Example:**    ```yaml
     # Auto-fix will do this:
     action: restart_pod
     scope: production/checkout-7f9d
@@ -109,59 +103,55 @@ RubixKube implements **defense in depth** with multiple safety layers:
 
 ### 2. Action Classification
 
-**Principle:** Risk-based action categorization determines autonomy.
+**Principle:**Risk-based action categorization determines autonomy.
 
 <AccordionGroup>
   <Accordion title="Low Risk (Auto-Approved)">
-    **Actions that rarely cause harm:**
-    
+**Actions that rarely cause harm:**    
     -  Restart a single failed pod
     -  Scale deployment within existing HPA bounds
     -  Update resource requests (within limits)
     -  Retry failed jobs
     
-    **Guardrail:** Auto-executed, logged for audit
+**Guardrail:**Auto-executed, logged for audit
   </Accordion>
 
   <Accordion title="Medium Risk (Suggest + Review)">
-    **Actions that need human judgment:**
-    
+**Actions that need human judgment:**    
     -  Modify deployment replicas beyond HPA range
     -  Change resource limits (may cause pod restarts)
     -  Update service configurations
     -  Modify network policies
     
-    **Guardrail:** Proposed to humans, requires click to approve
+**Guardrail:**Proposed to humans, requires click to approve
   </Accordion>
 
   <Accordion title="High Risk (Require Explicit Approval)">
-    **Actions that could cause outages:**
-    
+**Actions that could cause outages:**    
     -  Delete resources
     -  Modify RBAC permissions
     -  Change namespace quotas
     -  Update critical system pods
     -  Multi-service changes
     
-    **Guardrail:** Require explicit approval + 2FA (optional)
+**Guardrail:**Require explicit approval + 2FA (optional)
   </Accordion>
 
   <Accordion title="Forbidden (Always Blocked)">
-    **Actions never allowed autonomously:**
-    
+**Actions never allowed autonomously:**    
     -  Delete namespaces
     -  Delete persistent volumes
     -  Modify cluster-level resources
     -  Grant cluster-admin permissions
     -  Disable monitoring/observability
     
-    **Guardrail:** Blocked entirely, manual only
+**Guardrail:**Blocked entirely, manual only
   </Accordion>
 </AccordionGroup>
 
 ### 3. Dry-Run Mode
 
-**Principle:** Test before you touch.
+**Principle:**Test before you touch.
 
 Every proposed action runs in simulation first:
 
@@ -186,22 +176,21 @@ Confidence: 96%
 ```
 
 <Tip>
-**If dry-run fails, the action is blocked.** No exceptions.
+**If dry-run fails, the action is blocked.**No exceptions.
 </Tip>
 
 ### 4. Rate Limiting
 
-**Principle:** Prevent rapid-fire mistakes.
+**Principle:**Prevent rapid-fire mistakes.
 
-Guardrails control **how many** and **how fast** actions can occur:
+Guardrails control**how many**and**how fast**actions can occur:
 
-- **Max 1 auto-fix per pod** per 5 minutes
-- **Max 3 auto-fixes per namespace** per hour
-- **Max 10 auto-fixes per cluster** per hour
-- **Circuit breaker:** If 2 actions fail, pause auto-fix for 1 hour
+-**Max 1 auto-fix per pod**per 5 minutes
+-**Max 3 auto-fixes per namespace**per hour
+-**Max 10 auto-fixes per cluster**per hour
+-**Circuit breaker:**If 2 actions fail, pause auto-fix for 1 hour
 
 **Example Protection:**
-
 ```
 12:00: Auto-fix applied to pod A
 12:01: Pod A crashes again
@@ -213,16 +202,15 @@ Guardrails control **how many** and **how fast** actions can occur:
       → Manual intervention required
 ```
 
-**Prevents:** Infinite loops, thrashing, runaway automation
+**Prevents:**Infinite loops, thrashing, runaway automation
 
 ### 5. Change Approval Workflows
 
-**Principle:** Different environments, different rules.
+**Principle:**Different environments, different rules.
 
 <Tabs>
   <Tab title="Development">
-    **Minimal Oversight:**
-    
+**Minimal Oversight:**    
     ```yaml
     environment: development
     guardrails:
@@ -235,8 +223,7 @@ Guardrails control **how many** and **how fast** actions can occur:
   </Tab>
 
   <Tab title="Staging">
-    **Moderate Oversight:**
-    
+**Moderate Oversight:**    
     ```yaml
     environment: staging
     guardrails:
@@ -249,8 +236,7 @@ Guardrails control **how many** and **how fast** actions can occur:
   </Tab>
 
   <Tab title="Production">
-    **Maximum Safety:**
-    
+**Maximum Safety:**    
     ```yaml
     environment: production
     guardrails:
@@ -267,17 +253,16 @@ Guardrails control **how many** and **how fast** actions can occur:
 
 ### 6. Rollback Capability
 
-**Principle:** Every change must be reversible.
+**Principle:**Every change must be reversible.
 
 Before any action executes, RubixKube:
 
-1. **Captures current state** (manifest, config, resource versions)
-2. **Generates rollback plan** (exact steps to undo)
-3. **Tests rollback plan** (dry-run validation)
-4. **Stores rollback trigger** (one-click revert)
+1.**Captures current state**(manifest, config, resource versions)
+2.**Generates rollback plan**(exact steps to undo)
+3.**Tests rollback plan**(dry-run validation)
+4.**Stores rollback trigger**(one-click revert)
 
 **If something goes wrong:**
-
 ```bash
 # Automatic rollback triggers if:
 - Health check fails after change
@@ -307,7 +292,7 @@ OR: Run `rubixkube rollback <action-id>`
 
 ### 7. Audit Logging
 
-**Principle:** Complete transparency and accountability.
+**Principle:**Complete transparency and accountability.
 
 Every action is logged with full context:
 
@@ -348,8 +333,7 @@ Every action is logged with full context:
 }
 ```
 
-**Benefits:**
-- Complete audit trail for compliance
+**Benefits:**- Complete audit trail for compliance
 - Understand exactly what changed and why
 - Reproduce or debug actions later
 - Prove safety for security reviews
@@ -364,8 +348,7 @@ You control how aggressive or conservative RubixKube acts:
 
 <Tabs>
   <Tab title="Conservative (Default)">
-    **Best for: Production, risk-averse teams**
-    
+**Best for: Production, risk-averse teams**    
     ```yaml
     guardrails_profile: conservative
     
@@ -377,12 +360,11 @@ You control how aggressive or conservative RubixKube acts:
       - timeout: abort_on_timeout
     ```
     
-    **Result:** Maximum safety, slower response
+**Result:**Maximum safety, slower response
   </Tab>
 
   <Tab title="Balanced">
-    **Best for: Staging, most teams**
-    
+**Best for: Staging, most teams**    
     ```yaml
     guardrails_profile: balanced
     
@@ -394,12 +376,11 @@ You control how aggressive or conservative RubixKube acts:
       - timeout: notify_and_wait
     ```
     
-    **Result:** Good mix of automation and control
+**Result:**Good mix of automation and control
   </Tab>
 
   <Tab title="Aggressive">
-    **Best for: Development, high-trust environments**
-    
+**Best for: Development, high-trust environments**    
     ```yaml
     guardrails_profile: aggressive
     
@@ -411,13 +392,13 @@ You control how aggressive or conservative RubixKube acts:
       - timeout: auto_approve_low_risk
     ```
     
-    **Result:** Fast autonomous response, higher trust required
+**Result:**Fast autonomous response, higher trust required
   </Tab>
 </Tabs>
 
 ### Per-Resource Policies
 
-**Fine-grained control** for specific resources:
+**Fine-grained control**for specific resources:
 
 ```yaml
 guardrails:
@@ -442,7 +423,6 @@ guardrails:
 ```
 
 **Critical services get extra protection. Non-critical get more autonomy.**
-
 ---
 
 ## Guardrail Enforcement
@@ -480,10 +460,10 @@ guardrails:
   </Step>
 
   <Step title="Human Decides">
-    - **Approve** → Action executes with full logging
-    - **Deny** → Action cancelled, incident escalated
-    - **Modify** → Adjust parameters, resubmit
-    - **Timeout** → Depends on policy (abort or notify)
+    -**Approve**→ Action executes with full logging
+    -**Deny**→ Action cancelled, incident escalated
+    -**Modify**→ Adjust parameters, resubmit
+    -**Timeout**→ Depends on policy (abort or notify)
   </Step>
 </Steps>
 
@@ -494,7 +474,6 @@ guardrails:
 ### Blast Radius Calculation
 
 **How RubixKube determines impact:**
-
 ```python
 def calculate_blast_radius(action):
     scope = action.target_scope
@@ -516,7 +495,6 @@ def calculate_blast_radius(action):
 ```
 
 **Example:**
-
 ```
 Action: Restart pod 'api-gateway-7f9d'
 
@@ -533,11 +511,9 @@ Blast Radius Analysis:
 ### Policy-Based Controls
 
 **Define what's allowed, what's not:**
-
 <AccordionGroup>
   <Accordion title="Time-Based Policies">
-    **Example: Deployment Windows**
-    
+**Example: Deployment Windows**    
     ```yaml
     policies:
       - name: "No Auto-Fix During Business Hours"
@@ -558,8 +534,7 @@ Blast Radius Analysis:
   </Accordion>
 
   <Accordion title="Environment-Based Policies">
-    **Different rules for different environments:**
-    
+**Different rules for different environments:**    
     ```yaml
     policies:
       - environment: production
@@ -580,8 +555,7 @@ Blast Radius Analysis:
   </Accordion>
 
   <Accordion title="Resource-Based Policies">
-    **Protect critical resources:**
-    
+**Protect critical resources:**    
     ```yaml
     policies:
       - name: "Critical Services Protected"
@@ -599,7 +573,6 @@ Blast Radius Analysis:
 ### 3. Approval Workflows
 
 **Human-in-the-loop when it matters:**
-
 <Frame>
   <img
     style={{ borderRadius: '0.5rem' }}
@@ -609,25 +582,22 @@ Blast Radius Analysis:
 </Frame>
 
 **Workflow Steps:**
+1.**Action Proposed**→ Notification sent (Slack, email, dashboard)
+2.**Context Provided**→ Full RCA, evidence, risk assessment
+3.**Human Reviews**→ Examine proposed changes
+4.**Decision Made**→ Approve, deny, or modify
+5.**Action Logged**→ Who approved, when, why
 
-1. **Action Proposed** → Notification sent (Slack, email, dashboard)
-2. **Context Provided** → Full RCA, evidence, risk assessment
-3. **Human Reviews** → Examine proposed changes
-4. **Decision Made** → Approve, deny, or modify
-5. **Action Logged** → Who approved, when, why
-
-**Approval Methods:**
-- **Dashboard** - Click approve in UI
-- **Slack** - React with  emoji or click button
-- **CLI** - `rubixkube approve <action-id>`
-- **API** - Programmatic approval for custom workflows
+**Approval Methods:**-**Dashboard**- Click approve in UI
+-**Slack**- React with  emoji or click button
+-**CLI**- `rubixkube approve <action-id>`
+-**API**- Programmatic approval for custom workflows
 
 ### 4. Circuit Breakers
 
-**Principle:** Stop automatically if things go wrong.
+**Principle:**Stop automatically if things go wrong.
 
 **Circuit Breaker States:**
-
 <Tabs>
   <Tab title="Closed (Normal)">
     ```
@@ -667,7 +637,7 @@ Blast Radius Analysis:
 
 ### 5. Resource Limits
 
-**Principle:** Prevent resource exhaustion.
+**Principle:**Prevent resource exhaustion.
 
 Guardrails ensure RubixKube itself doesn't consume excessive resources:
 
@@ -684,11 +654,11 @@ observer_agent:
     - alert_if_persistent
 ```
 
-**Benefit:** RubixKube never becomes the problem it's solving.
+**Benefit:**RubixKube never becomes the problem it's solving.
 
 ### 6. Least Privilege RBAC
 
-**Principle:** Minimum necessary permissions.
+**Principle:**Minimum necessary permissions.
 
 RubixKube Observer Agent runs with restricted permissions:
 
@@ -704,10 +674,9 @@ verbs: ["create", "update", "delete", "patch"]
 ```
 
 **Even if compromised, Observer can't modify your cluster.**
-
 ### 7. Verification & Monitoring
 
-**Principle:** Trust, but verify.
+**Principle:**Trust, but verify.
 
 After every action, guardrails verify success:
 
@@ -732,9 +701,9 @@ After every action, guardrails verify success:
   </Step>
 
   <Step title="Outcome Decision">
-    - **Success:** Log and continue
-    - **Failure:** Trigger rollback
-    - **Uncertain:** Alert human, freeze actions
+    -**Success:**Log and continue
+    -**Failure:**Trigger rollback
+    -**Uncertain:**Alert human, freeze actions
   </Step>
 </Steps>
 
@@ -745,7 +714,6 @@ After every action, guardrails verify success:
 ### Scenario 1: Guardrails Prevent Disaster
 
 **What Happened:**
-
 ```
 Incident: API service memory leak
 Remediation Agent Proposal: "Restart all pods simultaneously for quick fix"
@@ -769,11 +737,9 @@ Decision: APPROVED
 ```
 
 **Guardrails saved you from a self-inflicted outage.**
-
 ### Scenario 2: Human Override
 
 **When to override guardrails:**
-
 ```
 Situation: Production database pod stuck, auto-fix blocked (high risk)
 SRE Assessment: "We need to restart NOW, outage ongoing"
@@ -791,7 +757,7 @@ Result: Fast response when humans decide risk is acceptable
 ```
 
 <Warning>
-**Override is logged and triggers post-incident review.** Use sparingly.
+**Override is logged and triggers post-incident review.**Use sparingly.
 </Warning>
 
 ---
@@ -800,7 +766,7 @@ Result: Fast response when humans decide risk is acceptable
 
 ### Access Guardrail Settings
 
-Navigate to **Settings → Security → Guardrails** (coming soon in Beta).
+Navigate to**Settings → Security → Guardrails**(coming soon in Beta).
 
 Currently, configure via API or support team:
 
@@ -824,27 +790,27 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
 
 <CardGroup cols={2}>
   <Card title="Start Conservative" icon="shield">
-    Begin with **observe-only mode**. Let RubixKube watch for 1-2 weeks before enabling auto-fix.
+    Begin with**observe-only mode**. Let RubixKube watch for 1-2 weeks before enabling auto-fix.
   </Card>
   
   <Card title="Enable Gradually" icon="stairs">
-    Turn on auto-fix for **low-risk actions first** (pod restarts). Add medium-risk after trust builds.
+    Turn on auto-fix for**low-risk actions first**(pod restarts). Add medium-risk after trust builds.
   </Card>
   
   <Card title="Test in Staging" icon="flask">
-    Enable aggressive auto-fix in **staging first**. Learn guardrail behavior before production.
+    Enable aggressive auto-fix in**staging first**. Learn guardrail behavior before production.
   </Card>
   
   <Card title="Monitor Audit Logs" icon="list-check">
-    **Review weekly:** What actions occurred? Any blocked? Any failures? Adjust policies accordingly.
+**Review weekly:**What actions occurred? Any blocked? Any failures? Adjust policies accordingly.
   </Card>
   
   <Card title="Set Clear Policies" icon="file-contract">
-    Define **what's allowed when** explicitly. Ambiguity creates risk.
+    Define**what's allowed when**explicitly. Ambiguity creates risk.
   </Card>
   
   <Card title="Practice Rollbacks" icon="rotate-left">
-    **Test rollback procedures** monthly. Ensure they work when you need them.
+**Test rollback procedures**monthly. Ensure they work when you need them.
   </Card>
 </CardGroup>
 
@@ -854,7 +820,7 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
 
 <AccordionGroup>
   <Accordion title="Can I disable guardrails entirely?">
-    **No.** Some guardrails are **always active** for safety:
+**No.**Some guardrails are**always active**for safety:
     
     - Forbidden actions list (e.g., delete namespaces)
     - Audit logging
@@ -865,32 +831,29 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
   </Accordion>
 
   <Accordion title="What happens if I need to act faster than guardrails allow?">
-    **Two options:**
-    
-    1. **Manual Override** - Bypass guardrails with justification (logged)
-    2. **Adjust Policies** - Lower safety threshold for specific scenarios
+**Two options:**    
+    1.**Manual Override**- Bypass guardrails with justification (logged)
+    2.**Adjust Policies**- Lower safety threshold for specific scenarios
     
     Both require admin permissions and create audit trails.
   </Accordion>
 
   <Accordion title="Do guardrails slow down incident response?">
-    **For low-risk actions: NO**  
-    Guardrail evaluation takes less than 100ms
+**For low-risk actions: NO**    Guardrail evaluation takes less than 100ms
     
-    **For high-risk actions: YES, intentionally**  
-    The 30-60 seconds for human approval is **worth it** to prevent making incidents worse.
+**For high-risk actions: YES, intentionally**    The 30-60 seconds for human approval is**worth it**to prevent making incidents worse.
     
-    **Most incidents** (80%+) are low/medium risk → Fast autonomous response
-    **Critical incidents** (20%) → Human judgment essential anyway
+**Most incidents**(80%+) are low/medium risk → Fast autonomous response
+**Critical incidents**(20%) → Human judgment essential anyway
   </Accordion>
 
   <Accordion title="Can different teams have different guardrail policies?">
-    **Yes!** Policies can be scoped by:
+**Yes!**Policies can be scoped by:
     
-    - **Namespace** - Team A's namespace has different rules than Team B's
-    - **Label** - Resources labeled `high-risk` get extra protection
-    - **User Role** - Admins can override, operators cannot
-    - **Time** - Different rules during business hours vs off-hours
+    -**Namespace**- Team A's namespace has different rules than Team B's
+    -**Label**- Resources labeled `high-risk` get extra protection
+    -**User Role**- Admins can override, operators cannot
+    -**Time**- Different rules during business hours vs off-hours
     
     Flexible policy engine supports complex organizational needs.
   </Accordion>
@@ -917,7 +880,6 @@ Outcome: Fast, safe, autonomous remediation
 ```
 
 **This is Site Reliability Intelligence.**
-
 ---
 
 ## Related Concepts

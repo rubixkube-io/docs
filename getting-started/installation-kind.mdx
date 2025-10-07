@@ -3,15 +3,15 @@ title: 'Local Installation with KIND'
 description: 'Install RubixKube on your local machine using Kubernetes in Docker (KIND) - Perfect for testing and learning'
 ---
 
-Welcome! This guide will help you install RubixKube on your **local machine** using KIND (Kubernetes in Docker). This is perfect for:
+Welcome! This guide will help you install RubixKube on your**local machine**using KIND (Kubernetes in Docker). This is perfect for:
 
--  **Testing** RubixKube before deploying to production
--  **Learning** how RubixKube works in a safe environment
--  **Development** on your laptop without cloud costs
--  **Training** team members on RubixKube features
+-**Testing**RubixKube before deploying to production
+-**Learning**how RubixKube works in a safe environment
+-**Development**on your laptop without cloud costs
+-**Training**team members on RubixKube features
 
 <Info>
-**Complete Beginner?** No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
+**Complete Beginner?**No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
 </Info>
 
 ---
@@ -33,7 +33,7 @@ Before we can run RubixKube locally, we need a few tools:
 </CardGroup>
 
 <Note>
-**Estimated Time:** 20-30 minutes for first-time installation (including downloads)
+**Estimated Time:**20-30 minutes for first-time installation (including downloads)
 </Note>
 
 ---
@@ -46,21 +46,18 @@ Docker is required to run KIND. Choose your operating system below:
   <Tab title="macOS">
     ### Install Docker Desktop on macOS
 
-    **Option 1: Using Homebrew (Recommended)**
-
+**Option 1: Using Homebrew (Recommended)**
     If you have Homebrew installed:
 
     ```bash
     brew install --cask docker
     ```
 
-    **Option 2: Download from Docker Website**
-
+**Option 2: Download from Docker Website**
     1. Visit [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
-    2. Click **"Download for Mac"**
-    3. Choose your Mac type:
-       - **Apple Silicon** (M1/M2/M3 Macs)
-       - **Intel Chip** (older Macs)
+    2. Click**"Download for Mac"**    3. Choose your Mac type:
+       -**Apple Silicon**(M1/M2/M3 Macs)
+       -**Intel Chip**(older Macs)
     4. Open the downloaded `.dmg` file
     5. Drag Docker icon to Applications folder
     6. Launch Docker from Applications
@@ -79,20 +76,18 @@ Docker is required to run KIND. Choose your operating system below:
     ```
 
     <Tip>
-    **First Time?** Docker may ask for system permissions. Click "OK" to allow it.
+**First Time?**Docker may ask for system permissions. Click "OK" to allow it.
     </Tip>
   </Tab>
 
   <Tab title="Windows">
     ### Install Docker Desktop on Windows
 
-    **Prerequisites:**
-    - Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 or higher)
+**Prerequisites:**    - Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 or higher)
     - Windows 11 64-bit
     - WSL 2 (Windows Subsystem for Linux)
 
-    **Step 1: Enable WSL 2**
-
+**Step 1: Enable WSL 2**
     Open PowerShell as Administrator and run:
 
     ```powershell
@@ -101,17 +96,14 @@ Docker is required to run KIND. Choose your operating system below:
 
     Restart your computer after this completes.
 
-    **Step 2: Download Docker Desktop**
-
+**Step 2: Download Docker Desktop**
     1. Visit [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-    2. Click **"Download for Windows"**
-    3. Run the installer (`Docker Desktop Installer.exe`)
+    2. Click**"Download for Windows"**    3. Run the installer (`Docker Desktop Installer.exe`)
     4. Follow the installation wizard
-    5. Ensure **"Use WSL 2 instead of Hyper-V"** is checked
+    5. Ensure**"Use WSL 2 instead of Hyper-V"**is checked
     6. Complete installation and restart if prompted
 
-    **Step 3: Launch Docker Desktop**
-
+**Step 3: Launch Docker Desktop**
     1. Start Docker Desktop from Start menu
     2. Accept the service agreement
     3. Wait for Docker Engine to start (whale icon in system tray)
@@ -130,15 +122,14 @@ Docker is required to run KIND. Choose your operating system below:
     ```
 
     <Warning>
-    **Virtualization Required:** Docker Desktop requires hardware virtualization. Enable VT-x/AMD-V in your BIOS if you see errors.
+**Virtualization Required:**Docker Desktop requires hardware virtualization. Enable VT-x/AMD-V in your BIOS if you see errors.
     </Warning>
   </Tab>
 
   <Tab title="Linux">
     ### Install Docker on Linux
 
-    **For Ubuntu/Debian:**
-
+**For Ubuntu/Debian:**
     ```bash
     # Update package index
     sudo apt-get update
@@ -172,8 +163,7 @@ Docker is required to run KIND. Choose your operating system below:
     # Log out and back in for group changes to take effect
     ```
 
-    **For Fedora/RHEL/CentOS:**
-
+**For Fedora/RHEL/CentOS:**
     ```bash
     # Install Docker
     sudo dnf -y install dnf-plugins-core
@@ -202,7 +192,7 @@ Docker is required to run KIND. Choose your operating system below:
     ```
 
     <Tip>
-    **Permission Denied?** Make sure you logged out and back in after adding your user to the docker group.
+**Permission Denied?**Make sure you logged out and back in after adding your user to the docker group.
     </Tip>
   </Tab>
 </Tabs>
@@ -217,14 +207,12 @@ KIND (Kubernetes in Docker) creates Kubernetes clusters using Docker containers 
   <Tab title="macOS">
     ### Install KIND on macOS
 
-    **Using Homebrew (Recommended):**
-
+**Using Homebrew (Recommended):**
     ```bash
     brew install kind
     ```
 
-    **Manual Installation:**
-
+**Manual Installation:**
     ```bash
     # Download KIND binary
     curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-darwin-amd64
@@ -251,23 +239,20 @@ KIND (Kubernetes in Docker) creates Kubernetes clusters using Docker containers 
   <Tab title="Windows">
     ### Install KIND on Windows
 
-    **Using Chocolatey (Recommended):**
-
+**Using Chocolatey (Recommended):**
     If you have Chocolatey installed:
 
     ```powershell
     choco install kind
     ```
 
-    **Manual Installation:**
-
+**Manual Installation:**
     1. Download KIND from [GitHub Releases](https://github.com/kubernetes-sigs/kind/releases)
     2. Choose `kind-windows-amd64`
     3. Rename it to `kind.exe`
     4. Move it to a directory in your PATH (e.g., `C:\Windows\System32`)
 
-    **Or using PowerShell:**
-
+**Or using PowerShell:**
     ```powershell
     curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.20.0/kind-windows-amd64
     Move-Item .\kind-windows-amd64.exe C:\Windows\System32\kind.exe
@@ -322,14 +307,12 @@ kubectl is the command-line tool for interacting with Kubernetes clusters.
   <Tab title="macOS">
     ### Install kubectl on macOS
 
-    **Using Homebrew (Recommended):**
-
+**Using Homebrew (Recommended):**
     ```bash
     brew install kubectl
     ```
 
-    **Manual Installation:**
-
+**Manual Installation:**
     ```bash
     # Download kubectl
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
@@ -356,20 +339,17 @@ kubectl is the command-line tool for interacting with Kubernetes clusters.
   <Tab title="Windows">
     ### Install kubectl on Windows
 
-    **Using Chocolatey (Recommended):**
-
+**Using Chocolatey (Recommended):**
     ```powershell
     choco install kubernetes-cli
     ```
 
-    **Manual Installation:**
-
+**Manual Installation:**
     1. Download from [Kubernetes Release](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
     2. Add the binary to your PATH
     3. Restart your terminal
 
-    **Or using PowerShell:**
-
+**Or using PowerShell:**
     ```powershell
     curl.exe -LO "https://dl.k8s.io/release/v1.28.2/bin/windows/amd64/kubectl.exe"
     ```
@@ -429,13 +409,11 @@ Run this command in your terminal:
 kind create cluster --name rubixkube-local
 ```
 
-**What's happening?**
-- KIND creates a Kubernetes cluster running inside Docker containers
+**What's happening?**- KIND creates a Kubernetes cluster running inside Docker containers
 - The cluster is named `rubixkube-local`
 - This takes 1-2 minutes
 
 **Expected Output:**
-
 ```
 Creating cluster "rubixkube-local" ...
   Ensuring node image (kindest/node:v1.27.3) 
@@ -451,7 +429,7 @@ kubectl cluster-info --context kind-rubixkube-local
 ```
 
 <Tip>
-**Pro Tip:** The cluster automatically sets itself as your active Kubernetes context, so kubectl commands will target it.
+**Pro Tip:**The cluster automatically sets itself as your active Kubernetes context, so kubectl commands will target it.
 </Tip>
 
 ### Verify Your Cluster is Running
@@ -479,7 +457,7 @@ rubixkube-local-control-plane   Ready    control-plane   1m    v1.27.3
 ```
 
 <Note>
-**Troubleshooting:** If the node shows "NotReady", wait 30 seconds and check again. It takes time to initialize.
+**Troubleshooting:**If the node shows "NotReady", wait 30 seconds and check again. It takes time to initialize.
 </Note>
 
 ---
@@ -490,9 +468,9 @@ Now let's install the RubixKube observer agent on your local cluster!
 
 ### Get Your Installation Command
 
-1. **Log in to RubixKube Console** at [console.rubixkube.ai](https://console.rubixkube.ai)
-2. After login, you'll see the **"Connect Your First Cluster"** onboarding screen
-3. **Copy the kubectl command** shown on the page
+1.**Log in to RubixKube Console**at [console.rubixkube.ai](https://console.rubixkube.ai)
+2. After login, you'll see the**"Connect Your First Cluster"**onboarding screen
+3.**Copy the kubectl command**shown on the page
 
 It will look something like this:
 
@@ -509,7 +487,7 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 </Frame>
 
 <Warning>
-**Important:** Use YOUR specific command from the dashboard - it contains your unique API key!
+**Important:**Use YOUR specific command from the dashboard - it contains your unique API key!
 </Warning>
 
 ### Run the Installation Command
@@ -521,7 +499,6 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 ```
 
 **Expected Output:**
-
 ```
 namespace/rubixkube created
 serviceaccount/rubixkube-observer created
@@ -533,7 +510,7 @@ secret/rubixkube-credentials created
 ```
 
 <Tip>
-**What just happened?** RubixKube installed an "observer" agent in your cluster that monitors your infrastructure and reports back to the RubixKube platform.
+**What just happened?**RubixKube installed an "observer" agent in your cluster that monitors your infrastructure and reports back to the RubixKube platform.
 </Tip>
 
 ---
@@ -548,7 +525,7 @@ Let's make sure RubixKube is running correctly in your cluster!
 kubectl get pods -n rubixkube
 ```
 
-**Initial output** (pods are starting):
+**Initial output**(pods are starting):
 ```
 NAME                                  READY   STATUS              RESTARTS   AGE
 rubixkube-observer-7d4b9c8f6d-x7k2p   0/1     ContainerCreating   0          10s
@@ -560,7 +537,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   0/1     ContainerCreating   0          10s
 kubectl get pods -n rubixkube
 ```
 
-**Success!** You should see:
+**Success!**You should see:
 ```
 NAME                                  READY   STATUS    RESTARTS   AGE
 rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
@@ -568,9 +545,9 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
 
 <AccordionGroup>
   <Accordion title=" What does successful installation look like?">
-    **READY column shows:** `1/1` (1 out of 1 containers ready)  
-    **STATUS column shows:** `Running`  
-    **RESTARTS column shows:** `0` (or low number)
+**READY column shows:**`1/1` (1 out of 1 containers ready)  
+**STATUS column shows:**`Running`  
+**RESTARTS column shows:**`0` (or low number)
 
     This means RubixKube observer is:
     - Successfully deployed
@@ -582,12 +559,10 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
   <Accordion title=" What if STATUS shows 'ImagePullBackOff'?">
     This means Docker couldn't download the RubixKube image.
 
-    **Common causes:**
-    - Internet connection issues
+**Common causes:**    - Internet connection issues
     - Docker Hub rate limits
 
-    **Solution:**
-    Wait 2-3 minutes and check again:
+**Solution:**    Wait 2-3 minutes and check again:
     ```bash
     kubectl get pods -n rubixkube
     ```
@@ -602,17 +577,14 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
   <Accordion title=" What if STATUS shows 'CrashLoopBackOff'?">
     This means the pod started but crashed.
 
-    **Check logs to see why:**
-    ```bash
+**Check logs to see why:**    ```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
 
-    **Common causes:**
-    - Invalid API key
+**Common causes:**    - Invalid API key
     - Configuration error
 
-    **Solution:**
-    1. Double-check you used YOUR api key from the dashboard
+**Solution:**    1. Double-check you used YOUR api key from the dashboard
     2. Delete and reinstall with correct command:
     ```bash
     kubectl delete namespace rubixkube
@@ -642,8 +614,7 @@ See what RubixKube observer is doing:
 kubectl logs -n rubixkube deployment/rubixkube-observer
 ```
 
-**Healthy logs look like:**
-```
+**Healthy logs look like:**```
 [INFO] RubixKube Observer starting...
 [INFO] Connected to RubixKube API
 [INFO] Cluster registration successful
@@ -653,17 +624,16 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 ```
 
 <Tip>
-**Tip:** If you see steady log output with [INFO] messages, everything is working correctly!
+**Tip:**If you see steady log output with [INFO] messages, everything is working correctly!
 </Tip>
 
 ### Verify in RubixKube Dashboard
 
 1. Go back to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. You should see your cluster appear in the dashboard
-3. The **Observer Status** should change from "Awaiting installation" to **"Connected"** 
-
+3. The**Observer Status**should change from "Awaiting installation" to**"Connected"**
 <Note>
-**Note:** It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
+**Note:**It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
 </Note>
 
 ---
@@ -690,9 +660,9 @@ kubectl get services
 ### Check RubixKube Dashboard
 
 Go to [console.rubixkube.ai](https://console.rubixkube.ai) and navigate to:
-- **Dashboard** - See cluster health
-- **Infrastructure** - View your nginx deployment
-- **Chat** - Ask "What pods are running?"
+-**Dashboard**- See cluster health
+-**Infrastructure**- View your nginx deployment
+-**Chat**- Ask "What pods are running?"
 
 ---
 
@@ -700,28 +670,25 @@ Go to [console.rubixkube.ai](https://console.rubixkube.ai) and navigate to:
 
 ### Useful Commands
 
-**List all KIND clusters:**
-```bash
+**List all KIND clusters:**```bash
 kind get clusters
 ```
 
-**Stop your cluster** (cluster persists, just stops):
+**Stop your cluster**(cluster persists, just stops):
 ```bash
 docker stop rubixkube-local-control-plane
 ```
 
-**Start your cluster again:**
-```bash
+**Start your cluster again:**```bash
 docker start rubixkube-local-control-plane
 ```
 
-**Delete your cluster** (removes everything):
+**Delete your cluster**(removes everything):
 ```bash
 kind delete cluster --name rubixkube-local
 ```
 
-**Create cluster with custom configuration:**
-```bash
+**Create cluster with custom configuration:**```bash
 cat <<EOF | kind create cluster --name rubixkube-local --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -740,37 +707,33 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 
 <AccordionGroup>
   <Accordion title="Docker daemon not running">
-    **Error:** `Cannot connect to the Docker daemon`
+**Error:**`Cannot connect to the Docker daemon`
 
-    **Solution:**
-    - **macOS/Windows:** Open Docker Desktop app and wait for it to start
-    - **Linux:** Run `sudo systemctl start docker`
+**Solution:**    -**macOS/Windows:**Open Docker Desktop app and wait for it to start
+    -**Linux:**Run `sudo systemctl start docker`
   </Accordion>
 
   <Accordion title="KIND cluster creation fails">
-    **Error:** `failed to create cluster`
+**Error:**`failed to create cluster`
 
-    **Solutions:**
-    1. Ensure Docker has enough resources (4GB+ RAM recommended)
+**Solutions:**    1. Ensure Docker has enough resources (4GB+ RAM recommended)
     2. Check Docker is running: `docker ps`
     3. Delete any existing cluster: `kind delete cluster --name rubixkube-local`
     4. Try creating again
   </Accordion>
 
   <Accordion title="kubectl: command not found">
-    **Error:** `kubectl: command not found`
+**Error:**`kubectl: command not found`
 
-    **Solution:**
-    - Kubectl is not in your system PATH
+**Solution:**    - Kubectl is not in your system PATH
     - Re-install kubectl and ensure it's added to PATH
     - Try full path: `/usr/local/bin/kubectl` (macOS/Linux)
   </Accordion>
 
   <Accordion title="Port already in use">
-    **Error:** `address already in use`
+**Error:**`address already in use`
 
-    **Solution:**
-    Another process is using Kubernetes default ports.
+**Solution:**    Another process is using Kubernetes default ports.
     
     Delete existing KIND clusters:
     ```bash
@@ -781,25 +744,20 @@ This creates a cluster with 1 control plane and 2 worker nodes.
   </Accordion>
 
   <Accordion title="RubixKube observer not starting">
-    **Check these:**
-    
-    1. **Verify API key is correct**
-    ```bash
+**Check these:**    
+    1.**Verify API key is correct**    ```bash
     kubectl get secret -n rubixkube rubixkube-credentials -o yaml
     ```
     
-    2. **Check pod events**
-    ```bash
+    2.**Check pod events**    ```bash
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
     ```
     
-    3. **View logs**
-    ```bash
+    3.**View logs**    ```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
     
-    4. **Reinstall**
-    ```bash
+    4.**Reinstall**    ```bash
     kubectl delete namespace rubixkube
     # Wait 30 seconds, then run install command again
     ```
@@ -852,20 +810,20 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 
 | Component | Requirement |
 |-----------|------------|
-| **OS** | macOS 10.15+, Windows 10+, Linux (any modern distro) |
-| **RAM** | 4GB minimum, 8GB recommended |
-| **Disk Space** | 20GB free space |
-| **CPU** | 2 cores minimum, 4 cores recommended |
-| **Docker** | Version 20.10+ |
-| **Internet** | Required for installation and RubixKube sync |
+|**OS**| macOS 10.15+, Windows 10+, Linux (any modern distro) |
+|**RAM**| 4GB minimum, 8GB recommended |
+|**Disk Space**| 20GB free space |
+|**CPU**| 2 cores minimum, 4 cores recommended |
+|**Docker**| Version 20.10+ |
+|**Internet**| Required for installation and RubixKube sync |
 
 ### For Production-Like Testing
 
 | Component | Recommendation |
 |-----------|---------------|
-| **RAM** | 16GB+ |
-| **CPU** | 4+ cores |
-| **Disk** | SSD with 50GB+ free |
+|**RAM**| 16GB+ |
+|**CPU**| 4+ cores |
+|**Disk**| SSD with 50GB+ free |
 
 ---
 
@@ -873,16 +831,16 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 
 | Feature | KIND (Local) | Cloud Cluster |
 |---------|-------------|---------------|
-| **Cost** | Free | Paid |
-| **Setup Time** | 5-10 minutes | 10-30 minutes |
-| **Use Case** | Testing, Learning | Production |
-| **Performance** | Limited by your machine | Full cloud resources |
-| **Persistence** | Data lost when cluster deleted | Persistent storage |
-| **Internet Access** | Works offline (after setup) | Always requires internet |
-| **Load Balancers** | Simulated only | Real cloud load balancers |
+|**Cost**| Free | Paid |
+|**Setup Time**| 5-10 minutes | 10-30 minutes |
+|**Use Case**| Testing, Learning | Production |
+|**Performance**| Limited by your machine | Full cloud resources |
+|**Persistence**| Data lost when cluster deleted | Persistent storage |
+|**Internet Access**| Works offline (after setup) | Always requires internet |
+|**Load Balancers**| Simulated only | Real cloud load balancers |
 
 <Tip>
-**Best Practice:** Start with KIND to learn RubixKube, then move to cloud for production workloads.
+**Best Practice:**Start with KIND to learn RubixKube, then move to cloud for production workloads.
 </Tip>
 
 ---
@@ -908,6 +866,6 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 </CardGroup>
 
 <Note>
-**Stuck?** Don't hesitate to reach out. We're here to help you get started with RubixKube!
+**Stuck?**Don't hesitate to reach out. We're here to help you get started with RubixKube!
 </Note>
 

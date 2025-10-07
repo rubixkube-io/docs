@@ -6,24 +6,23 @@
   <img src="https://github.com/rubixkube-io/docs/blob/d11202b7fb45fdcf1551c7c11a25c9a67e2dcbd2/images/hero-dark.png" alt="RubixKube Logo" width="400"/>
 </p>
 
- **RubixKube™** is the **Reliability Layer for the AI Era**.
+**RubixKube™**is the**Reliability Layer for the AI Era**.
 An AI-native mesh of agents that keeps your infrastructure alive, safe, and self-healing.
 
-> Think of it as **a second brain for your infra** — one that never sleeps, never forgets, and always protects your uptime.
+> Think of it as**a second brain for your infra**— one that never sleeps, never forgets, and always protects your uptime.
 
 ---
 
 ##  About These Docs
 
-This repository powers the **RubixKube Documentation Hub** (built with [Mintlify](https://mintlify.com)).
+This repository powers the**RubixKube Documentation Hub**(built with [Mintlify](https://mintlify.com)).
 
 Here you’ll find everything you need to:
 
-*  **Get started quickly** with RubixKube
-*  Learn core **concepts**: SRI (Site Reliability Intelligence), Agent Mesh, Memory Graph
-*  Explore **integrations** with Kubernetes, GitOps, observability, and cloud-native stacks
-*  Dive into the **API & CLI references**
-*  Troubleshoot and optimize your deployments
+***Get started quickly**with RubixKube
+*  Learn core**concepts**: SRI (Site Reliability Intelligence), Agent Mesh, Memory Graph
+*  Explore**integrations**with Kubernetes, GitOps, observability, and cloud-native stacks
+*  Dive into the**API & CLI references***  Troubleshoot and optimize your deployments
 
 ---
 
@@ -48,11 +47,11 @@ rubixkube start
 
 ##  Documentation Structure
 
-* **[Quickstart](replace-docs-quickstart-url)** – Install and run RubixKube in minutes
-* **[Concepts](replace-docs-concepts-url)** – SRI, Agent Mesh, Memory Engine, Guardrails
-* **[Integrations](replace-docs-integrations-url)** – Kubernetes, CI/CD, Observability, GitOps
-* **[API Reference](replace-docs-api-url)** – REST + CLI commands
-* **[Troubleshooting](replace-docs-troubleshooting-url)** – Common issues and fixes
+***[Quickstart](replace-docs-quickstart-url)**– Install and run RubixKube in minutes
+***[Concepts](replace-docs-concepts-url)**– SRI, Agent Mesh, Memory Engine, Guardrails
+***[Integrations](replace-docs-integrations-url)**– Kubernetes, CI/CD, Observability, GitOps
+***[API Reference](replace-docs-api-url)**– REST + CLI commands
+***[Troubleshooting](replace-docs-troubleshooting-url)**– Common issues and fixes
 
 ---
 
@@ -85,16 +84,14 @@ Connect the [Mintlify GitHub app](https://dashboard.mintlify.com/settings/organi
 
 ##  Troubleshooting
 
-* **Dev server not starting?**
-
+***Dev server not starting?**
   ```bash
   mint update
   ```
 
   (Updates the CLI to latest version.)
 
-* **Seeing a 404 page?**
-  Ensure you’re in the correct directory and have a valid `docs.json`.
+***Seeing a 404 page?**  Ensure you’re in the correct directory and have a valid `docs.json`.
 
 ---
 
@@ -125,9 +122,9 @@ This project is licensed under the [MIT License](replace-license-url).
 ##  Join the Movement
 
 RubixKube isn’t just another DevOps tool.
-It’s the **seatbelt, backup generator, and peace-of-mind layer** for modern infrastructure.
+It’s the**seatbelt, backup generator, and peace-of-mind layer**for modern infrastructure.
 
-If your infra breaks, your **revenue breaks**.
+If your infra breaks, your**revenue breaks**.
 RubixKube exists to make sure that never happens.
 
 ---

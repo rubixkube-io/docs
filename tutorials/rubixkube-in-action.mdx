@@ -5,10 +5,10 @@ description: 'Real-world scenario - Watch RubixKube detect multiple failures and
 
 # RubixKube in Action: Multi-Failure Detection
 
-See RubixKube handle ** multiple simultaneous failures **- just like real production incidents. This tutorial demonstrates the power of the Agent Mesh and Memory Engine working together.
+See RubixKube handle**multiple simultaneous failures**- just like real production incidents. This tutorial demonstrates the power of the Agent Mesh and Memory Engine working together.
 
 <Info>
-** Real Scenario:** We created 3 different pod failures at once. RubixKube detected all of them, prioritized by severity, and provided specific guidance for each.
+**Real Scenario:**We created 3 different pod failures at once. RubixKube detected all of them, prioritized by severity, and provided specific guidance for each.
 </Info>
 
 ---
@@ -34,13 +34,13 @@ In our demo, we deployed 3 pods that would fail in different ways:
   </Card>
 </CardGroup>
 
-This simulates a real incident where ** multiple things go wrong at once **(bad deployment, resource misconfiguration, application bug).
+This simulates a real incident where**multiple things go wrong at once**(bad deployment, resource misconfiguration, application bug).
 
 ---
 
 ## RubixKube's Response (Real Data)
 
-Within ** 2 minutes **, RubixKube detected ALL THREE failures:
+Within**2 minutes**, RubixKube detected ALL THREE failures:
 
 <Frame>
   <img
@@ -52,12 +52,12 @@ Within ** 2 minutes **, RubixKube detected ALL THREE failures:
 
 ### What Happened
 
-** Dashboard Metrics Changed:**- ** Active Insights:** 0 →** 3 **(three separate issues detected)
-- ** Notifications:** 0 →** 20+**(detailed event stream)
-- ** System Health:** 100% (overall cluster still healthy - isolated failures)
-- ** Agents:** 3/3 Active (all AI agents working)
+**Dashboard Metrics Changed:**- **Active Insights:**0 →**3**(three separate issues detected)
+- **Notifications:**0 →**20+**(detailed event stream)
+- **System Health:**100% (overall cluster still healthy - isolated failures)
+- **Agents:**3/3 Active (all AI agents working)
 
-** Activity Feed Populated:**```
+**Activity Feed Populated:**```
  Container experiencing repeated crashes in crash-loop-demo
    Severity: medium | 2 minutes ago
 
@@ -105,27 +105,27 @@ Namespace: rubixkube-tutorials
 
 ### Incident #2: OOMKilled in memory-hog-demo
 
-** Details:**- ** Type:** Out of Memory
-- ** Restart Count:** 3
-- ** Severity:** HIGH 
-- ** Memory Limit:** 50Mi (too low)
+**Details:**- **Type:**Out of Memory
+- **Restart Count:**3
+- **Severity:**HIGH 
+- **Memory Limit:**50Mi (too low)
 
-** Root Cause:**- Container attempted to allocate ~100Mi
+**Root Cause:**- Container attempted to allocate ~100Mi
 - Memory limit set to 50Mi
 - Kubernetes killed container to protect node
 
-** Suggested Fix:**- Increase memory limit to 150Mi (50% buffer over observed usage)
+**Suggested Fix:**- Increase memory limit to 150Mi (50% buffer over observed usage)
 - Monitor for memory leaks
 - Consider HPA for auto-scaling
 
 ### Incident #3: CrashLoop in memory-hog-demo
 
-** Related Incident:**- This crash loop is ** caused by ** the OOMKilled
+**Related Incident:**- This crash loop is**caused by**the OOMKilled
 - RubixKube shows the correlation
 - Fixing the memory issue resolves both
 
 <Tip>
-** This is intelligent analysis!** RubixKube doesn't just list errors - it understands relationships between incidents.
+**This is intelligent analysis!**RubixKube doesn't just list errors - it understands relationships between incidents.
 </Tip>
 
 ---
@@ -136,13 +136,13 @@ Behind the scenes, multiple agents worked together:
 
 <Steps>
   <Step title="Observer Agent">
-** Detected ** all 3 pod failures within 30 seconds of each occurring
+**Detected**all 3 pod failures within 30 seconds of each occurring
     
     Sent events to RCA Pipeline Agent for analysis
   </Step>
 
   <Step title="RCA Pipeline Agent">
-** Analyzed ** each incident:
+**Analyzed**each incident:
     - Gathered logs, events, pod specs
     - Identified root causes
     - Calculated severity
@@ -150,13 +150,13 @@ Behind the scenes, multiple agents worked together:
   </Step>
 
   <Step title="Memory Agent">
-** Recalled ** similar past incidents (if any existed)
+**Recalled**similar past incidents (if any existed)
     
     Stored these new incidents for future pattern matching
   </Step>
 
   <Step title="SRI Agent">
-** Made insights available ** via:
+**Made insights available**via:
     - Dashboard Activity Feed
     - Insights page with details
     - Chat interface for queries
@@ -170,7 +170,7 @@ Behind the scenes, multiple agents worked together:
 
 ### 1. Parallel Detection
 
-** All 3 failures detected simultaneously **- no delay between them:
+**All 3 failures detected simultaneously**- no delay between them:
 
 | Incident | Detection Time | Severity | RCA Progress |
 |----------|---------------|----------|--------------|
@@ -178,21 +178,21 @@ Behind the scenes, multiple agents worked together:
 | memory-hog-demo (crash) | 01:58:05 AM | Medium | 60% |
 | memory-hog-demo (OOM) | 01:58:10 AM | HIGH | 80% |
 
-** Takeaway:** RubixKube scales - handles multiple incidents without degradation.
+**Takeaway:**RubixKube scales - handles multiple incidents without degradation.
 
 ### 2. Severity Prioritization
 
-** RubixKube ranked issues appropriately:**- ** HIGH:** OOMKilled (resource exhaustion, node impact risk)
-- ** Medium:** CrashLoops (isolated pod failures)
+**RubixKube ranked issues appropriately:**- **HIGH:**OOMKilled (resource exhaustion, node impact risk)
+- **Medium:**CrashLoops (isolated pod failures)
 
-** In production:** Focus on HIGH severity first.
+**In production:**Focus on HIGH severity first.
 
 ### 3. Event Correlation
 
-** RubixKube connected related incidents:**- Recognized memory-hog-demo's crash loop is ** caused by ** OOMKilled
+**RubixKube connected related incidents:**- Recognized memory-hog-demo's crash loop is**caused by**OOMKilled
 - Suggested fixing the root cause (memory) would resolve both
 
-** This prevents wasted effort ** fixing symptoms instead of causes.
+**This prevents wasted effort**fixing symptoms instead of causes.
 
 ---
 
@@ -202,35 +202,35 @@ This scenario mirrors actual production incidents:
 
 <AccordionGroup>
   <Accordion title="Bad Deployment Scenario">
-** Real example:**- New version deployed with typo in image tag (ImagePullBackOff)
+**Real example:**- New version deployed with typo in image tag (ImagePullBackOff)
     - Same version has memory leak (OOMKilled after 10 minutes)
     - Database connection pool exhausted (CrashLoop)
     
-** RubixKube would:**- Detect all 3 issues
+**RubixKube would:**- Detect all 3 issues
     - Prioritize by severity
     - Show which are related
     - Suggest rollback to previous version
   </Accordion>
 
   <Accordion title="Resource Misconfiguration">
-** Real example:**- HPA scaled deployment to 10 replicas
+**Real example:**- HPA scaled deployment to 10 replicas
     - Namespace quota only allows 8
     - 2 pods stuck pending
     - Remaining 8 pods OOMKilling due to increased load
     
-** RubixKube would:**- Detect quota limit
+**RubixKube would:**- Detect quota limit
     - Identify OOM root cause
     - Suggest quota increase OR replica reduction
     - Show which pods are affected
   </Accordion>
 
   <Accordion title="Cascading Failure">
-** Real example:**- Database pod OOMKilled
+**Real example:**- Database pod OOMKilled
     - API pods start failing (can't connect to DB)
     - Frontend shows 500 errors
     - Load balancer marks all backends unhealthy
     
-** RubixKube would:**- Trace the cascade from DB → API → Frontend
+**RubixKube would:**- Trace the cascade from DB → API → Frontend
     - Identify DB memory as root cause
     - Show dependency graph
     - Suggest fixing DB first (not the symptoms)
@@ -247,10 +247,10 @@ Remove the demo pods:
 kubectl delete namespace rubixkube-tutorials
 ```
 
-** What happens in RubixKube:**- Incidents marked as "Resolved"
+**What happens in RubixKube:**- Incidents marked as "Resolved"
 - Activity Feed shows cleanup
 - Active Insights returns to 0
-- ** Memory retains the learnings ** for future incidents
+- **Memory retains the learnings**for future incidents
 
 ---
 

@@ -3,15 +3,15 @@ title: 'Cloud Installation (Beta)'
 description: 'Install RubixKube on your cloud Kubernetes cluster - AWS EKS, Google GKE, or Azure AKS'
 ---
 
-Install RubixKube on your ** cloud Kubernetes cluster ** to test our Site Reliability Intelligence platform in a cloud environment.
+Install RubixKube on your**cloud Kubernetes cluster**to test our Site Reliability Intelligence platform in a cloud environment.
 
 <Warning>
 ### Beta Release Notice
-RubixKube is currently in ** Beta **. While you can install it on cloud clusters for ** testing and evaluation **, it is ** NOT recommended for production environments ** yet.
+RubixKube is currently in**Beta**. While you can install it on cloud clusters for**testing and evaluation**, it is**NOT recommended for production environments**yet.
 
-- ** Safe for:** Development, staging, testing environments
-- ** Not ready for:** Production workloads, critical infrastructure
-- ** Coming soon:** Production-ready release with SLA guarantees
+- **Safe for:**Development, staging, testing environments
+- **Not ready for:**Production workloads, critical infrastructure
+- **Coming soon:**Production-ready release with SLA guarantees
 </Warning>
 
 <Info>
@@ -38,7 +38,7 @@ RubixKube works with all major cloud Kubernetes platforms:
 </CardGroup>
 
 <Note>
-** Other Platforms:** RubixKube also works with DigitalOcean Kubernetes, Linode LKE, and other managed Kubernetes services.
+**Other Platforms:**RubixKube also works with DigitalOcean Kubernetes, Linode LKE, and other managed Kubernetes services.
 </Note>
 
 ---
@@ -65,7 +65,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     sudo mv kubectl /usr/local/bin/
     ```
     
-** Verify:**```bash
+**Verify:**```bash
     kubectl version --client
     ```
   </Accordion>
@@ -86,7 +86,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     sudo ./aws/install
     ```
     
-** Google Cloud CLI (for GKE):**```bash
+**Google Cloud CLI (for GKE):**```bash
     # macOS
     brew install google-cloud-sdk
     
@@ -120,34 +120,34 @@ Before installing RubixKube on your cloud cluster, ensure you have:
 
 <Tabs>
   <Tab title="AWS EKS">
-** Minimum Cluster Specs:**- Kubernetes version: 1.24+
+**Minimum Cluster Specs:**- Kubernetes version: 1.24+
     - Node type: t3.medium or larger (2 vCPU, 4GB RAM minimum)
     - Number of nodes: 1+ (2-3 recommended for testing)
     - IAM permissions for kubectl access
 
-** Recommended for Testing:**- Node type: t3.large (2 vCPU, 8GB RAM)
+**Recommended for Testing:**- Node type: t3.large (2 vCPU, 8GB RAM)
     - Number of nodes: 2-3
     - Enable CloudWatch integration
   </Tab>
 
   <Tab title="Google GKE">
-** Minimum Cluster Specs:**- Kubernetes version: 1.24+
+**Minimum Cluster Specs:**- Kubernetes version: 1.24+
     - Machine type: e2-medium or larger (2 vCPU, 4GB RAM minimum)
     - Number of nodes: 1+ (2-3 recommended for testing)
     - GKE cluster admin permissions
 
-** Recommended for Testing:**- Machine type: e2-standard-2 (2 vCPU, 8GB RAM)
+**Recommended for Testing:**- Machine type: e2-standard-2 (2 vCPU, 8GB RAM)
     - Number of nodes: 2-3
     - Enable GKE monitoring
   </Tab>
 
   <Tab title="Azure AKS">
-** Minimum Cluster Specs:**- Kubernetes version: 1.24+
+**Minimum Cluster Specs:**- Kubernetes version: 1.24+
     - VM size: Standard_B2s or larger (2 vCPU, 4GB RAM minimum)
     - Number of nodes: 1+ (2-3 recommended for testing)
     - Azure RBAC permissions
 
-** Recommended for Testing:**- VM size: Standard_D2s_v3 (2 vCPU, 8GB RAM)
+**Recommended for Testing:**- VM size: Standard_D2s_v3 (2 vCPU, 8GB RAM)
     - Number of nodes: 2-3
     - Enable Azure Monitor integration
   </Tab>
@@ -176,11 +176,11 @@ Before installing RubixKube on your cloud cluster, ensure you have:
       --version 1.28
     ```
 
-    This takes ** 15-20 minutes ** to complete.
+    This takes** 15-20 minutes**to complete.
 
 ### Option 2: Using AWS Console
     1. Go to [AWS EKS Console](https://console.aws.amazon.com/eks)
-    2. Click **"Create cluster"** 3. Name: `rubixkube-test`
+    2. Click**"Create cluster"** 3. Name: `rubixkube-test`
     4. Kubernetes version: 1.24 or higher
     5. Follow the wizard to create node groups
     6. Wait for cluster to be active
@@ -206,7 +206,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     ```
 
     <Tip>
-** Cost Warning:** EKS costs ~$0.10/hour for the control plane + EC2 instance costs. Delete the cluster when done testing to avoid charges.
+**Cost Warning:**EKS costs ~$0.10/hour for the control plane + EC2 instance costs. Delete the cluster when done testing to avoid charges.
     </Tip>
   </Tab>
 
@@ -226,16 +226,16 @@ Before installing RubixKube on your cloud cluster, ensure you have:
       --cluster-version latest
     ```
 
-    This takes ** 5-10 minutes ** to complete.
+    This takes** 5-10 minutes**to complete.
 
 ### Using Google Cloud Console:
     1. Go to [GKE Console](https://console.cloud.google.com/kubernetes)
-    2. Click **"Create Cluster"** 3. Choose **"Standard"** mode
+    2. Click**"Create Cluster"** 3. Choose**"Standard"**mode
     4. Name: `rubixkube-test`
     5. Zone: `us-central1-a`
     6. Number of nodes: 2
     7. Machine type: `e2-medium`
-    8. Click **"Create"**
+    8. Click**"Create"**
     ### Connect to Your GKE Cluster
 
     ```bash
@@ -257,7 +257,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     ```
 
     <Tip>
-** Cost Warning:** GKE costs vary by region. A 2-node e2-medium cluster costs ~$50-70/month. Use `gcloud container clusters delete` to remove when done.
+**Cost Warning:**GKE costs vary by region. A 2-node e2-medium cluster costs ~$50-70/month. Use `gcloud container clusters delete` to remove when done.
     </Tip>
   </Tab>
 
@@ -282,16 +282,16 @@ Before installing RubixKube on your cloud cluster, ensure you have:
       --generate-ssh-keys
     ```
 
-    This takes ** 10-15 minutes ** to complete.
+    This takes** 10-15 minutes**to complete.
 
 ### Using Azure Portal:
     1. Go to [Azure Portal](https://portal.azure.com)
-    2. Search for **"Kubernetes services"** 3. Click **"Create"**→**"Kubernetes cluster"** 4. Resource group: Create new or use existing
+    2. Search for**"Kubernetes services"** 3. Click**"Create"**→**"Kubernetes cluster"** 4. Resource group: Create new or use existing
     5. Cluster name: `rubixkube-test`
     6. Region: East US
     7. Node count: 2
     8. Node size: Standard_B2s
-    9. Click **"Review + Create"**
+    9. Click**"Review + Create"**
     ### Connect to Your AKS Cluster
 
     ```bash
@@ -313,7 +313,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     ```
 
     <Tip>
-** Cost Warning:** AKS control plane is free, but you pay for VMs. A 2-node Standard_B2s cluster costs ~$60-80/month. Delete when done testing.
+**Cost Warning:**AKS control plane is free, but you pay for VMs. A 2-node Standard_B2s cluster costs ~$60-80/month. Delete when done testing.
     </Tip>
   </Tab>
 </Tabs>
@@ -326,9 +326,9 @@ Now that your cluster is ready, let's install RubixKube!
 
 ### Access Your Dashboard
 
-1.** Log in ** to [console.rubixkube.ai](https://console.rubixkube.ai)
-2. After login, you'll see the **"Connect Your First Cluster"** screen
-3.** Copy the installation command **- it's pre-configured with your unique API key
+1.**Log in**to [console.rubixkube.ai](https://console.rubixkube.ai)
+2. After login, you'll see the**"Connect Your First Cluster"**screen
+3.**Copy the installation command**- it's pre-configured with your unique API key
 
 <Frame>
   <img
@@ -345,7 +345,7 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 ```
 
 <Warning>
-** Important:** Each user has a unique API key. Always copy YOUR command from the dashboard - don't use examples from docs!
+**Important:**Each user has a unique API key. Always copy YOUR command from the dashboard - don't use examples from docs!
 </Warning>
 
 ---
@@ -374,13 +374,13 @@ secret/rubixkube-credentials created
 <Accordion title=" What does the observer do?">
   The RubixKube observer agent:
   
-  - ** Monitors ** your cluster resources (pods, deployments, services, nodes)
-  - ** Collects ** metrics and events (NOT your application data)
-  - ** Detects ** anomalies and potential issues
-  - ** Communicates ** with RubixKube AI agents for analysis
-  - ** Reports ** cluster health to your dashboard
+  - **Monitors**your cluster resources (pods, deployments, services, nodes)
+  - **Collects**metrics and events (NOT your application data)
+  - **Detects**anomalies and potential issues
+  - **Communicates**with RubixKube AI agents for analysis
+  - **Reports**cluster health to your dashboard
   
-** Privacy:** The observer only collects metadata and metrics - never your application logs or sensitive data.
+**Privacy:**The observer only collects metadata and metrics - never your application logs or sensitive data.
 </Accordion>
 
 ---
@@ -406,19 +406,19 @@ rubixkube   Active   30s
 kubectl get pods -n rubixkube
 ```
 
-** Initial output **(pods starting):
+**Initial output**(pods starting):
 ```
 NAME                                  READY   STATUS              RESTARTS   AGE
 rubixkube-observer-7d4b9c8f6d-abc12   0/1     ContainerCreating   0          15s
 ```
 
-** Wait 1-2 minutes **, then check again:
+**Wait 1-2 minutes**, then check again:
 
 ```bash
 kubectl get pods -n rubixkube
 ```
 
-** Success - Pod Running:**```
+**Success - Pod Running:**```
 NAME                                  READY   STATUS    RESTARTS   AGE
 rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
 ```
@@ -448,7 +448,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
     ```
     
-    2.** Verify internet connectivity:**```bash
+    2.**Verify internet connectivity:**```bash
     kubectl run test-curl --image=curlimages/curl -i --rm -- curl -I https://api.rubixkube.ai
     ```
     
@@ -460,12 +460,12 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
   </Accordion>
 
   <Accordion title=" Troubleshooting: CrashLoopBackOff">
-** Problem:** Pod starts but immediately crashes.
+**Problem:**Pod starts but immediately crashes.
     
-** Most common cause:** Invalid or missing API key
+**Most common cause:**Invalid or missing API key
     
 ### Solution:
-    1.** Check logs to see error:**```bash
+    1.**Check logs to see error:**```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
     
@@ -485,14 +485,14 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
   </Accordion>
 
   <Accordion title=" Troubleshooting: Pending Status">
-** Problem:** Pod stuck in "Pending" state.
+**Problem:**Pod stuck in "Pending" state.
     
-** Common causes:**- Not enough cluster resources
+**Common causes:**- Not enough cluster resources
     - No nodes available
     - Storage provisioning issues
     
 ### Solutions:
-    1.** Check node resources:**```bash
+    1.**Check node resources:**```bash
     kubectl top nodes
     kubectl describe nodes
     ```
@@ -501,7 +501,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
     ```
     
-    3.** Scale your node pool ** if resources are exhausted
+    3.**Scale your node pool**if resources are exhausted
   </Accordion>
 </AccordionGroup>
 
@@ -527,20 +527,20 @@ kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
 ```
 
 <Tip>
-** Good Sign:** Regular [INFO] messages about monitoring, watching, and heartbeats mean everything is working correctly.
+**Good Sign:**Regular [INFO] messages about monitoring, watching, and heartbeats mean everything is working correctly.
 </Tip>
 
 ### Verify in RubixKube Dashboard
 
 1. Go to [console.rubixkube.ai](https://console.rubixkube.ai)
-2. Navigate to ** Dashboard ** or ** Clusters ** page
+2. Navigate to**Dashboard**or**Clusters**page
 3. Your cluster should appear with:
-   - ** Green status indicator **(Connected)
-   - ** Metrics ** starting to populate
-   - ** Observer Status:**"Active"
+   - **Green status indicator**(Connected)
+   - **Metrics**starting to populate
+   - **Observer Status:**"Active"
 
 <Note>
-** Sync Delay:** It may take 1-2 minutes for your cluster to appear and sync initial data to the dashboard.
+**Sync Delay:**It may take 1-2 minutes for your cluster to appear and sync initial data to the dashboard.
 </Note>
 
 ---
@@ -568,13 +568,13 @@ kubectl create deployment broken-app --image=invalid-image:latest -n rubixkube-d
 
 ### Watch RubixKube Detect Issues
 
-1. Go to ** console.rubixkube.ai ** 2. Navigate to ** Infrastructure ** or ** Insights ** 3. You'll see:
+1. Go to**console.rubixkube.ai** 2. Navigate to**Infrastructure**or**Insights** 3. You'll see:
    -  nginx and redis running healthy
    -  broken-app showing `ImagePullBackOff` error
    -  RubixKube AI analyzing the broken pod
 
 <Tip>
-** Try the Chat!** Go to the Chat page and ask: "What pods are failing?" or "Why is broken-app not working?"
+**Try the Chat!**Go to the Chat page and ask: "What pods are failing?" or "Why is broken-app not working?"
 </Tip>
 
 ---
@@ -647,8 +647,8 @@ kubectl top pod -n rubixkube
 ```
 
 Expected resource usage:
-- ** CPU:** 50-200m (0.05-0.2 cores)
-- ** Memory:** 128Mi-512Mi
+- **CPU:** 50-200m (0.05-0.2 cores)
+- **Memory:** 128Mi-512Mi
 
 ---
 
@@ -670,7 +670,7 @@ This removes:
 - Configuration and secrets
 
 <Warning>
-** Data Retention:** Historical data in RubixKube cloud platform is retained for 30 days even after uninstalling the agent.
+**Data Retention:**Historical data in RubixKube cloud platform is retained for 30 days even after uninstalling the agent.
 </Warning>
 
 ### Delete Your Test Cluster
@@ -715,21 +715,21 @@ When you're done testing:
 
 <AccordionGroup>
   <Accordion title="kubectl: connection refused">
-** Error:**`The connection to the server localhost:8080 was refused`
+**Error:**`The connection to the server localhost:8080 was refused`
     
-** Cause:** kubectl is not configured to connect to your cluster
+**Cause:**kubectl is not configured to connect to your cluster
     
-** Solution:**- Run the "update kubeconfig" command for your cloud provider (see Step 1)
+**Solution:**- Run the "update kubeconfig" command for your cloud provider (see Step 1)
     - Verify with: `kubectl config current-context`
   </Accordion>
 
   <Accordion title="Unauthorized / Forbidden errors">
-** Error:**`Error from server (Forbidden): pods is forbidden`
+**Error:**`Error from server (Forbidden): pods is forbidden`
     
-** Cause:** Your user doesn't have proper RBAC permissions
+**Cause:**Your user doesn't have proper RBAC permissions
     
 ### Solution:
-** For EKS:**```bash
+**For EKS:**```bash
     # Ensure you're using cluster creator credentials
     aws sts get-caller-identity
     ```
@@ -741,7 +741,7 @@ When you're done testing:
       --user=$(gcloud config get-value core/account)
     ```
     
-** For AKS:**```bash
+**For AKS:**```bash
     # Get admin credentials
     az aks get-credentials --resource-group rubixkube-rg --name rubixkube-test --admin
     ```
@@ -758,19 +758,19 @@ When you're done testing:
     kubectl get events -n rubixkube --sort-by='.lastTimestamp'
     ```
     
-** Common causes:**- Network connectivity issues
+**Common causes:**- Network connectivity issues
     - API key expired or invalid
     - Memory limits too low
     
-** Solution:** Contact support@rubixkube.ai with the logs
+**Solution:**Contact support@rubixkube.ai with the logs
   </Accordion>
 
   <Accordion title="Cluster not appearing in dashboard">
-** Problem:** Cluster successfully installed but not showing in RubixKube console
+**Problem:**Cluster successfully installed but not showing in RubixKube console
     
 ### Checklist:
-    1.** Wait 2-3 minutes **- Initial sync takes time
-    2.** Check pod is Running:**```bash
+    1.**Wait 2-3 minutes**- Initial sync takes time
+    2.**Check pod is Running:**```bash
     kubectl get pods -n rubixkube
     ```
     
@@ -778,7 +778,7 @@ When you're done testing:
     kubectl logs -n rubixkube deployment/rubixkube-observer | grep -i "connect"
     ```
     
-    4.** Verify API key is correct:**```bash
+    4.**Verify API key is correct:**```bash
     kubectl get secret -n rubixkube rubixkube-credentials -o yaml
     ```
     
@@ -789,9 +789,9 @@ When you're done testing:
   </Accordion>
 
   <Accordion title="Network policy blocking RubixKube">
-** Problem:** Cluster has strict network policies
+**Problem:**Cluster has strict network policies
     
-** Solution:** Allow egress to RubixKube API:
+**Solution:**Allow egress to RubixKube API:
     
     ```yaml
     apiVersion: networking.k8s.io/v1
@@ -826,7 +826,7 @@ When you're done testing:
 
 ## Beta Testing Best Practices
 
-Since RubixKube is in ** Beta **, follow these practices:
+Since RubixKube is in**Beta**, follow these practices:
 
 <CardGroup cols={2}>
   <Card title="Use Test Environments Only" icon="flask">
@@ -859,7 +859,7 @@ Since RubixKube is in ** Beta **, follow these practices:
 </CardGroup>
 
 <Note>
-** Your Feedback Matters!** As a beta tester, your input directly shapes RubixKube's development. We appreciate every bug report and suggestion.
+**Your Feedback Matters!**As a beta tester, your input directly shapes RubixKube's development. We appreciate every bug report and suggestion.
 </Note>
 
 ---
@@ -879,7 +879,7 @@ curl -o observer.yaml "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_
 kubectl apply -f observer.yaml
 ```
 
-** Example limits:**```yaml
+**Example limits:**```yaml
 resources:
   requests:
     cpu: 100m

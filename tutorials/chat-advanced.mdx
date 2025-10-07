@@ -8,7 +8,7 @@ description: 'Master Chat for different roles - SRE, DevOps, Platform Engineer w
 You've learned the basics and troubleshooting. Now let's explore how different team members use Chat for their specific workflows, plus advanced features and power user tips.
 
 <Info>
-** Role-based approach:** See how SREs, DevOps Engineers, Platform Engineers, and Developers each use Chat differently to maximize productivity.
+**Role-based approach:**See how SREs, DevOps Engineers, Platform Engineers, and Developers each use Chat differently to maximize productivity.
 </Info>
 
 ---
@@ -17,9 +17,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 ###  SRE: "Everything is On Fire"
 
-** Goal:** Triage and resolve production incidents FAST
+**Goal:**Triage and resolve production incidents FAST
 
-** Morning routine:**```
+**Morning routine:**```
 "Good morning! Any HIGH severity incidents?"
 "Show me production pod health"
 "What changed overnight?"
@@ -37,9 +37,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 "Is it fixed?"
 ```
 
-** Time: 3-5 minutes **(vs. 20+ minutes)
+**Time: 3-5 minutes**(vs. 20+ minutes)
 
-** Post-mortem:**```
+**Post-mortem:**```
 "Summarize today's incidents"
 "What was the root cause?"
 "How long was each service down?"
@@ -65,7 +65,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 6. "Looks good - deploying now"
 ```
 
-** Post-deployment verification:**```
+**Post-deployment verification:**```
 "How's the new api-gateway version?"
 "Any errors in the logs?"
 "Resource usage vs. previous version?"
@@ -78,16 +78,16 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 ```
 
 <Note>
-** Chat becomes your deployment co-pilot **- validates changes, monitors rollouts, suggests rollbacks if needed.
+**Chat becomes your deployment co-pilot**- validates changes, monitors rollouts, suggests rollbacks if needed.
 </Note>
 
 ---
 
 ###  Platform Engineer: "Optimize Everything"
 
-** Goal:** Resource efficiency and capacity planning
+**Goal:**Resource efficiency and capacity planning
 
-** Resource optimization:**```
+**Resource optimization:**```
 "Show me pods with limits less than requests"
 "What pods are over-provisioned?"
 "Calculate actual vs. requested resources"
@@ -102,7 +102,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 "Project resource needs for 2x traffic"
 ```
 
-** Cost optimization:**```
+**Cost optimization:**```
 "What pods consume the most resources?"
 "Show me idle resources"
 "Which nodes are underutilized?"
@@ -126,7 +126,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 "How do resource limits work?"
 ```
 
-** Exploration:**```
+**Exploration:**```
 "What applications are deployed here?"
 "How does payment-service connect to the database?"
 "What technologies are we using?"
@@ -140,7 +140,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 ```
 
 <Note>
-** The agent becomes a patient teacher **- explains concepts with examples from YOUR cluster, not generic docs.
+**The agent becomes a patient teacher**- explains concepts with examples from YOUR cluster, not generic docs.
 </Note>
 
 ---
@@ -160,7 +160,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 → Get: Risk assessment
 ```
 
-** Time: 30 seconds **** Result:** Confident to start the day
+**Time: 30 seconds****Result:**Confident to start the day
 
 ---
 
@@ -181,7 +181,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 → Agent watches for issues
 ```
 
-** Time: 2 minutes **** Result:** Safe deployment
+**Time: 2 minutes****Result:**Safe deployment
 
 ---
 
@@ -198,7 +198,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 → Error rate, latency check
 ```
 
-** Time: 1 minute **** Result:** Sleep well, knowing it's stable
+**Time: 1 minute****Result:**Sleep well, knowing it's stable
 
 ---
 
@@ -215,7 +215,7 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 → Step-by-step remediation
 ```
 
-** Time: 3 minutes **** Result:** Back to sleep
+**Time: 3 minutes****Result:**Back to sleep
 
 ---
 
@@ -223,9 +223,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 ###  File Upload & YAML Validation
 
-Click **** to upload Kubernetes YAML files.
+Click****to upload Kubernetes YAML files.
 
-** Use cases:**- Pre-deployment validation
+**Use cases:**- Pre-deployment validation
 - Security audits
 - Best practice checks
 - Configuration review
@@ -235,7 +235,7 @@ Click **** to upload Kubernetes YAML files.
 2. Select `deployment.yaml`
 3. Agent analyzes automatically
 
-** Sample response:**```
+**Sample response:**```
 Analyzed your deployment:
 
  Valid YAML syntax
@@ -345,7 +345,7 @@ Would you like a fixed version?
     "Create runbook for this issue"
     ```
     
-    Then click ** Export conversation **→ Save as Markdown
+    Then click**Export conversation**→ Save as Markdown
   </Accordion>
 </AccordionGroup>
 
@@ -357,27 +357,27 @@ Would you like a fixed version?
 
 <CardGroup cols={2}>
   <Card title="Include Namespace" icon="folder">
-** Good:**"Show failing pods in prod"
+**Good:**"Show failing pods in prod"
     
-** Why:** Faster, more accurate
+**Why:**Faster, more accurate
   </Card>
 
   <Card title="Specify Resource Type" icon="cube">
-** Good:**"Why is pod api-gateway failing?"
+**Good:**"Why is pod api-gateway failing?"
     
-** Why:** Clearer than just "api-gateway"
+**Why:**Clearer than just "api-gateway"
   </Card>
 
   <Card title="Ask Follow-Ups" icon="messages">
-** Good:**"Tell me more" or "What about logs?"
+**Good:**"Tell me more" or "What about logs?"
     
-** Why:** Leverages context
+**Why:**Leverages context
   </Card>
 
   <Card title="Use Urgency Keywords" icon="siren">
-** Good:**"URGENT" or "production down"
+**Good:**"URGENT" or "production down"
     
-** Why:** Agent prioritizes
+**Why:**Agent prioritizes
   </Card>
 </CardGroup>
 
@@ -385,27 +385,27 @@ Would you like a fixed version?
 
 <CardGroup cols={2}>
   <Card title="Don't Repeat Context" icon="ban">
-** Bad:** Asking full question again when in conversation
+**Bad:**Asking full question again when in conversation
     
-** Why:** Agent remembers
+**Why:**Agent remembers
   </Card>
 
   <Card title="Don't Be Too Vague" icon="question">
-** Bad:**"Fix it" (without context)
+**Bad:**"Fix it" (without context)
     
-** Why:** Agent needs to know WHAT
+**Why:**Agent needs to know WHAT
   </Card>
 
   <Card title="Don't Use kubectl Syntax" icon="terminal">
-** Bad:**"kubectl get pods -A"
+**Bad:**"kubectl get pods -A"
     
-** Why:** Just ask! "Show me all pods"
+**Why:**Just ask! "Show me all pods"
   </Card>
 
   <Card title="Don't Assume Omniscience" icon="crystal-ball">
-** Bad:**"Why is it slow?" (which "it"?)
+**Bad:**"Why is it slow?" (which "it"?)
     
-** Why:** Be specific: "Why is checkout-service slow?"
+**Why:**Be specific: "Why is checkout-service slow?"
   </Card>
 </CardGroup>
 
@@ -415,47 +415,47 @@ Would you like a fixed version?
 
 <Warning>
 ### Current Limitations:
-** Chat CANNOT (yet):**- Execute kubectl commands for you
+**Chat CANNOT (yet):**- Execute kubectl commands for you
 - Apply configuration changes
 - Restart pods/deployments
 - Create/modify resources
 
-** Workarounds:**- Agent provides kubectl commands → You run them
+**Workarounds:**- Agent provides kubectl commands → You run them
 - Agent suggests YAML changes → You apply them
 - Agent explains steps → You execute them
 
-** Coming Q1 2026:** Automated execution with approval workflow
+**Coming Q1 2026:**Automated execution with approval workflow
 </Warning>
 
 ---
 
 ## Export & Share
 
-Click ** Export conversation ** to:
+Click**Export conversation**to:
 
 <CardGroup cols={2}>
   <Card title="Markdown Export" icon="file-lines">
     Save as .md for documentation
     
-** Use for:** Post-mortems, runbooks
+**Use for:**Post-mortems, runbooks
   </Card>
 
   <Card title="JSON Export" icon="file-code">
     Save as .json for analysis
     
-** Use for:** Audit trails, automation
+**Use for:**Audit trails, automation
   </Card>
 
   <Card title="Share with Team" icon="share">
     Copy link (coming soon)
     
-** Use for:** Collaboration
+**Use for:**Collaboration
   </Card>
 
   <Card title="Email Thread" icon="envelope">
     Send conversation (coming soon)
     
-** Use for:** Stakeholder updates
+**Use for:**Stakeholder updates
   </Card>
 </CardGroup>
 
@@ -471,14 +471,14 @@ Click ** Export conversation ** to:
     - Evidence-based RCA
     - Validated against best practices
     
-** But:** In Beta, always verify critical changes before applying
+**But:**In Beta, always verify critical changes before applying
   </Accordion>
 
   <Accordion title="Can Chat execute commands?">
 ### Not in Beta.
     Chat provides the kubectl command - you run it.
     
-** Q1 2026:** Automated execution with approval gates
+**Q1 2026:**Automated execution with approval gates
   </Accordion>
 
   <Accordion title="What if Chat can't find something?">
@@ -488,7 +488,7 @@ Click ** Export conversation ** to:
     3. Explain what it checked
     4. Suggest alternative queries
     
-** Example:** If pods not in `default`, asks which namespace
+**Example:**If pods not in `default`, asks which namespace
   </Accordion>
 
   <Accordion title="Is conversation data secure?">
@@ -500,14 +500,14 @@ Click ** Export conversation ** to:
   </Accordion>
 
   <Accordion title="How long is conversation history kept?">
-** Indefinitely **(in Beta, no retention limits)
+**Indefinitely**(in Beta, no retention limits)
     
     You can delete conversations manually
   </Accordion>
 
   <Accordion title="Can I customize the agent?">
 ### Not yet.
-** Coming:** Custom prompts, preferred response styles, domain-specific training
+**Coming:**Custom prompts, preferred response styles, domain-specific training
   </Accordion>
 </AccordionGroup>
 
@@ -519,25 +519,25 @@ Click ** Export conversation ** to:
   <Step title="Week 1: Daily Health Checks">
     Start each day with: `"Cluster health?"`
     
-** Goal:** Get comfortable with Chat
+**Goal:**Get comfortable with Chat
   </Step>
 
   <Step title="Week 2: Troubleshooting">
     Use Chat for EVERY pod issue
     
-** Goal:** Build troubleshooting muscle memory
+**Goal:**Build troubleshooting muscle memory
   </Step>
 
   <Step title="Week 3: Learning">
     Ask 1 "why" question per day
     
-** Goal:** Deepen Kubernetes knowledge
+**Goal:**Deepen Kubernetes knowledge
   </Step>
 
   <Step title="Week 4: Advanced">
     Try file uploads, historical queries, comparisons
     
-** Goal:** Become a power user
+**Goal:**Become a power user
   </Step>
 </Steps>
 
@@ -547,7 +547,7 @@ Click ** Export conversation ** to:
 
 ### Pattern 1: Morning Standup
 
-** Every day at 9 AM:**```
+**Every day at 9 AM:**```
 "Cluster health?"
 "Any new incidents?"
 "Team can deploy today?"
@@ -565,13 +565,13 @@ Click ** Export conversation ** to:
 "What's the risk?"
 ```
 
-** Result:** 80% fewer bad deploys
+**Result:** 80% fewer bad deploys
 
 ---
 
 ### Pattern 3: Incident Response Template
 
-** When paged:**```
+**When paged:**```
 "What's down?"
 "Impact?"
 "Root cause?"
@@ -588,7 +588,7 @@ Click ** Export conversation ** to:
 "Explain [concept] with examples from my cluster"
 ```
 
-** Result:** Learn by doing with real infrastructure
+**Result:**Learn by doing with real infrastructure
 
 ---
 
@@ -604,13 +604,13 @@ Master these shortcuts:
 | `↑` | Edit/retry last query | Fix typos quickly |
 | `Esc` | Close Chat | Clean workspace |
 
-** Pro workflow:** 1. Press `⌘K` (wherever you are)
+**Pro workflow:** 1. Press `⌘K` (wherever you are)
 2. Type "chat"
 3. Type query
 4. Press Enter
 5. Get answer
 
-** Total: 5 seconds ** from thought to answer
+**Total: 5 seconds**from thought to answer
 
 ---
 
@@ -649,12 +649,12 @@ Master these shortcuts:
 
 | Feature | Generic ChatGPT | RubixKube Chat |
 |---------|-----------------|----------------|
-|** Knows your cluster **|  No |  Yes - live data |
-|** Executes queries **|  No |  Yes - real Kubernetes API |
-|** Historical context **|  No |  Yes - Memory Engine |
-|** RCA integration **|  No |  Yes - incident correlation |
-|** Evidence-based **|  Can hallucinate |  Shows actual logs/events |
-|** Transparent reasoning **|  Black box |  Shows function calls |
+|**Knows your cluster**|  No |  Yes - live data |
+|**Executes queries**|  No |  Yes - real Kubernetes API |
+|**Historical context**|  No |  Yes - Memory Engine |
+|**RCA integration**|  No |  Yes - incident correlation |
+|**Evidence-based**|  Can hallucinate |  Shows actual logs/events |
+|**Transparent reasoning**|  Black box |  Shows function calls |
 
 ### RubixKube Chat = ChatGPT + Live Cluster Data + RCA + Memory Engine
 ---
@@ -697,11 +697,11 @@ Master these shortcuts:
     4. "What does payment-service do?"
     ```
     
-** Result:** Self-serve onboarding
+**Result:**Self-serve onboarding
   </Accordion>
 
   <Accordion title="Combine with Dashboard">
-** Best workflow:**- Dashboard: Visual overview
+**Best workflow:**- Dashboard: Visual overview
     - Chat: Deep dive investigation
     
     See spike → Click "Discuss in Chat" → Get answers
@@ -711,10 +711,10 @@ Master these shortcuts:
     For every major incident:
     
     1. Investigate via Chat
-    2. Click ** Export conversation ** 3. Save as Markdown
+    2. Click**Export conversation** 3. Save as Markdown
     4. Add to post-mortem
     
-** Result:** Documentation writes itself
+**Result:**Documentation writes itself
   </Accordion>
 </AccordionGroup>
 
@@ -794,13 +794,13 @@ You're now a Chat expert! Explore related concepts:
 
 The Chat interface transforms how you work with infrastructure:
 
-** Natural language ** replaces kubectl commands  
-** Context awareness ** maintains conversation thread  
-** Multi-persona ** support for different workflows  
-** Time savings ** of 84% on average  
-** Learning mode ** teaches Kubernetes concepts  
-** RCA integration ** explains detected incidents  
-** Transparent reasoning ** shows how agent thinks  
+**Natural language**replaces kubectl commands  
+**Context awareness**maintains conversation thread  
+**Multi-persona**support for different workflows  
+**Time savings**of 84% on average  
+**Learning mode**teaches Kubernetes concepts  
+**RCA integration**explains detected incidents  
+**Transparent reasoning**shows how agent thinks  
 
 ### You're now equipped to use Chat like a pro across all scenarios!
 ---
@@ -810,14 +810,14 @@ The Chat interface transforms how you work with infrastructure:
 ### Print or bookmark this:
 | Scenario | Query | Expected Response |
 |----------|-------|-------------------|
-|** Daily health **| "Cluster health?" | Health %, incidents, pod counts |
-|** Find failures **| "What's failing?" | List of unhealthy resources |
-|** Investigate **| "Why did [pod] fail?" | RCA with root cause |
-|** Get logs **| "Show logs for [pod]" | Filtered log output |
-|** Get fix **| "How do I fix [pod]?" | kubectl commands |
-|** Verify **| "Is [pod] healthy?" | Current status |
-|** Learn **| "Explain [concept]" | Educational response |
-|** Validate **| Upload YAML + "Validate" | Security & config checks |
+|**Daily health**| "Cluster health?" | Health %, incidents, pod counts |
+|**Find failures**| "What's failing?" | List of unhealthy resources |
+|**Investigate**| "Why did [pod] fail?" | RCA with root cause |
+|**Get logs**| "Show logs for [pod]" | Filtered log output |
+|**Get fix**| "How do I fix [pod]?" | kubectl commands |
+|**Verify**| "Is [pod] healthy?" | Current status |
+|**Learn**| "Explain [concept]" | Educational response |
+|**Validate**| Upload YAML + "Validate" | Security & config checks |
 
 ---
 

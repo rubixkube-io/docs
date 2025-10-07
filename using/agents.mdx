@@ -5,13 +5,14 @@ description: 'Monitor and manage RubixKube AI agents that power your infrastruct
 
 # Using Agents & Tools
 
-The **Agents** page shows all AI agents working on your behalf - their health, status, and activity.
+The Agents page shows every AI agent and MCP tool connected to RubixKube, with real-time health and activity. Use it to confirm agents are active, inspect capabilities, and troubleshoot inactive components.
 
 <Frame>
   <img
-    src="/images/using/using-agents-01-overview.png"
-    alt="Agents page showing system agents"
+    src="/images/using/using-agents-01-header.png"
+    alt="Agents header with summary metrics"
   />
+  <Caption>Header with Total, System, and Active agent counts</Caption>
 </Frame>
 
 ---
@@ -68,34 +69,84 @@ The **Agents** page shows all AI agents working on your behalf - their health, s
 
 | Status | Meaning | What to Do |
 |--------|---------|------------|
-| ✅ **Active** | Agent running normally | Nothing - all good |
-| ⚠️ **Degraded** | Slow or intermittent | Monitor, may self-recover |
-| ❌ **Offline** | Agent not responding | Check pod, restart if needed |
+| Active | Agent running normally | No action needed |
+| Degraded | Slow or intermittent | Monitor; check logs if persists |
+| Offline | Agent not responding | Inspect pod, restart if needed |
 
 ---
 
 ## Monitoring Agents
 
-**Total Agents:** Should match your deployment (usually 3-4)
+<Frame>
+  <img
+    src="/images/using/using-agents-02-controls.png"
+    alt="Search, filter buttons, and active filters"
+  />
+  <Caption>Search, quick filters, and active filter chips</Caption>
+</Frame>
 
-**System Agents:** Core RubixKube agents
+### Quick reference
+- Total Agents: Overall count of agents and tools
+- System Agents: Core platform agents
+- Active Agents: Subset currently running
 
-**Active Agents:** Currently operational
+---
 
-**If an agent goes offline:**
-1. Check the Agents page
-2. Identify which one
-3. Click "View" for logs
-4. Restart pod if necessary
+## Browse Agents and Tools
+
+<Frame>
+  <img
+    src="/images/using/using-agents-03-all-list.png"
+    alt="All agents and tools list"
+  />
+  <Caption>Combined view of System Agents and MCP tools</Caption>
+</Frame>
+
+### System Agents only
+
+<Frame>
+  <img
+    src="/images/using/using-agents-04-system-agents.png"
+    alt="System agents cards"
+  />
+  <Caption>RCA Pipeline Agent and SRI Agent active</Caption>
+</Frame>
+
+### View capabilities
+
+<Frame>
+  <img
+    src="/images/using/using-agents-05-capabilities.png"
+    alt="Agent capabilities dialog"
+  />
+  <Caption>Capabilities exposed by the RCA Pipeline Agent</Caption>
+</Frame>
+
+### Inactive view
+
+<Frame>
+  <img
+    src="/images/using/using-agents-06-inactive.png"
+    alt="Inactive agents and tools"
+  />
+  <Caption>Observer agents and MCP server shown as disabled</Caption>
+</Frame>
+
+---
+
+## Troubleshooting workflow
+1. Filter to Inactive to find which agents are down.
+2. Open the item and review capabilities or info to confirm expected behavior.
+3. Check underlying Kubernetes pod logs for the agent.
+4. Restart the pod if needed, then refresh the page and verify status changes to Active.
 
 ---
 
 ## What You Learned
 
-✅ 4 core agents  
-✅ Their roles  
-✅ Health statuses  
-✅ What to do when offline  
+- Core system agents and their roles
+- Health statuses and meanings
+- How to filter, inspect capabilities, and troubleshoot inactive agents
 
 ---
 

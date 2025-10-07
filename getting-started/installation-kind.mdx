@@ -11,7 +11,7 @@ Welcome! This guide will help you install RubixKube on your**local machine**usin
 - **Training**team members on RubixKube features
 
 <Info>
-**Complete Beginner?**No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
+<strong>Complete Beginner?</strong> No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
 </Info>
 
 ---
@@ -33,7 +33,7 @@ Before we can run RubixKube locally, we need a few tools:
 </CardGroup>
 
 <Note>
-**Estimated Time:** 20-30 minutes for first-time installation (including downloads)
+<strong>Estimated Time:</strong> 20-30 minutes for first-time installation (including downloads)
 </Note>
 
 ---
@@ -76,7 +76,7 @@ Docker is required to run KIND. Choose your operating system below:
     ```
 
     <Tip>
-**First Time?**Docker may ask for system permissions. Click "OK" to allow it.
+<strong>First Time?</strong> Docker may ask for system permissions. Click "OK" to allow it.
     </Tip>
   </Tab>
 
@@ -122,7 +122,7 @@ Docker is required to run KIND. Choose your operating system below:
     ```
 
     <Warning>
-**Virtualization Required:**Docker Desktop requires hardware virtualization. Enable VT-x/AMD-V in your BIOS if you see errors.
+<strong>Virtualization Required:</strong> Docker Desktop requires hardware virtualization. Enable VT-x/AMD-V in your BIOS if you see errors.
     </Warning>
   </Tab>
 
@@ -192,7 +192,7 @@ Docker is required to run KIND. Choose your operating system below:
     ```
 
     <Tip>
-**Permission Denied?**Make sure you logged out and back in after adding your user to the docker group.
+<strong>Permission Denied?</strong> Make sure you logged out and back in after adding your user to the docker group.
     </Tip>
   </Tab>
 </Tabs>
@@ -428,9 +428,9 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-rubixkube-local
 ```
 
-<Tip>
-**Pro Tip:**The cluster automatically sets itself as your active Kubernetes context, so kubectl commands will target it.
-</Tip>
+    <Tip>
+<strong>Pro Tip:</strong> The cluster automatically sets itself as your active Kubernetes context, so kubectl commands will target it.
+    </Tip>
 
 ### Verify Your Cluster is Running
 
@@ -456,9 +456,9 @@ NAME                            STATUS   ROLES           AGE   VERSION
 rubixkube-local-control-plane   Ready    control-plane   1m    v1.27.3
 ```
 
-<Note>
-**Troubleshooting:**If the node shows "NotReady", wait 30 seconds and check again. It takes time to initialize.
-</Note>
+    <Note>
+<strong>Troubleshooting:</strong> If the node shows "NotReady", wait 30 seconds and check again. It takes time to initialize.
+    </Note>
 
 ---
 
@@ -486,9 +486,9 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
   />
 </Frame>
 
-<Warning>
-**Important:**Use YOUR specific command from the dashboard - it contains your unique API key!
-</Warning>
+    <Warning>
+<strong>Important:</strong> Use YOUR specific command from the dashboard - it contains your unique API key!
+    </Warning>
 
 ### Run the Installation Command
 
@@ -509,9 +509,9 @@ configmap/rubixkube-config created
 secret/rubixkube-credentials created
 ```
 
-<Tip>
-**What just happened?**RubixKube installed an "observer" agent in your cluster that monitors your infrastructure and reports back to the RubixKube platform.
-</Tip>
+    <Tip>
+<strong>What just happened?</strong> RubixKube installed an "observer" agent in your cluster that monitors your infrastructure and reports back to the RubixKube platform.
+    </Tip>
 
 ---
 
@@ -623,18 +623,18 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 [INFO] Agent mesh initialized
 ```
 
-<Tip>
-**Tip:**If you see steady log output with [INFO] messages, everything is working correctly!
-</Tip>
+    <Tip>
+<strong>Tip:</strong> If you see steady log output with [INFO] messages, everything is working correctly!
+    </Tip>
 
 ### Verify in RubixKube Dashboard
 
 1. Go back to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. You should see your cluster appear in the dashboard
 3. The**Observer Status**should change from "Awaiting installation" to**"Connected"**
-<Note>
-**Note:**It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
-</Note>
+    <Note>
+<strong>Note:</strong> It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
+    </Note>
 
 ---
 
@@ -840,7 +840,7 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 |**Load Balancers**| Simulated only | Real cloud load balancers |
 
 <Tip>
-**Best Practice:**Start with KIND to learn RubixKube, then move to cloud for production workloads.
+<strong>Best Practice:</strong> Start with KIND to learn RubixKube, then move to cloud for production workloads.
 </Tip>
 
 ---
@@ -865,7 +865,7 @@ This creates a cluster with 1 control plane and 2 worker nodes.
   </Card>
 </CardGroup>
 
-<Note>
-**Stuck?**Don't hesitate to reach out. We're here to help you get started with RubixKube!
-</Note>
+    <Note>
+<strong>Stuck?</strong> Don't hesitate to reach out. We're here to help you get started with RubixKube!
+    </Note>
 

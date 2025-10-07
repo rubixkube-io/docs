@@ -5,110 +5,188 @@ description: 'Visualize and monitor your Kubernetes cluster resources with inter
 
 # Using Infrastructure Topology
 
-The **Infrastructure** page provides a comprehensive view of your Kubernetes cluster topology - showing all resources, their relationships, and health status in multiple visualization modes.
+The Infrastructure page provides an interactive, end-to-end map of your Kubernetes cluster. Use it to understand relationships between resources, assess health, and drill into details using multiple view modes.
 
 <Frame>
   <img
-    src="/images/using/using-infrastructure-01-overview.png"
-    alt="Infrastructure topology page"
+    src="/images/using/using-infrastructure-overview-detailed.png"
+    alt="Infrastructure page - complete overview"
   />
+  <Caption>Complete Infrastructure overview (header, metrics, controls, and view area)</Caption>
+  
 </Frame>
 
 ---
 
-## Overview
+## Header and Global Controls
 
-**What you see:**
-- **Total Resources:** Complete count across all namespaces
-- **Namespaces:** Number of namespaces
-- **Healthy Resources:** How many are running correctly
-- **Resource Table:** Detailed list of all resources
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-01-header.png"
+    alt="Infrastructure header with title and refresh"
+  />
+  <Caption>Header with title, description, and Refresh action</Caption>
+</Frame>
+
+- **Title and description**: Confirms you are in Infrastructure Topology.
+- **Refresh**: Re-fetches topology and metrics. Use after deployments or scaling events.
 
 ---
 
-## View Modes
+## Metrics Summary
 
-<Tabs>
-  <Tab title="Table View">
-    **Best for:** Quick scanning and filtering
-    
-    Shows: Name, Type, Namespace, Status, Actions
-  </Tab>
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-04-metrics.png"
+    alt="Summary metrics: total resources, namespaces, healthy"
+  />
+  <Caption>Summary metrics sourced live from the cluster</Caption>
+</Frame>
 
-  <Tab title="Graph View">
-    **Best for:** Understanding dependencies
-    
-    Shows: Visual node graph with connections
-  </Tab>
+- **Total Resources**: Count of all resources indexed in the current cluster view.
+- **Namespaces**: Distinct namespaces represented in the current data set.
+- **Healthy Resources**: Resources reporting healthy state.
 
-  <Tab title="Tree View">
-    **Best for:** Hierarchical organization
-    
-    Shows: Resources organized by namespace
-  </Tab>
+---
 
-  <Tab title="Dashboard View">
-    **Best for:** High-level metrics
-    
-    Shows: Summary cards and statistics
-  </Tab>
-</Tabs>
+## Controls: Search, Views, Layout
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-02-controls.png"
+    alt="Search, view mode buttons, and layout selector"
+  />
+  <Caption>Controls: search, view mode selector, and graph layout selector</Caption>
+</Frame>
+
+- **Search resources...**: Type names, kinds, or namespaces to filter results instantly.
+- **View modes**: Graph, Flow, Table, Tree, Dashboard, Namespace, Dependencies.
+- **Layout selector** (Graph view): Hierarchical, Force, Circular, Tree, Grid.
+- **Clear all**: Removes active filters and resets controls.
+
+Active filters reflect your selections in real time:
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-03-active-filters.png"
+    alt="Active filters chips"
+  />
+  <Caption>Active filters chips showing current selections</Caption>
+</Frame>
+
+---
+
+## Graph View
+
+Graph view renders resources as nodes with relationships as edges. Use it to reason about dependencies and blast radius.
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-03-graph-view.png"
+    alt="Graph view - hierarchical layout"
+  />
+  <Caption>Graph view using the Hierarchical layout</Caption>
+</Frame>
+
+### Graph Settings
+
+Open Graph settings to tune readability and performance for large graphs.
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-06-graph-settings.png"
+    alt="Graph settings dialog"
+  />
+  <Caption>Graph View Settings: elasticity, labels, health status, and layout strengths</Caption>
+</Frame>
+
+### Layouts
+
+Switch layouts to highlight different structural perspectives.
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-07-graph-force.png"
+    alt="Graph view - force layout"
+  />
+  <Caption>Graph view using the Force layout</Caption>
+</Frame>
+
+---
+
+## Table View
+
+Table view provides a sortable, scannable inventory with per-row actions.
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-05-table.png"
+    alt="Resource table with 26 resources"
+  />
+  <Caption>Resource Table with Name, Type, Namespace, Status, and Actions</Caption>
+</Frame>
+
+### Searching and Filtering
+
+Use the search input to narrow to a namespace, type, or resource name.
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-08-search-kube-system.png"
+    alt="Search filtered to kube-system"
+  />
+  <Caption>Search narrowed to the kube-system namespace</Caption>
+</Frame>
+
+<Frame>
+  <img
+    src="/images/using/using-infrastructure-09-table-filtered-kube-system.png"
+    alt="Table filtered to kube-system"
+  />
+  <Caption>Filtered table showing only kube-system and rubixkube-system resources</Caption>
+</Frame>
 
 ---
 
 ## Resource Types
 
-| Type | What It Is | Example |
-|------|------------|---------|
-| **Node** | Physical/VM machines | kind-control-plane |
-| **Pod** | Running containers | nginx-7d8b49-xyz |
-| **Deployment** | Managed pod sets | api-gateway |
-| **ReplicaSet** | Pod version control | api-gateway-7d8b49 |
-| **Service** | Network endpoints | kubernetes, kube-dns |
+| Type | Description | Example |
+|------|-------------|---------|
+| Node | Kubernetes worker/control-plane node | kind-control-plane |
+| Pod | Smallest deployable unit, containers grouped | coredns-66bc... |
+| Deployment | Declarative set of Pods with rollout strategy | rubixkube-observer |
+| ReplicaSet | Maintains a stable set of replica Pods | ...-59f488b9df |
+| Service | Stable virtual IP exposing a set of Pods | kube-dns |
 
 ---
 
-## Filtering Resources
+## Common Workflows
 
-**Search box:** Type pod name, namespace, or resource type
+### Investigate a service outage
+1. Go to Graph view and select the Service.
+2. Inspect connected Pods for degraded or failing status.
+3. Switch to Table view and filter by the service's namespace to see related Deployments, ReplicaSets, and Pods.
 
-**View filters:**
-- By resource type (Pods, Deployments, etc.)
-- By namespace
-- By status (Running, Pending, Failed)
+### Validate a deployment
+1. After a rollout, click Refresh.
+2. In Table view, sort by Type and verify Deployment, ReplicaSet, and new Pods.
+3. In Graph view, confirm edges from Service to the new Pods.
 
-**Quick actions:**
-- Click "View" on any resource for details
-- Filter to show only unhealthy resources
-
----
-
-## Use Cases
-
-### Find Failing Pods
-1. Click Table view
-2. Sort by Status
-3. Look for CrashLoopBackOff, ImagePullBackOff
-
-### Understand Dependencies
-1. Click Graph view
-2. Select a service
-3. See all connected pods
-
-### Namespace Overview
-1. Filter by namespace (e.g., production)
-2. See all resources in that namespace
+### Namespace health review
+1. Filter by the target namespace.
+2. Check Summary metrics and Table status column.
+3. Use Graph settings to enable labels and health for quick scanning.
 
 ---
 
-## What You Learned
+## Tips
 
-✅ Multiple view modes  
-✅ Resource types  
-✅ Filtering and search  
-✅ Quick actions  
+- Prefer Hierarchical layout for large clusters; switch to Force for cluster adjacency insights.
+- Hide labels for very dense graphs to improve render performance, then toggle them on when zoomed in.
+- Use Clear all to quickly reset complex filter states.
 
 ---
 
-## Next: [Using Agents](/using/agents)
+## Next
 
+- Continue to [Using Agents](/using/agents)

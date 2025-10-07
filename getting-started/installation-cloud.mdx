@@ -3,7 +3,7 @@ title: 'Cloud Installation (Beta)'
 description: 'Install RubixKube on your cloud Kubernetes cluster - AWS EKS, Google GKE, or Azure AKS'
 ---
 
-Install RubixKube on your**cloud Kubernetes cluster**to test our Site Reliability Intelligence platform in a cloud environment.
+Install RubixKube on your **cloud Kubernetes cluster** to test our Site Reliability Intelligence platform in a cloud environment.
 
 <Warning>
 ### Beta Release Notice
@@ -65,7 +65,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     sudo mv kubectl /usr/local/bin/
     ```
     
-**Verify:**```bash
+**Verify:** ```bash
     kubectl version --client
     ```
   </Accordion>
@@ -73,7 +73,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
   <Accordion title="Cloud Provider CLI (Choose One)" icon="cloud">
     Install the CLI for your cloud provider:
     
-**AWS CLI (for EKS):**    ```bash
+**AWS CLI (for EKS):** ```bash
     # macOS
     brew install awscli
     
@@ -86,14 +86,14 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     sudo ./aws/install
     ```
     
-**Google Cloud CLI (for GKE):**```bash
+**Google Cloud CLI (for GKE):** ```bash
     # macOS
     brew install google-cloud-sdk
     
     # Other platforms: https://cloud.google.com/sdk/docs/install
     ```
     
-**Azure CLI (for AKS):**    ```bash
+**Azure CLI (for AKS):** ```bash
     # macOS
     brew install azure-cli
     
@@ -120,34 +120,34 @@ Before installing RubixKube on your cloud cluster, ensure you have:
 
 <Tabs>
   <Tab title="AWS EKS">
-**Minimum Cluster Specs:**- Kubernetes version: 1.24+
+**Minimum Cluster Specs:** - Kubernetes version: 1.24+
     - Node type: t3.medium or larger (2 vCPU, 4GB RAM minimum)
     - Number of nodes: 1+ (2-3 recommended for testing)
     - IAM permissions for kubectl access
 
-**Recommended for Testing:**- Node type: t3.large (2 vCPU, 8GB RAM)
+**Recommended for Testing:** - Node type: t3.large (2 vCPU, 8GB RAM)
     - Number of nodes: 2-3
     - Enable CloudWatch integration
   </Tab>
 
   <Tab title="Google GKE">
-**Minimum Cluster Specs:**- Kubernetes version: 1.24+
+**Minimum Cluster Specs:** - Kubernetes version: 1.24+
     - Machine type: e2-medium or larger (2 vCPU, 4GB RAM minimum)
     - Number of nodes: 1+ (2-3 recommended for testing)
     - GKE cluster admin permissions
 
-**Recommended for Testing:**- Machine type: e2-standard-2 (2 vCPU, 8GB RAM)
+**Recommended for Testing:** - Machine type: e2-standard-2 (2 vCPU, 8GB RAM)
     - Number of nodes: 2-3
     - Enable GKE monitoring
   </Tab>
 
   <Tab title="Azure AKS">
-**Minimum Cluster Specs:**- Kubernetes version: 1.24+
+**Minimum Cluster Specs:** - Kubernetes version: 1.24+
     - VM size: Standard_B2s or larger (2 vCPU, 4GB RAM minimum)
     - Number of nodes: 1+ (2-3 recommended for testing)
     - Azure RBAC permissions
 
-**Recommended for Testing:**- VM size: Standard_D2s_v3 (2 vCPU, 8GB RAM)
+**Recommended for Testing:** - VM size: Standard_D2s_v3 (2 vCPU, 8GB RAM)
     - Number of nodes: 2-3
     - Enable Azure Monitor integration
   </Tab>
@@ -433,7 +433,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     |**RESTARTS**| `0` or low number | Stable, no crashes |
     |**AGE**| Increasing | Pod staying alive |
     
-    If you see `1/1 Running`,**you're good!**  </Accordion>
+    If you see `1/1 Running`, **you're good!**  </Accordion>
 
   <Accordion title=" Troubleshooting: ImagePullBackOff">
 **Problem:**Pod can't download the RubixKube image.

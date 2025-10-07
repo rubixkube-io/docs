@@ -8,25 +8,25 @@ description: 'How RubixKube ensures safe autonomous operations through multi-lay
 **Guardrails**are RubixKube's multi-layered safety system that ensures autonomous operations remain safe, controlled, and reversible. They're the reason you can trust AI agents to act on your infrastructure without constant supervision.
 
 <Info>
-**The Core Principle:**Autonomous doesn't mean uncontrolled. Every action happens within strict safety boundaries, with human oversight available when needed.
+<strong>The Core Principle:</strong> Autonomous doesn't mean uncontrolled. Every action happens within strict safety boundaries, with human oversight available when needed.
 </Info>
 
 <Warning>
 ### Coming in Future Release
-**Full guardrail system is under development**for the production release. RubixKube Beta currently operates in**observe-only mode**with basic safety mechanisms.
+<strong>Full guardrail system is under development</strong> for the production release. RubixKube Beta currently operates in <strong>observe-only mode</strong> with basic safety mechanisms.
 
-**Active NOW (Beta):**- **Observe-Only Mode**- No automated changes to your cluster
-- **Read-Only RBAC**- Observer agent has no write permissions
-- **Audit Logging**- All detections and suggestions logged
-- **Manual Approval Required**- You control all actions
+<strong>Active NOW (Beta):</strong> - <strong>Observe-Only Mode</strong> - No automated changes to your cluster
+- <strong>Read-Only RBAC</strong> - Observer agent has no write permissions
+- <strong>Audit Logging</strong> - All detections and suggestions logged
+- <strong>Manual Approval Required</strong> - You control all actions
 
-**Coming Q1 2026 (Production):**-  Full 7-layer guardrail system
+<strong>Coming Q1 2026 (Production):</strong> -  Full 7-layer guardrail system
 -  Automated remediation with safety checks
 -  Blast radius calculation and enforcement
 -  Circuit breakers and rate limiting
 -  Customizable policies per environment
 
-**This page describes the complete guardrail architecture**being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
+<strong>This page describes the complete guardrail architecture</strong> being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
 </Warning>
 
 ---
@@ -176,19 +176,19 @@ Confidence: 96%
 ```
 
 <Tip>
-**If dry-run fails, the action is blocked.**No exceptions.
+<strong>If dry-run fails, the action is blocked.</strong> No exceptions.
 </Tip>
 
 ### 4. Rate Limiting
 
-**Principle:**Prevent rapid-fire mistakes.
+<strong>Principle:</strong> Prevent rapid-fire mistakes.
 
-Guardrails control**how many**and**how fast**actions can occur:
+Guardrails control <strong>how many</strong> and <strong>how fast</strong> actions can occur:
 
--**Max 1 auto-fix per pod**per 5 minutes
--**Max 3 auto-fixes per namespace**per hour
--**Max 10 auto-fixes per cluster**per hour
--**Circuit breaker:**If 2 actions fail, pause auto-fix for 1 hour
+- <strong>Max 1 auto-fix per pod</strong> per 5 minutes
+- <strong>Max 3 auto-fixes per namespace</strong> per hour
+- <strong>Max 10 auto-fixes per cluster</strong> per hour
+- <strong>Circuit breaker:</strong> If 2 actions fail, pause auto-fix for 1 hour
 
 ### Example Protection:
 ```

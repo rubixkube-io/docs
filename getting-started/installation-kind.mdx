@@ -3,12 +3,12 @@ title: 'Local Installation with KIND'
 description: 'Install RubixKube on your local machine using Kubernetes in Docker (KIND) - Perfect for testing and learning'
 ---
 
-Welcome! This guide will help you install RubixKube on your**local machine**using KIND (Kubernetes in Docker). This is perfect for:
+Welcome! This guide will help you install RubixKube on your **local machine** using KIND (Kubernetes in Docker). This is perfect for:
 
-- **Testing**RubixKube before deploying to production
-- **Learning**how RubixKube works in a safe environment
-- **Development**on your laptop without cloud costs
-- **Training**team members on RubixKube features
+- **Testing** RubixKube before deploying to production
+- **Learning** how RubixKube works in a safe environment
+- **Development** on your laptop without cloud costs
+- **Training** team members on RubixKube features
 
 <Info>
 <strong>Complete Beginner?</strong> No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
@@ -55,7 +55,7 @@ Docker is required to run KIND. Choose your operating system below:
 
 ### Option 2: Download from Docker Website
     1. Visit [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
-    2. Click**"Download for Mac"** 3. Choose your Mac type:
+    2. Click **"Download for Mac"** 3. Choose your Mac type:
        - **Apple Silicon**(M1/M2/M3 Macs)
        - **Intel Chip**(older Macs)
     4. Open the downloaded `.dmg` file
@@ -83,7 +83,7 @@ Docker is required to run KIND. Choose your operating system below:
   <Tab title="Windows">
     ### Install Docker Desktop on Windows
 
-**Prerequisites:**- Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 or higher)
+**Prerequisites:** - Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 or higher)
     - Windows 11 64-bit
     - WSL 2 (Windows Subsystem for Linux)
 
@@ -98,9 +98,9 @@ Docker is required to run KIND. Choose your operating system below:
 
 ### Step 2: Download Docker Desktop
     1. Visit [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-    2. Click**"Download for Windows"** 3. Run the installer (`Docker Desktop Installer.exe`)
+    2. Click **"Download for Windows"** 3. Run the installer (`Docker Desktop Installer.exe`)
     4. Follow the installation wizard
-    5. Ensure**"Use WSL 2 instead of Hyper-V"**is checked
+    5. Ensure **"Use WSL 2 instead of Hyper-V"** is checked
     6. Complete installation and restart if prompted
 
 ### Step 3: Launch Docker Desktop
@@ -468,9 +468,9 @@ Now let's install the RubixKube observer agent on your local cluster!
 
 ### Get Your Installation Command
 
-1.**Log in to RubixKube Console**at [console.rubixkube.ai](https://console.rubixkube.ai)
-2. After login, you'll see the**"Connect Your First Cluster"**onboarding screen
-3.**Copy the kubectl command**shown on the page
+1. **Log in to RubixKube Console** at [console.rubixkube.ai](https://console.rubixkube.ai)
+2. After login, you'll see the **"Connect Your First Cluster"** onboarding screen
+3. **Copy the kubectl command** shown on the page
 
 It will look something like this:
 
@@ -631,7 +631,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 
 1. Go back to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. You should see your cluster appear in the dashboard
-3. The**Observer Status**should change from "Awaiting installation" to**"Connected"**
+3. The **Observer Status** should change from "Awaiting installation" to **"Connected"**
     <Note>
 <strong>Note:</strong> It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
     </Note>

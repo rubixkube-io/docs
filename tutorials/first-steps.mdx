@@ -452,11 +452,13 @@ Now that you understand the basics, try these tutorials:
   </Accordion>
 
   <Accordion title="Agents showing as offline">
-**Check:** 1. Navigate to Agents page
+    **Check:**
+    1. Navigate to Agents page
     2. Look for "Last active" timestamp
     3. If >5 minutes ago, agent may be unhealthy
-    
-**Fix:**```bash
+
+    **Fix:**
+    ```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     kubectl rollout restart deployment/rubixkube-observer -n rubixkube
     ```

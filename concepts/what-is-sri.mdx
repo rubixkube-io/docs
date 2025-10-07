@@ -12,22 +12,22 @@ description: 'Understanding the new category RubixKube is defining - where AI me
 </Info>
 
 <Warning>
-**🚧 Beta Release - Observation Mode**
+** Beta Release - Observation Mode**
 
 RubixKube Beta currently provides **full observation and detection capabilities**. Advanced features like auto-remediation, autonomous execution, and full guardrails are **coming in future releases**.
 
 **Available NOW:**
-- ✅ Continuous infrastructure monitoring (Observe)
-- ✅ Intelligent issue detection
-- ✅ Root cause analysis with evidence
-- ✅ Agent mesh architecture
-- ✅ Memory Engine learning from incidents
+-  Continuous infrastructure monitoring (Observe)
+-  Intelligent issue detection
+-  Root cause analysis with evidence
+-  Agent mesh architecture
+-  Memory Engine learning from incidents
 
 **Coming Soon (Q1 2026):**
-- 🔜 Automated remediation (Execute phase)
-- 🔜 Full guardrail system
-- 🔜 Autonomous operations
-- 🔜 Proactive prevention at scale
+-  Automated remediation (Execute phase)
+-  Full guardrail system
+-  Autonomous operations
+-  Proactive prevention at scale
 
 This documentation describes the **complete SRI vision**, including features under development.
 </Warning>
@@ -65,7 +65,7 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
 
 <Steps>
   <Step title="Observe" icon="eye">
-    **Continuous Infrastructure Mapping** ✅ **Available Now**
+    **Continuous Infrastructure Mapping**  **Available Now**
     
     - Maps your entire infrastructure (Kubernetes, cloud, code)
     - Integrates with existing tools (Prometheus, Loki, Grafana)
@@ -74,7 +74,7 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
   </Step>
 
   <Step title="Plan" icon="brain">
-    **AI Agent Mesh Reasoning** ✅ **Available Now**
+    **AI Agent Mesh Reasoning**  **Available Now**
     
     - Multiple specialized AI agents analyze the situation
     - Agents reason over live data AND historical patterns
@@ -83,7 +83,7 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
   </Step>
 
   <Step title="Execute" icon="bolt">
-    **Controlled, Safe Remediation** 🔜 **Coming Q1 2026**
+    **Controlled, Safe Remediation**  **Coming Q1 2026**
     
     - Execute fixes behind safety guardrails
     - Approve PRs or apply controlled changes
@@ -92,7 +92,7 @@ RubixKube implements SRI through the **OPEL loop** - a continuous cycle that mim
   </Step>
 
   <Step title="Learn" icon="graduation-cap">
-    **Evolving Intelligence** ✅ **Available Now**
+    **Evolving Intelligence**  **Available Now**
     
     - Every incident updates the Memory Engine
     - RCAs become institutional knowledge
@@ -216,11 +216,11 @@ SRI **predicts and prevents** them.
 ### 2. Evidence-Based Decisions
 
 Every action is backed by:
-- ✅ **Logs** - What the system said
-- ✅ **Metrics** - What the numbers show
-- ✅ **Traces** - How requests flowed
-- ✅ **Events** - What changed and when
-- ✅ **History** - Similar incidents in the past
+-  **Logs** - What the system said
+-  **Metrics** - What the numbers show
+-  **Traces** - How requests flowed
+-  **Events** - What changed and when
+-  **History** - Similar incidents in the past
 
 No guesswork. No hunches. Just evidence.
 
@@ -293,12 +293,12 @@ RubixKube is the **first production implementation** of Site Reliability Intelli
 **Before SRI (Traditional):**
 
 1. ⏰ **12:03 AM** - PagerDuty alert: "Checkout service down"
-2. 😴 **12:05 AM** - On-call engineer wakes up, logs in
-3. 🔍 **12:10 AM** - Starts investigation (logs, metrics, traces)
-4. 🤔 **12:25 AM** - Identifies issue: OOMKilled pod
-5. 🛠️ **12:35 AM** - Increases memory limits, redeploys
-6. ✅ **12:45 AM** - Service recovered
-7. 📝 **Next day** - Writes postmortem (if there's time)
+2.  **12:05 AM** - On-call engineer wakes up, logs in
+3.  **12:10 AM** - Starts investigation (logs, metrics, traces)
+4.  **12:25 AM** - Identifies issue: OOMKilled pod
+5.  **12:35 AM** - Increases memory limits, redeploys
+6.  **12:45 AM** - Service recovered
+7.  **Next day** - Writes postmortem (if there's time)
 
 **Total downtime: 42 minutes**  
 **Revenue lost: $70,000** (for $100K/hour service)  
@@ -308,14 +308,14 @@ RubixKube is the **first production implementation** of Site Reliability Intelli
 
 **With SRI (RubixKube):**
 
-1. 🤖 **12:03 AM** - RubixKube detects anomaly (pod OOMKilled)
-2. 🧠 **12:03:10 AM** - RCA Pipeline identifies root cause instantly
-3. 💡 **12:03:15 AM** - Proposes fix: increase memory 512Mi → 1Gi
-4. ⚡ **12:03:20 AM** - Auto-applies fix (within guardrails)
-5. ✅ **12:04 AM** - Service recovered, customers unaffected
-6. 📊 **12:04 AM** - RCA report generated automatically
-7. 🧠 **12:04 AM** - Pattern stored in Memory Engine
-8. 😴 **Engineer** - Sleeps soundly, reviews RCA in morning
+1.  **12:03 AM** - RubixKube detects anomaly (pod OOMKilled)
+2.  **12:03:10 AM** - RCA Pipeline identifies root cause instantly
+3.  **12:03:15 AM** - Proposes fix: increase memory 512Mi → 1Gi
+4.  **12:03:20 AM** - Auto-applies fix (within guardrails)
+5.  **12:04 AM** - Service recovered, customers unaffected
+6.  **12:04 AM** - RCA report generated automatically
+7.  **12:04 AM** - Pattern stored in Memory Engine
+8.  **Engineer** - Sleeps soundly, reviews RCA in morning
 
 **Total downtime: 1 minute**  
 **Revenue saved: $68,000+**  

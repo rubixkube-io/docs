@@ -6,13 +6,13 @@ description: 'Install RubixKube on your cloud Kubernetes cluster - AWS EKS, Goog
 Install RubixKube on your **cloud Kubernetes cluster** to test our Site Reliability Intelligence platform in a cloud environment.
 
 <Warning>
-**⚠️ Beta Release Notice**
+** Beta Release Notice**
 
 RubixKube is currently in **Beta**. While you can install it on cloud clusters for **testing and evaluation**, it is **NOT recommended for production environments** yet.
 
-- ✅ **Safe for:** Development, staging, testing environments
-- ❌ **Not ready for:** Production workloads, critical infrastructure
-- 🔄 **Coming soon:** Production-ready release with SLA guarantees
+-  **Safe for:** Development, staging, testing environments
+-  **Not ready for:** Production workloads, critical infrastructure
+-  **Coming soon:** Production-ready release with SLA guarantees
 </Warning>
 
 <Info>
@@ -397,7 +397,7 @@ configmap/rubixkube-config created
 secret/rubixkube-credentials created
 ```
 
-<Accordion title="🔍 What does the observer do?">
+<Accordion title=" What does the observer do?">
   The RubixKube observer agent:
   
   - **Monitors** your cluster resources (pods, deployments, services, nodes)
@@ -444,14 +444,14 @@ rubixkube-observer-7d4b9c8f6d-abc12   0/1     ContainerCreating   0          15s
 kubectl get pods -n rubixkube
 ```
 
-**✅ Success - Pod Running:**
+** Success - Pod Running:**
 ```
 NAME                                  READY   STATUS    RESTARTS   AGE
 rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
 ```
 
 <AccordionGroup>
-  <Accordion title="✅ What indicates successful installation?">
+  <Accordion title=" What indicates successful installation?">
     Look for these indicators:
     
     | Column | Expected Value | Meaning |
@@ -461,10 +461,10 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     | **RESTARTS** | `0` or low number | Stable, no crashes |
     | **AGE** | Increasing | Pod staying alive |
     
-    If you see `1/1 Running`, **you're good!** ✅
+    If you see `1/1 Running`, **you're good!** 
   </Accordion>
 
-  <Accordion title="❌ Troubleshooting: ImagePullBackOff">
+  <Accordion title=" Troubleshooting: ImagePullBackOff">
     **Problem:** Pod can't download the RubixKube image.
     
     **Common causes:**
@@ -492,7 +492,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     If issue persists after 5 minutes, contact support@rubixkube.ai
   </Accordion>
 
-  <Accordion title="❌ Troubleshooting: CrashLoopBackOff">
+  <Accordion title=" Troubleshooting: CrashLoopBackOff">
     **Problem:** Pod starts but immediately crashes.
     
     **Most common cause:** Invalid or missing API key
@@ -521,7 +521,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     ```
   </Accordion>
 
-  <Accordion title="❌ Troubleshooting: Pending Status">
+  <Accordion title=" Troubleshooting: Pending Status">
     **Problem:** Pod stuck in "Pending" state.
     
     **Common causes:**
@@ -577,9 +577,9 @@ kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
 1. Go to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. Navigate to **Dashboard** or **Clusters** page
 3. Your cluster should appear with:
-   - ✅ **Green status indicator** (Connected)
-   - 📊 **Metrics** starting to populate
-   - 🔄 **Observer Status:** "Active"
+   -  **Green status indicator** (Connected)
+   -  **Metrics** starting to populate
+   -  **Observer Status:** "Active"
 
 <Note>
 **Sync Delay:** It may take 1-2 minutes for your cluster to appear and sync initial data to the dashboard.
@@ -613,9 +613,9 @@ kubectl create deployment broken-app --image=invalid-image:latest -n rubixkube-d
 1. Go to **console.rubixkube.ai**
 2. Navigate to **Infrastructure** or **Insights**
 3. You'll see:
-   - ✅ nginx and redis running healthy
-   - ❌ broken-app showing `ImagePullBackOff` error
-   - 🤖 RubixKube AI analyzing the broken pod
+   -  nginx and redis running healthy
+   -  broken-app showing `ImagePullBackOff` error
+   -  RubixKube AI analyzing the broken pod
 
 <Tip>
 **Try the Chat!** Go to the Chat page and ask: "What pods are failing?" or "Why is broken-app not working?"
@@ -1039,12 +1039,12 @@ resources:
   <Accordion title="What data does RubixKube collect?" icon="shield">
     RubixKube observer collects:
     
-    ✅ **Metadata:** Pod names, namespaces, labels
-    ✅ **Metrics:** CPU, memory, network usage
-    ✅ **Events:** Kubernetes events and state changes
-    ✅ **Status:** Health checks and readiness
+     **Metadata:** Pod names, namespaces, labels
+     **Metrics:** CPU, memory, network usage
+     **Events:** Kubernetes events and state changes
+     **Status:** Health checks and readiness
     
-    ❌ **NEVER collects:** Application logs, secrets, environment variables, or business data
+     **NEVER collects:** Application logs, secrets, environment variables, or business data
     
     All data is encrypted in transit (TLS) and at rest.
   </Accordion>

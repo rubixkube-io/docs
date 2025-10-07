@@ -5,10 +5,10 @@ description: 'Install RubixKube on your local machine using Kubernetes in Docker
 
 Welcome! This guide will help you install RubixKube on your **local machine** using KIND (Kubernetes in Docker). This is perfect for:
 
-- 🧪 **Testing** RubixKube before deploying to production
-- 📚 **Learning** how RubixKube works in a safe environment
-- 💻 **Development** on your laptop without cloud costs
-- 🎓 **Training** team members on RubixKube features
+-  **Testing** RubixKube before deploying to production
+-  **Learning** how RubixKube works in a safe environment
+-  **Development** on your laptop without cloud costs
+-  **Training** team members on RubixKube features
 
 <Info>
 **Complete Beginner?** No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
@@ -438,12 +438,12 @@ kind create cluster --name rubixkube-local
 
 ```
 Creating cluster "rubixkube-local" ...
- ✓ Ensuring node image (kindest/node:v1.27.3) 🖼
- ✓ Preparing nodes 📦
- ✓ Writing configuration 📜
- ✓ Starting control-plane 🕹️
- ✓ Installing CNI 🔌
- ✓ Installing StorageClass 💾
+  Ensuring node image (kindest/node:v1.27.3) 
+  Preparing nodes 
+  Writing configuration 
+  Starting control-plane 
+  Installing CNI 
+  Installing StorageClass 
 Set kubectl context to "kind-rubixkube-local"
 You can now use your cluster with:
 
@@ -567,7 +567,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
 ```
 
 <AccordionGroup>
-  <Accordion title="✅ What does successful installation look like?">
+  <Accordion title=" What does successful installation look like?">
     **READY column shows:** `1/1` (1 out of 1 containers ready)  
     **STATUS column shows:** `Running`  
     **RESTARTS column shows:** `0` (or low number)
@@ -579,7 +579,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
     - Monitoring your cluster
   </Accordion>
 
-  <Accordion title="❌ What if STATUS shows 'ImagePullBackOff'?">
+  <Accordion title=" What if STATUS shows 'ImagePullBackOff'?">
     This means Docker couldn't download the RubixKube image.
 
     **Common causes:**
@@ -599,7 +599,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
     ```
   </Accordion>
 
-  <Accordion title="❌ What if STATUS shows 'CrashLoopBackOff'?">
+  <Accordion title=" What if STATUS shows 'CrashLoopBackOff'?">
     This means the pod started but crashed.
 
     **Check logs to see why:**
@@ -620,7 +620,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
     ```
   </Accordion>
 
-  <Accordion title="🔍 How do I see detailed pod information?">
+  <Accordion title=" How do I see detailed pod information?">
     Get detailed information about the pod:
     ```bash
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
@@ -660,7 +660,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 
 1. Go back to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. You should see your cluster appear in the dashboard
-3. The **Observer Status** should change from "Awaiting installation" to **"Connected"** ✅
+3. The **Observer Status** should change from "Awaiting installation" to **"Connected"** 
 
 <Note>
 **Note:** It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.

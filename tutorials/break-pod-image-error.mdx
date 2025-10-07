@@ -109,7 +109,7 @@ Now open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 ### What RubixKube Detected
 
 **Activity Feed shows:**
-- 🔴 New incident appeared
+-  New incident appeared
 - **Type:** Image pull failure  
 - **Severity:** Medium (not critical, but needs fixing)
 - **Status:** Active
@@ -152,7 +152,7 @@ Click on **Insights** in the navigation to see detailed analysis:
 RubixKube provides actionable recommendations:
 
 <AccordionGroup>
-  <Accordion title="✅ Verify the image name and tag">
+  <Accordion title=" Verify the image name and tag">
     **Why:** Typos in image names are the #1 cause of ImagePullBackOff
     
     **Check:**
@@ -161,7 +161,7 @@ RubixKube provides actionable recommendations:
     - Is the tag valid? (`:latest`, `:v1.0`, etc.)
   </Accordion>
 
-  <Accordion title="✅ Check registry accessibility">
+  <Accordion title=" Check registry accessibility">
     **Why:** Private registries require authentication
     
     **Verify:**
@@ -170,7 +170,7 @@ RubixKube provides actionable recommendations:
     - Does the service account have access?
   </Accordion>
 
-  <Accordion title="✅ Review imagePullPolicy">
+  <Accordion title=" Review imagePullPolicy">
     **Why:** Policy affects when Kubernetes pulls images
     
     **Options:**
@@ -179,7 +179,7 @@ RubixKube provides actionable recommendations:
     - `Never` - Only use local images
   </Accordion>
 
-  <Accordion title="✅ Check for network policies blocking egress">
+  <Accordion title=" Check for network policies blocking egress">
     **Why:** Network policies might prevent outbound connections
     
     **Test:**
@@ -249,9 +249,9 @@ fixed-image-demo   1/1     Running   0          30s
 ```
 
 **In RubixKube Dashboard:**
-- ✅ **Active Insights** decreases (issue resolved)
-- ✅ **Activity Feed** shows resolution event
-- ✅ **System Health** improves
+-  **Active Insights** decreases (issue resolved)
+-  **Activity Feed** shows resolution event
+-  **System Health** improves
 
 <Note>
 **RubixKube tracks resolution!** Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
@@ -342,13 +342,13 @@ Now that you've seen image pull detection, let's look at a more complex failure:
 
 You learned:
 
-✅ How to intentionally create an ImagePullBackOff error  
-✅ How RubixKube automatically detects the failure  
-✅ How to read incident details in the Insights page  
-✅ What AI-generated suggestions look like  
-✅ How to fix the issue manually  
-✅ How RubixKube verifies resolution  
-✅ How the Memory Engine learns from incidents  
+ How to intentionally create an ImagePullBackOff error  
+ How RubixKube automatically detects the failure  
+ How to read incident details in the Insights page  
+ What AI-generated suggestions look like  
+ How to fix the issue manually  
+ How RubixKube verifies resolution  
+ How the Memory Engine learns from incidents  
 
 **Next:** Try detecting memory issues with OOMKilled pods!
 

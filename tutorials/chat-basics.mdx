@@ -49,11 +49,11 @@ Click **Chat** in the left navigation or press `⌘K` and type "chat".
 
 | Element | Purpose |
 |---------|---------|
-| 💬 **Message Box** | Where you type your questions |
-| 🤖 **SRI Agent** | The AI assistant you're talking to |
-| 📎 **Attachment** | Upload YAML files for analysis |
-| 🚀 **Quick Actions** | Pre-built query categories |
-| 📝 **Chat History** | Your past conversations (left sidebar) |
+|  **Message Box** | Where you type your questions |
+|  **SRI Agent** | The AI assistant you're talking to |
+|  **Attachment** | Upload YAML files for analysis |
+|  **Quick Actions** | Pre-built query categories |
+|  **Chat History** | Your past conversations (left sidebar) |
 
 ---
 
@@ -164,9 +164,9 @@ Chat remembers context. You can respond naturally:
 > "Of course, Connect. I'll check the `rubixkube-tutorials` namespace for you."
 
 **Notice:**
-- ✅ You didn't repeat "show me failing pods"
-- ✅ Agent understood the context
-- ✅ Conversation flows naturally
+-  You didn't repeat "show me failing pods"
+-  Agent understood the context
+-  Conversation flows naturally
 
 ---
 
@@ -264,7 +264,7 @@ Before typing custom queries, explore the **Quick Actions**:
 Click on **"Thought"** or **"Function Call"** to see details:
 
 <AccordionGroup>
-  <Accordion title="🧠 Thought - Agent Planning">
+  <Accordion title=" Thought - Agent Planning">
     Shows the agent's reasoning process:
     - "Identifying Failing Pods"
     - "Evaluating the Strategy"
@@ -273,7 +273,7 @@ Click on **"Thought"** or **"Function Call"** to see details:
     **Why this matters:** You understand HOW the agent arrived at its answer.
   </Accordion>
 
-  <Accordion title="🔧 Function Call - What Was Queried">
+  <Accordion title=" Function Call - What Was Queried">
     Shows what APIs were called:
     - `fetch_kubernetes_graph_snapshot`
     - `fetch_kubernetes_logs`
@@ -282,7 +282,7 @@ Click on **"Thought"** or **"Function Call"** to see details:
     **Why this matters:** Complete transparency - you see exactly what data the agent accessed.
   </Accordion>
 
-  <Accordion title="⏱️ Timing - How Long It Took">
+  <Accordion title="⏱ Timing - How Long It Took">
     Bottom of response shows:
     - "3 tools called, took 28.53 seconds"
     
@@ -365,16 +365,16 @@ Here are queries perfect for getting started:
 After each response, you can:
 
 <CardGroup cols={2}>
-  <Card title="👍 Good Response" icon="thumbs-up">
+  <Card title=" Good Response" icon="thumbs-up">
     Mark helpful responses - improves the agent
   </Card>
-  <Card title="👎 Bad Response" icon="thumbs-down">
+  <Card title=" Bad Response" icon="thumbs-down">
     Flag unhelpful responses for review
   </Card>
-  <Card title="📋 Copy" icon="copy">
+  <Card title=" Copy" icon="copy">
     Copy the response to clipboard
   </Card>
-  <Card title="⚙️ More Options" icon="ellipsis">
+  <Card title=" More Options" icon="ellipsis">
     Export, regenerate, or share
   </Card>
 </CardGroup>
@@ -386,11 +386,11 @@ After each response, you can:
 All your conversations are saved in the left sidebar:
 
 **Features:**
-- 🔍 Search past conversations
-- 📝 Rename conversations
-- 🗑️ Delete conversations
-- 📤 Export to Markdown or JSON
-- ➕ Start new chat anytime
+-  Search past conversations
+-  Rename conversations
+-  Delete conversations
+-  Export to Markdown or JSON
+-  Start new chat anytime
 
 <Tip>
 **Pro Tip:** Give conversations descriptive names like "OOMKilled Investigation - May 3" for easy reference later.
@@ -432,16 +432,16 @@ All your conversations are saved in the left sidebar:
 
 <Warning>
 **What Chat DOES (Beta):**
-- ✅ Answer questions about your cluster
-- ✅ Analyze incidents and provide RCA
-- ✅ Explain Kubernetes concepts
-- ✅ Provide troubleshooting guidance
-- ✅ Show you kubectl commands to run
+-  Answer questions about your cluster
+-  Analyze incidents and provide RCA
+-  Explain Kubernetes concepts
+-  Provide troubleshooting guidance
+-  Show you kubectl commands to run
 
 **What Chat CANNOT do (Yet):**
-- ❌ Execute kubectl commands automatically
-- ❌ Apply configuration changes
-- ❌ Restart pods or deployments
+-  Execute kubectl commands automatically
+-  Apply configuration changes
+-  Restart pods or deployments
 
 **Coming Q1 2026:** Automated execution with approval gates
 
@@ -452,7 +452,7 @@ For now, **Chat is advisory** - it tells you WHAT and HOW, you execute.
 
 ## Tips for Effective Queries
 
-<Accordion title="✅ DO: Be Specific">
+<Accordion title=" DO: Be Specific">
 **Good:**
 - "Show me OOMKilled pods in production"
 - "Why did payment-service-v2 fail?"
@@ -460,7 +460,7 @@ For now, **Chat is advisory** - it tells you WHAT and HOW, you execute.
 **Why:** Specific queries = specific answers
 </Accordion>
 
-<Accordion title="❌ DON'T: Be Vague">
+<Accordion title=" DON'T: Be Vague">
 **Avoid:**
 - "Fix everything"
 - "What's wrong?"
@@ -468,7 +468,7 @@ For now, **Chat is advisory** - it tells you WHAT and HOW, you execute.
 **Why:** Agent needs context
 </Accordion>
 
-<Accordion title="✅ DO: Use Natural Language">
+<Accordion title=" DO: Use Natural Language">
 **Good:**
 - "What's broken?"
 - "Why is this pod unhappy?"
@@ -476,7 +476,7 @@ For now, **Chat is advisory** - it tells you WHAT and HOW, you execute.
 **Why:** Agent understands casual phrasing
 </Accordion>
 
-<Accordion title="❌ DON'T: Use kubectl Syntax">
+<Accordion title=" DON'T: Use kubectl Syntax">
 **Avoid:**
 - "kubectl get pods -n prod"
 

@@ -324,13 +324,13 @@ which is causing it to exceed the 50Mi limit and get OOMKilled.
 **Single query:** `"Why is memory-hog-demo crashing?"`
 
 **Agent does ALL of the above automatically:**
-- ✅ Gets pod status
-- ✅ Checks events
-- ✅ Retrieves logs
-- ✅ Reviews configuration
-- ✅ Identifies OOMKilled pattern
-- ✅ Explains root cause
-- ✅ Provides fix with exact kubectl command
+-  Gets pod status
+-  Checks events
+-  Retrieves logs
+-  Reviews configuration
+-  Identifies OOMKilled pattern
+-  Explains root cause
+-  Provides fix with exact kubectl command
 
 **Time: 1-2 minutes**
 
@@ -509,13 +509,13 @@ Here's a REAL conversation troubleshooting `memory-hog-demo`:
 </Frame>
 
 **What you see:**
-- 🧠 Thought: "Examining the Pod"
-- 🔧 Function Call: `fetch_kubernetes_graph_snapshot`
-- ✅ Found: CrashLoopBackOff, 12 restarts
-- 🔧 Function Call: `fetch_kubernetes_logs`
-- ✅ Log analysis: memory consumption pattern
-- 📊 Root Cause: Memory limit too low
-- 💡 Solution: Increase limit to 150Mi
+-  Thought: "Examining the Pod"
+-  Function Call: `fetch_kubernetes_graph_snapshot`
+-  Found: CrashLoopBackOff, 12 restarts
+-  Function Call: `fetch_kubernetes_logs`
+-  Log analysis: memory consumption pattern
+-  Root Cause: Memory limit too low
+-  Solution: Increase limit to 150Mi
 
 **Query 4:** `"How do I fix it?"`
 

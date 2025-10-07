@@ -6,28 +6,28 @@
   <img src="https://github.com/rubixkube-io/docs/blob/d11202b7fb45fdcf1551c7c11a25c9a67e2dcbd2/images/hero-dark.png" alt="RubixKube Logo" width="400"/>
 </p>
 
-🧠 **RubixKube™** is the **Reliability Layer for the AI Era**.
+ **RubixKube™** is the **Reliability Layer for the AI Era**.
 An AI-native mesh of agents that keeps your infrastructure alive, safe, and self-healing.
 
 > Think of it as **a second brain for your infra** — one that never sleeps, never forgets, and always protects your uptime.
 
 ---
 
-## 📖 About These Docs
+##  About These Docs
 
 This repository powers the **RubixKube Documentation Hub** (built with [Mintlify](https://mintlify.com)).
 
 Here you’ll find everything you need to:
 
-* 🚀 **Get started quickly** with RubixKube
-* 📖 Learn core **concepts**: SRI (Site Reliability Intelligence), Agent Mesh, Memory Graph
-* 🔌 Explore **integrations** with Kubernetes, GitOps, observability, and cloud-native stacks
-* ⚡ Dive into the **API & CLI references**
-* 🛠️ Troubleshoot and optimize your deployments
+*  **Get started quickly** with RubixKube
+*  Learn core **concepts**: SRI (Site Reliability Intelligence), Agent Mesh, Memory Graph
+*  Explore **integrations** with Kubernetes, GitOps, observability, and cloud-native stacks
+*  Dive into the **API & CLI references**
+*  Troubleshoot and optimize your deployments
 
 ---
 
-## 🚀 Quickstart
+##  Quickstart
 
 Get RubixKube running in minutes.
 
@@ -42,11 +42,11 @@ rubixkube connect --cluster <your-cluster-name>
 rubixkube start
 ```
 
-👉 [Full Quickstart Guide](replace-docs-quickstart-url)
+ [Full Quickstart Guide](replace-docs-quickstart-url)
 
 ---
 
-## 📚 Documentation Structure
+##  Documentation Structure
 
 * **[Quickstart](replace-docs-quickstart-url)** – Install and run RubixKube in minutes
 * **[Concepts](replace-docs-concepts-url)** – SRI, Agent Mesh, Memory Engine, Guardrails
@@ -56,7 +56,7 @@ rubixkube start
 
 ---
 
-## 🛠️ Local Development
+##  Local Development
 
 We use the [Mintlify CLI](https://www.npmjs.com/package/mint) for previewing docs locally.
 
@@ -72,18 +72,18 @@ Run docs in dev mode (from the repo root, where `docs.json` lives):
 mint dev
 ```
 
-Preview at 👉 `http://localhost:3000`
+Preview at  `http://localhost:3000`
 
 ---
 
-## 🚢 Publishing Changes
+##  Publishing Changes
 
 Docs are deployed automatically when changes are merged into the default branch.
 Connect the [Mintlify GitHub app](https://dashboard.mintlify.com/settings/organization/github-app) to sync updates.
 
 ---
 
-## ❓ Troubleshooting
+##  Troubleshooting
 
 * **Dev server not starting?**
 
@@ -98,31 +98,31 @@ Connect the [Mintlify GitHub app](https://dashboard.mintlify.com/settings/organi
 
 ---
 
-## 🌐 Resources
+##  Resources
 
-* 🌍 [Website](https://rubixkube.ai)
-* 📖 [Docs Portal](replace-docs-portal-url)
-* 📝 [Blog](https://rubixkube.ai/blog)
-* 💬 [Community Slack/Discord](replace-community-url)
-* 🐦 [X/Twitter](https://twitter.com/RubixKubeHQ)
-* 💼 [LinkedIn](https://linkedin.com/company/rubixkube)
+*  [Website](https://rubixkube.ai)
+*  [Docs Portal](replace-docs-portal-url)
+*  [Blog](https://rubixkube.ai/blog)
+*  [Community Slack/Discord](replace-community-url)
+*  [X/Twitter](https://twitter.com/RubixKubeHQ)
+*  [LinkedIn](https://linkedin.com/company/rubixkube)
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome feedback and contributions!
 Check out the [Contributing Guide](replace-contributing-url) before submitting issues or PRs.
 
 ---
 
-## ⚡ License
+##  License
 
 This project is licensed under the [MIT License](replace-license-url).
 
 ---
 
-## ✨ Join the Movement
+##  Join the Movement
 
 RubixKube isn’t just another DevOps tool.
 It’s the **seatbelt, backup generator, and peace-of-mind layer** for modern infrastructure.

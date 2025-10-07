@@ -15,14 +15,14 @@ The **Agent Mesh** is RubixKube's core architectural pattern - a network of spec
 **Beta Release Status - Active Agents**
 
 **Currently Active (Beta):**
-- ✅ **Observer Agent** - Monitors your cluster continuously
-- ✅ **RCA Pipeline Agent** - Analyzes incidents and generates root cause reports
-- ✅ **Memory Agent** - Stores incidents and learns patterns
-- ✅ **SRI Agent** - Provides conversational interface via Chat
+-  **Observer Agent** - Monitors your cluster continuously
+-  **RCA Pipeline Agent** - Analyzes incidents and generates root cause reports
+-  **Memory Agent** - Stores incidents and learns patterns
+-  **SRI Agent** - Provides conversational interface via Chat
 
 **Coming in Future Releases:**
-- 🔜 **Remediation Agent** - Autonomous fix execution (suggestions available now, requires manual approval)
-- 🔜 **Guardian Agent** - Full guardrail enforcement (basic safety checks active)
+-  **Remediation Agent** - Autonomous fix execution (suggestions available now, requires manual approval)
+-  **Guardian Agent** - Full guardrail enforcement (basic safety checks active)
 
 This page describes the **complete Agent Mesh architecture**, including agents being finalized for production release.
 </Warning>
@@ -35,19 +35,19 @@ This page describes the **complete Agent Mesh architecture**, including agents b
 
 A single "do-everything" AI faces fundamental limitations:
 
-- ❌ **Jack of all trades, master of none** - Can't specialize deeply
-- ❌ **Single point of failure** - If it fails, everything stops
-- ❌ **Slow decision-making** - Must consider everything at once
-- ❌ **Hard to trust** - Black box with unclear reasoning
+-  **Jack of all trades, master of none** - Can't specialize deeply
+-  **Single point of failure** - If it fails, everything stops
+-  **Slow decision-making** - Must consider everything at once
+-  **Hard to trust** - Black box with unclear reasoning
 
 ### The Agent Mesh Solution
 
 Multiple specialized agents working together:
 
-- ✅ **Deep expertise** - Each agent masters one domain
-- ✅ **Distributed resilience** - System continues if one agent fails
-- ✅ **Parallel processing** - Agents work simultaneously
-- ✅ **Transparent reasoning** - See which agent did what and why
+-  **Deep expertise** - Each agent masters one domain
+-  **Distributed resilience** - System continues if one agent fails
+-  **Parallel processing** - Agents work simultaneously
+-  **Transparent reasoning** - See which agent did what and why
 
 ---
 
@@ -177,11 +177,11 @@ Here's how the Agent Mesh handles a memory overflow incident:
     Guardian Agent: "Evaluating safety..."
     
     Risk Assessment:
-    - Scope: Single deployment ✓
-    - Change type: Resource adjustment (low risk) ✓
-    - Rollback available: Yes ✓
-    - Production impact: Minimal ✓
-    - Policy compliance: Within limits ✓
+    - Scope: Single deployment 
+    - Change type: Resource adjustment (low risk) 
+    - Rollback available: Yes 
+    - Production impact: Minimal 
+    - Policy compliance: Within limits 
     
     Decision: APPROVED (auto-fix authorized)
     
@@ -192,15 +192,15 @@ Here's how the Agent Mesh handles a memory overflow incident:
   <Step title="Execution & Learning">
     ```
     Remediation Agent: Applying fix...
-    ✓ Deployment updated
-    ✓ Pod restarted
-    ✓ Memory usage stabilized at 680Mi
-    ✓ Service healthy
+     Deployment updated
+     Pod restarted
+     Memory usage stabilized at 680Mi
+     Service healthy
     
     Memory Agent: Storing learning...
-    ✓ Pattern recorded
-    ✓ Fix validated
-    ✓ Knowledge graph updated
+     Pattern recorded
+     Fix validated
+     Knowledge graph updated
     
     Total resolution time: 42 seconds
     ```
@@ -297,14 +297,14 @@ Each agent reports:
 ### Agent Health Indicators
 
 <AccordionGroup>
-  <Accordion title="✅ Healthy Agent">
+  <Accordion title=" Healthy Agent">
     - Status: **Active**
     - Last seen: **Just now** (within 60 seconds)
     - Response time: less than 2 seconds
     - Error rate: less than 1%
   </Accordion>
 
-  <Accordion title="⚠️ Degraded Agent">
+  <Accordion title=" Degraded Agent">
     - Status: **Slow response**
     - Last seen: 1-5 minutes ago
     - Response time: 2-10 seconds
@@ -313,7 +313,7 @@ Each agent reports:
     **Action:** Monitor, may self-recover
   </Accordion>
 
-  <Accordion title="❌ Failed Agent">
+  <Accordion title=" Failed Agent">
     - Status: **Error** or **Offline**
     - Last seen: greater than 5 minutes ago
     - No responses
@@ -386,10 +386,10 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
     **By default: NO.**
     
     Agents operate in **observe-only mode** initially. They will:
-    - ✅ Detect issues
-    - ✅ Investigate root causes
-    - ✅ Propose fixes
-    - ❌ **NOT** apply changes without approval
+    -  Detect issues
+    -  Investigate root causes
+    -  Propose fixes
+    -  **NOT** apply changes without approval
     
     You enable auto-remediation gradually as trust builds.
   </Accordion>

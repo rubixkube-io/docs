@@ -12,22 +12,22 @@ description: 'How RubixKube ensures safe autonomous operations through multi-lay
 </Info>
 
 <Warning>
-**🚧 Coming in Future Release**
+** Coming in Future Release**
 
 **Full guardrail system is under development** for the production release. RubixKube Beta currently operates in **observe-only mode** with basic safety mechanisms.
 
 **Active NOW (Beta):**
-- ✅ **Observe-Only Mode** - No automated changes to your cluster
-- ✅ **Read-Only RBAC** - Observer agent has no write permissions
-- ✅ **Audit Logging** - All detections and suggestions logged
-- ✅ **Manual Approval Required** - You control all actions
+-  **Observe-Only Mode** - No automated changes to your cluster
+-  **Read-Only RBAC** - Observer agent has no write permissions
+-  **Audit Logging** - All detections and suggestions logged
+-  **Manual Approval Required** - You control all actions
 
 **Coming Q1 2026 (Production):**
-- 🔜 Full 7-layer guardrail system
-- 🔜 Automated remediation with safety checks
-- 🔜 Blast radius calculation and enforcement
-- 🔜 Circuit breakers and rate limiting
-- 🔜 Customizable policies per environment
+-  Full 7-layer guardrail system
+-  Automated remediation with safety checks
+-  Blast radius calculation and enforcement
+-  Circuit breakers and rate limiting
+-  Customizable policies per environment
 
 **This page describes the complete guardrail architecture** being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
 </Warning>
@@ -115,10 +115,10 @@ RubixKube implements **defense in depth** with multiple safety layers:
   <Accordion title="Low Risk (Auto-Approved)">
     **Actions that rarely cause harm:**
     
-    - ✅ Restart a single failed pod
-    - ✅ Scale deployment within existing HPA bounds
-    - ✅ Update resource requests (within limits)
-    - ✅ Retry failed jobs
+    -  Restart a single failed pod
+    -  Scale deployment within existing HPA bounds
+    -  Update resource requests (within limits)
+    -  Retry failed jobs
     
     **Guardrail:** Auto-executed, logged for audit
   </Accordion>
@@ -126,10 +126,10 @@ RubixKube implements **defense in depth** with multiple safety layers:
   <Accordion title="Medium Risk (Suggest + Review)">
     **Actions that need human judgment:**
     
-    - ⚠️ Modify deployment replicas beyond HPA range
-    - ⚠️ Change resource limits (may cause pod restarts)
-    - ⚠️ Update service configurations
-    - ⚠️ Modify network policies
+    -  Modify deployment replicas beyond HPA range
+    -  Change resource limits (may cause pod restarts)
+    -  Update service configurations
+    -  Modify network policies
     
     **Guardrail:** Proposed to humans, requires click to approve
   </Accordion>
@@ -137,11 +137,11 @@ RubixKube implements **defense in depth** with multiple safety layers:
   <Accordion title="High Risk (Require Explicit Approval)">
     **Actions that could cause outages:**
     
-    - 🚨 Delete resources
-    - 🚨 Modify RBAC permissions
-    - 🚨 Change namespace quotas
-    - 🚨 Update critical system pods
-    - 🚨 Multi-service changes
+    -  Delete resources
+    -  Modify RBAC permissions
+    -  Change namespace quotas
+    -  Update critical system pods
+    -  Multi-service changes
     
     **Guardrail:** Require explicit approval + 2FA (optional)
   </Accordion>
@@ -149,11 +149,11 @@ RubixKube implements **defense in depth** with multiple safety layers:
   <Accordion title="Forbidden (Always Blocked)">
     **Actions never allowed autonomously:**
     
-    - 🛑 Delete namespaces
-    - 🛑 Delete persistent volumes
-    - 🛑 Modify cluster-level resources
-    - 🛑 Grant cluster-admin permissions
-    - 🛑 Disable monitoring/observability
+    -  Delete namespaces
+    -  Delete persistent volumes
+    -  Modify cluster-level resources
+    -  Grant cluster-admin permissions
+    -  Disable monitoring/observability
     
     **Guardrail:** Blocked entirely, manual only
   </Accordion>
@@ -171,11 +171,11 @@ Proposed Action: Increase memory limit
   to: 1Gi
 
 Dry-Run Results:
-  ✓ Manifest validation: PASS
-  ✓ Resource quota check: PASS (within namespace limits)
-  ✓ Pod disruption budget: PASS (1/3 pods, within budget)
-  ✓ Dependency impact: None detected
-  ✓ Rollback plan: Generated
+   Manifest validation: PASS
+   Resource quota check: PASS (within namespace limits)
+   Pod disruption budget: PASS (1/3 pods, within budget)
+   Dependency impact: None detected
+   Rollback plan: Generated
   
 Predicted Outcome:
   - Pod will restart (estimated 8-12 seconds downtime)
@@ -457,7 +457,7 @@ guardrails:
   <Step title="Guardrails Evaluate">
     Guardian Agent checks all safety rules:
     
-    - Scope within limits? ✓
+    - Scope within limits? 
     - Risk classification? Medium
     - Approval policy? Medium = require approval
     - STOP: Cannot proceed without human
@@ -467,7 +467,7 @@ guardrails:
     Alert sent to appropriate channel:
     
     ```
-    🔔 Approval Required
+     Approval Required
     
     Action: Scale deployment 'checkout-service'
     Change: replicas 3 → 5
@@ -618,7 +618,7 @@ Blast Radius Analysis:
 
 **Approval Methods:**
 - **Dashboard** - Click approve in UI
-- **Slack** - React with ✅ emoji or click button
+- **Slack** - React with  emoji or click button
 - **CLI** - `rubixkube approve <action-id>`
 - **API** - Programmatic approval for custom workflows
 
@@ -751,19 +751,19 @@ Incident: API service memory leak
 Remediation Agent Proposal: "Restart all pods simultaneously for quick fix"
 
 Guardian Agent Analysis:
-  ❌ Blast radius: ENTIRE SERVICE (5 pods)
-  ❌ Downtime: 100% of capacity during restart
-  ❌ User impact: ~5000 users affected
-  ❌ Risk: HIGH
+   Blast radius: ENTIRE SERVICE (5 pods)
+   Downtime: 100% of capacity during restart
+   User impact: ~5000 users affected
+   Risk: HIGH
 
 Decision: BLOCKED
 
 Alternative Proposal: "Rolling restart (1 pod at a time)"
 Guardian Agent Analysis:
-  ✓ Blast radius: 20% of capacity per step
-  ✓ Downtime: Zero (4 pods serve during restart)
-  ✓ User impact: Minimal (slight latency)
-  ✓ Risk: LOW
+   Blast radius: 20% of capacity per step
+   Downtime: Zero (4 pods serve during restart)
+   User impact: Minimal (slight latency)
+   Risk: LOW
 
 Decision: APPROVED
 ```
@@ -910,7 +910,7 @@ Agent Mesh:
   "I propose we apply that fix now"
   
 Guardrails:
-  "Checking safety... ✓ Scope OK, ✓ Risk LOW, ✓ Policy allows"
+  "Checking safety...  Scope OK,  Risk LOW,  Policy allows"
   "APPROVED - Execute with logging and rollback ready"
   
 Outcome: Fast, safe, autonomous remediation

@@ -77,9 +77,9 @@ The dashboard header shows:
 - Includes: ImagePullBackOff, CrashLoopBackOff, OOMKilled
 
 **Types of insights:**
-- 🔴 **HIGH severity** - OOMKilled, critical failures
-- 🟡 **medium severity** - Pod crashes, image pull errors
-- 🟢 **low severity** - Configuration warnings
+-  **HIGH severity** - OOMKilled, critical failures
+-  **medium severity** - Pod crashes, image pull errors
+-  **low severity** - Configuration warnings
 
 **Click the card** to go directly to Insights page for full details.
 
@@ -136,7 +136,7 @@ The dashboard header shows:
   />
 </Frame>
 
-**Status indicator:** 🟢 Connected (healthy cluster connection)
+**Status indicator:**  Connected (healthy cluster connection)
 
 **Panel controls:**
 - **Refresh data** button (circular arrow icon) - Update infrastructure numbers
@@ -213,7 +213,7 @@ The dashboard header shows:
   <Tab title="INSIGHT Events">
     **Example from our dashboard:**
     
-    🔵 "Pod broken-image-demo has been pending for an extended period"
+     "Pod broken-image-demo has been pending for an extended period"
     - **Type**: INSIGHT (blue badge)
     - **Severity**: medium
     - **Status**: active (white badge)
@@ -223,7 +223,7 @@ The dashboard header shows:
     
     ---
     
-    🔵 "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
+     "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
     - **Type**: INSIGHT
     - **Severity**: medium
     - **Status**: active
@@ -234,7 +234,7 @@ The dashboard header shows:
   <Tab title="RCA Events">
     **Example from our dashboard:**
     
-    🟣 "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
+     "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
     - **Type**: RCA (purple badge)
     - **Status**: RCA Report Analysis Complete
     - **Time**: 10/4/2025 01:58 AM
@@ -243,7 +243,7 @@ The dashboard header shows:
     
     ---
     
-    🟣 "Postmortem Report: CrashLoopBackOff on Pod 'memory-hog-demo'"
+     "Postmortem Report: CrashLoopBackOff on Pod 'memory-hog-demo'"
     - **Type**: RCA
     - **Status**: RCA Report Analysis Complete
     
@@ -253,7 +253,7 @@ The dashboard header shows:
   <Tab title="HIGH Severity">
     **Example from our dashboard:**
     
-    ⚠️ "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
+     "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
     - **Type**: INSIGHT
     - **Severity**: **high** (red text)
     - **Status**: active
@@ -345,7 +345,7 @@ Each event card shows:
 
   <Step title="Scan Activity Feed" icon="list">
     Look for:
-    - 🔴 HIGH severity items (red text)
+    -  HIGH severity items (red text)
     - New incidents since yesterday
     - RCA reports completed (purple RCA badge)
     
@@ -376,7 +376,7 @@ Each event card shows:
 
 **What appeared in Activity Feed:**
 
-> ⚠️ "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
+>  "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
 > - **Type**: INSIGHT
 > - **Severity**: **high** (red text)
 > - **Status**: active
@@ -391,7 +391,7 @@ Each event card shows:
 6. Apply memory limits or increase resources
 
 **Expected RCA:** Should see a follow-up event like:
-> 🟣 "Postmortem: OOMKilled Event on Pod 'memory-hog-demo'"
+>  "Postmortem: OOMKilled Event on Pod 'memory-hog-demo'"
 
 ---
 
@@ -400,13 +400,13 @@ Each event card shows:
 **What appeared:**
 
 1. **First - INSIGHT event:**
-   > 🔵 "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
+   >  "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
    > - **Type**: INSIGHT
    > - **Severity**: medium
    > - **Status**: active
 
 2. **Then - RCA event:**
-   > 🟣 "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
+   >  "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
    > - **Type**: RCA
    > - **Status**: RCA Report Analysis Complete
 
@@ -423,7 +423,7 @@ Each event card shows:
 
 **What appeared:**
 
-> 🔵 "Pod broken-image-demo has been pending for an extended period"
+>  "Pod broken-image-demo has been pending for an extended period"
 > - **Type**: INSIGHT
 > - **Severity**: medium
 > - **Status**: active
@@ -524,9 +524,9 @@ Each event card shows:
 - 3 failing tutorial pods (tutorial namespace)
 
 **Color indicators:**
-- 🟢 Green number = All healthy
-- 🟡 Yellow = Some issues (warning)
-- 🔴 Red = Critical failures
+-  Green number = All healthy
+-  Yellow = Some issues (warning)
+-  Red = Critical failures
 
 **What to watch:**
 - Sudden drops (pods crashing)
@@ -1056,14 +1056,14 @@ Each event card shows:
 ## Real Data from Our Dashboard
 
 **What we captured:**
-- ✅ System Health: **100%** (all core systems healthy)
-- ✅ Active Insights: **3** (broken-image-demo, crash-loop-demo, memory-hog-demo)
-- ✅ Intelligent Analysis: **3 RCA reports** (all analyzed with root causes)
-- ✅ Agents: **3/4 active** (1 offline, 3 operational)
-- ✅ Infrastructure: **1 node, 14 pods, 4 deployments, 3 services**
-- ✅ Expanded: **7 namespaces, 1 agent pod**
-- ✅ Activity Feed: **7 events** (4 INSIGHTS, 3 RCA reports)
-- ✅ RCA Stream: **LIVE** with 0 active events
+-  System Health: **100%** (all core systems healthy)
+-  Active Insights: **3** (broken-image-demo, crash-loop-demo, memory-hog-demo)
+-  Intelligent Analysis: **3 RCA reports** (all analyzed with root causes)
+-  Agents: **3/4 active** (1 offline, 3 operational)
+-  Infrastructure: **1 node, 14 pods, 4 deployments, 3 services**
+-  Expanded: **7 namespaces, 1 agent pod**
+-  Activity Feed: **7 events** (4 INSIGHTS, 3 RCA reports)
+-  RCA Stream: **LIVE** with 0 active events
 
 **This demonstrates:** 
 - Dashboard provides complete visibility even when things are failing
@@ -1230,7 +1230,7 @@ While on Dashboard:
 
 ---
 
-**You're now a Dashboard expert! Use it daily to stay ahead of incidents.** 📊
+**You're now a Dashboard expert! Use it daily to stay ahead of incidents.** 
 
 ---
 

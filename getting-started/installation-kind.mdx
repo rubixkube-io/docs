@@ -688,7 +688,9 @@ docker start rubixkube-local-control-plane
 kind delete cluster --name rubixkube-local
 ```
 
-**Create cluster with custom configuration:**```bash
+**Create cluster with custom configuration:**
+
+```bash
 cat <<RUBIX_EOF | kind create cluster --name rubixkube-local --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -772,32 +774,28 @@ This creates a cluster with 1 control plane and 2 worker nodes.
   <Card
     title="Explore the Dashboard"
     icon="gauge"
-    href="/tutorials/first-steps"
-  >
+    href="/tutorials/first-steps">
     Take a tour of the RubixKube console and learn the basics
   </Card>
 
   <Card
     title="Try Breaking Things"
     icon="flask"
-    href="/tutorials/break-pod-image-error"
-  >
+    href="/tutorials/break-pod-image-error">
     See RubixKube detect and fix issues automatically
   </Card>
 
   <Card
     title="Deploy to Production"
     icon="cloud"
-    href="/getting-started/installation-cloud"
-  >
+    href="/getting-started/installation-cloud">
     Ready for production? Install on a real cloud cluster
   </Card>
 
   <Card
     title="Chat with Your Infrastructure"
     icon="comments"
-    href="/tutorials/talk-to-infra"
-  >
+    href="/tutorials/talk-to-infra">
     Learn how to use natural language to query your cluster
   </Card>
 </CardGroup>

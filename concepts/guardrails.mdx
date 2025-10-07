@@ -13,20 +13,20 @@ description: 'How RubixKube ensures safe autonomous operations through multi-lay
 
 <Warning>
 ### Coming in Future Release
-**Full guardrail system is under development** for the production release. RubixKube Beta currently operates in **observe-only mode** with basic safety mechanisms.
+** Full guardrail system is under development ** for the production release. RubixKube Beta currently operates in ** observe-only mode ** with basic safety mechanisms.
 
-**Active NOW (Beta):** - **Observe-Only Mode** - No automated changes to your cluster
--**Read-Only RBAC**- Observer agent has no write permissions
--**Audit Logging**- All detections and suggestions logged
--**Manual Approval Required**- You control all actions
+** Active NOW (Beta):**- ** Observe-Only Mode **- No automated changes to your cluster
+- ** Read-Only RBAC **- Observer agent has no write permissions
+- ** Audit Logging **- All detections and suggestions logged
+- ** Manual Approval Required **- You control all actions
 
-**Coming Q1 2026 (Production):**-  Full 7-layer guardrail system
+** Coming Q1 2026 (Production):**-  Full 7-layer guardrail system
 -  Automated remediation with safety checks
 -  Blast radius calculation and enforcement
 -  Circuit breakers and rate limiting
 -  Customizable policies per environment
 
-**This page describes the complete guardrail architecture** being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
+** This page describes the complete guardrail architecture ** being built. For Beta, RubixKube provides intelligent insights and suggestions - you remain in full control of all changes.
 </Warning>
 
 ---
@@ -74,7 +74,7 @@ RubixKube implements ** defense in depth ** with multiple safety layers:
     - Changes affect ** one namespace **→ not the cluster
     - Changes affect ** one cluster **→ not all clusters
     
-** Example:**    ```yaml
+** Example:**```yaml
     # Auto-fix will do this:
     action: restart_pod
     scope: production/checkout-7f9d

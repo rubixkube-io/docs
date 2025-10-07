@@ -5,10 +5,10 @@ description: 'Install RubixKube on your local machine using Kubernetes in Docker
 
 Welcome! This guide will help you install RubixKube on your ** local machine ** using KIND (Kubernetes in Docker). This is perfect for:
 
--** Testing ** RubixKube before deploying to production
--** Learning ** how RubixKube works in a safe environment
--** Development ** on your laptop without cloud costs
--** Training ** team members on RubixKube features
+- ** Testing ** RubixKube before deploying to production
+- ** Learning ** how RubixKube works in a safe environment
+- ** Development ** on your laptop without cloud costs
+- ** Training ** team members on RubixKube features
 
 <Info>
 ** Complete Beginner?** No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
@@ -55,9 +55,9 @@ Docker is required to run KIND. Choose your operating system below:
 
 ### Option 2: Download from Docker Website
     1. Visit [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
-    2. Click **"Download for Mac"**    3. Choose your Mac type:
-       -** Apple Silicon **(M1/M2/M3 Macs)
-       -** Intel Chip **(older Macs)
+    2. Click **"Download for Mac"** 3. Choose your Mac type:
+       - ** Apple Silicon **(M1/M2/M3 Macs)
+       - ** Intel Chip **(older Macs)
     4. Open the downloaded `.dmg` file
     5. Drag Docker icon to Applications folder
     6. Launch Docker from Applications
@@ -83,7 +83,7 @@ Docker is required to run KIND. Choose your operating system below:
   <Tab title="Windows">
     ### Install Docker Desktop on Windows
 
-** Prerequisites:**    - Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 or higher)
+** Prerequisites:**- Windows 10 64-bit: Pro, Enterprise, or Education (Build 19041 or higher)
     - Windows 11 64-bit
     - WSL 2 (Windows Subsystem for Linux)
 
@@ -98,7 +98,7 @@ Docker is required to run KIND. Choose your operating system below:
 
 ### Step 2: Download Docker Desktop
     1. Visit [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-    2. Click **"Download for Windows"**    3. Run the installer (`Docker Desktop Installer.exe`)
+    2. Click **"Download for Windows"** 3. Run the installer (`Docker Desktop Installer.exe`)
     4. Follow the installation wizard
     5. Ensure **"Use WSL 2 instead of Hyper-V"** is checked
     6. Complete installation and restart if prompted
@@ -559,10 +559,10 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
   <Accordion title=" What if STATUS shows 'ImagePullBackOff'?">
     This means Docker couldn't download the RubixKube image.
 
-** Common causes:**    - Internet connection issues
+** Common causes:**- Internet connection issues
     - Docker Hub rate limits
 
-** Solution:**    Wait 2-3 minutes and check again:
+** Solution:** Wait 2-3 minutes and check again:
     ```bash
     kubectl get pods -n rubixkube
     ```
@@ -577,7 +577,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
   <Accordion title=" What if STATUS shows 'CrashLoopBackOff'?">
     This means the pod started but crashed.
 
-** Check logs to see why:**    ```bash
+** Check logs to see why:**```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
 
@@ -660,9 +660,9 @@ kubectl get services
 ### Check RubixKube Dashboard
 
 Go to [console.rubixkube.ai](https://console.rubixkube.ai) and navigate to:
--** Dashboard **- See cluster health
--** Infrastructure **- View your nginx deployment
--** Chat **- Ask "What pods are running?"
+- ** Dashboard **- See cluster health
+- ** Infrastructure **- View your nginx deployment
+- ** Chat **- Ask "What pods are running?"
 
 ---
 
@@ -749,7 +749,7 @@ This creates a cluster with 1 control plane and 2 worker nodes.
     kubectl get secret -n rubixkube rubixkube-credentials -o yaml
     ```
     
-    2.** Check pod events **    ```bash
+    2.** Check pod events **```bash
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
     ```
     
@@ -757,7 +757,7 @@ This creates a cluster with 1 control plane and 2 worker nodes.
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
     
-    4.** Reinstall **    ```bash
+    4.** Reinstall **```bash
     kubectl delete namespace rubixkube
     # Wait 30 seconds, then run install command again
     ```

@@ -67,11 +67,11 @@ Scroll down to the ** Infrastructure ** panel to verify your cluster is connecte
   />
 </Frame>
 
-** What you'll see:**-** Connected ** status (green indicator)
--** Node count **- How many nodes in your cluster
--** Pod count **- Total pods running
--** Deployments **- Number of deployments
--** Services **- Exposed services
+** What you'll see:**- ** Connected ** status (green indicator)
+- ** Node count **- How many nodes in your cluster
+- ** Pod count **- Total pods running
+- ** Deployments **- Number of deployments
+- ** Services **- Exposed services
 
 <Tip>
 ** First time?** If you just installed, you might see low numbers. Deploy some workloads to see RubixKube monitor them!
@@ -441,22 +441,22 @@ Now that you understand the basics, try these tutorials:
 
 <AccordionGroup>
   <Accordion title="Dashboard shows 'Initializing...' forever">
-** Possible causes:**    - Observer agent not connected
+** Possible causes:**- Observer agent not connected
     - Network connectivity issue
     - Browser cache problem
     
-** Solutions:**    1. Check observer pod: `kubectl get pods -n rubixkube`
+** Solutions:** 1. Check observer pod: `kubectl get pods -n rubixkube`
     2. Verify it's running (STATUS = Running)
     3. Clear browser cache and refresh
     4. Try different browser
   </Accordion>
 
   <Accordion title="Agents showing as offline">
-** Check:**    1. Navigate to Agents page
+** Check:** 1. Navigate to Agents page
     2. Look for "Last active" timestamp
     3. If >5 minutes ago, agent may be unhealthy
     
-** Fix:**    ```bash
+** Fix:**```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     kubectl rollout restart deployment/rubixkube-observer -n rubixkube
     ```

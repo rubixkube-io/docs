@@ -82,16 +82,16 @@ Incident Event:
 ```
 
 <Accordion title="What gets captured?">
-** Metadata:**  - Resource details (pod, deployment, service names)
+** Metadata:**- Resource details (pod, deployment, service names)
   - Timestamps (when it happened, how long it lasted)
   - Status changes (states before/during/after)
   
-** Context:**  - Logs (relevant excerpts, not full dumps)
+** Context:**- Logs (relevant excerpts, not full dumps)
   - Metrics (CPU, memory, network at time of incident)
   - Events (Kubernetes events, deployment history)
   - Configuration (resource limits, env vars, labels)
   
-** Relationships:**  - Dependencies (what depends on what)
+** Relationships:**- Dependencies (what depends on what)
   - Correlations (concurrent anomalies)
   - Causation (what caused what)
   
@@ -295,9 +295,9 @@ Memory enables ** prediction before problems **:
   <Accordion title="Deployment Risk Scoring">
     Before deploying v2.4.0, Memory Engine checks:
     
-    -** Similar versions:** v2.3.x had 40% incident rate
-    -** Change size:** Large payload changes previously caused OOM
-    -** Dependencies:** Database schema migration required (high risk)
+    - ** Similar versions:** v2.3.x had 40% incident rate
+    - ** Change size:** Large payload changes previously caused OOM
+    - ** Dependencies:** Database schema migration required (high risk)
     
 ** Risk Score: 7/10 (High)**** Recommendation:** Deploy to canary first, watch memory metrics
   </Accordion>
@@ -421,7 +421,7 @@ You can ask the Memory Engine questions:
   </Tab>
 
   <Tab title="Via Dashboard">
-    Navigate to ** Insights → Historical Analysis **    
+    Navigate to ** Insights → Historical Analysis **
     - Search by error message
     - Filter by timeframe
     - Group by root cause
@@ -509,25 +509,25 @@ You can ask the Memory Engine questions:
 ** First occurrence:** 15 minutes to diagnose  
 ** 10th occurrence:** 30 seconds (memory recall)  
     
-** 91% time saving **  </Card>
+** 91% time saving **</Card>
   
   <Card title="Improved SRE Onboarding" icon="user-graduate">
 ** Before:** 6 months to become effective  
 ** With Memory:** 2 weeks (context in every RCA)  
     
-** New hires productive immediately **  </Card>
+** New hires productive immediately **</Card>
   
   <Card title="Reduced Repeat Incidents" icon="arrows-rotate">
 ** Traditional:** 30% of incidents are repeats  
 ** With Memory:** 5% repeats (caught early)  
     
-** 83% reduction in déjà vu **  </Card>
+** 83% reduction in déjà vu **</Card>
   
   <Card title="Institutional Continuity" icon="building">
 ** Employee turnover:** Knowledge stays  
 ** Team changes:** Continuity maintained  
     
-** Zero knowledge loss **  </Card>
+** Zero knowledge loss **</Card>
 </CardGroup>
 
 ---
@@ -600,7 +600,7 @@ Time: 90 seconds from detection to fix
     - Reset memory for specific services/namespaces
     - Export memory for migration
     
-    Access:** Settings → System → Memory Management **  </Accordion>
+    Access:** Settings → System → Memory Management **</Accordion>
 
   <Accordion title="How much storage does memory use?">
 ### Surprisingly little:
@@ -630,9 +630,9 @@ The Memory Engine powers several dashboard features:
   />
 </Frame>
 
-** What you see:**-** Intelligent Analysis **- RCA reports generated from memory
--** Active Insights **- Issues detected using learned patterns
--** Trend Predictions **- Forecasts based on historical data
+** What you see:**- ** Intelligent Analysis **- RCA reports generated from memory
+- ** Active Insights **- Issues detected using learned patterns
+- ** Trend Predictions **- Forecasts based on historical data
 
 ---
 
@@ -678,7 +678,7 @@ The Memory Engine powers several dashboard features:
     3. Memory records: This pattern → This fix = Bad outcome
     4. Future: Won't suggest that fix for that pattern
     
-** Memory learns from mistakes too.**  </Accordion>
+** Memory learns from mistakes too.**</Accordion>
 </AccordionGroup>
 
 ---

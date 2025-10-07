@@ -23,9 +23,9 @@ The ** Dashboard ** is your central command center - providing real-time system 
 </Frame>
 
 The dashboard header shows:
--** Title **: "Dashboard" with description "System overview and real-time monitoring"
--** Updated timestamp **: Shows when data was last refreshed (e.g., "Updated 16:24:46")
--** Refresh all data button **: Click to manually refresh all dashboard metrics
+- ** Title **: "Dashboard" with description "System overview and real-time monitoring"
+- ** Updated timestamp **: Shows when data was last refreshed (e.g., "Updated 16:24:46")
+- ** Refresh all data button **: Click to manually refresh all dashboard metrics
 
 ---
 
@@ -74,9 +74,9 @@ The dashboard header shows:
 ** From our real dashboard:**- "3" issues requiring attention
 - Includes: ImagePullBackOff, CrashLoopBackOff, OOMKilled
 
-** Types of insights:**-** HIGH severity **- OOMKilled, critical failures
--** medium severity **- Pod crashes, image pull errors
--** low severity **- Configuration warnings
+** Types of insights:**- ** HIGH severity **- OOMKilled, critical failures
+- ** medium severity **- Pod crashes, image pull errors
+- ** low severity **- Configuration warnings
 
 ** Click the card ** to go directly to Insights page for full details.
 
@@ -131,9 +131,9 @@ The dashboard header shows:
 
 ** Status indicator:** Connected (healthy cluster connection)
 
-** Panel controls:**-** Refresh data ** button (circular arrow icon) - Update infrastructure numbers
--** Show details ** button - Expand to see additional metrics
--** View page ** link - Go to full Infrastructure topology
+** Panel controls:**- ** Refresh data ** button (circular arrow icon) - Update infrastructure numbers
+- ** Show details ** button - Expand to see additional metrics
+- ** View page ** link - Go to full Infrastructure topology
 
 ---
 
@@ -200,19 +200,19 @@ The dashboard header shows:
   <Tab title="INSIGHT Events">
 ### Example from our dashboard:
      "Pod broken-image-demo has been pending for an extended period"
-    -** Type **: INSIGHT (blue badge)
-    -** Severity **: medium
-    -** Status **: active (white badge)
-    -** Time **: 10/4/2025 01:59 AM
+    - ** Type **: INSIGHT (blue badge)
+    - ** Severity **: medium
+    - ** Status **: active (white badge)
+    - ** Time **: 10/4/2025 01:59 AM
     
 ** What it means:** RubixKube detected an issue and created an insight
     
     ---
     
      "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
-    -** Type **: INSIGHT
-    -** Severity **: medium
-    -** Status **: active
+    - ** Type **: INSIGHT
+    - ** Severity **: medium
+    - ** Status **: active
     
 ** What it means:** Pod is crashing repeatedly, needs investigation
   </Tab>
@@ -220,17 +220,17 @@ The dashboard header shows:
   <Tab title="RCA Events">
 ### Example from our dashboard:
      "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
-    -** Type **: RCA (purple badge)
-    -** Status **: RCA Report Analysis Complete
-    -** Time **: 10/4/2025 01:58 AM
+    - ** Type **: RCA (purple badge)
+    - ** Status **: RCA Report Analysis Complete
+    - ** Time **: 10/4/2025 01:58 AM
     
 ** What it means:** Analysis finished, full report available
     
     ---
     
      "Postmortem Report: CrashLoopBackOff on Pod 'memory-hog-demo'"
-    -** Type **: RCA
-    -** Status **: RCA Report Analysis Complete
+    - ** Type **: RCA
+    - ** Status **: RCA Report Analysis Complete
     
 ** What it means:** Root cause analysis completed with findings
   </Tab>
@@ -238,10 +238,10 @@ The dashboard header shows:
   <Tab title="HIGH Severity">
 ### Example from our dashboard:
      "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
-    -** Type **: INSIGHT
-    -** Severity **:** high **(red text)
-    -** Status **: active
-    -** Time **: 10/4/2025 01:58 AM
+    - ** Type **: INSIGHT
+    - ** Severity **:** high **(red text)
+    - ** Status **: active
+    - ** Time **: 10/4/2025 01:58 AM
     
 ** What it means:** Critical issue needing immediate attention
     
@@ -255,14 +255,14 @@ The dashboard header shows:
 
 Each event card shows:
 
-** Top row:**-** Icon **- Indicates event type (warning triangle, magnifying glass, etc.)
--** Title **- Clear description of what happened
--** Badge **- INSIGHT or RCA tag
+** Top row:**- ** Icon **- Indicates event type (warning triangle, magnifying glass, etc.)
+- ** Title **- Clear description of what happened
+- ** Badge **- INSIGHT or RCA tag
 
-** Second row:**-** Severity or Status **- "Severity: high/medium/low" or "RCA Report Analysis Complete"
+** Second row:**- ** Severity or Status **- "Severity: high/medium/low" or "RCA Report Analysis Complete"
 
-** Bottom row:**-** Timestamp **- When the event occurred (MM/DD/YYYY HH:MM AM/PM)
--** Status badge **- "active" or "resolved"
+** Bottom row:**- ** Timestamp **- When the event occurred (MM/DD/YYYY HH:MM AM/PM)
+- ** Status badge **- "active" or "resolved"
 
 ** Color coding:**- Blue left border = INSIGHT events
 - Purple left border = RCA events
@@ -290,8 +290,8 @@ Each event card shows:
 - Pattern matching in progress
 - Real-time streaming of RCA analysis steps
 
-** Statuses:**-** LIVE **- Connected to SSE stream, ready for analysis
--** Offline **- Not connected to event stream
+** Statuses:**- ** LIVE **- Connected to SSE stream, ready for analysis
+- ** Offline **- Not connected to event stream
 - Shows event count when active analysis is running
 
 ** Use case:** Watch RCA Pipeline Agent work in real-time as it investigates incidents
@@ -352,10 +352,10 @@ Each event card shows:
 
 ### What appeared in Activity Feed:
 >  "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
-> -** Type **: INSIGHT
-> -** Severity **:** high **(red text)
-> -** Status **: active
-> -** Time **: 01:58 AM
+> - ** Type **: INSIGHT
+> - ** Severity **:** high **(red text)
+> - ** Status **: active
+> - ** Time **: 01:58 AM
 
 ** What to do:** 1. Note it's HIGH severity (needs immediate attention)
 2. Look for corresponding RCA report (should appear shortly after)
@@ -372,14 +372,14 @@ Each event card shows:
 ### Example 2: CrashLoopBackOff with RCA
 
 ### What appeared:
-1.** First - INSIGHT event:**   >  "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
-   > -** Type **: INSIGHT
-   > -** Severity **: medium
-   > -** Status **: active
+1.** First - INSIGHT event:**>  "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
+   > - ** Type **: INSIGHT
+   > - ** Severity **: medium
+   > - ** Status **: active
 
-2.** Then - RCA event:**   >  "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
-   > -** Type **: RCA
-   > -** Status **: RCA Report Analysis Complete
+2.** Then - RCA event:**>  "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
+   > - ** Type **: RCA
+   > - ** Status **: RCA Report Analysis Complete
 
 ** What this pattern means:**- RubixKube detected the crash loop (INSIGHT)
 - RCA Pipeline automatically analyzed it (RCA)
@@ -393,9 +393,9 @@ Each event card shows:
 
 ### What appeared:
 >  "Pod broken-image-demo has been pending for an extended period"
-> -** Type **: INSIGHT
-> -** Severity **: medium
-> -** Status **: active
+> - ** Type **: INSIGHT
+> - ** Severity **: medium
+> - ** Status **: active
 
 ** What this means:**- Pod stuck in Pending state
 - Likely ImagePullBackOff error
@@ -522,9 +522,9 @@ Each event card shows:
 - kube-dns (DNS)
 - rubixkube-observer (monitoring)
 
-** Service types:**-** ClusterIP **- Internal cluster access
--** NodePort **- External access via node IP
--** LoadBalancer **- Cloud load balancer
+** Service types:**- ** ClusterIP **- Internal cluster access
+- ** NodePort **- External access via node IP
+- ** LoadBalancer **- Cloud load balancer
 
 ** What to watch:**- Service endpoints (should have backing pods)
 - Port configurations
@@ -557,8 +557,8 @@ Each event card shows:
 ** Our cluster:** 1 agent pod (rubixkube-observer)
 
 ** Cross-reference:** Compare with "Agents: 3/4" metric
--** 3/4 Active **= 3 of 4 agent types are running
--** 1 Agent pod **= 1 physical pod deployed (may run multiple services)
+- ** 3/4 Active **= 3 of 4 agent types are running
+- ** 1 Agent pod **= 1 physical pod deployed (may run multiple services)
 
 ---
 
@@ -577,10 +577,10 @@ Each event card shows:
 - RCA follows within seconds (analysis by RCA Pipeline)
 - Chronological order helps track incident progression
 
-** Feed features:**-** Real-time updates **- Events appear as they occur
--** Persistent scrollback **- Historical events remain
--** Badge indicators **- Easy visual scanning
--** Click to expand **- View full event details
+** Feed features:**- ** Real-time updates **- Events appear as they occur
+- ** Persistent scrollback **- Historical events remain
+- ** Badge indicators **- Easy visual scanning
+- ** Click to expand **- View full event details
 
 ---
 
@@ -634,16 +634,16 @@ Each event card shows:
 
 ### 4. Navigate to Details
 
-** From metrics cards:**-** Click "Active Insights" card **→ Go to Insights page
--** Click "Agents" card **→ Go to Agents page
+** From metrics cards:**- ** Click "Active Insights" card **→ Go to Insights page
+- ** Click "Agents" card **→ Go to Agents page
 - Number indicators are clickable
 
-** From Infrastructure:**-** Click "View page" link **→ Full Infrastructure topology
--** Click individual metrics **→ Filtered views (when on Infrastructure page)
+** From Infrastructure:**- ** Click "View page" link **→ Full Infrastructure topology
+- ** Click individual metrics **→ Filtered views (when on Infrastructure page)
 
-** From Activity Feed:**-** Click any event **→ Full event details and related insights
--** Click INSIGHT badge **→ View insight details
--** Click RCA badge **→ View RCA report
+** From Activity Feed:**- ** Click any event **→ Full event details and related insights
+- ** Click INSIGHT badge **→ View insight details
+- ** Click RCA badge **→ View RCA report
 
 ---
 
@@ -820,17 +820,17 @@ Each event card shows:
 
 <Accordion title="3. Learn Your Baseline">
 ### Track normal patterns over time:
-** System Health:**-** Normal range **: 95-100%
--** Typical **: 100% for healthy clusters
--** Alert threshold **: Below 95%
+** System Health:**- ** Normal range **: 95-100%
+- ** Typical **: 100% for healthy clusters
+- ** Alert threshold **: Below 95%
 
-** Active Insights:**-** Normal range **: 0-2 for healthy clusters
--** Alert threshold **: 3+ or sudden increase
--** Critical **: 5+ insights
+** Active Insights:**- ** Normal range **: 0-2 for healthy clusters
+- ** Alert threshold **: 3+ or sudden increase
+- ** Critical **: 5+ insights
 
-** Infrastructure:**-** Your normal pod count **: ____
--** Your normal namespace count **: ____
--** Expected agent status **: 3/3 or 4/4
+** Infrastructure:**- ** Your normal pod count **: ____
+- ** Your normal namespace count **: ____
+- ** Expected agent status **: 3/3 or 4/4
 
 ** Benefit:** Anomalies stand out immediately when you know your baseline
 
@@ -879,17 +879,17 @@ Each event card shows:
 - Critical pod failures
 - Security issues
 - Data loss risk
--** Action **: Immediate response required
+- ** Action **: Immediate response required
 
 ** 2. medium severity **- CrashLoopBackOff
 - ImagePullBackOff
 - Configuration errors
--** Action **: Investigate within hours
+- ** Action **: Investigate within hours
 
 ** 3. low severity **- Warnings
 - Deprecations
 - Minor issues
--** Action **: Plan fix in next sprint
+- ** Action **: Plan fix in next sprint
 
 ** Dashboard makes this easy:**- HIGH severity shows in red
 - Easy visual scanning
@@ -1160,8 +1160,8 @@ import ContactSupport from '/snippets/contact-support.mdx';
 
 Found an issue with this guide or have suggestions? We'd love to hear from you!
 
--** Email **: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
--** Subject **: "Dashboard Guide Feedback"
+- ** Email **: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
+- ** Subject **: "Dashboard Guide Feedback"
 
 ---
 

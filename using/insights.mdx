@@ -22,13 +22,13 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
   />
 </Frame>
 
-** The header shows:**-** Title **: "Unified Insights" with description
--** Health Metrics **:
-  -** Health **: 75% RCA coverage
-  -** Total Groups **: 4 incident groups
-  -** Critical Issues **: 0 (no critical incidents)
-  -** High Priority **: 1 (one high-severity issue)
--** Refresh data ** button for manual updates
+** The header shows:**- ** Title **: "Unified Insights" with description
+- ** Health Metrics **:
+  - ** Health **: 75% RCA coverage
+  - ** Total Groups **: 4 incident groups
+  - ** Critical Issues **: 0 (no critical incidents)
+  - ** High Priority **: 1 (one high-severity issue)
+- ** Refresh data ** button for manual updates
 
 ---
 
@@ -124,10 +124,10 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
   />
 </Frame>
 
-** Click "Severity" to see options:**-** critical **- System-wide failures, immediate action
--** high **- Significant impact, prompt resolution needed
--** medium **- Moderate impact, address within hours
--** low **- Minor issues, informational
+** Click "Severity" to see options:**- ** critical **- System-wide failures, immediate action
+- ** high **- Significant impact, prompt resolution needed
+- ** medium **- Moderate impact, address within hours
+- ** low **- Minor issues, informational
 
 ** Multiple selection **- Check multiple boxes to filter by several severities at once.
 
@@ -148,8 +148,8 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 #### 1. CrashLoop in Pod/crash-loop-demo
 
 ** Visual indicators:**- Orange warning icon (left)
--** MEDIUM ** severity badge
--** RCA ** badge (analysis complete)
+- ** MEDIUM ** severity badge
+- ** RCA ** badge (analysis complete)
 - "2 items" - multiple occurrences
 - "1 day ago" - last seen timestamp
 
@@ -162,8 +162,8 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 #### 2. OOMKilled in Pod/memory-hog-demo
 
 ** Visual indicators:**- Red warning triangle (left) - indicates high severity
--** HIGH ** severity badge (critical attention needed)
--** RCA ** badge (analysis complete)
+- ** HIGH ** severity badge (critical attention needed)
+- ** RCA ** badge (analysis complete)
 - "2 items" - multiple OOMKilled events
 - "1 day ago" - last occurrence
 
@@ -176,8 +176,8 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 #### 3. CrashLoop in Pod/memory-hog-demo
 
 ** Visual indicators:**- Orange warning icon
--** MEDIUM ** severity badge
--** RCA ** badge
+- ** MEDIUM ** severity badge
+- ** RCA ** badge
 - "2 items"
 - "1 day ago"
 
@@ -190,8 +190,8 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 #### 4. PodPending in Pod/broken-image-demo
 
 ** Visual indicators:**- Orange warning icon
--** MEDIUM ** severity badge
--** No RCA badge **- analysis not complete or not available
+- ** MEDIUM ** severity badge
+- ** No RCA badge **- analysis not complete or not available
 - "1 items" - single occurrence
 - "1 day ago"
 
@@ -216,21 +216,21 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 
 ### From our example - CrashLoop in Pod/crash-loop-demo:
 ** Title bar shows:**- Warning icon
--** Title **: CrashLoop in Pod/crash-loop-demo
--** Badges **:
-  -** MEDIUM **(severity)
-  -** RUBIXKUBE-TUTORIALS **(namespace)
-  -** RCA **(analysis complete)
--** Ask AI ** button - Send to Chat for investigation
--** More actions ** menu (three dots)
+- ** Title **: CrashLoop in Pod/crash-loop-demo
+- ** Badges **:
+  - ** MEDIUM **(severity)
+  - ** RUBIXKUBE-TUTORIALS **(namespace)
+  - ** RCA **(analysis complete)
+- ** Ask AI ** button - Send to Chat for investigation
+- ** More actions ** menu (three dots)
 
-** Summary metrics:**-** 2 items **- incident occurred twice
--** 1 day ago **- last occurrence
--** 45% confidence **- RCA confidence level
--** Status: RCA_GENERATED **- analysis state
+** Summary metrics:**- ** 2 items **- incident occurred twice
+- ** 1 day ago **- last occurrence
+- ** 45% confidence **- RCA confidence level
+- ** Status: RCA_GENERATED **- analysis state
 
-** Progress bar:**-** Status: Complete **- investigation finished
--** 100%** progress bar (green)
+** Progress bar:**- ** Status: Complete **- investigation finished
+- ** 100%** progress bar (green)
 
 ---
 
@@ -239,16 +239,16 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 ### Tab sections:
 #### INCIDENT DETAILS
 
-** Detected:**-** 3 days ago **- first occurrence
+** Detected:**- ** 3 days ago **- first occurrence
 - Oct 4, 2025 01:58 - exact timestamp
 
-** Last Seen:**-** 1 day ago **- most recent occurrence
+** Last Seen:**- ** 1 day ago **- most recent occurrence
 - Oct 5, 2025 12:26 - exact timestamp
 
-** Confidence:**-** 50%**- RCA confidence level
+** Confidence:**- ** 50%**- RCA confidence level
 - Moderate confidence, review evidence
 
-** Source:**-** observer **- detected by RubixKube Observer Agent
+** Source:**- ** observer **- detected by RubixKube Observer Agent
 
 ---
 
@@ -274,10 +274,10 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 
 #### SOURCE EVENTS
 
-** Original detection event:**-** Type **: CrashLoop
--** Pod **: crash-loop-demo
--** Details **: "CrashLoopBackOff: container app in pod crash-loop-demo restarted 3 times"
--** Namespace **: rubixkube-tutorials
+** Original detection event:**- ** Type **: CrashLoop
+- ** Pod **: crash-loop-demo
+- ** Details **: "CrashLoopBackOff: container app in pod crash-loop-demo restarted 3 times"
+- ** Namespace **: rubixkube-tutorials
 
 ---
 
@@ -302,7 +302,7 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 
 ** ANALYSIS COMPLETE **- Green checkmark icon
 - Status: Pending Resolution
--** Confidence: 40%** with progress bar
+- ** Confidence: 40%** with progress bar
 
 ** Lower confidence ** means more uncertainty - cross-reference with evidence.
 
@@ -313,10 +313,10 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 ### From our real RCA:
 > "The application within the 'crash-loop-demo' pod was exiting immediately upon startup, leading Kubernetes to enter a 'CrashLoopBackOff' cycle. The precise reason for the application failure (e.g., code bug, configuration error, resource issue) could not be determined because the diagnostic tools for retrieving pod logs and events were not operational."
 
-** What this tells you:**-** Primary issue **: Application exits immediately on startup
--** Kubernetes response **: CrashLoopBackOff protection mechanism
--** Limitation **: Diagnostic tools unavailable, preventing deeper analysis
--** Possible causes **: Code bug, config error, or resource constraint
+** What this tells you:**- ** Primary issue **: Application exits immediately on startup
+- ** Kubernetes response **: CrashLoopBackOff protection mechanism
+- ** Limitation **: Diagnostic tools unavailable, preventing deeper analysis
+- ** Possible causes **: Code bug, config error, or resource constraint
 
 ** Orange left border ** highlights this as the key finding.
 
@@ -339,13 +339,13 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 ### Paragraph format explaining business impact:
 > "The 'crash-loop-demo' pod in the 'rubixkube-tutorials' namespace was unavailable due to repeated crashes. This caused a complete service outage for any functionality relying on this pod. The impact was contained to this specific application."
 
-** Key information:**-** Scope **: Single pod, single namespace
--** Severity **: Complete service outage for this pod
--** Containment **: No spread to other services
--** Risk **: Low (tutorial namespace, not production)
+** Key information:**- ** Scope **: Single pod, single namespace
+- ** Severity **: Complete service outage for this pod
+- ** Containment **: No spread to other services
+- ** Risk **: Low (tutorial namespace, not production)
 
 ** AFFECTED SERVICES ** subsection:
--** Pod/crash-loop-demo **(clickable resource link)
+- ** Pod/crash-loop-demo **(clickable resource link)
 
 ---
 
@@ -362,13 +362,13 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
 
 ### Action Card Structure
 
-** Each recommendation includes:**-** Priority badge **(HIGH PRIORITY or MEDIUM PRIORITY with colored icon)
--** Action description **(what to do)
--** Owner **(who should do it - Platform Engineering, Application Team, etc.)
--** Action buttons **:
-  -** Apply **- Mark as implemented (red button)
-  -** Ask AI How **- Get detailed implementation steps from Chat
-  -** Dismiss **- Mark as not relevant
+** Each recommendation includes:**- ** Priority badge **(HIGH PRIORITY or MEDIUM PRIORITY with colored icon)
+- ** Action description **(what to do)
+- ** Owner **(who should do it - Platform Engineering, Application Team, etc.)
+- ** Action buttons **:
+  - ** Apply **- Mark as implemented (red button)
+  - ** Ask AI How **- Get detailed implementation steps from Chat
+  - ** Dismiss **- Mark as not relevant
 
 ---
 
@@ -583,7 +583,7 @@ The ** Insights ** page is where RubixKube's intelligence shines - showing you n
   </Step>
 
   <Step title="Check Health Metrics">
-** Look at header:**    - RCA coverage below 80%? Investigate why
+** Look at header:**- RCA coverage below 80%? Investigate why
     - Critical Issues > 0? Handle immediately
     - High Priority increased? Review new incidents
   </Step>

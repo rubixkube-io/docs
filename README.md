@@ -22,7 +22,7 @@ Here you’ll find everything you need to:
 *** Get started quickly ** with RubixKube
 *  Learn core ** concepts **: SRI (Site Reliability Intelligence), Agent Mesh, Memory Graph
 *  Explore ** integrations ** with Kubernetes, GitOps, observability, and cloud-native stacks
-*  Dive into the ** API & CLI references ***  Troubleshoot and optimize your deployments
+*  Dive into the ** API & CLI references *** Troubleshoot and optimize your deployments
 
 ---
 
@@ -91,7 +91,7 @@ Connect the [Mintlify GitHub app](https://dashboard.mintlify.com/settings/organi
 
   (Updates the CLI to latest version.)
 
-*** Seeing a 404 page?**  Ensure you’re in the correct directory and have a valid `docs.json`.
+*** Seeing a 404 page?** Ensure you’re in the correct directory and have a valid `docs.json`.
 
 ---
 

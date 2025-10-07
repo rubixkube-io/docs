@@ -53,10 +53,10 @@ RubixKube includes multiple layers of safety guardrails to protect your infrastr
 
 When you enable autonomous remediation (optional):
 
--** Blast Radius Limits **- Only fixes scoped resources, never cluster-wide changes
--** Approval Workflows **- High-risk actions require manual approval
--** Dry-Run First **- RubixKube simulates changes before applying
--** Circuit Breakers **- Automatic pause if multiple failures detected
+- ** Blast Radius Limits **- Only fixes scoped resources, never cluster-wide changes
+- ** Approval Workflows **- High-risk actions require manual approval
+- ** Dry-Run First **- RubixKube simulates changes before applying
+- ** Circuit Breakers **- Automatic pause if multiple failures detected
 
 <Warning>
 ** Best Practice:** Start with observe-only mode, then gradually enable auto-remediation for low-risk scenarios only.
@@ -70,10 +70,10 @@ When you enable autonomous remediation (optional):
 <AccordionGroup>
   <Accordion title=" Data We Collect" icon="check">
     RubixKube observer collects:
-    -** Kubernetes metadata **- Pod names, namespaces, labels, annotations
-    -** Metrics **- CPU, memory, network usage, health checks
-    -** Events **- Kubernetes events and state changes
-    -** Resource status **- Deployment health, replica counts
+    - ** Kubernetes metadata **- Pod names, namespaces, labels, annotations
+    - ** Metrics **- CPU, memory, network usage, health checks
+    - ** Events **- Kubernetes events and state changes
+    - ** Resource status **- Deployment health, replica counts
     
     All data is encrypted in transit (TLS 1.3) and at rest (AES-256).
   </Accordion>
@@ -90,7 +90,7 @@ When you enable autonomous remediation (optional):
   </Accordion>
 
   <Accordion title=" Security Best Practices" icon="lock">
-** For Beta Testing:**    - Use non-production data only
+** For Beta Testing:**- Use non-production data only
     - Avoid clusters with PII or regulated data
     - Redact sensitive information before sharing logs with support
     - Review RubixKube's RBAC permissions regularly
@@ -105,28 +105,28 @@ When you enable autonomous remediation (optional):
 ### Supported Kubernetes Versions
 
 <Accordion title="Kubernetes Versions">
-** Supported:**  - Kubernetes 1.24+
+** Supported:**- Kubernetes 1.24+
   - Kubernetes 1.25, 1.26, 1.27, 1.28 (tested)
   - Latest stable versions recommended
   
-** Not supported:**  - Kubernetes 1.23 and older
+** Not supported:**- Kubernetes 1.23 and older
   - Beta/alpha Kubernetes releases
 </Accordion>
 
 ### Supported Platforms
 
 <Accordion title="Cloud Providers">
-** Fully Supported:**  -  Amazon EKS
+** Fully Supported:**-  Amazon EKS
   -  Google GKE
   -  Azure AKS
   -  DigitalOcean Kubernetes
   -  Linode LKE
   
-** Local Development:**  -  KIND (Kubernetes in Docker)
+** Local Development:**-  KIND (Kubernetes in Docker)
   -  Minikube
   -  k3s/k3d
   
-** Limited/Experimental:**  -  OpenShift (basic support)
+** Limited/Experimental:**-  OpenShift (basic support)
   -  Rancher (basic support)
 </Accordion>
 
@@ -134,10 +134,10 @@ When you enable autonomous remediation (optional):
 
 During Beta, the following integrations are available:
 
--** Observability:** Prometheus, Grafana
--** Notifications:** Slack (coming soon: PagerDuty, Teams)
--** GitOps:** Basic support
--** Service Mesh:** Istio/Linkerd (experimental)
+- ** Observability:** Prometheus, Grafana
+- ** Notifications:** Slack (coming soon: PagerDuty, Teams)
+- ** GitOps:** Basic support
+- ** Service Mesh:** Istio/Linkerd (experimental)
 
 ---
 
@@ -156,11 +156,11 @@ During Beta, the following integrations are available:
   </Accordion>
 
   <Accordion title=" Known Limitations">
-    -** Auto-remediation:** Limited to specific issue types
-    -** Dashboard:** Some advanced features still in development
-    -** Scaling:** Tested up to moderate cluster sizes (~100 nodes)
-    -** Integrations:** Limited third-party integrations
-    -** Documentation:** Some tutorials still being created
+    - ** Auto-remediation:** Limited to specific issue types
+    - ** Dashboard:** Some advanced features still in development
+    - ** Scaling:** Tested up to moderate cluster sizes (~100 nodes)
+    - ** Integrations:** Limited third-party integrations
+    - ** Documentation:** Some tutorials still being created
   </Accordion>
 
   <Accordion title=" You May Encounter">

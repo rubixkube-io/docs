@@ -149,12 +149,12 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 ### Agent's Analysis:
 ### heavy-app-1 (nginx):** SIGNIFICANTLY OVER-PROVISIONED **- Allocated: 1 CPU, 1Gi RAM
 - Agent's Finding: "Unusual for simple nginx unless serving extremely high traffic"
--** Recommended:** 100m CPU, 128Mi RAM
--** Potential Savings:** 90% CPU, 87% memory
+- ** Recommended:** 100m CPU, 128Mi RAM
+- ** Potential Savings:** 90% CPU, 87% memory
 
 ### heavy-app-2 (redis):** POSSIBLY OVER-PROVISIONED **- Allocated: 500m CPU, 2Gi RAM  
 - Agent's Finding: "Memory-intensive, but might be over-provisioned without usage data"
--** Recommended:** Monitor actual usage, then right-size
+- ** Recommended:** Monitor actual usage, then right-size
 
 ---
 
@@ -166,8 +166,8 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 > "The most effective way to reduce costs is to adjust requests and limits to match actual usage."
 
 ** Action Plan:**- Monitor CPU/memory consumption for 24-48 hours
--** heavy-app-1 (nginx):** Lower to 100m CPU, 128Mi RAM
--** heavy-app-2 (redis):** Set limit slightly above peak usage
+- ** heavy-app-1 (nginx):** Lower to 100m CPU, 128Mi RAM
+- ** heavy-app-2 (redis):** Set limit slightly above peak usage
 
 ** Expected Savings:** 80-90% for nginx
 
@@ -194,7 +194,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 ** Example for nginx:**- Current: 1 pod with 1 CPU
 - Better: 5 pods with 100m CPU each
 - HPA scales up/down based on demand
--** Result:** Pay only for active load
+- ** Result:** Pay only for active load
 
 ---
 

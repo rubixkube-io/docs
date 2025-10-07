@@ -69,7 +69,7 @@ broken-image-demo   0/1     ImagePullBackOff   0          2m
   kubectl describe pod broken-image-demo -n rubixkube-tutorials
   ```
   
-** Key events:**  ```
+** Key events:**```
   Warning  Failed     2m (x4 over 3m)  kubelet
            Failed to pull image "nonexistent-registry.io/invalid-image:v1.0": 
            failed to resolve reference: failed to do request: 
@@ -234,9 +234,9 @@ NAME              READY   STATUS    RESTARTS   AGE
 fixed-image-demo   1/1     Running   0          30s
 ```
 
-** In RubixKube Dashboard:**-** Active Insights ** decreases (issue resolved)
--** Activity Feed ** shows resolution event
--** System Health ** improves
+** In RubixKube Dashboard:**- ** Active Insights ** decreases (issue resolved)
+- ** Activity Feed ** shows resolution event
+- ** System Health ** improves
 
 <Note>
 ** RubixKube tracks resolution!** Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
@@ -293,13 +293,13 @@ Based on RubixKube's Memory Engine and common patterns:
 - Runs `kubectl describe pod` to find error
 - Googles "ImagePullBackOff kubernetes"
 - Tries various fixes
--** Time: 10-15 minutes **(if experienced)
+- ** Time: 10-15 minutes **(if experienced)
 
 ** With RubixKube:**- Automatic detection within 2 minutes
 - Incident appears in dashboard automatically
 - AI suggests likely causes
 - Relevant documentation linked
--** Time: 2-3 minutes **(with clear guidance)
+- ** Time: 2-3 minutes **(with clear guidance)
 
 ** Time saved: 70-80%** even for simple issues!
 

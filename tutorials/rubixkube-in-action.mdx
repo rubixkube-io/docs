@@ -52,10 +52,10 @@ Within ** 2 minutes **, RubixKube detected ALL THREE failures:
 
 ### What Happened
 
-** Dashboard Metrics Changed:**-** Active Insights:** 0 →** 3 **(three separate issues detected)
--** Notifications:** 0 →** 20+**(detailed event stream)
--** System Health:** 100% (overall cluster still healthy - isolated failures)
--** Agents:** 3/3 Active (all AI agents working)
+** Dashboard Metrics Changed:**- ** Active Insights:** 0 →** 3 **(three separate issues detected)
+- ** Notifications:** 0 →** 20+**(detailed event stream)
+- ** System Health:** 100% (overall cluster still healthy - isolated failures)
+- ** Agents:** 3/3 Active (all AI agents working)
 
 ** Activity Feed Populated:**```
  Container experiencing repeated crashes in crash-loop-demo
@@ -105,10 +105,10 @@ Namespace: rubixkube-tutorials
 
 ### Incident #2: OOMKilled in memory-hog-demo
 
-** Details:**-** Type:** Out of Memory
--** Restart Count:** 3
--** Severity:** HIGH 
--** Memory Limit:** 50Mi (too low)
+** Details:**- ** Type:** Out of Memory
+- ** Restart Count:** 3
+- ** Severity:** HIGH 
+- ** Memory Limit:** 50Mi (too low)
 
 ** Root Cause:**- Container attempted to allocate ~100Mi
 - Memory limit set to 50Mi
@@ -182,8 +182,8 @@ Behind the scenes, multiple agents worked together:
 
 ### 2. Severity Prioritization
 
-** RubixKube ranked issues appropriately:**-** HIGH:** OOMKilled (resource exhaustion, node impact risk)
--** Medium:** CrashLoops (isolated pod failures)
+** RubixKube ranked issues appropriately:**- ** HIGH:** OOMKilled (resource exhaustion, node impact risk)
+- ** Medium:** CrashLoops (isolated pod failures)
 
 ** In production:** Focus on HIGH severity first.
 
@@ -202,35 +202,35 @@ This scenario mirrors actual production incidents:
 
 <AccordionGroup>
   <Accordion title="Bad Deployment Scenario">
-** Real example:**    - New version deployed with typo in image tag (ImagePullBackOff)
+** Real example:**- New version deployed with typo in image tag (ImagePullBackOff)
     - Same version has memory leak (OOMKilled after 10 minutes)
     - Database connection pool exhausted (CrashLoop)
     
-** RubixKube would:**    - Detect all 3 issues
+** RubixKube would:**- Detect all 3 issues
     - Prioritize by severity
     - Show which are related
     - Suggest rollback to previous version
   </Accordion>
 
   <Accordion title="Resource Misconfiguration">
-** Real example:**    - HPA scaled deployment to 10 replicas
+** Real example:**- HPA scaled deployment to 10 replicas
     - Namespace quota only allows 8
     - 2 pods stuck pending
     - Remaining 8 pods OOMKilling due to increased load
     
-** RubixKube would:**    - Detect quota limit
+** RubixKube would:**- Detect quota limit
     - Identify OOM root cause
     - Suggest quota increase OR replica reduction
     - Show which pods are affected
   </Accordion>
 
   <Accordion title="Cascading Failure">
-** Real example:**    - Database pod OOMKilled
+** Real example:**- Database pod OOMKilled
     - API pods start failing (can't connect to DB)
     - Frontend shows 500 errors
     - Load balancer marks all backends unhealthy
     
-** RubixKube would:**    - Trace the cascade from DB → API → Frontend
+** RubixKube would:**- Trace the cascade from DB → API → Frontend
     - Identify DB memory as root cause
     - Show dependency graph
     - Suggest fixing DB first (not the symptoms)
@@ -250,7 +250,7 @@ kubectl delete namespace rubixkube-tutorials
 ** What happens in RubixKube:**- Incidents marked as "Resolved"
 - Activity Feed shows cleanup
 - Active Insights returns to 0
--** Memory retains the learnings ** for future incidents
+- ** Memory retains the learnings ** for future incidents
 
 ---
 

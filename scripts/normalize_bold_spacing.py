@@ -9,10 +9,15 @@ def normalize_line(line: str) -> str:
     parts = line.split('`')
     for i in range(0, len(parts), 2):
         segment = parts[i]
-        # Add space AFTER closing ** if followed by alnum
-        segment = re.sub(r"\*\*(?=[A-Za-z0-9])", r"** ", segment)
-        # Add space BEFORE opening ** if preceded by alnum
-        segment = re.sub(r"(?<=[A-Za-z0-9])\*\*", r" **", segment)
+        # Remove inner spaces immediately inside bold markers: ** text ** -> **text**
+        segment = re.sub(r"\*\*\s+", r"**", segment)
+        segment = re.sub(r"\s+\*\*", r"**", segment)
+        # Add space AFTER closing ** if followed by alnum/punct (but not another *)
+        segment = re.sub(r"\*\*([A-Za-z0-9])", r"** \1", segment)
+        # Add space BEFORE opening ** if preceded by alnum/punct (but not another *)
+        segment = re.sub(r"([A-Za-z0-9])\*\*", r"\1 **", segment)
+        # Normalize list item hyphen spacing before bold: -** -> - **
+        segment = re.sub(r"-\*\*", r"- **", segment)
         parts[i] = segment
     return '`'.join(parts)
 

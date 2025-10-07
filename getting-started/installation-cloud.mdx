@@ -7,11 +7,11 @@ Install RubixKube on your**cloud Kubernetes cluster**to test our Site Reliabilit
 
 <Warning>
 ### Beta Release Notice
-RubixKube is currently in**Beta**. While you can install it on cloud clusters for**testing and evaluation**, it is**NOT recommended for production environments**yet.
+RubixKube is currently in <strong>Beta</strong>. While you can install it on cloud clusters for <strong>testing and evaluation</strong>, it is <strong>NOT recommended for production environments</strong> yet.
 
-- **Safe for:**Development, staging, testing environments
-- **Not ready for:**Production workloads, critical infrastructure
-- **Coming soon:**Production-ready release with SLA guarantees
+- <strong>Safe for:</strong> Development, staging, testing environments
+- <strong>Not ready for:</strong> Production workloads, critical infrastructure
+- <strong>Coming soon:</strong> Production-ready release with SLA guarantees
 </Warning>
 
 <Info>
@@ -38,7 +38,7 @@ RubixKube works with all major cloud Kubernetes platforms:
 </CardGroup>
 
 <Note>
-**Other Platforms:**RubixKube also works with DigitalOcean Kubernetes, Linode LKE, and other managed Kubernetes services.
+<strong>Other Platforms:</strong> RubixKube also works with DigitalOcean Kubernetes, Linode LKE, and other managed Kubernetes services.
 </Note>
 
 ---
@@ -206,7 +206,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     ```
 
     <Tip>
-**Cost Warning:**EKS costs ~$0.10/hour for the control plane + EC2 instance costs. Delete the cluster when done testing to avoid charges.
+<strong>Cost Warning:</strong> EKS costs ~$0.10/hour for the control plane + EC2 instance costs. Delete the cluster when done testing to avoid charges.
     </Tip>
   </Tab>
 
@@ -257,7 +257,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     ```
 
     <Tip>
-**Cost Warning:**GKE costs vary by region. A 2-node e2-medium cluster costs ~$50-70/month. Use `gcloud container clusters delete` to remove when done.
+<strong>Cost Warning:</strong> GKE costs vary by region. A 2-node e2-medium cluster costs ~$50-70/month. Use `gcloud container clusters delete` to remove when done.
     </Tip>
   </Tab>
 
@@ -313,7 +313,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     ```
 
     <Tip>
-**Cost Warning:**AKS control plane is free, but you pay for VMs. A 2-node Standard_B2s cluster costs ~$60-80/month. Delete when done testing.
+<strong>Cost Warning:</strong> AKS control plane is free, but you pay for VMs. A 2-node Standard_B2s cluster costs ~$60-80/month. Delete when done testing.
     </Tip>
   </Tab>
 </Tabs>
@@ -345,7 +345,7 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 ```
 
 <Warning>
-**Important:**Each user has a unique API key. Always copy YOUR command from the dashboard - don't use examples from docs!
+<strong>Important:</strong> Each user has a unique API key. Always copy YOUR command from the dashboard - don't use examples from docs!
 </Warning>
 
 ---
@@ -527,7 +527,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
 ```
 
 <Tip>
-**Good Sign:**Regular [INFO] messages about monitoring, watching, and heartbeats mean everything is working correctly.
+<strong>Good Sign:</strong> Regular [INFO] messages about monitoring, watching, and heartbeats mean everything is working correctly.
 </Tip>
 
 ### Verify in RubixKube Dashboard
@@ -540,7 +540,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
    - **Observer Status:**"Active"
 
 <Note>
-**Sync Delay:**It may take 1-2 minutes for your cluster to appear and sync initial data to the dashboard.
+<strong>Sync Delay:</strong> It may take 1-2 minutes for your cluster to appear and sync initial data to the dashboard.
 </Note>
 
 ---
@@ -574,7 +574,7 @@ kubectl create deployment broken-app --image=invalid-image:latest -n rubixkube-d
    -  RubixKube AI analyzing the broken pod
 
 <Tip>
-**Try the Chat!**Go to the Chat page and ask: "What pods are failing?" or "Why is broken-app not working?"
+<strong>Try the Chat!</strong> Go to the Chat page and ask: "What pods are failing?" or "Why is broken-app not working?"
 </Tip>
 
 ---
@@ -670,7 +670,7 @@ This removes:
 - Configuration and secrets
 
 <Warning>
-**Data Retention:**Historical data in RubixKube cloud platform is retained for 30 days even after uninstalling the agent.
+<strong>Data Retention:</strong> Historical data in RubixKube cloud platform is retained for 30 days even after uninstalling the agent.
 </Warning>
 
 ### Delete Your Test Cluster
@@ -859,7 +859,7 @@ Since RubixKube is in**Beta**, follow these practices:
 </CardGroup>
 
 <Note>
-**Your Feedback Matters!**As a beta tester, your input directly shapes RubixKube's development. We appreciate every bug report and suggestion.
+<strong>Your Feedback Matters!</strong> As a beta tester, your input directly shapes RubixKube's development. We appreciate every bug report and suggestion.
 </Note>
 
 ---
@@ -1043,7 +1043,7 @@ resources:
 </CardGroup>
 
 <Warning>
-**Beta Reminder:**You're using beta software. Things may break. Please report any issues to help us improve!
+<strong>Beta Reminder:</strong> You're using beta software. Things may break. Please report any issues to help us improve!
 </Warning>
 
 ---

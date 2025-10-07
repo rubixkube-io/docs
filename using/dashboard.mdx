@@ -146,7 +146,7 @@ The dashboard header shows:
   />
 </Frame>
 
-**Summary metrics:**
+### Summary metrics:
 | Metric | Our Cluster | What It Means |
 |--------|-------------|---------------|
 |**Nodes**| 1 | Physical/virtual machines |
@@ -170,7 +170,7 @@ The dashboard header shows:
   />
 </Frame>
 
-**Click "Show details" to reveal:**
+### Click "Show details" to reveal:
 | Additional Metric | Value | What It Means |
 |-------------------|-------|---------------|
 |**NAMESPACES**| 7 | Kubernetes namespaces in cluster |
@@ -193,12 +193,12 @@ The dashboard header shows:
   />
 </Frame>
 
-**From our real dashboard - 7 events showing:**
+### From our real dashboard - 7 events showing:
 ### Event Types You'll See
 
 <Tabs>
   <Tab title="INSIGHT Events">
-**Example from our dashboard:**    
+### Example from our dashboard:
      "Pod broken-image-demo has been pending for an extended period"
     -**Type**: INSIGHT (blue badge)
     -**Severity**: medium
@@ -218,7 +218,7 @@ The dashboard header shows:
   </Tab>
 
   <Tab title="RCA Events">
-**Example from our dashboard:**    
+### Example from our dashboard:
      "Postmortem: Pod 'crash-loop-demo' in CrashLoopBackOff State"
     -**Type**: RCA (purple badge)
     -**Status**: RCA Report Analysis Complete
@@ -236,7 +236,7 @@ The dashboard header shows:
   </Tab>
 
   <Tab title="HIGH Severity">
-**Example from our dashboard:**    
+### Example from our dashboard:
      "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
     -**Type**: INSIGHT
     -**Severity**:**high**(red text)
@@ -350,7 +350,7 @@ Each event card shows:
 
 ### Example 1: OOMKilled Detected (HIGH Severity)
 
-**What appeared in Activity Feed:**
+### What appeared in Activity Feed:
 >  "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
 > -**Type**: INSIGHT
 > -**Severity**:**high**(red text)
@@ -371,7 +371,7 @@ Each event card shows:
 
 ### Example 2: CrashLoopBackOff with RCA
 
-**What appeared:**
+### What appeared:
 1.**First - INSIGHT event:**   >  "Container experiencing repeated crashes in crash-loop-demo (restart count: 3)"
    > -**Type**: INSIGHT
    > -**Severity**: medium
@@ -391,7 +391,7 @@ Each event card shows:
 
 ### Example 3: ImagePullBackOff
 
-**What appeared:**
+### What appeared:
 >  "Pod broken-image-demo has been pending for an extended period"
 > -**Type**: INSIGHT
 > -**Severity**: medium
@@ -411,7 +411,7 @@ Each event card shows:
 
 ### System Health Calculation
 
-**How RubixKube calculates the 100%:**
+### How RubixKube calculates the 100%:
 <Steps>
   <Step title="Pod Health Check">
     Running pods / Total pods = Base score
@@ -460,7 +460,7 @@ Each event card shows:
 
 ## Infrastructure Panel Deep Dive
 
-**What each metric means:**
+### What each metric means:
 ### Nodes: 1
 
 **Our cluster:**Single-node KIND cluster
@@ -534,7 +534,7 @@ Each event card shows:
 
 ### Namespaces: 7 (Expanded View)
 
-**Click "Show details" to see this metric**
+### Click "Show details" to see this metric
 **Our cluster namespaces:**1. default
 2. kube-system (system pods)
 3. kube-public
@@ -551,7 +551,7 @@ Each event card shows:
 
 ### Agents: 1 (Expanded View)
 
-**Click "Show details" to see this metric**
+### Click "Show details" to see this metric
 **Shows:**Number of RubixKube agent pods deployed
 
 **Our cluster:**1 agent pod (rubixkube-observer)
@@ -564,7 +564,7 @@ Each event card shows:
 
 ## Activity Feed Explained
 
-**From our dashboard - 7 events in chronological order (newest first):**
+### From our dashboard - 7 events in chronological order (newest first):
 1.**Pod broken-image-demo pending**(INSIGHT, medium, 01:59 AM)
 2.**crash-loop-demo crashes**(INSIGHT, medium, 01:58 AM)
 3.**crash-loop-demo RCA complete**(RCA, 01:58 AM)
@@ -819,7 +819,7 @@ Each event card shows:
 </Accordion>
 
 <Accordion title="3. Learn Your Baseline">
-**Track normal patterns over time:**
+### Track normal patterns over time:
 **System Health:**-**Normal range**: 95-100%
 -**Typical**: 100% for healthy clusters
 -**Alert threshold**: Below 95%
@@ -838,7 +838,7 @@ Each event card shows:
 </Accordion>
 
 <Accordion title="4. Use Activity Feed as Audit Log">
-**The feed is chronological and persistent:**
+### The feed is chronological and persistent:
 **Use cases:**- See when issues started (timestamp tracking)
 - Track incident resolution timeline
 - Verify deployments and changes
@@ -854,7 +854,7 @@ Each event card shows:
 </Accordion>
 
 <Accordion title="5. Understand the Insight → RCA Pattern">
-**Learn to recognize the two-step pattern:**
+### Learn to recognize the two-step pattern:
 **Step 1: INSIGHT appears**- Blue badge, INSIGHT tag
 - RubixKube Observer detected an issue
 - Severity assigned (high/medium/low)
@@ -874,7 +874,7 @@ Each event card shows:
 </Accordion>
 
 <Accordion title="6. Triage by Severity">
-**Priority order for responding to insights:**
+### Priority order for responding to insights:
 **1. HIGH severity (red text)**- OOMKilled
 - Critical pod failures
 - Security issues
@@ -949,7 +949,7 @@ Each event card shows:
 
 ## Quick Reference
 
-**Dashboard at a glance:**
+### Dashboard at a glance:
 | Panel | What You'll See | Normal Range | Action When Abnormal |
 |-------|-----------------|--------------|----------------------|
 |**System Health**| Percentage | 95-100% | Below 95% → Check Active Insights |
@@ -980,7 +980,7 @@ Each event card shows:
 
 ## Interactive Elements Summary
 
-**Clickable actions:**
+### Clickable actions:
 | Element | Action | Result |
 |---------|--------|--------|
 |**Refresh all data**| Click button | Updates all dashboard metrics |
@@ -1123,7 +1123,7 @@ While on Dashboard:
 
 ---
 
-**You're now a Dashboard expert! Use it daily to stay ahead of incidents.**
+### You're now a Dashboard expert! Use it daily to stay ahead of incidents.
 ---
 
 ## Related Documentation

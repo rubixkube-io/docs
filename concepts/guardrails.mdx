@@ -12,7 +12,7 @@ description: 'How RubixKube ensures safe autonomous operations through multi-lay
 </Info>
 
 <Warning>
-**Coming in Future Release**
+### Coming in Future Release
 **Full guardrail system is under development**for the production release. RubixKube Beta currently operates in**observe-only mode**with basic safety mechanisms.
 
 **Active NOW (Beta):**-**Observe-Only Mode**- No automated changes to your cluster
@@ -55,7 +55,7 @@ Autonomous systems without guardrails are dangerous:
   </Card>
 </CardGroup>
 
-**Guardrails prevent all of these.**
+### Guardrails prevent all of these.
 ---
 
 ## The Seven Layers of Guardrails
@@ -68,7 +68,7 @@ RubixKube implements**defense in depth**with multiple safety layers:
 
 <Tabs>
   <Tab title="What It Does">
-**Blast Radius Containment:**    
+### Blast Radius Containment:
     - Changes affect**one pod**→ not the deployment
     - Changes affect**one deployment**→ not the namespace
     - Changes affect**one namespace**→ not the cluster
@@ -107,7 +107,7 @@ RubixKube implements**defense in depth**with multiple safety layers:
 
 <AccordionGroup>
   <Accordion title="Low Risk (Auto-Approved)">
-**Actions that rarely cause harm:**    
+### Actions that rarely cause harm:
     -  Restart a single failed pod
     -  Scale deployment within existing HPA bounds
     -  Update resource requests (within limits)
@@ -117,7 +117,7 @@ RubixKube implements**defense in depth**with multiple safety layers:
   </Accordion>
 
   <Accordion title="Medium Risk (Suggest + Review)">
-**Actions that need human judgment:**    
+### Actions that need human judgment:
     -  Modify deployment replicas beyond HPA range
     -  Change resource limits (may cause pod restarts)
     -  Update service configurations
@@ -127,7 +127,7 @@ RubixKube implements**defense in depth**with multiple safety layers:
   </Accordion>
 
   <Accordion title="High Risk (Require Explicit Approval)">
-**Actions that could cause outages:**    
+### Actions that could cause outages:
     -  Delete resources
     -  Modify RBAC permissions
     -  Change namespace quotas
@@ -138,7 +138,7 @@ RubixKube implements**defense in depth**with multiple safety layers:
   </Accordion>
 
   <Accordion title="Forbidden (Always Blocked)">
-**Actions never allowed autonomously:**    
+### Actions never allowed autonomously:
     -  Delete namespaces
     -  Delete persistent volumes
     -  Modify cluster-level resources
@@ -190,7 +190,7 @@ Guardrails control**how many**and**how fast**actions can occur:
 -**Max 10 auto-fixes per cluster**per hour
 -**Circuit breaker:**If 2 actions fail, pause auto-fix for 1 hour
 
-**Example Protection:**
+### Example Protection:
 ```
 12:00: Auto-fix applied to pod A
 12:01: Pod A crashes again
@@ -210,7 +210,7 @@ Guardrails control**how many**and**how fast**actions can occur:
 
 <Tabs>
   <Tab title="Development">
-**Minimal Oversight:**    
+### Minimal Oversight:
     ```yaml
     environment: development
     guardrails:
@@ -223,7 +223,7 @@ Guardrails control**how many**and**how fast**actions can occur:
   </Tab>
 
   <Tab title="Staging">
-**Moderate Oversight:**    
+### Moderate Oversight:
     ```yaml
     environment: staging
     guardrails:
@@ -236,7 +236,7 @@ Guardrails control**how many**and**how fast**actions can occur:
   </Tab>
 
   <Tab title="Production">
-**Maximum Safety:**    
+### Maximum Safety:
     ```yaml
     environment: production
     guardrails:
@@ -262,7 +262,7 @@ Before any action executes, RubixKube:
 3.**Tests rollback plan**(dry-run validation)
 4.**Stores rollback trigger**(one-click revert)
 
-**If something goes wrong:**
+### If something goes wrong:
 ```bash
 # Automatic rollback triggers if:
 - Health check fails after change
@@ -348,7 +348,7 @@ You control how aggressive or conservative RubixKube acts:
 
 <Tabs>
   <Tab title="Conservative (Default)">
-**Best for: Production, risk-averse teams**    
+### Best for: Production, risk-averse teams
     ```yaml
     guardrails_profile: conservative
     
@@ -364,7 +364,7 @@ You control how aggressive or conservative RubixKube acts:
   </Tab>
 
   <Tab title="Balanced">
-**Best for: Staging, most teams**    
+### Best for: Staging, most teams
     ```yaml
     guardrails_profile: balanced
     
@@ -380,7 +380,7 @@ You control how aggressive or conservative RubixKube acts:
   </Tab>
 
   <Tab title="Aggressive">
-**Best for: Development, high-trust environments**    
+### Best for: Development, high-trust environments
     ```yaml
     guardrails_profile: aggressive
     
@@ -422,7 +422,7 @@ guardrails:
         approval: none
 ```
 
-**Critical services get extra protection. Non-critical get more autonomy.**
+### Critical services get extra protection. Non-critical get more autonomy.
 ---
 
 ## Guardrail Enforcement
@@ -473,7 +473,7 @@ guardrails:
 
 ### Blast Radius Calculation
 
-**How RubixKube determines impact:**
+### How RubixKube determines impact:
 ```python
 def calculate_blast_radius(action):
     scope = action.target_scope
@@ -494,7 +494,7 @@ def calculate_blast_radius(action):
         return "LOW_RISK - Auto-approve possible"
 ```
 
-**Example:**
+### Example:
 ```
 Action: Restart pod 'api-gateway-7f9d'
 
@@ -510,10 +510,10 @@ Blast Radius Analysis:
 
 ### Policy-Based Controls
 
-**Define what's allowed, what's not:**
+### Define what's allowed, what's not:
 <AccordionGroup>
   <Accordion title="Time-Based Policies">
-**Example: Deployment Windows**    
+### Example: Deployment Windows
     ```yaml
     policies:
       - name: "No Auto-Fix During Business Hours"
@@ -534,7 +534,7 @@ Blast Radius Analysis:
   </Accordion>
 
   <Accordion title="Environment-Based Policies">
-**Different rules for different environments:**    
+### Different rules for different environments:
     ```yaml
     policies:
       - environment: production
@@ -555,7 +555,7 @@ Blast Radius Analysis:
   </Accordion>
 
   <Accordion title="Resource-Based Policies">
-**Protect critical resources:**    
+### Protect critical resources:
     ```yaml
     policies:
       - name: "Critical Services Protected"
@@ -572,7 +572,7 @@ Blast Radius Analysis:
 
 ### 3. Approval Workflows
 
-**Human-in-the-loop when it matters:**
+### Human-in-the-loop when it matters:
 <Frame>
   <img
     style={{ borderRadius: '0.5rem' }}
@@ -581,7 +581,7 @@ Blast Radius Analysis:
   />
 </Frame>
 
-**Workflow Steps:**
+### Workflow Steps:
 1.**Action Proposed**→ Notification sent (Slack, email, dashboard)
 2.**Context Provided**→ Full RCA, evidence, risk assessment
 3.**Human Reviews**→ Examine proposed changes
@@ -597,7 +597,7 @@ Blast Radius Analysis:
 
 **Principle:**Stop automatically if things go wrong.
 
-**Circuit Breaker States:**
+### Circuit Breaker States:
 <Tabs>
   <Tab title="Closed (Normal)">
     ```
@@ -673,7 +673,7 @@ verbs: ["create", "update", "delete", "patch"]
 # Remediation happens through controlled API, not direct cluster access
 ```
 
-**Even if compromised, Observer can't modify your cluster.**
+### Even if compromised, Observer can't modify your cluster.
 ### 7. Verification & Monitoring
 
 **Principle:**Trust, but verify.
@@ -713,7 +713,7 @@ After every action, guardrails verify success:
 
 ### Scenario 1: Guardrails Prevent Disaster
 
-**What Happened:**
+### What Happened:
 ```
 Incident: API service memory leak
 Remediation Agent Proposal: "Restart all pods simultaneously for quick fix"
@@ -736,10 +736,10 @@ Guardian Agent Analysis:
 Decision: APPROVED
 ```
 
-**Guardrails saved you from a self-inflicted outage.**
+### Guardrails saved you from a self-inflicted outage.
 ### Scenario 2: Human Override
 
-**When to override guardrails:**
+### When to override guardrails:
 ```
 Situation: Production database pod stuck, auto-fix blocked (high risk)
 SRE Assessment: "We need to restart NOW, outage ongoing"
@@ -831,7 +831,7 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
   </Accordion>
 
   <Accordion title="What happens if I need to act faster than guardrails allow?">
-**Two options:**    
+### Two options:
     1.**Manual Override**- Bypass guardrails with justification (logged)
     2.**Adjust Policies**- Lower safety threshold for specific scenarios
     
@@ -879,7 +879,7 @@ Guardrails:
 Outcome: Fast, safe, autonomous remediation
 ```
 
-**This is Site Reliability Intelligence.**
+### This is Site Reliability Intelligence.
 ---
 
 ## Related Concepts

@@ -46,14 +46,14 @@ Docker is required to run KIND. Choose your operating system below:
   <Tab title="macOS">
     ### Install Docker Desktop on macOS
 
-**Option 1: Using Homebrew (Recommended)**
+### Option 1: Using Homebrew (Recommended)
     If you have Homebrew installed:
 
     ```bash
     brew install --cask docker
     ```
 
-**Option 2: Download from Docker Website**
+### Option 2: Download from Docker Website
     1. Visit [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
     2. Click**"Download for Mac"**    3. Choose your Mac type:
        -**Apple Silicon**(M1/M2/M3 Macs)
@@ -87,7 +87,7 @@ Docker is required to run KIND. Choose your operating system below:
     - Windows 11 64-bit
     - WSL 2 (Windows Subsystem for Linux)
 
-**Step 1: Enable WSL 2**
+### Step 1: Enable WSL 2
     Open PowerShell as Administrator and run:
 
     ```powershell
@@ -96,14 +96,14 @@ Docker is required to run KIND. Choose your operating system below:
 
     Restart your computer after this completes.
 
-**Step 2: Download Docker Desktop**
+### Step 2: Download Docker Desktop
     1. Visit [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
     2. Click**"Download for Windows"**    3. Run the installer (`Docker Desktop Installer.exe`)
     4. Follow the installation wizard
     5. Ensure**"Use WSL 2 instead of Hyper-V"**is checked
     6. Complete installation and restart if prompted
 
-**Step 3: Launch Docker Desktop**
+### Step 3: Launch Docker Desktop
     1. Start Docker Desktop from Start menu
     2. Accept the service agreement
     3. Wait for Docker Engine to start (whale icon in system tray)
@@ -129,7 +129,7 @@ Docker is required to run KIND. Choose your operating system below:
   <Tab title="Linux">
     ### Install Docker on Linux
 
-**For Ubuntu/Debian:**
+### For Ubuntu/Debian:
     ```bash
     # Update package index
     sudo apt-get update
@@ -163,7 +163,7 @@ Docker is required to run KIND. Choose your operating system below:
     # Log out and back in for group changes to take effect
     ```
 
-**For Fedora/RHEL/CentOS:**
+### For Fedora/RHEL/CentOS:
     ```bash
     # Install Docker
     sudo dnf -y install dnf-plugins-core
@@ -207,12 +207,12 @@ KIND (Kubernetes in Docker) creates Kubernetes clusters using Docker containers 
   <Tab title="macOS">
     ### Install KIND on macOS
 
-**Using Homebrew (Recommended):**
+### Using Homebrew (Recommended):
     ```bash
     brew install kind
     ```
 
-**Manual Installation:**
+### Manual Installation:
     ```bash
     # Download KIND binary
     curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-darwin-amd64
@@ -239,20 +239,20 @@ KIND (Kubernetes in Docker) creates Kubernetes clusters using Docker containers 
   <Tab title="Windows">
     ### Install KIND on Windows
 
-**Using Chocolatey (Recommended):**
+### Using Chocolatey (Recommended):
     If you have Chocolatey installed:
 
     ```powershell
     choco install kind
     ```
 
-**Manual Installation:**
+### Manual Installation:
     1. Download KIND from [GitHub Releases](https://github.com/kubernetes-sigs/kind/releases)
     2. Choose `kind-windows-amd64`
     3. Rename it to `kind.exe`
     4. Move it to a directory in your PATH (e.g., `C:\Windows\System32`)
 
-**Or using PowerShell:**
+### Or using PowerShell:
     ```powershell
     curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.20.0/kind-windows-amd64
     Move-Item .\kind-windows-amd64.exe C:\Windows\System32\kind.exe
@@ -307,12 +307,12 @@ kubectl is the command-line tool for interacting with Kubernetes clusters.
   <Tab title="macOS">
     ### Install kubectl on macOS
 
-**Using Homebrew (Recommended):**
+### Using Homebrew (Recommended):
     ```bash
     brew install kubectl
     ```
 
-**Manual Installation:**
+### Manual Installation:
     ```bash
     # Download kubectl
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
@@ -339,17 +339,17 @@ kubectl is the command-line tool for interacting with Kubernetes clusters.
   <Tab title="Windows">
     ### Install kubectl on Windows
 
-**Using Chocolatey (Recommended):**
+### Using Chocolatey (Recommended):
     ```powershell
     choco install kubernetes-cli
     ```
 
-**Manual Installation:**
+### Manual Installation:
     1. Download from [Kubernetes Release](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
     2. Add the binary to your PATH
     3. Restart your terminal
 
-**Or using PowerShell:**
+### Or using PowerShell:
     ```powershell
     curl.exe -LO "https://dl.k8s.io/release/v1.28.2/bin/windows/amd64/kubectl.exe"
     ```
@@ -413,7 +413,7 @@ kind create cluster --name rubixkube-local
 - The cluster is named `rubixkube-local`
 - This takes 1-2 minutes
 
-**Expected Output:**
+### Expected Output:
 ```
 Creating cluster "rubixkube-local" ...
   Ensuring node image (kindest/node:v1.27.3) 
@@ -498,7 +498,7 @@ Paste your command into the terminal and press Enter:
 kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY_HERE"
 ```
 
-**Expected Output:**
+### Expected Output:
 ```
 namespace/rubixkube created
 serviceaccount/rubixkube-observer created
@@ -744,7 +744,7 @@ This creates a cluster with 1 control plane and 2 worker nodes.
   </Accordion>
 
   <Accordion title="RubixKube observer not starting">
-**Check these:**    
+### Check these:
     1.**Verify API key is correct**    ```bash
     kubectl get secret -n rubixkube rubixkube-credentials -o yaml
     ```

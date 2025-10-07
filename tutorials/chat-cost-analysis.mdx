@@ -54,7 +54,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
   />
 </Frame>
 
-**Agent Response:**
+### Agent Response:
 <Frame>
   <img
     src="/images/chat/cost-handbook-response-complete.png"
@@ -72,7 +72,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### Query 2: "Show me infrastructure summary and how I can reduce costs"
 
-**Agent provided Infrastructure Summary:**
+### Agent provided Infrastructure Summary:
 | Resource | Count |
 |----------|-------|
 | Nodes | 1 |
@@ -81,7 +81,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 | Services | 3 |
 | Namespaces | 6 |
 
-**5 Cost Reduction Strategies:**
+### 5 Cost Reduction Strategies:
 1.**Node Optimization**- Consolidate workloads
 2.**Resource Requests & Limits**- Prevent waste
 3.**Autoscaling**- Pay only for what you use
@@ -106,7 +106,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
   />
 </Frame>
 
-**Agent Response - Resource Allocation Table:**
+### Agent Response - Resource Allocation Table:
 <Frame>
   <img
     src="/images/chat/HANDBOOK-pod-list-with-resources-FINAL.png"
@@ -120,7 +120,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 |**heavy-app-2**| CPU: 500m, Memory: 1Gi | CPU: 1, Memory: 2Gi |
 |**light-app**| CPU: 100m, Memory: 128Mi | CPU: 200m, Memory: 256Mi |
 
-**Agent Analysis:**
+### Agent Analysis:
 > "Based on this,**heavy-app-1**and**heavy-app-2**are the most expensive pods, as they have the highest resource requests and limits."
 
 ---
@@ -134,7 +134,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
   />
 </Frame>
 
-**Agent performed deep analysis:**
+### Agent performed deep analysis:
 1. Called `kubectl_describe` on both pods
 2. Found heavy-app-1 runs `nginx:latest` 
 3. Found heavy-app-2 runs `redis:latest`
@@ -146,7 +146,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
   />
 </Frame>
 
-**Agent's Analysis:**
+### Agent's Analysis:
 ### heavy-app-1 (nginx):**SIGNIFICANTLY OVER-PROVISIONED**- Allocated: 1 CPU, 1Gi RAM
 - Agent's Finding: "Unusual for simple nginx unless serving extremely high traffic"
 -**Recommended:**100m CPU, 128Mi RAM
@@ -162,7 +162,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### 1. Right-Size Resource Requests and Limits
 
-**What the agent said:**
+### What the agent said:
 > "The most effective way to reduce costs is to adjust requests and limits to match actual usage."
 
 **Action Plan:**- Monitor CPU/memory consumption for 24-48 hours
@@ -175,7 +175,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### 2. Use Vertical Pod Autoscaler (VPA)
 
-**What the agent said:**
+### What the agent said:
 > "Deploy a VPA in 'recommendation' mode to automatically right-size pods."
 
 **How it works:**- VPA monitors actual resource usage
@@ -188,7 +188,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### 3. Use Horizontal Pod Autoscaler (HPA)
 
-**What the agent said:**
+### What the agent said:
 > "Instead of one large pod, run multiple smaller ones and scale based on load."
 
 **Example for nginx:**- Current: 1 pod with 1 CPU
@@ -228,7 +228,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### Finding 1: nginx is Massively Over-Provisioned
 
-**Agent's exact words:**
+### Agent's exact words:
 > "A standard nginx container rarely needs 1 core CPU and 1Gi of memory unless it's handling extremely high volume of traffic."
 
 **Translation:**You're paying for 10x more resources than needed.
@@ -237,7 +237,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### Finding 2: Redis Needs Usage Monitoring
 
-**Agent's exact words:**
+### Agent's exact words:
 > "The high memory request (1Gi) and limit (2Gi) might be justified if storing large data. However, without knowing actual memory usage, it could also be over-provisioned."
 
 **Translation:**Need to monitor before right-sizing memory-intensive workloads.
@@ -374,7 +374,7 @@ Apply the changes, then verify:
 
 ## Monthly Cost Optimization Routine
 
-**Use Chat to systematically control costs:**
+### Use Chat to systematically control costs:
 <Accordion title="Week 1: Identify Waste">
 **Query:**`"Show me all over-provisioned pods"`
 
@@ -608,7 +608,7 @@ Based on our real example:
 **Annual Savings:**$420  
 **ROI:**1,050% (save $420 for 40 minutes work)
 
-**And this was just 2 pods in 1 namespace!**
+### And this was just 2 pods in 1 namespace!
 ---
 
 ## Next Steps
@@ -667,7 +667,7 @@ Based on our real example:
 
 ## Summary
 
-**This handbook showed you:**
+### This handbook showed you:
 **Real cost analysis conversation**- all screenshots from actual Chat session  
 **Complete workflow**- from discovery to implementation  
 **Specific recommendations**- exact CPU/memory numbers from agent  
@@ -675,7 +675,7 @@ Based on our real example:
 **ROI calculations**- 66% savings, 1,050% return on time invested  
 **Safe optimization**- agent recommends monitoring before cutting  
 
-**Start optimizing your cluster costs today using Chat!**
+### Start optimizing your cluster costs today using Chat!
 ---
 
 ## Need Help?

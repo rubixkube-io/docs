@@ -6,7 +6,7 @@ description: 'Install RubixKube on your cloud Kubernetes cluster - AWS EKS, Goog
 Install RubixKube on your**cloud Kubernetes cluster**to test our Site Reliability Intelligence platform in a cloud environment.
 
 <Warning>
-**Beta Release Notice**
+### Beta Release Notice
 RubixKube is currently in**Beta**. While you can install it on cloud clusters for**testing and evaluation**, it is**NOT recommended for production environments**yet.
 
 -**Safe for:**Development, staging, testing environments
@@ -15,7 +15,7 @@ RubixKube is currently in**Beta**. While you can install it on cloud clusters fo
 </Warning>
 
 <Info>
-**Why Install on Cloud?**
+### Why Install on Cloud?
 Testing RubixKube on a cloud cluster gives you a more realistic experience compared to local KIND clusters, including real cloud resources, load balancers, and persistent storage.
 </Info>
 
@@ -51,7 +51,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
 
 <AccordionGroup>
   <Accordion title="kubectl - Kubernetes CLI" icon="terminal">
-**Installation:**    
+### Installation:
     ```bash
     # macOS
     brew install kubectl
@@ -161,7 +161,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
   <Tab title="AWS EKS">
     ### Create an EKS Cluster (if you don't have one)
 
-**Option 1: Using eksctl (Recommended for Testing)**
+### Option 1: Using eksctl (Recommended for Testing)
     ```bash
     # Install eksctl (if not already installed)
     brew install eksctl  # macOS
@@ -178,7 +178,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
 
     This takes**15-20 minutes**to complete.
 
-**Option 2: Using AWS Console**    
+### Option 2: Using AWS Console
     1. Go to [AWS EKS Console](https://console.aws.amazon.com/eks)
     2. Click**"Create cluster"**    3. Name: `rubixkube-test`
     4. Kubernetes version: 1.24 or higher
@@ -213,7 +213,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
   <Tab title="Google GKE">
     ### Create a GKE Cluster (if you don't have one)
 
-**Using gcloud CLI:**
+### Using gcloud CLI:
     ```bash
     # Set your project (replace with your project ID)
     gcloud config set project YOUR_PROJECT_ID
@@ -228,7 +228,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
 
     This takes**5-10 minutes**to complete.
 
-**Using Google Cloud Console:**    
+### Using Google Cloud Console:
     1. Go to [GKE Console](https://console.cloud.google.com/kubernetes)
     2. Click**"Create Cluster"**    3. Choose**"Standard"**mode
     4. Name: `rubixkube-test`
@@ -264,7 +264,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
   <Tab title="Azure AKS">
     ### Create an AKS Cluster (if you don't have one)
 
-**Using Azure CLI:**
+### Using Azure CLI:
     ```bash
     # Login to Azure
     az login
@@ -284,7 +284,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
 
     This takes**10-15 minutes**to complete.
 
-**Using Azure Portal:**    
+### Using Azure Portal:
     1. Go to [Azure Portal](https://portal.azure.com)
     2. Search for**"Kubernetes services"**    3. Click**"Create"**→**"Kubernetes cluster"**    4. Resource group: Create new or use existing
     5. Cluster name: `rubixkube-test`
@@ -360,7 +360,7 @@ Paste your command from the dashboard into your terminal:
 kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
 ```
 
-**What gets installed:**
+### What gets installed:
 ```
 namespace/rubixkube created
 serviceaccount/rubixkube-observer created
@@ -443,7 +443,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     - Container registry authentication issue
     - Network policies blocking outbound traffic
     
-**Solutions:**    
+### Solutions:
     1.**Check pod details:**    ```bash
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
     ```
@@ -464,7 +464,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     
 **Most common cause:**Invalid or missing API key
     
-**Solution:**    
+### Solution:
     1.**Check logs to see error:**    ```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
@@ -491,7 +491,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     - No nodes available
     - Storage provisioning issues
     
-**Solutions:**    
+### Solutions:
     1.**Check node resources:**    ```bash
     kubectl top nodes
     kubectl describe nodes
@@ -513,7 +513,7 @@ View what RubixKube is doing:
 kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
 ```
 
-**Healthy logs should show:**
+### Healthy logs should show:
 ```
 [INFO] RubixKube Observer v0.x.x starting...
 [INFO] Connecting to RubixKube API at https://api.rubixkube.ai
@@ -728,7 +728,7 @@ When you're done testing:
     
 **Cause:**Your user doesn't have proper RBAC permissions
     
-**Solution:**    
+### Solution:
 **For EKS:**    ```bash
     # Ensure you're using cluster creator credentials
     aws sts get-caller-identity
@@ -768,7 +768,7 @@ When you're done testing:
   <Accordion title="Cluster not appearing in dashboard">
 **Problem:**Cluster successfully installed but not showing in RubixKube console
     
-**Checklist:**    
+### Checklist:
     1.**Wait 2-3 minutes**- Initial sync takes time
     2.**Check pod is Running:**    ```bash
     kubectl get pods -n rubixkube

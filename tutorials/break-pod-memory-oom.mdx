@@ -56,7 +56,7 @@ spec:
 - Tries to allocate 100Mi (double the limit)
 - Kubernetes kills it when memory exceeds limit
 
-**Deploy it:**
+### Deploy it:
 ```bash
 kubectl apply -f memory-hog-pod.yaml
 ```
@@ -71,7 +71,7 @@ The pod will go through a cycle:
 kubectl get pods -n rubixkube-tutorials -w
 ```
 
-**You'll see:**
+### You'll see:
 ```
 NAME              READY   STATUS              RESTARTS   AGE
 memory-hog-demo   0/1     ContainerCreating   0          5s
@@ -96,7 +96,7 @@ memory-hog-demo   0/1     CrashLoopBackOff    2          50s
 
 Open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 
-**What you'll see:**
+### What you'll see:
 <Frame>
   <img
     style={{ borderRadius: '0.5rem' }}
@@ -107,7 +107,7 @@ Open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 
 ### Detection Indicators
 
-**Activity Feed shows TWO related incidents:**
+### Activity Feed shows TWO related incidents:
 1.**"Out of memory (OOMKilled) detected on Pod/memory-hog-demo"**   -**Severity:**HIGH 
    -**Status:**Active
    -**Detected:**Immediately after first OOM
@@ -136,7 +136,7 @@ Navigate to**Insights**to see the full analysis:
   />
 </Frame>
 
-**What RubixKube shows:**
+### What RubixKube shows:
 <CardGroup cols={2}>
   <Card title="Root Cause" icon="magnifying-glass">
 **OOMKilled**- Container exceeded memory limits
@@ -157,7 +157,7 @@ Navigate to**Insights**to see the full analysis:
 
 ### Memory Analysis
 
-**RubixKube's analysis includes:**
+### RubixKube's analysis includes:
 ```yaml
 Current Configuration:
   memory.limits: 50Mi
@@ -197,7 +197,7 @@ Based on the analysis, RubixKube suggests:
   </Step>
 
   <Step title="Check for Memory Leaks">
-**If restarts continue after increasing limits:**    
+### If restarts continue after increasing limits:
     - Monitor memory usage over time
     - Look for gradual increase (leak pattern)
     - Check application code for issues
@@ -206,7 +206,7 @@ Based on the analysis, RubixKube suggests:
   </Step>
 
   <Step title="Consider Resource Quotas">
-**Verify namespace limits:**    
+### Verify namespace limits:
     ```bash
     kubectl describe resourcequota -n rubixkube-tutorials
     ```
@@ -271,18 +271,18 @@ Check the new pod:
 kubectl get pods -n rubixkube-tutorials
 ```
 
-**Success looks like:**
+### Success looks like:
 ```
 NAME                 READY   STATUS    RESTARTS   AGE
 memory-fixed-demo    1/1     Running   0          45s
 ```
 
-**Monitor memory usage:**
+### Monitor memory usage:
 ```bash
 kubectl top pod memory-fixed-demo -n rubixkube-tutorials
 ```
 
-**Expected output:**
+### Expected output:
 ```
 NAME                 CPU(cores)   MEMORY(bytes)
 memory-fixed-demo    50m          98Mi
@@ -337,7 +337,7 @@ Lesson: If pod needs ~100Mi, set limit to 150Mi (50% buffer)
 
 <AccordionGroup>
   <Accordion title="Set Requests = Limits for Critical Pods">
-**Guaranteed QoS:**    
+### Guaranteed QoS:
     ```yaml
     resources:
       requests:
@@ -350,7 +350,7 @@ Lesson: If pod needs ~100Mi, set limit to 150Mi (50% buffer)
   </Accordion>
 
   <Accordion title="Use Requests < Limits for Burstable Workloads">
-**Burstable QoS:**    
+### Burstable QoS:
     ```yaml
     resources:
       requests:
@@ -363,7 +363,7 @@ Lesson: If pod needs ~100Mi, set limit to 150Mi (50% buffer)
   </Accordion>
 
   <Accordion title="Monitor Actual Usage Over Time">
-**Right-sizing:**    
+### Right-sizing:
     ```bash
     # Check current usage
     kubectl top pods -n production
@@ -375,7 +375,7 @@ Lesson: If pod needs ~100Mi, set limit to 150Mi (50% buffer)
   </Accordion>
 
   <Accordion title="Enable Horizontal Pod Autoscaling (HPA)">
-**Auto-scaling:**    
+### Auto-scaling:
     ```yaml
     apiVersion: autoscaling/v2
     kind: HorizontalPodAutoscaler

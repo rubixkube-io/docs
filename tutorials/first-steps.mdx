@@ -33,22 +33,22 @@ The dashboard shows 4 key metrics:
 
 <CardGroup cols={2}>
   <Card title="System Health" icon="heart-pulse">
-**100% = Healthy**    
+### 100% = Healthy
     Overall health of your infrastructure based on pod status, resource usage, and incident history
   </Card>
   
   <Card title="Active Insights" icon="lightbulb">
-**Number of issues detected**    
+### Number of issues detected
     Current problems RubixKube has identified that need attention (pods failing, resource issues, etc.)
   </Card>
   
   <Card title="Intelligent Analysis" icon="brain">
-**RCA Reports generated**    
+### RCA Reports generated
     Root Cause Analysis reports created by the RCA Pipeline Agent
   </Card>
   
   <Card title="Agents" icon="robot">
-**3/3 Active**    
+### 3/3 Active
     Status of AI agents monitoring your cluster (Observer, RCA Pipeline, Memory, SRI)
   </Card>
 </CardGroup>
@@ -160,7 +160,7 @@ Navigate to**Agents**to see your AI team:
   />
 </Frame>
 
-**You should see 3 active agents:**
+### You should see 3 active agents:
 | Agent | Role | Status |
 |-------|------|--------|
 |**RCA Pipeline Agent**| Analyzes incidents and generates root cause reports |  Active |
@@ -256,7 +256,7 @@ The**RCA Live Stream**shows the RCA Pipeline Agent working in real-time:
 - Evidence gathering
 - Pattern matching
 
-**This is the AI at work!**
+### This is the AI at work!
 <Accordion title="What does 'RCA_IN_PROGRESS' mean?">
   When RubixKube detects an incident, the RCA Pipeline Agent immediately starts analyzing:
   
@@ -282,7 +282,7 @@ Navigate to**Settings**to configure your RubixKube instance:
   />
 </Frame>
 
-**Available tabs:**
+### Available tabs:
 <Tabs>
   <Tab title="Organization">
     - Workspace name and plan
@@ -463,7 +463,7 @@ Now that you understand the basics, try these tutorials:
   </Accordion>
 
   <Accordion title="No insights showing despite pod failures">
-**RubixKube takes 1-2 minutes to detect and analyze issues.**    
+### RubixKube takes 1-2 minutes to detect and analyze issues.
     If failures are immediate but no insights after 5 minutes:
     - Check observer agent is running
     - Verify namespace is being watched (default: all namespaces)

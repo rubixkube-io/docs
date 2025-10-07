@@ -152,7 +152,7 @@ The `crash-loop-demo` pod starts, then immediately crashes.
 
 ### Query: "Why is crash-loop-demo crashing?"
 
-**Expected workflow:**
+### Expected workflow:
 <Steps>
   <Step title="Agent Fetches Pod Status">
     Finds: `CrashLoopBackOff` with high restart count
@@ -201,7 +201,7 @@ This query attempts to get an overview of ALL problems at once.
   />
 </Frame>
 
-**Agent's approach:**
+### Agent's approach:
 <Steps>
   <Step title="Thought: Querying Kubernetes Pods">
     Agent plans to fetch all pods in the namespace
@@ -227,7 +227,7 @@ This query attempts to get an overview of ALL problems at once.
   />
 </Frame>
 
-**Agent Response:**
+### Agent Response:
 The agent successfully identified all 3 failing pods:
 
 1.**`broken-image-demo`**- Status: `Pending`, Reason: `ImagePullBackOff`
@@ -240,7 +240,7 @@ The agent successfully identified all 3 failing pods:
 
 Once you have the list, drill down:
 
-**Example conversation flow:**
+### Example conversation flow:
 ```
 You: "Show me all failing pods in rubixkube-tutorials"
 Agent: [Lists 3 failing pods]
@@ -294,7 +294,7 @@ which is causing it to exceed the 50Mi limit and get OOMKilled.
 
 ### Traditional Approach (Without Chat)
 
-**Step-by-step for OOMKilled investigation:**
+### Step-by-step for OOMKilled investigation:
 1. `kubectl get pods -n rubixkube-tutorials` → Find failing pod
 2. `kubectl describe pod memory-hog-demo -n rubixkube-tutorials` → See events
 3. `kubectl logs memory-hog-demo -n rubixkube-tutorials` → Check logs
@@ -321,7 +321,7 @@ which is causing it to exceed the 50Mi limit and get OOMKilled.
 -  Explains root cause
 -  Provides fix with exact kubectl command
 
-**Time: 1-2 minutes**
+### Time: 1-2 minutes
 <CardGroup cols={2}>
   <Card title="Time Saved" icon="stopwatch">
 **85-90%**faster with Chat
@@ -478,7 +478,7 @@ Here's a REAL conversation troubleshooting `memory-hog-demo`:
 
 **Query 3:**`"memory-hog-demo"`
 
-**Agent Response:**
+### Agent Response:
 <Frame>
   <img
     src="/images/chat/chat-full-conversation-oomkilled-analysis.png"
@@ -583,7 +583,7 @@ Here's a REAL conversation troubleshooting `memory-hog-demo`:
 
 When the agent provides analysis, you can dig deeper:
 
-**Example conversation:**
+### Example conversation:
 ```
 You: "Why did memory-hog-demo fail?"
 Agent: [Provides RCA: OOMKilled due to 50Mi limit]
@@ -612,7 +612,7 @@ Based on our testing with 3 different pod failures:
 | ImagePullBackOff | 5-10 min | 1 min | 90% |
 | CrashLoopBackOff | 15-20 min | 3 min | 85% |
 
-**Average: 87% time saved**
+### Average: 87% time saved
 And that's just for**detection + diagnosis**. Chat also:
 - Provides the fix immediately
 - No Googling required

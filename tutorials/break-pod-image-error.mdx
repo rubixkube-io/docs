@@ -38,7 +38,7 @@ spec:
     imagePullPolicy: Always
 ```
 
-**Apply it:**
+### Apply it:
 ```bash
 kubectl create namespace rubixkube-tutorials
 kubectl apply -f broken-image-pod.yaml
@@ -54,7 +54,7 @@ Check the pod status:
 kubectl get pods -n rubixkube-tutorials
 ```
 
-**Expected output:**
+### Expected output:
 ```
 NAME                READY   STATUS             RESTARTS   AGE
 broken-image-demo   0/1     ImagePullBackOff   0          2m
@@ -90,7 +90,7 @@ broken-image-demo   0/1     ImagePullBackOff   0          2m
 
 Now open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 
-**Within 1-2 minutes, you'll see:**
+### Within 1-2 minutes, you'll see:
 <Frame>
   <img
     style={{ borderRadius: '0.5rem' }}
@@ -128,7 +128,7 @@ Click on**Insights**in the navigation to see detailed analysis:
 
 ### Incident Information
 
-**You'll see:**
+### You'll see:
 | Field | Value | Meaning |
 |-------|-------|---------|
 |**Type**| ImagePullBackOff | Kubernetes can't pull the image |
@@ -228,7 +228,7 @@ Check the pod status:
 kubectl get pods -n rubixkube-tutorials
 ```
 
-**Success looks like:**
+### Success looks like:
 ```
 NAME              READY   STATUS    RESTARTS   AGE
 fixed-image-demo   1/1     Running   0          30s
@@ -266,7 +266,7 @@ After you fix this issue, the**Memory Engine**stores:
   </Card>
 </CardGroup>
 
-**This knowledge helps with future incidents!**
+### This knowledge helps with future incidents!
 ---
 
 ## Common ImagePullBackOff Causes

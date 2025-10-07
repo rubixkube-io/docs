@@ -12,7 +12,7 @@ The**Agent Mesh**is RubixKube's core architectural pattern - a network of specia
 </Info>
 
 <Warning>
-**Beta Release Status - Active Agents**
+### Beta Release Status - Active Agents
 **Currently Active (Beta):**-**Observer Agent**- Monitors your cluster continuously
 -**RCA Pipeline Agent**- Analyzes incidents and generates root cause reports
 -**Memory Agent**- Stores incidents and learns patterns
@@ -338,22 +338,22 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
 
 <CardGroup cols={2}>
   <Card title="Speed" icon="bolt">
-**Parallel Processing**    
+### Parallel Processing
     Multiple agents work simultaneously, not sequentially. Investigation, planning, and safety checks happen in parallel.
   </Card>
   
   <Card title="Accuracy" icon="bullseye">
-**Specialized Knowledge**    
+### Specialized Knowledge
     Each agent is expert in its domain, leading to better decisions than generalist systems.
   </Card>
   
   <Card title="Resilience" icon="shield">
-**No Single Point of Failure**    
+### No Single Point of Failure
     If one agent fails, others continue working. System degradation is gradual, not catastrophic.
   </Card>
   
   <Card title="Evolution" icon="seedling">
-**Independent Improvement**    
+### Independent Improvement
     Each agent can be upgraded independently without affecting the mesh.
   </Card>
 </CardGroup>
@@ -372,7 +372,7 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
   </Accordion>
 
   <Accordion title="Can agents act without permission?">
-**By default: NO.**    
+### By default: NO.
     Agents operate in**observe-only mode**initially. They will:
     -  Detect issues
     -  Investigate root causes
@@ -383,7 +383,7 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
   </Accordion>
 
   <Accordion title="What if an agent makes a mistake?">
-**Multiple safety layers:**    
+### Multiple safety layers:
     1.**Guardian Agent**- Reviews all actions before execution
     2.**Blast Radius Limits**- Actions are scoped, never cluster-wide
     3.**Dry-Run Mode**- Test changes before applying

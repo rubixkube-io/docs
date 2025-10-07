@@ -84,7 +84,7 @@ Connect the [Mintlify GitHub app](https://dashboard.mintlify.com/settings/organi
 
 ##  Troubleshooting
 
-***Dev server not starting?**
+### *Dev server not starting?
   ```bash
   mint update
   ```

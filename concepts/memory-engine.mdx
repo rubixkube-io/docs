@@ -12,7 +12,7 @@ The**Memory Engine**is RubixKube's knowledge system that captures, stores, and l
 </Info>
 
 <Note>
-**Beta Release - Learning in Progress**
+### Beta Release - Learning in Progress
 The Memory Engine is**active and learning**in RubixKube Beta:
 
 **Available NOW:**-  Incident capture and storage
@@ -126,7 +126,7 @@ The Memory Engine identifies recurring patterns:
 
 <AccordionGroup>
   <Accordion title="Temporal Patterns">
-**"This happens every Monday at 9am"**    
+### "This happens every Monday at 9am"
     - Traffic spikes at specific times
     - Batch jobs causing resource contention
     - Deployment windows correlating with incidents
@@ -135,7 +135,7 @@ The Memory Engine identifies recurring patterns:
   </Accordion>
 
   <Accordion title="Causal Patterns">
-**"When X happens, Y follows 80% of the time"**    
+### "When X happens, Y follows 80% of the time"
     - Database connection pool exhaustion → API timeouts
     - Config map changes → Pod restart loops
     - Version upgrades → Memory leaks
@@ -144,7 +144,7 @@ The Memory Engine identifies recurring patterns:
   </Accordion>
 
   <Accordion title="Success Patterns">
-**"This fix works 95% of the time for this issue"**    
+### "This fix works 95% of the time for this issue"
     - Proven remediations for common failures
     - Optimal resource sizing for workload types
     - Effective rollback strategies
@@ -153,7 +153,7 @@ The Memory Engine identifies recurring patterns:
   </Accordion>
 
   <Accordion title="Failure Patterns">
-**"This approach made things worse"**    
+### "This approach made things worse"
     - Changes that caused cascading failures
     - Remediations that didn't work
     - Configurations that led to instability
@@ -181,7 +181,7 @@ When a new incident occurs, Memory Engine:
 
 <Steps>
   <Step title="Week 1: Initial Learning">
-**Baseline Establishment**    
+### Baseline Establishment
     - Observes normal operation patterns
     - Records resource usage baselines
     - Captures configuration state
@@ -191,7 +191,7 @@ When a new incident occurs, Memory Engine:
   </Step>
 
   <Step title="Week 2-4: Pattern Formation">
-**First Incidents Handled**    
+### First Incidents Handled
     - 5-10 incidents processed
     - Root causes identified (with human verification)
     - Remediations recorded
@@ -201,7 +201,7 @@ When a new incident occurs, Memory Engine:
   </Step>
 
   <Step title="Month 2-3: Confidence Building">
-**Pattern Validation**    
+### Pattern Validation
     - 30-50 incidents in memory
     - Recurring patterns validated
     - Fix success rates calculated
@@ -211,7 +211,7 @@ When a new incident occurs, Memory Engine:
   </Step>
 
   <Step title="Month 4+: Mature Intelligence">
-**Institutional Knowledge**    
+### Institutional Knowledge
     - 100+ incidents stored
     - Complex patterns recognized
     - Proactive prevention enabled
@@ -233,7 +233,7 @@ When a new incident occurs, Memory Engine:
 
 <Tabs>
   <Tab title="Incidents">
-**Every failure, degradation, or anomaly:**    
+### Every failure, degradation, or anomaly:
     - When it happened
     - What failed
     - Impact radius (affected services/users)
@@ -244,7 +244,7 @@ When a new incident occurs, Memory Engine:
   </Tab>
 
   <Tab title="Remediations">
-**Every fix attempt, successful or not:**    
+### Every fix attempt, successful or not:
     - What action was taken
     - Why it was chosen
     - Expected vs actual results
@@ -254,7 +254,7 @@ When a new incident occurs, Memory Engine:
   </Tab>
 
   <Tab title="Configurations">
-**Historical configuration states:**    
+### Historical configuration states:
     - Resource limits over time
     - Deployment configurations
     - Service definitions
@@ -264,7 +264,7 @@ When a new incident occurs, Memory Engine:
   </Tab>
 
   <Tab title="Patterns">
-**Extracted insights and correlations:**    
+### Extracted insights and correlations:
     - Common failure modes
     - Effective remediations
     - Risk factors
@@ -326,14 +326,14 @@ Memory enables**prediction before problems**:
 
 ### 3. Faster Resolution
 
-**Learning from Success:**
+### Learning from Success:
 | Incident Type | First Occurrence | After 10 Similar | After 50 Similar |
 |---------------|------------------|------------------|------------------|
 | OOMKilled | 15min (investigation) | 2min (memory recall) | 30sec (auto-fix) |
 | ImagePullBackOff | 10min (manual) | 1min (pattern match) | 15sec (auto-fix) |
 | CrashLoopBackOff | 25min (debugging) | 5min (context from memory) | 2min (known fix) |
 
-**Memory accelerates everything.**
+### Memory accelerates everything.
 ---
 
 ## Privacy & Data Retention
@@ -373,7 +373,7 @@ After retention expires, data is automatically purged.
 
 ### Example: Preventing a Friday Outage
 
-**Thursday 3pm:**
+### Thursday 3pm:
 ```
 Memory Engine: "Analyzing deployment pipeline..."
 
@@ -445,7 +445,7 @@ You can ask the Memory Engine questions:
 
 ### Cross-Cluster Learning (Coming Soon)
 
-**Shared Intelligence Across Your Organization:**
+### Shared Intelligence Across Your Organization:
 - Incident in `prod-us-east` → Learned by `prod-eu-west`
 - Fix discovered in one cluster → Available to all clusters
 - Patterns recognized faster with more data
@@ -455,7 +455,7 @@ You can ask the Memory Engine questions:
 
 ### Memory-Driven Automation
 
-**Auto-Tuning Based on History:**
+### Auto-Tuning Based on History:
 <AccordionGroup>
   <Accordion title="Intelligent Auto-Scaling">
     Memory learns optimal scaling parameters:
@@ -536,7 +536,7 @@ You can ask the Memory Engine questions:
 
 ### Example 1: The Mysterious 2am Crash
 
-**Initial Incident (Week 1):**
+### Initial Incident (Week 1):
 ```
 2:15 AM: API gateway crashes
 Investigation: 45 minutes
@@ -545,7 +545,7 @@ Fix: Increase pool size 50 → 100
 Memory stored: 
 ```
 
-**Second Occurrence (Week 3):**
+### Second Occurrence (Week 3):
 ```
 2:12 AM: API gateway showing high latency
 Memory Engine: "Pattern match! Similar to Oct 3 incident"
@@ -576,7 +576,7 @@ Time: 90 seconds from detection to fix
 - Total time: 30 seconds
 - Human involvement: None (reviewed in morning)
 
-**This is learning in action.**
+### This is learning in action.
 ---
 
 ## Memory Health and Maintenance
@@ -585,7 +585,7 @@ Time: 90 seconds from detection to fix
 
 <AccordionGroup>
   <Accordion title="How is memory accuracy maintained?">
-**Quality Control Mechanisms:**    
+### Quality Control Mechanisms:
     1.**Human Feedback Loop**- SREs can mark incidents as "not helpful"
     2.**Success Verification**- Track if suggested fixes actually worked
     3.**Confidence Scoring**- Low-confidence memories flagged for review
@@ -603,7 +603,7 @@ Time: 90 seconds from detection to fix
     Access:**Settings → System → Memory Management**  </Accordion>
 
   <Accordion title="How much storage does memory use?">
-**Surprisingly little:**    
+### Surprisingly little:
     - Average incident: ~50KB (metadata + context)
     - 1000 incidents: ~50MB
     - Patterns/graphs: ~100MB
@@ -649,7 +649,7 @@ The Memory Engine powers several dashboard features:
   </Accordion>
 
   <Accordion title="What if my infrastructure changes dramatically?">
-**Memory adapts:**    
+### Memory adapts:
     - Gradual changes: Memory updates naturally
     - Major migrations: Mark a "reset point" to start fresh
     - Architecture shifts: Old patterns deprecate automatically
@@ -672,7 +672,7 @@ The Memory Engine powers several dashboard features:
   </Accordion>
 
   <Accordion title="How does memory handle false positives?">
-**Feedback mechanism:**    
+### Feedback mechanism:
     1. Memory suggests a fix
     2. You mark it as "not helpful" or "made things worse"
     3. Memory records: This pattern → This fix = Bad outcome

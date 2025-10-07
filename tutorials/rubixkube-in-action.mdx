@@ -19,17 +19,17 @@ In our demo, we deployed 3 pods that would fail in different ways:
 
 <CardGroup cols={3}>
   <Card title="ImagePullBackOff" icon="image">
-**broken-image-demo**    
+### broken-image-demo
     Invalid container registry - image doesn't exist
   </Card>
   
   <Card title="OOMKilled" icon="memory">
-**memory-hog-demo**    
+### memory-hog-demo
     Memory limit 50Mi, but needs 100Mi - gets killed repeatedly
   </Card>
   
   <Card title="CrashLoop" icon="rotate">
-**crash-loop-demo**    
+### crash-loop-demo
     Application exits with code 1 - crashes on startup
   </Card>
 </CardGroup>
@@ -163,7 +163,7 @@ Behind the scenes, multiple agents worked together:
   </Step>
 </Steps>
 
-**Total analysis time: 60-90 seconds for all 3 incidents**
+### Total analysis time: 60-90 seconds for all 3 incidents
 ---
 
 ## Key Observations

@@ -5,23 +5,23 @@ description: 'How RubixKube builds institutional knowledge and gets smarter over
 
 # Memory Engine: Your Infrastructure's Long-Term Memory
 
-The**Memory Engine**is RubixKube's knowledge system that captures, stores, and learns from every incident, configuration change, and remediation action. It's the reason RubixKube gets smarter over time instead of repeating the same mistakes.
+The ** Memory Engine ** is RubixKube's knowledge system that captures, stores, and learns from every incident, configuration change, and remediation action. It's the reason RubixKube gets smarter over time instead of repeating the same mistakes.
 
 <Info>
-**The Problem It Solves:**When your best SRE leaves the company, years of tribal knowledge walks out the door. The Memory Engine ensures**nothing is ever forgotten**.
+** The Problem It Solves:** When your best SRE leaves the company, years of tribal knowledge walks out the door. The Memory Engine ensures ** nothing is ever forgotten **.
 </Info>
 
 <Note>
 ### Beta Release - Learning in Progress
-The Memory Engine is**active and learning**in RubixKube Beta:
+The Memory Engine is ** active and learning ** in RubixKube Beta:
 
-**Available NOW:**-  Incident capture and storage
+** Available NOW:**-  Incident capture and storage
 -  RCA report generation and history
 -  Pattern recognition
 -  Knowledge graph construction
 -  Context-aware retrieval for manual decisions
 
-**Enhanced in Future Releases:**-  Automatic remediation based on memory (currently: suggestions only)
+** Enhanced in Future Releases:**-  Automatic remediation based on memory (currently: suggestions only)
 -  Proactive prevention automation (currently: alerts and recommendations)
 -  Cross-cluster learning
 -  Memory-driven auto-tuning
@@ -33,7 +33,7 @@ Your Memory Engine is building knowledge NOW that will power autonomous features
 
 ## What is the Memory Engine?
 
-Think of the Memory Engine as your infrastructure's**collective memory**- it remembers:
+Think of the Memory Engine as your infrastructure's ** collective memory **- it remembers:
 
 <CardGroup cols={2}>
   <Card title="What Happened" icon="clock-rotate-left">
@@ -82,25 +82,25 @@ Incident Event:
 ```
 
 <Accordion title="What gets captured?">
-**Metadata:**  - Resource details (pod, deployment, service names)
+** Metadata:**  - Resource details (pod, deployment, service names)
   - Timestamps (when it happened, how long it lasted)
   - Status changes (states before/during/after)
   
-**Context:**  - Logs (relevant excerpts, not full dumps)
+** Context:**  - Logs (relevant excerpts, not full dumps)
   - Metrics (CPU, memory, network at time of incident)
   - Events (Kubernetes events, deployment history)
   - Configuration (resource limits, env vars, labels)
   
-**Relationships:**  - Dependencies (what depends on what)
+** Relationships:**  - Dependencies (what depends on what)
   - Correlations (concurrent anomalies)
   - Causation (what caused what)
   
-**Privacy Note:**Application data and business logic are NEVER stored.
+** Privacy Note:** Application data and business logic are NEVER stored.
 </Accordion>
 
 ### 2. Knowledge Graph Construction
 
-The Memory Engine builds a**knowledge graph**connecting concepts:
+The Memory Engine builds a ** knowledge graph ** connecting concepts:
 
 ```
 [OOMKilled] ----causes----> [Pod Crash]
@@ -131,7 +131,7 @@ The Memory Engine identifies recurring patterns:
     - Batch jobs causing resource contention
     - Deployment windows correlating with incidents
     
-**Action:**Proactive scaling or resource allocation
+** Action:** Proactive scaling or resource allocation
   </Accordion>
 
   <Accordion title="Causal Patterns">
@@ -140,7 +140,7 @@ The Memory Engine identifies recurring patterns:
     - Config map changes → Pod restart loops
     - Version upgrades → Memory leaks
     
-**Action:**Predict Y before it happens, prepare mitigation
+** Action:** Predict Y before it happens, prepare mitigation
   </Accordion>
 
   <Accordion title="Success Patterns">
@@ -149,7 +149,7 @@ The Memory Engine identifies recurring patterns:
     - Optimal resource sizing for workload types
     - Effective rollback strategies
     
-**Action:**Apply proven fixes confidently
+** Action:** Apply proven fixes confidently
   </Accordion>
 
   <Accordion title="Failure Patterns">
@@ -158,7 +158,7 @@ The Memory Engine identifies recurring patterns:
     - Remediations that didn't work
     - Configurations that led to instability
     
-**Action:**Avoid known-bad approaches
+** Action:** Avoid known-bad approaches
   </Accordion>
 </AccordionGroup>
 
@@ -166,12 +166,12 @@ The Memory Engine identifies recurring patterns:
 
 When a new incident occurs, Memory Engine:
 
-1.**Compares**current situation to historical incidents
-2.**Ranks**by similarity (matching symptoms, environment, timing)
-3.**Retrieves**relevant past RCAs and fixes
-4.**Suggests**proven solutions from memory
+1.** Compares ** current situation to historical incidents
+2.** Ranks ** by similarity (matching symptoms, environment, timing)
+3.** Retrieves ** relevant past RCAs and fixes
+4.** Suggests ** proven solutions from memory
 
-**Speed:**< 500ms from incident detection to memory recall
+** Speed:**< 500ms from incident detection to memory recall
 
 ---
 
@@ -187,7 +187,7 @@ When a new incident occurs, Memory Engine:
     - Captures configuration state
     - Builds initial dependency graph
     
-**Capability:**Detection only
+** Capability:** Detection only
   </Step>
 
   <Step title="Week 2-4: Pattern Formation">
@@ -197,7 +197,7 @@ When a new incident occurs, Memory Engine:
     - Remediations recorded
     - Initial patterns emerging
     
-**Capability:**Suggestions with low confidence
+** Capability:** Suggestions with low confidence
   </Step>
 
   <Step title="Month 2-3: Confidence Building">
@@ -207,7 +207,7 @@ When a new incident occurs, Memory Engine:
     - Fix success rates calculated
     - Predictions starting
     
-**Capability:**High-confidence suggestions
+** Capability:** High-confidence suggestions
   </Step>
 
   <Step title="Month 4+: Mature Intelligence">
@@ -217,12 +217,12 @@ When a new incident occurs, Memory Engine:
     - Proactive prevention enabled
     - Auto-remediation trusted
     
-**Capability:**Autonomous operations (with guardrails)
+** Capability:** Autonomous operations (with guardrails)
   </Step>
 </Steps>
 
 <Tip>
-**The more you use RubixKube, the smarter it gets.**After 6 months, your Memory Engine knows your infrastructure better than any single person.
+** The more you use RubixKube, the smarter it gets.** After 6 months, your Memory Engine knows your infrastructure better than any single person.
 </Tip>
 
 ---
@@ -280,26 +280,26 @@ When a new incident occurs, Memory Engine:
 
 ### 1. Intelligent RCA
 
-Memory Engine makes Root Cause Analysis**context-aware**:
+Memory Engine makes Root Cause Analysis ** context-aware **:
 
-**Without Memory:**> "Pod crashed due to OOMKilled. Increase memory."
+** Without Memory:**> "Pod crashed due to OOMKilled. Increase memory."
 
-**With Memory:**> "Pod crashed due to OOMKilled. This is the 3rd occurrence this month, all after v2.x deployments. Previous fixes (512Mi→1Gi) resolved similar incidents in an average of 45 seconds with 100% success rate. Root cause likely: payload size increase in v2.3.1 (deployed 2h ago). Recommend: Increase memory to 1Gi AND investigate memory leak in v2.3.1."
+** With Memory:**> "Pod crashed due to OOMKilled. This is the 3rd occurrence this month, all after v2.x deployments. Previous fixes (512Mi→1Gi) resolved similar incidents in an average of 45 seconds with 100% success rate. Root cause likely: payload size increase in v2.3.1 (deployed 2h ago). Recommend: Increase memory to 1Gi AND investigate memory leak in v2.3.1."
 
-See the difference?**Context transforms diagnosis.**
+See the difference?** Context transforms diagnosis.**
 ### 2. Proactive Prevention
 
-Memory enables**prediction before problems**:
+Memory enables ** prediction before problems **:
 
 <AccordionGroup>
   <Accordion title="Deployment Risk Scoring">
     Before deploying v2.4.0, Memory Engine checks:
     
-    -**Similar versions:**v2.3.x had 40% incident rate
-    -**Change size:**Large payload changes previously caused OOM
-    -**Dependencies:**Database schema migration required (high risk)
+    -** Similar versions:** v2.3.x had 40% incident rate
+    -** Change size:** Large payload changes previously caused OOM
+    -** Dependencies:** Database schema migration required (high risk)
     
-**Risk Score: 7/10 (High)****Recommendation:**Deploy to canary first, watch memory metrics
+** Risk Score: 7/10 (High)**** Recommendation:** Deploy to canary first, watch memory metrics
   </Accordion>
 
   <Accordion title="Capacity Forecasting">
@@ -309,8 +309,8 @@ Memory enables**prediction before problems**:
     - Current pool: 100 connections
     - Usage trending to 95% in 3 weeks
     
-**Alert:**"Increase connection pool before hitting limits"  
-**Timing:**Proactive, not reactive
+** Alert:**"Increase connection pool before hitting limits"  
+** Timing:** Proactive, not reactive
   </Accordion>
 
   <Accordion title="Configuration Drift Detection">
@@ -320,7 +320,7 @@ Memory enables**prediction before problems**:
     - Historical data: Single replica led to 2 incidents
     - Pattern: Low replica count = higher failure rate
     
-**Alert:**"Configuration drift detected - increased incident risk"
+** Alert:**"Configuration drift detected - increased incident risk"
   </Accordion>
 </AccordionGroup>
 
@@ -341,15 +341,15 @@ Memory enables**prediction before problems**:
 ### What's NOT Stored
 
 <Warning>
-The Memory Engine is designed with**privacy-first**principles:
+The Memory Engine is designed with ** privacy-first ** principles:
 
-**Never Stored:**- Application logs containing business data
+** Never Stored:**- Application logs containing business data
 - Secrets, passwords, API keys
 - Customer PII or sensitive information
 - Code or container contents
 - Environment variables with secrets
 
-**Only Stored:**- Kubernetes metadata (pod names, namespaces)
+** Only Stored:**- Kubernetes metadata (pod names, namespaces)
 - Resource metrics (CPU, memory, network)
 - Event data (pod crashed, deployment updated)
 - Configuration changes (resource limits changed)
@@ -360,10 +360,10 @@ The Memory Engine is designed with**privacy-first**principles:
 
 | Data Type | Retention Period | Purpose |
 |-----------|------------------|---------|
-|**Hot Memory**| 30 days | Fast pattern matching |
-|**Warm Memory**| 90 days | Trend analysis |
-|**Cold Memory**| 1 year | Long-term patterns |
-|**Archived**| 2 years | Compliance and deep analysis |
+|** Hot Memory **| 30 days | Fast pattern matching |
+|** Warm Memory **| 90 days | Trend analysis |
+|** Cold Memory **| 1 year | Long-term patterns |
+|** Archived **| 2 years | Compliance and deep analysis |
 
 After retention expires, data is automatically purged.
 
@@ -392,7 +392,7 @@ Recommendation: Postpone v3.1.0 deployment to Monday
 Risk saved: High probability of weekend incident
 ```
 
-This is**institutional knowledge**in action.
+This is ** institutional knowledge ** in action.
 
 ---
 
@@ -421,7 +421,7 @@ You can ask the Memory Engine questions:
   </Tab>
 
   <Tab title="Via Dashboard">
-    Navigate to**Insights → Historical Analysis**    
+    Navigate to ** Insights → Historical Analysis **    
     - Search by error message
     - Filter by timeframe
     - Group by root cause
@@ -451,7 +451,7 @@ You can ask the Memory Engine questions:
 - Patterns recognized faster with more data
 - Best practices propagate automatically
 
-**Privacy:**Only anonymized patterns are shared, never sensitive data.
+** Privacy:** Only anonymized patterns are shared, never sensitive data.
 
 ### Memory-Driven Automation
 
@@ -464,7 +464,7 @@ You can ask the Memory Engine questions:
     - Historical response: Manual scale-up at 8:55am
     - Memory action: Auto-scale at 8:50am preemptively
     
-**Result:**Zero impact from predictable load
+** Result:** Zero impact from predictable load
   </Accordion>
 
   <Accordion title="Self-Optimizing Resource Limits">
@@ -473,7 +473,7 @@ You can ask the Memory Engine questions:
     - Pod never uses >400Mi but limit is 1Gi (wasted)
     - OR: Pod frequently hits limit and gets OOMKilled
     
-**Suggestion:**Right-size based on 95th percentile usage + 20% buffer
+** Suggestion:** Right-size based on 95th percentile usage + 20% buffer
   </Accordion>
 
   <Accordion title="Predictive Alerting">
@@ -482,7 +482,7 @@ You can ask the Memory Engine questions:
     - Pattern: API latency >200ms precedes crash 90% of time
     - Current: Latency at 180ms and rising
     
-**Alert:**"Potential crash in ~15 minutes. Remediate now?"
+** Alert:**"Potential crash in ~15 minutes. Remediate now?"
   </Accordion>
 </AccordionGroup>
 
@@ -492,13 +492,13 @@ You can ask the Memory Engine questions:
 
 | Capability | Traditional Runbooks | Wiki/Confluence | Memory Engine |
 |------------|---------------------|-----------------|---------------|
-|**Updates**| Manual | Manual | Automatic |
-|**Search**| Keyword only | Keyword only | Semantic + pattern matching |
-|**Context**| Static docs | Static docs | Live, evolving context |
-|**Patterns**| Humans identify | Humans identify | AI identifies automatically |
-|**Accessibility**| During business hours | 24/7 but passive | 24/7 and proactive |
-|**Accuracy**| Outdated quickly | Outdated quickly | Always current |
-|**Integration**| Separate tool | Separate tool | Native to SRI system |
+|** Updates **| Manual | Manual | Automatic |
+|** Search **| Keyword only | Keyword only | Semantic + pattern matching |
+|** Context **| Static docs | Static docs | Live, evolving context |
+|** Patterns **| Humans identify | Humans identify | AI identifies automatically |
+|** Accessibility **| During business hours | 24/7 but passive | 24/7 and proactive |
+|** Accuracy **| Outdated quickly | Outdated quickly | Always current |
+|** Integration **| Separate tool | Separate tool | Native to SRI system |
 
 ---
 
@@ -506,28 +506,28 @@ You can ask the Memory Engine questions:
 
 <CardGroup cols={2}>
   <Card title="Faster Incident Resolution" icon="gauge-high">
-**First occurrence:**15 minutes to diagnose  
-**10th occurrence:**30 seconds (memory recall)  
+** First occurrence:** 15 minutes to diagnose  
+** 10th occurrence:** 30 seconds (memory recall)  
     
-**91% time saving**  </Card>
+** 91% time saving **  </Card>
   
   <Card title="Improved SRE Onboarding" icon="user-graduate">
-**Before:**6 months to become effective  
-**With Memory:**2 weeks (context in every RCA)  
+** Before:** 6 months to become effective  
+** With Memory:** 2 weeks (context in every RCA)  
     
-**New hires productive immediately**  </Card>
+** New hires productive immediately **  </Card>
   
   <Card title="Reduced Repeat Incidents" icon="arrows-rotate">
-**Traditional:**30% of incidents are repeats  
-**With Memory:**5% repeats (caught early)  
+** Traditional:** 30% of incidents are repeats  
+** With Memory:** 5% repeats (caught early)  
     
-**83% reduction in déjà vu**  </Card>
+** 83% reduction in déjà vu **  </Card>
   
   <Card title="Institutional Continuity" icon="building">
-**Employee turnover:**Knowledge stays  
-**Team changes:**Continuity maintained  
+** Employee turnover:** Knowledge stays  
+** Team changes:** Continuity maintained  
     
-**Zero knowledge loss**  </Card>
+** Zero knowledge loss **  </Card>
 </CardGroup>
 
 ---
@@ -555,21 +555,21 @@ Result: Incident prevented
 Time: 90 seconds from detection to fix
 ```
 
-**No 2am wake-up call.**Memory saved the day (and the night).
+** No 2am wake-up call.** Memory saved the day (and the night).
 
 ### Example 2: The Learning Curve
 
-**Month 1:**OOMKilled incident
+** Month 1:** OOMKilled incident
 - Manual investigation: 20 minutes
 - Fix applied: Increase memory
 - Memory stores: Symptoms, cause, fix
 
-**Month 2:**Similar OOMKilled
+** Month 2:** Similar OOMKilled
 - Memory recalls: Previous incident 
 - Suggests fix: Increase memory (90% confidence)
 - SRE reviews and approves: 2 minutes
 
-**Month 3:**Third OOMKilled
+** Month 3:** Third OOMKilled
 - Memory recognizes: Known pattern
 - Auto-applies fix: Memory increased
 - Verifies success: Monitoring metrics
@@ -586,21 +586,21 @@ Time: 90 seconds from detection to fix
 <AccordionGroup>
   <Accordion title="How is memory accuracy maintained?">
 ### Quality Control Mechanisms:
-    1.**Human Feedback Loop**- SREs can mark incidents as "not helpful"
-    2.**Success Verification**- Track if suggested fixes actually worked
-    3.**Confidence Scoring**- Low-confidence memories flagged for review
-    4.**Automatic Pruning**- Obsolete patterns removed (e.g., after major architecture changes)
+    1.** Human Feedback Loop **- SREs can mark incidents as "not helpful"
+    2.** Success Verification **- Track if suggested fixes actually worked
+    3.** Confidence Scoring **- Low-confidence memories flagged for review
+    4.** Automatic Pruning **- Obsolete patterns removed (e.g., after major architecture changes)
   </Accordion>
 
   <Accordion title="Can I delete bad memories?">
-**Yes!**Memory management tools allow you to:
+** Yes!** Memory management tools allow you to:
     
     - Archive specific incidents
     - Mark patterns as "ignore"
     - Reset memory for specific services/namespaces
     - Export memory for migration
     
-    Access:**Settings → System → Memory Management**  </Accordion>
+    Access:** Settings → System → Memory Management **  </Accordion>
 
   <Accordion title="How much storage does memory use?">
 ### Surprisingly little:
@@ -608,7 +608,7 @@ Time: 90 seconds from detection to fix
     - 1000 incidents: ~50MB
     - Patterns/graphs: ~100MB
     
-**Total after 1 year:**Typically less than 500MB
+** Total after 1 year:** Typically less than 500MB
     
     Memory is efficient by design.
   </Accordion>
@@ -630,9 +630,9 @@ The Memory Engine powers several dashboard features:
   />
 </Frame>
 
-**What you see:**-**Intelligent Analysis**- RCA reports generated from memory
--**Active Insights**- Issues detected using learned patterns
--**Trend Predictions**- Forecasts based on historical data
+** What you see:**-** Intelligent Analysis **- RCA reports generated from memory
+-** Active Insights **- Issues detected using learned patterns
+-** Trend Predictions **- Forecasts based on historical data
 
 ---
 
@@ -640,9 +640,9 @@ The Memory Engine powers several dashboard features:
 
 <AccordionGroup>
   <Accordion title="Does memory work across different clusters?">
-**Currently:**Each cluster has its own memory (isolated).
+** Currently:** Each cluster has its own memory (isolated).
     
-**Coming Soon (Q1 2026):**Cross-cluster learning where:
+** Coming Soon (Q1 2026):** Cross-cluster learning where:
     - Patterns from prod inform staging
     - Multi-cluster deployments share knowledge
     - Organization-wide best practices emerge
@@ -654,11 +654,11 @@ The Memory Engine powers several dashboard features:
     - Major migrations: Mark a "reset point" to start fresh
     - Architecture shifts: Old patterns deprecate automatically
     
-    You can always**reset memory**if needed (Settings → System).
+    You can always ** reset memory ** if needed (Settings → System).
   </Accordion>
 
   <Accordion title="Can I export/import memory?">
-**Yes!**For migrations or backups:
+** Yes!** For migrations or backups:
     
     ```bash
     # Export memory to JSON
@@ -678,7 +678,7 @@ The Memory Engine powers several dashboard features:
     3. Memory records: This pattern → This fix = Bad outcome
     4. Future: Won't suggest that fix for that pattern
     
-**Memory learns from mistakes too.**  </Accordion>
+** Memory learns from mistakes too.**  </Accordion>
 </AccordionGroup>
 
 ---

@@ -5,7 +5,15 @@ description: 'Connect, configure, and manage your Kubernetes clusters in RubixKu
 
 # Managing Clusters
 
-The **Clusters** page is where you connect your Kubernetes clusters to RubixKube and manage their connections.
+The Clusters page is where you connect Kubernetes clusters to RubixKube, track connectivity, and manage agents.
+
+<Frame>
+  <img
+    src="/images/using/using-clusters-01-header.png"
+    alt="Clusters header with Connect Cluster"
+  />
+  <Caption>Header with quick actions and zero-state</Caption>
+</Frame>
 
 ---
 
@@ -13,11 +21,11 @@ The **Clusters** page is where you connect your Kubernetes clusters to RubixKube
 
 <Steps>
   <Step title="Click Connect Cluster">
-    Opens installation dialog with your unique command
+    Opens installation dialog.
   </Step>
 
   <Step title="Copy kubectl Command">
-    Command includes your API key pre-configured
+    Command includes your API key. Keep it secret.
   </Step>
 
   <Step title="Run in Your Cluster">
@@ -31,15 +39,31 @@ The **Clusters** page is where you connect your Kubernetes clusters to RubixKube
   </Step>
 </Steps>
 
+<Frame>
+  <img
+    src="/images/using/using-clusters-03-dialog-header.png"
+    alt="Connect Kubernetes Cluster dialog header"
+  />
+  <Caption>Connect dialog header</Caption>
+</Frame>
+
+<Frame>
+  <img
+    src="/images/using/using-clusters-04-dialog-features.png"
+    alt="Connect dialog features"
+  />
+  <Caption>What you get after connecting: Agent Mesh, Automatic RCA, Predictive Prevention</Caption>
+</Frame>
+
 ---
 
 ## Cluster Status
 
 | Status | Meaning |
 |--------|---------|
-| 🟢 **Connected** | Healthy, actively monitored |
-| 🟡 **Degraded** | Partial connectivity |
-| 🔴 **Disconnected** | No connection |
+| Connected | Healthy, actively monitored |
+| Degraded | Partial connectivity |
+| Disconnected | No connection |
 
 ---
 
@@ -53,6 +77,26 @@ The **Clusters** page is where you connect your Kubernetes clusters to RubixKube
 **Remove cluster:**
 - Click cluster → Delete
 - Removes from RubixKube (doesn't affect actual cluster)
+
+---
+
+## Zero State and Filters
+
+<Frame>
+  <img
+    src="/images/using/using-clusters-02-metrics.png"
+    alt="Clusters summary metrics"
+  />
+  <Caption>Summary metrics: total clusters, connected, total agents</Caption>
+</Frame>
+
+<Frame>
+  <img
+    src="/images/using/using-clusters-05-empty-state.png"
+    alt="No clusters found empty state"
+  />
+  <Caption>Empty state when no clusters match current filters</Caption>
+</Frame>
 
 ---
 

@@ -1,0 +1,75 @@
+---
+title: "Frequently Asked Questions"
+description: "Quick answers to common RubixKube questions"
+---
+
+# Frequently Asked Questions
+
+## General
+
+### What is RubixKube?
+An AI-assisted Site Reliability Intelligence platform for Kubernetes.
+
+### What browsers are supported?
+Latest Chrome, Edge, Safari, and Firefox.
+
+---
+
+## Setup
+
+### How do I connect my first cluster?
+Open Clusters → Connect Cluster → run the provided kubectl apply command. The observer agent installs in your cluster and connects automatically.
+
+### How long until data shows up?
+Within 1–2 minutes after installation, depending on cluster size.
+
+---
+
+## Insights & RCA
+
+### How are incidents detected?
+RubixKube continuously analyzes Kubernetes signals (events, logs, metrics) to detect abnormal patterns.
+
+### Can I trust the RCA?
+RCA includes confidence levels and evidence so you can validate conclusions.
+
+---
+
+## Agents
+
+### Which agents are required?
+Observer, RCA Pipeline, and SRI. Optional: Memory Engine and MCP server.
+
+### What if an agent is inactive?
+Check `rubixkube-system` namespace pods and logs. See the Troubleshooting guide.
+
+---
+
+## Billing & Security
+
+### Do you store application data?
+No. The observer collects metadata and metrics; not application payloads.
+
+### What auth methods are supported?
+SSO via Auth0 (Google/GitHub); optional backup password.
+
+---
+
+## Documentation
+
+### Images not appearing in docs?
+Hard refresh (Cmd+Shift+R), ensure images are committed under `/images/using/`, and re-deploy docs.
+
+### Where can I get more help?
+Use the Troubleshooting guide or contact support with Tenant ID, repro steps, and screenshots.
+
+---
+
+## Related Guides
+- [Troubleshooting](/support/troubleshooting)
+- [Dashboard](/using/dashboard)
+- [Insights](/using/insights)
+- [Infrastructure](/using/infrastructure)
+- [Agents](/using/agents)
+- [Settings](/using/settings)
+

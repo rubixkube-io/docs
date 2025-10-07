@@ -1,0 +1,125 @@
+---
+title: "Troubleshooting Guide"
+description: "Diagnose and resolve common issues in RubixKube"
+---
+
+# Troubleshooting Guide
+
+This guide helps you quickly diagnose and resolve common issues across the RubixKube platform.
+
+## Quick Checklist
+
+- Verify connectivity: Dashboard refresh succeeds, no global 401/403 errors
+- Confirm agent health: Observer, RCA Pipeline, SRI are Active
+- Check cluster readiness: kube-apiserver reachable, nodes Ready
+- Review Insights errors: open the latest incident and read Evidence
+- Hard refresh docs if images fail: Cmd+Shift+R
+
+---
+
+## Authentication and Access
+
+### 401 Unauthorized in console
+- Cause: Session expired or missing tenant context
+- Fix:
+  1. Click Refresh in the header or re-login
+  2. If persistent, clear cookies for the console domain
+  3. Verify Tenant ID exists in Settings → Organization
+
+### Can't login
+- Cause: SSO blocked or clock skew
+- Fix:
+  - Ensure system time is correct
+  - Try alternate provider (Google/GitHub)
+  - Contact support with timestamp and email
+
+---
+
+## Dashboard/Insights Issues
+
+### Images not rendering in docs
+- Cause: Browser cache or missing images
+- Fix:
+  1. Clear Mintlify cache locally (.mintlify) and rebuild
+  2. Hard refresh (Cmd+Shift+R)
+  3. Confirm path: `/images/using/...` and commit pushed
+
+### Insights page blank or parsing error
+- Cause: MDX invalid tag usage
+- Fix:
+  - Wrap CLI placeholders in fenced code blocks
+  - Avoid bare `<tag>` text; escape or code block it
+
+---
+
+## Agents & RCA
+
+### Agents show Inactive
+- Cause: Pods not running in `rubixkube-system`
+- Fix:
+  ```bash
+  kubectl get pods -n rubixkube-system
+  kubectl logs deploy/rubixkube-observer -n rubixkube-system
+  ```
+  - Verify image pull and service account permissions
+
+### RCA not generated
+- Cause: Missing evidence or low signal
+- Fix:
+  - Ensure logs/metrics sources are reachable
+  - Re-run investigation; increase time range
+
+---
+
+## Clusters & Infrastructure
+
+### No clusters found
+- Cause: Observer not installed
+- Fix:
+  ```bash
+  kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=YOUR_KEY"
+  ```
+  - Wait 1–2 minutes; verify nodes and pods are Ready
+
+### Graph not rendering
+- Cause: WebGL/canvas blocked
+- Fix:
+  - Try different layout (Force/Hierarchical)
+  - Disable extensions blocking canvas
+
+---
+
+## Settings & Integrations
+
+### Tenant ID copy button not working
+- Cause: Clipboard permissions
+- Fix: Use manual selection; check browser clipboard settings
+
+### Slack/PagerDuty not receiving alerts
+- Cause: Not configured or wrong keys
+- Fix:
+  - Reconnect integration and re-enter key
+  - Trigger a test event from Insights
+
+---
+
+## Collecting Diagnostics
+
+Provide the following when contacting support:
+- Tenant ID (Settings → Organization)
+- Timestamp and timezone
+- Browser and OS
+- Repro steps and screenshots
+- Relevant `kubectl` outputs
+
+---
+
+## Related Guides
+- [Dashboard](/using/dashboard)
+- [Insights](/using/insights)
+- [Infrastructure](/using/infrastructure)
+- [Agents](/using/agents)
+- [Clusters](/using/clusters)
+- [Settings](/using/settings)
+- [Integrations](/using/integrations)
+

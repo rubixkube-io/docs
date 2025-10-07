@@ -5,10 +5,10 @@ description: 'See how RubixKube detects memory issues and provides memory analys
 
 # Detecting Memory Issues (OOMKilled)
 
-**Out of Memory (OOM) errors**are critical failures that cause pods to be killed by Kubernetes. Let's see how RubixKube detects memory issues, analyzes them, and suggests solutions.
+** Out of Memory (OOM) errors ** are critical failures that cause pods to be killed by Kubernetes. Let's see how RubixKube detects memory issues, analyzes them, and suggests solutions.
 
 <Info>
-**What you'll learn:**- Creating a memory-constrained pod
+** What you'll learn:**- Creating a memory-constrained pod
 - How RubixKube detects OOMKilled events
 - Reading memory usage analysis
 - Understanding resource limit recommendations
@@ -16,7 +16,7 @@ description: 'See how RubixKube detects memory issues and provides memory analys
 </Info>
 
 <Warning>
-**Real Impact:**OOMKilled errors cause:
+** Real Impact:** OOMKilled errors cause:
 - Immediate pod termination
 - Service degradation (if all replicas affected)
 - Data loss (if not using persistent storage)
@@ -29,7 +29,7 @@ RubixKube helps you catch and fix these quickly.
 
 ## The Scenario: Memory Overflow
 
-We'll create a pod that intentionally exceeds its memory limit to trigger an**OOMKilled**event.
+We'll create a pod that intentionally exceeds its memory limit to trigger an ** OOMKilled ** event.
 
 ### Create the Memory Hog Pod
 
@@ -52,7 +52,7 @@ spec:
     args: ["--vm", "1", "--vm-bytes", "100M"]  # Try to use 100MB!
 ```
 
-**What this does:**- Requests 50Mi of memory
+** What this does:**- Requests 50Mi of memory
 - Tries to allocate 100Mi (double the limit)
 - Kubernetes kills it when memory exceeds limit
 
@@ -81,13 +81,13 @@ memory-hog-demo   0/1     OOMKilled           1          35s
 memory-hog-demo   0/1     CrashLoopBackOff    2          50s
 ```
 
-**The pattern:**1.**ContainerCreating**- Kubernetes starts the container
-2.**OOMKilled**- Container exceeds memory, Kubernetes kills it
-3.**CrashLoopBackOff**- Kubernetes waits before restarting
-4.**Repeat**- Cycle continues forever
+** The pattern:** 1.** ContainerCreating **- Kubernetes starts the container
+2.** OOMKilled **- Container exceeds memory, Kubernetes kills it
+3.** CrashLoopBackOff **- Kubernetes waits before restarting
+4.** Repeat **- Cycle continues forever
 
 <Note>
-**This is a real production problem!**Pods stuck in this cycle waste resources and cause service degradation.
+** This is a real production problem!** Pods stuck in this cycle waste resources and cause service degradation.
 </Note>
 
 ---
@@ -108,23 +108,23 @@ Open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 ### Detection Indicators
 
 ### Activity Feed shows TWO related incidents:
-1.**"Out of memory (OOMKilled) detected on Pod/memory-hog-demo"**- **Severity:**HIGH 
-   - **Status:**Active
-   - **Detected:**Immediately after first OOM
+1.**"Out of memory (OOMKilled) detected on Pod/memory-hog-demo"**- ** Severity:** HIGH 
+   - ** Status:** Active
+   - ** Detected:** Immediately after first OOM
 
-2.**"Container experiencing repeated crashes in memory-hog-demo"**- **Severity:**Medium  
-   - **Status:**Active
-   - **Restart count:**Tracked automatically
+2.**"Container experiencing repeated crashes in memory-hog-demo"**- ** Severity:** Medium  
+   - ** Status:** Active
+   - ** Restart count:** Tracked automatically
 
 <Tip>
-**RubixKube correlates events!**It understands that the crashes are CAUSED BY the OOM condition. This is intelligent detection, not just alert noise.
+** RubixKube correlates events!** It understands that the crashes are CAUSED BY the OOM condition. This is intelligent detection, not just alert noise.
 </Tip>
 
 ---
 
 ## Viewing Detailed Analysis
 
-Navigate to**Insights**to see the full analysis:
+Navigate to ** Insights ** to see the full analysis:
 
 ### Incident Details
 
@@ -139,19 +139,19 @@ Navigate to**Insights**to see the full analysis:
 ### What RubixKube shows:
 <CardGroup cols={2}>
   <Card title="Root Cause" icon="magnifying-glass">
-**OOMKilled**- Container exceeded memory limits
+** OOMKilled **- Container exceeded memory limits
   </Card>
   
   <Card title="Affected Resource" icon="server">
-**Pod/memory-hog-demo**in namespace rubixkube-tutorials
+** Pod/memory-hog-demo ** in namespace rubixkube-tutorials
   </Card>
   
   <Card title="Restart Count" icon="rotate">
-**3 restarts**(and counting) - Problem persists
+** 3 restarts **(and counting) - Problem persists
   </Card>
   
   <Card title="Confidence" icon="percentage">
-**90%+**- RubixKube is highly confident about the diagnosis
+** 90%+**- RubixKube is highly confident about the diagnosis
   </Card>
 </CardGroup>
 
@@ -183,7 +183,7 @@ Based on the analysis, RubixKube suggests:
 
 <Steps>
   <Step title="Increase Memory Limits">
-**Recommended action:**Double the memory limit
+** Recommended action:** Double the memory limit
     
     ```yaml
     resources:
@@ -193,7 +193,7 @@ Based on the analysis, RubixKube suggests:
         memory: "100Mi"
     ```
     
-**Why:**Application needs ~100Mi based on observed behavior
+** Why:** Application needs ~100Mi based on observed behavior
   </Step>
 
   <Step title="Check for Memory Leaks">
@@ -202,7 +202,7 @@ Based on the analysis, RubixKube suggests:
     - Look for gradual increase (leak pattern)
     - Check application code for issues
     
-**RubixKube helps:**Memory Engine will track usage trends
+** RubixKube helps:** Memory Engine will track usage trends
   </Step>
 
   <Step title="Consider Resource Quotas">
@@ -288,17 +288,17 @@ NAME                 CPU(cores)   MEMORY(bytes)
 memory-fixed-demo    50m          98Mi
 ```
 
-**Memory usage (98Mi) is under the limit (150Mi)**- Problem solved!
+** Memory usage (98Mi) is under the limit (150Mi)**- Problem solved!
 
 ---
 
 ## RubixKube Confirms Resolution
 
-Back in the**Dashboard:**
-**Within 1-2 minutes:**- **Active Insights decreases**(OOMKilled incident marked resolved)
-- **Activity Feed**shows "Incident resolved" event
-- **System Health**improves
-- **Memory Engine**records: "OOMKilled fixed by increasing memory 50Mi → 150Mi"
+Back in the ** Dashboard:**
+** Within 1-2 minutes:**- ** Active Insights decreases **(OOMKilled incident marked resolved)
+- ** Activity Feed ** shows "Incident resolved" event
+- ** System Health ** improves
+- ** Memory Engine ** records: "OOMKilled fixed by increasing memory 50Mi → 150Mi"
 
 <Frame>
   <img
@@ -314,7 +314,7 @@ Back in the**Dashboard:**
 
 RubixKube now knows:
 
-**Pattern Recognized:**```
+** Pattern Recognized:**```
 Pod: memory-hog-demo
 Issue: OOMKilled (memory limit too low)
 Attempted allocation: ~100Mi

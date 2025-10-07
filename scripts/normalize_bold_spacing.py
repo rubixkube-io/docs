@@ -5,18 +5,21 @@ import sys
 
 
 def normalize_line(line: str) -> str:
-    # First, remove inner spaces inside bold markers: ** text ** -> **text**
-    # This regex matches ** followed by spaces, then text, then spaces, then **
-    line = re.sub(r"\*\*\s+(.+?)\s+\*\*", r"**\1**", line)
-
-    # Handle cases with space only on one side
-    line = re.sub(r"\*\*\s+", r"**", line)
-    line = re.sub(r"\s+\*\*", r"**", line)
-
-    # Normalize list item hyphen spacing before bold: -** -> - **
-    line = re.sub(r"-\*\*", r"- **", line)
-
-    return line
+    # Process only non-code inline segments (split by backticks)
+    parts = line.split('`')
+    for i in range(0, len(parts), 2):
+        segment = parts[i]
+        # Remove inner spaces immediately inside bold markers: ** text ** -> **text**
+        segment = re.sub(r"\*\*\s+", r"**", segment)
+        segment = re.sub(r"\s+\*\*", r"**", segment)
+        # Add space AFTER closing ** if followed by alnum/punct (but not another *)
+        segment = re.sub(r"\*\*([A-Za-z0-9])", r"** \1", segment)
+        # Add space BEFORE opening ** if preceded by alnum/punct (but not another *)
+        segment = re.sub(r"([A-Za-z0-9])\*\*", r"\1 **", segment)
+        # Normalize list item hyphen spacing before bold: -** -> - **
+        segment = re.sub(r"-\*\*", r"- **", segment)
+        parts[i] = segment
+    return '`'.join(parts)
 
 
 def normalize_file(path: str) -> bool:

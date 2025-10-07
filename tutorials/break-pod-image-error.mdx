@@ -5,10 +5,10 @@ description: 'Watch RubixKube detect and analyze container image issues in real-
 
 # Detecting Container Image Issues
 
-One of the most common Kubernetes failures is**ImagePullBackOff**- when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
+One of the most common Kubernetes failures is ** ImagePullBackOff **- when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
 
 <Info>
-**What you'll learn:**- How RubixKube detects image pull failures
+** What you'll learn:**- How RubixKube detects image pull failures
 - Reading the incident details
 - Understanding AI-generated suggestions
 - Fixing the issue manually
@@ -19,7 +19,7 @@ One of the most common Kubernetes failures is**ImagePullBackOff**- when a pod ca
 
 ## The Scenario
 
-We'll intentionally create a pod with an invalid container image to trigger an**ImagePullBackOff**error, then watch RubixKube detect it.
+We'll intentionally create a pod with an invalid container image to trigger an ** ImagePullBackOff ** error, then watch RubixKube detect it.
 
 ### Create the Failing Pod
 
@@ -60,16 +60,16 @@ NAME                READY   STATUS             RESTARTS   AGE
 broken-image-demo   0/1     ImagePullBackOff   0          2m
 ```
 
-**What's happening:**1. Kubernetes tries to pull `nonexistent-registry.io/invalid-image:v1.0`
+** What's happening:** 1. Kubernetes tries to pull `nonexistent-registry.io/invalid-image:v1.0`
 2. Registry doesn't exist → Pull fails
 3. Kubernetes retries with exponential backoff
-4. Status cycles:**Pending**→**ErrImagePull**→**ImagePullBackOff**
+4. Status cycles:** Pending **→** ErrImagePull **→** ImagePullBackOff **
 <Accordion title="See the Kubernetes events">
   ```bash
   kubectl describe pod broken-image-demo -n rubixkube-tutorials
   ```
   
-**Key events:**```
+** Key events:**```
   Warning  Failed     2m (x4 over 3m)  kubelet
            Failed to pull image "nonexistent-registry.io/invalid-image:v1.0": 
            failed to resolve reference: failed to do request: 
@@ -234,19 +234,19 @@ NAME              READY   STATUS    RESTARTS   AGE
 fixed-image-demo   1/1     Running   0          30s
 ```
 
-**In RubixKube Dashboard:**- **Active Insights**decreases (issue resolved)
-- **Activity Feed**shows resolution event
-- **System Health**improves
+** In RubixKube Dashboard:**- ** Active Insights ** decreases (issue resolved)
+- ** Activity Feed ** shows resolution event
+- ** System Health ** improves
 
 <Note>
-**RubixKube tracks resolution!**Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
+** RubixKube tracks resolution!** Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
 </Note>
 
 ---
 
 ## What RubixKube Learned
 
-After you fix this issue, the**Memory Engine**stores:
+After you fix this issue, the ** Memory Engine ** stores:
 
 <CardGroup cols={2}>
   <Card title="The Problem" icon="triangle-exclamation">
@@ -275,33 +275,33 @@ Based on RubixKube's Memory Engine and common patterns:
 
 | Cause | Frequency | Fix Time | Prevention |
 |-------|-----------|----------|------------|
-|**Typo in image name**| 40% | 1 min | Automation, validation |
-|**Missing image tag**| 25% | 2 min | Always specify tags |
-|**Private registry auth**| 20% | 5 min | Configure imagePullSecrets |
-|**Network policy blocking**| 10% | 10 min | Allow egress to registries |
-|**Registry rate limiting**| 5% | 15 min | Use image caching |
+|** Typo in image name **| 40% | 1 min | Automation, validation |
+|** Missing image tag **| 25% | 2 min | Always specify tags |
+|** Private registry auth **| 20% | 5 min | Configure imagePullSecrets |
+|** Network policy blocking **| 10% | 10 min | Allow egress to registries |
+|** Registry rate limiting **| 5% | 15 min | Use image caching |
 
 <Tip>
-**Pro Tip:**Always use specific image tags (`:v1.2.3`) instead of `:latest`. This prevents unexpected changes and makes rollbacks easier.
+** Pro Tip:** Always use specific image tags (`:v1.2.3`) instead of `:latest`. This prevents unexpected changes and makes rollbacks easier.
 </Tip>
 
 ---
 
 ## Real-World Impact
 
-**Before RubixKube:**- Engineer notices pod not starting (manual check)
+** Before RubixKube:**- Engineer notices pod not starting (manual check)
 - Runs `kubectl describe pod` to find error
 - Googles "ImagePullBackOff kubernetes"
 - Tries various fixes
-- **Time: 10-15 minutes**(if experienced)
+- ** Time: 10-15 minutes **(if experienced)
 
-**With RubixKube:**- Automatic detection within 2 minutes
+** With RubixKube:**- Automatic detection within 2 minutes
 - Incident appears in dashboard automatically
 - AI suggests likely causes
 - Relevant documentation linked
-- **Time: 2-3 minutes**(with clear guidance)
+- ** Time: 2-3 minutes **(with clear guidance)
 
-**Time saved: 70-80%**even for simple issues!
+** Time saved: 70-80%** even for simple issues!
 
 ---
 
@@ -332,5 +332,5 @@ You learned:
  How RubixKube verifies resolution  
  How the Memory Engine learns from incidents  
 
-**Next:**Try detecting memory issues with OOMKilled pods!
+** Next:** Try detecting memory issues with OOMKilled pods!
 

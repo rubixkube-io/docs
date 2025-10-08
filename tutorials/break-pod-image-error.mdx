@@ -5,10 +5,10 @@ description: 'Watch RubixKube detect and analyze container image issues in real-
 
 # Detecting Container Image Issues
 
-One of the most common Kubernetes failures is**ImagePullBackOff**- when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
+One of the most common Kubernetes failures is**ImagePullBackOff**  - when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
 
 <Info>
-**What you'll learn:**- How RubixKube detects image pull failures
+**What you'll learn:** - How RubixKube detects image pull failures
 - Reading the incident details
 - Understanding AI-generated suggestions
 - Fixing the issue manually
@@ -19,7 +19,7 @@ One of the most common Kubernetes failures is**ImagePullBackOff**- when a pod ca
 
 ## The Scenario
 
-We'll intentionally create a pod with an invalid container image to trigger an**ImagePullBackOff**error, then watch RubixKube detect it.
+We'll intentionally create a pod with an invalid container image to trigger an**ImagePullBackOff**  error, then watch RubixKube detect it.
 
 ### Create the Failing Pod
 
@@ -63,13 +63,13 @@ broken-image-demo   0/1     ImagePullBackOff   0          2m
 **What's happening:** 1. Kubernetes tries to pull `nonexistent-registry.io/invalid-image:v1.0`
 2. Registry doesn't exist → Pull fails
 3. Kubernetes retries with exponential backoff
-4. Status cycles:**Pending**→**ErrImagePull**→**ImagePullBackOff**
+4. Status cycles:**Pending**  →**Pending**  →**Pending** 
 <Accordion title="See the Kubernetes events">
   ```bash
   kubectl describe pod broken-image-demo -n rubixkube-tutorials
   ```
   
-**Key events:**```
+**Key events:** ```
   Warning  Failed     2m (x4 over 3m)  kubelet
            Failed to pull image "nonexistent-registry.io/invalid-image:v1.0": 
            failed to resolve reference: failed to do request: 
@@ -101,22 +101,22 @@ Now open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 
 ### What RubixKube Detected
 
-**Activity Feed shows:**-  New incident appeared
--**Type:**Image pull failure  
--**Severity:**Medium (not critical, but needs fixing)
--**Status:**Active
+**Activity Feed shows:** -  New incident appeared
+-**Type:**  Image pull failure  
+-**Severity:**  Medium (not critical, but needs fixing)
+-**Status:**  Active
 
-**Active Insights increased**from 0 to 1+ (or higher if multiple issues)
+**Active Insights increased** from 0 to 1+ (or higher if multiple issues)
 
 <Tip>
-**Detection is automatic!**You didn't configure any alerts or rules. RubixKube's Observer Agent continuously watches your cluster and reports anomalies.
+**Detection is automatic!** You didn't configure any alerts or rules. RubixKube's Observer Agent continuously watches your cluster and reports anomalies.
 </Tip>
 
 ---
 
 ## Viewing the Incident Details
 
-Click on**Insights**in the navigation to see detailed analysis:
+Click on**Insights**  in the navigation to see detailed analysis:
 
 <Frame>
   <img
@@ -131,12 +131,12 @@ Click on**Insights**in the navigation to see detailed analysis:
 ### You'll see:
 | Field | Value | Meaning |
 |-------|-------|---------|
-|**Type**| ImagePullBackOff | Kubernetes can't pull the image |
-|**Severity**| Medium | Not critical but needs attention |
-|**Affected Resource**| Pod/broken-image-demo | Which pod is impacted |
-|**Namespace**| rubixkube-tutorials | Where the pod lives |
-|**Detected**| 2 minutes ago | When RubixKube first saw it |
-|**Confidence**| 90%+ | How certain RubixKube is about the diagnosis |
+|**Type**  | ImagePullBackOff | Kubernetes can't pull the image |
+|**Severity**  | Medium | Not critical but needs attention |
+|**Affected Resource**  | Pod/broken-image-demo | Which pod is impacted |
+|**Namespace**  | rubixkube-tutorials | Where the pod lives |
+|**Detected**  | 2 minutes ago | When RubixKube first saw it |
+|**Confidence**  | 90%+ | How certain RubixKube is about the diagnosis |
 
 ### AI-Generated Suggestions
 
@@ -144,7 +144,7 @@ RubixKube provides actionable recommendations:
 
 <AccordionGroup>
   <Accordion title=" Verify the image name and tag">
-**Why:**Typos in image names are the #1 cause of ImagePullBackOff
+**Why:** Typos in image names are the #1 cause of ImagePullBackOff
     
 **Check:**    - Is the registry URL correct?
     - Does the image exist in that registry?
@@ -152,7 +152,7 @@ RubixKube provides actionable recommendations:
   </Accordion>
 
   <Accordion title=" Check registry accessibility">
-**Why:**Private registries require authentication
+**Why:** Private registries require authentication
     
 **Verify:**    - Can your cluster reach the registry?
     - Are imagePullSecrets configured?
@@ -160,7 +160,7 @@ RubixKube provides actionable recommendations:
   </Accordion>
 
   <Accordion title=" Review imagePullPolicy">
-**Why:**Policy affects when Kubernetes pulls images
+**Why:** Policy affects when Kubernetes pulls images
     
 **Options:**    - `Always` - Pull on every pod start (good for `:latest`)
     - `IfNotPresent` - Use cached image if available
@@ -168,7 +168,7 @@ RubixKube provides actionable recommendations:
   </Accordion>
 
   <Accordion title=" Check for network policies blocking egress">
-**Why:**Network policies might prevent outbound connections
+**Why:** Network policies might prevent outbound connections
     
 **Test:**    ```bash
     kubectl run test-curl --rm -i --image=curlimages/curl -- \
@@ -234,19 +234,19 @@ NAME              READY   STATUS    RESTARTS   AGE
 fixed-image-demo   1/1     Running   0          30s
 ```
 
-**In RubixKube Dashboard:**- **Active Insights**decreases (issue resolved)
-- **Activity Feed**shows resolution event
-- **System Health**improves
+**In RubixKube Dashboard:** - ** In RubixKube Dashboard:** decreases (issue resolved)
+- **Activity Feed** shows resolution event
+- **System Health** improves
 
 <Note>
-**RubixKube tracks resolution!**Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
+**RubixKube tracks resolution!** Once you fix the issue, RubixKube detects the recovery and updates the incident status to "Resolved".
 </Note>
 
 ---
 
 ## What RubixKube Learned
 
-After you fix this issue, the**Memory Engine**stores:
+After you fix this issue, the**Memory Engine**  stores:
 
 <CardGroup cols={2}>
   <Card title="The Problem" icon="triangle-exclamation">
@@ -275,11 +275,11 @@ Based on RubixKube's Memory Engine and common patterns:
 
 | Cause | Frequency | Fix Time | Prevention |
 |-------|-----------|----------|------------|
-|**Typo in image name**| 40% | 1 min | Automation, validation |
-|**Missing image tag**| 25% | 2 min | Always specify tags |
-|**Private registry auth**| 20% | 5 min | Configure imagePullSecrets |
-|**Network policy blocking**| 10% | 10 min | Allow egress to registries |
-|**Registry rate limiting**| 5% | 15 min | Use image caching |
+|**Typo in image name**  | 40% | 1 min | Automation, validation |
+|**Missing image tag**  | 25% | 2 min | Always specify tags |
+|**Private registry auth**  | 20% | 5 min | Configure imagePullSecrets |
+|**Network policy blocking**  | 10% | 10 min | Allow egress to registries |
+|**Registry rate limiting**  | 5% | 15 min | Use image caching |
 
 <Tip>
 <strong>Pro Tip:</strong> Always use specific image tags (`:v1.2.3`) instead of `:latest`. This prevents unexpected changes and makes rollbacks easier.
@@ -289,19 +289,19 @@ Based on RubixKube's Memory Engine and common patterns:
 
 ## Real-World Impact
 
-**Before RubixKube:**- Engineer notices pod not starting (manual check)
+**Before RubixKube:** - Engineer notices pod not starting (manual check)
 - Runs `kubectl describe pod` to find error
 - Googles "ImagePullBackOff kubernetes"
 - Tries various fixes
-- **Time: 10-15 minutes**(if experienced)
+- **Time: 10-15 minutes** (if experienced)
 
-**With RubixKube:**- Automatic detection within 2 minutes
+**With RubixKube:** - Automatic detection within 2 minutes
 - Incident appears in dashboard automatically
 - AI suggests likely causes
 - Relevant documentation linked
-- **Time: 2-3 minutes**(with clear guidance)
+- **Time: 2-3 minutes** (with clear guidance)
 
-**Time saved: 70-80%**even for simple issues!
+**Time saved: 70-80%** even for simple issues!
 
 ---
 
@@ -331,5 +331,5 @@ You learned:
  How RubixKube verifies resolution  
  How the Memory Engine learns from incidents  
 
-**Next:**Try detecting memory issues with OOMKilled pods!
+**Next:** Try detecting memory issues with OOMKilled pods!
 

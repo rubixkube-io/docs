@@ -309,7 +309,7 @@ Before installing RubixKube on your cloud cluster, ensure you have:
     
     1. Go to [Azure Portal](https://portal.azure.com)
     2. Search for **"Kubernetes services"**
-    3. Click **"Create"** → **"Kubernetes cluster"**
+    3. Click **"Create"** → **  "Kubernetes cluster"**
     4. Resource group: Create new or use existing
     5. Cluster name: `rubixkube-test`
     6. Region: East US
@@ -575,7 +575,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
 ### Verify in RubixKube Dashboard
 
 1. Go to [console.rubixkube.ai](https://console.rubixkube.ai)
-2. Navigate to **Dashboard** or **Clusters** page
+2. Navigate to **Dashboard** or **  Clusters** page
 3. Your cluster should appear with:
    -  **Green status indicator** (Connected)
    -  **Metrics** starting to populate
@@ -611,7 +611,7 @@ kubectl create deployment broken-app --image=invalid-image:latest -n rubixkube-d
 ### Watch RubixKube Detect Issues
 
 1. Go to **console.rubixkube.ai**
-2. Navigate to **Infrastructure** or **Insights**
+2. Navigate to **Infrastructure** or **  Insights**
 3. You'll see:
    -  nginx and redis running healthy
    -  broken-app showing `ImagePullBackOff` error

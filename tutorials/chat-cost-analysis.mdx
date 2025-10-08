@@ -116,12 +116,12 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 | Pod Name | Resource Requests | Resource Limits |
 |----------|-------------------|-----------------|
-|**heavy-app-1 **  | CPU: 500m, Memory: 1Gi | CPU: 1, Memory: 2Gi |
-|**heavy-app-2 **  | CPU: 500m, Memory: 1Gi | CPU: 1, Memory: 2Gi |
-|**light-app**  | CPU: 100m, Memory: 128Mi | CPU: 200m, Memory: 256Mi |
+| **heavy-app-1 **  | CPU: 500m, Memory: 1Gi | CPU: 1, Memory: 2Gi |
+| **heavy-app-2 **  | CPU: 500m, Memory: 1Gi | CPU: 1, Memory: 2Gi |
+| **light-app**  | CPU: 100m, Memory: 128Mi | CPU: 200m, Memory: 256Mi |
 
 ### Agent Analysis:
-> "Based on this,**heavy-app-1 **  and**heavy-app-1 **  are the most expensive pods, as they have the highest resource requests and limits."
+> "Based on this,**heavy-app-1 **  and **heavy-app-1 **  are the most expensive pods, as they have the highest resource requests and limits."
 
 ---
 
@@ -207,16 +207,16 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 | heavy-app-1 (nginx) | 500m | 1Gi | ~$25 |
 | heavy-app-2 (redis) | 500m | 1Gi | ~$25 |
 | light-app | 100m | 128Mi | ~$3 |
-|**Total**  |**Total**  |**Total**  |**Total**  |
+| **Total**  | **Total**  | **Total**  | **Total**  |
 
 ### After Optimization (Agent's Recommendations)
 
 | Pod | CPU Request | Memory Request | Estimated Monthly Cost | Savings |
 |-----|-------------|----------------|------------------------|---------|
-| heavy-app-1 (nginx) | 100m | 128Mi | ~$3 |**$22 (88%)**  |
-| heavy-app-2 (redis) | 250m | 512Mi | ~$12 |**$13 (52%)**  |
+| heavy-app-1 (nginx) | 100m | 128Mi | ~$3 | **$22 (88%)**  |
+| heavy-app-2 (redis) | 250m | 512Mi | ~$12 | **$13 (52%)**  |
 | light-app | 100m | 128Mi | ~$3 | $0 (already optimal) |
-|**Total**  |**Total**  |**Total**  |**Total**  |**Total**  |
+| **Total**  | **Total**  | **Total**  | **Total**  | **Total**  |
 
 <Note>
 ** 66% cost savings** from right-sizing just 2 pods! This is why cost analysis with Chat is so valuable.
@@ -246,7 +246,7 @@ Let's walk through an ACTUAL cost analysis session captured from RubixKube Chat.
 
 ### Finding 3: Multiple Optimization Paths
 
-The agent didn't just say "reduce limits" - it provided** 3 different strategies**  with pros/cons of each.
+The agent didn't just say "reduce limits" - it provided ** 3 different strategies**  with pros/cons of each.
 
 This is intelligent cost optimization, not just blanket reductions.
 

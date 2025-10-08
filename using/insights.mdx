@@ -5,7 +5,7 @@ description: 'Deep dive into incidents, root cause analysis, and evidence-based 
 
 # Using Insights & RCA: Complete Guide
 
-The**Insights**  page is where RubixKube's intelligence shines - showing you not just WHAT failed, but WHY it failed, with complete root cause analysis, evidence, and remediation suggestions.
+The **Insights**  page is where RubixKube's intelligence shines - showing you not just WHAT failed, but WHY it failed, with complete root cause analysis, evidence, and remediation suggestions.
 
 <Info>
 <strong>Based on real data:</strong> This guide uses actual screenshots from a live RubixKube console monitoring 4 incident groups with 75% RCA coverage, including CrashLoop, OOMKilled, and PodPending issues.
@@ -107,11 +107,11 @@ The**Insights**  page is where RubixKube's intelligence shines - showing you not
 ### Available filters:
 | Filter | Options | Use Case |
 |--------|---------|----------|
-|**Issue Type**  | CrashLoop, OOMKilled, PodPending, etc. | Find specific failure patterns |
-|**Severity**  | critical, high, medium, low | Prioritize by impact |
-|**Namespace**  | All namespaces in cluster | Isolate env-specific issues |
-|**Status**  | Active, Resolved, Investigating | Track incident lifecycle |
-|**Sort**  | Newest, Oldest, Severity | Order results |
+| **Issue Type**  | CrashLoop, OOMKilled, PodPending, etc. | Find specific failure patterns |
+| **Severity**  | critical, high, medium, low | Prioritize by impact |
+| **Namespace**  | All namespaces in cluster | Isolate env-specific issues |
+| **Status**  | Active, Resolved, Investigating | Track incident lifecycle |
+| **Sort**  | Newest, Oldest, Severity | Order results |
 
 ---
 
@@ -358,7 +358,7 @@ The**Insights**  page is where RubixKube's intelligence shines - showing you not
   />
 </Frame>
 
-**RECOMMENDED ACTIONS** section shows** RECOMMENDED ACTIONS** prioritized remediation steps.
+**RECOMMENDED ACTIONS ** section shows** RECOMMENDED ACTIONS** prioritized remediation steps.
 
 ### Action Card Structure
 
@@ -559,7 +559,7 @@ The**Insights**  page is where RubixKube's intelligence shines - showing you not
 
 ### Investigation Completeness
 
-### Bottom metric**:**  30%
+### Bottom metric **:**  30%
 **What it means:** - Investigation gathered 30% of possible evidence
 - Low percentage due to diagnostic tool failures (as noted in RCA)
 - Higher percentage = more comprehensive analysis
@@ -699,10 +699,10 @@ The**Insights**  page is where RubixKube's intelligence shines - showing you not
 
 | Confidence | Meaning | What to Do |
 |------------|---------|------------|
-|** 90-100%**  | High confidence in diagnosis | Trust and implement recommendations immediately |
-|** 70-89%**  | Good confidence | Review evidence, recommendations likely correct |
-|** 50-69%**  | Moderate confidence | Cross-check with Evidence tab, verify before acting |
-|**Below 50%**  | Low confidence | Manual investigation needed, use Chat for help |
+| ** 90-100%**  | High confidence in diagnosis | Trust and implement recommendations immediately |
+| ** 70-89%**  | Good confidence | Review evidence, recommendations likely correct |
+| ** 50-69%**  | Moderate confidence | Cross-check with Evidence tab, verify before acting |
+| **Below 50%**  | Low confidence | Manual investigation needed, use Chat for help |
 
 **From our example**: 40-50% confidence
 - Indicates uncertainty due to diagnostic tool failures
@@ -904,14 +904,14 @@ NEW → QUEUED_FOR_RCA → RCA_IN_PROGRESS → RCA_COMPLETED → RCA_GENERATED �
 
 | Element | Purpose | Action |
 |---------|---------|--------|
-|**Health Metrics**  | Overview of incident coverage | Check daily, target 80%+ RCA coverage |
-|**Search Bar**  | Find specific incidents | Type pod name, namespace, or error type |
-|**Severity Filter**  | Prioritize by impact | Filter for "high" and "critical" first |
-|**Incident Cards**  | List all incident groups | Click to expand details |
-|**RCA Analysis Tab**  | Root cause findings | Read before taking action |
-|**Recommendations**  | Prioritized fixes | Click "Apply" or "Ask AI How" |
-|**Timeline Tab**  | Incident progression | Use for debugging RCA issues |
-|**Evidence Tab**  | Investigation data | Review for low-confidence RCA |
+| **Health Metrics**  | Overview of incident coverage | Check daily, target 80%+ RCA coverage |
+| **Search Bar**  | Find specific incidents | Type pod name, namespace, or error type |
+| **Severity Filter**  | Prioritize by impact | Filter for "high" and "critical" first |
+| **Incident Cards**  | List all incident groups | Click to expand details |
+| **RCA Analysis Tab**  | Root cause findings | Read before taking action |
+| **Recommendations**  | Prioritized fixes | Click "Apply" or "Ask AI How" |
+| **Timeline Tab**  | Incident progression | Use for debugging RCA issues |
+| **Evidence Tab**  | Investigation data | Review for low-confidence RCA |
 
 ---
 

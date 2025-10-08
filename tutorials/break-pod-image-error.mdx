@@ -5,7 +5,7 @@ description: 'Watch RubixKube detect and analyze container image issues in real-
 
 # Detecting Container Image Issues
 
-One of the most common Kubernetes failures is**ImagePullBackOff**  - when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
+One of the most common Kubernetes failures is **ImagePullBackOff**  - when a pod can't pull its container image. Let's see how RubixKube detects and helps you resolve this issue.
 
 <Info>
 **What you'll learn:** - How RubixKube detects image pull failures
@@ -19,7 +19,7 @@ One of the most common Kubernetes failures is**ImagePullBackOff**  - when a pod 
 
 ## The Scenario
 
-We'll intentionally create a pod with an invalid container image to trigger an**ImagePullBackOff**  error, then watch RubixKube detect it.
+We'll intentionally create a pod with an invalid container image to trigger an **ImagePullBackOff**  error, then watch RubixKube detect it.
 
 ### Create the Failing Pod
 
@@ -63,7 +63,7 @@ broken-image-demo   0/1     ImagePullBackOff   0          2m
 **What's happening:** 1. Kubernetes tries to pull `nonexistent-registry.io/invalid-image:v1.0`
 2. Registry doesn't exist → Pull fails
 3. Kubernetes retries with exponential backoff
-4. Status cycles:**Pending**  →**Pending**  →**Pending** 
+4. Status cycles:**Pending **  →**Pending **  →**Pending** 
 <Accordion title="See the Kubernetes events">
   ```bash
   kubectl describe pod broken-image-demo -n rubixkube-tutorials
@@ -116,7 +116,7 @@ Now open the [RubixKube Dashboard](https://console.rubixkube.ai/dashboard).
 
 ## Viewing the Incident Details
 
-Click on**Insights**  in the navigation to see detailed analysis:
+Click on **Insights**  in the navigation to see detailed analysis:
 
 <Frame>
   <img
@@ -131,12 +131,12 @@ Click on**Insights**  in the navigation to see detailed analysis:
 ### You'll see:
 | Field | Value | Meaning |
 |-------|-------|---------|
-|**Type**  | ImagePullBackOff | Kubernetes can't pull the image |
-|**Severity**  | Medium | Not critical but needs attention |
-|**Affected Resource**  | Pod/broken-image-demo | Which pod is impacted |
-|**Namespace**  | rubixkube-tutorials | Where the pod lives |
-|**Detected**  | 2 minutes ago | When RubixKube first saw it |
-|**Confidence**  | 90%+ | How certain RubixKube is about the diagnosis |
+| **Type**  | ImagePullBackOff | Kubernetes can't pull the image |
+| **Severity**  | Medium | Not critical but needs attention |
+| **Affected Resource**  | Pod/broken-image-demo | Which pod is impacted |
+| **Namespace**  | rubixkube-tutorials | Where the pod lives |
+| **Detected**  | 2 minutes ago | When RubixKube first saw it |
+| **Confidence**  | 90%+ | How certain RubixKube is about the diagnosis |
 
 ### AI-Generated Suggestions
 
@@ -246,7 +246,7 @@ fixed-image-demo   1/1     Running   0          30s
 
 ## What RubixKube Learned
 
-After you fix this issue, the**Memory Engine**  stores:
+After you fix this issue, the **Memory Engine**  stores:
 
 <CardGroup cols={2}>
   <Card title="The Problem" icon="triangle-exclamation">
@@ -275,11 +275,11 @@ Based on RubixKube's Memory Engine and common patterns:
 
 | Cause | Frequency | Fix Time | Prevention |
 |-------|-----------|----------|------------|
-|**Typo in image name**  | 40% | 1 min | Automation, validation |
-|**Missing image tag**  | 25% | 2 min | Always specify tags |
-|**Private registry auth**  | 20% | 5 min | Configure imagePullSecrets |
-|**Network policy blocking**  | 10% | 10 min | Allow egress to registries |
-|**Registry rate limiting**  | 5% | 15 min | Use image caching |
+| **Typo in image name**  | 40% | 1 min | Automation, validation |
+| **Missing image tag**  | 25% | 2 min | Always specify tags |
+| **Private registry auth**  | 20% | 5 min | Configure imagePullSecrets |
+| **Network policy blocking**  | 10% | 10 min | Allow egress to registries |
+| **Registry rate limiting**  | 5% | 15 min | Use image caching |
 
 <Tip>
 <strong>Pro Tip:</strong> Always use specific image tags (`:v1.2.3`) instead of `:latest`. This prevents unexpected changes and makes rollbacks easier.

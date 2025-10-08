@@ -263,13 +263,13 @@ Guardian → Safety Decision → {
 
 | Feature | Traditional Monitoring | Single AI Bot | Agent Mesh (SRI) |
 |---------|----------------------|---------------|------------------|
-|**Specialization**  | Tools per domain | One system does all | Agents per expertise |
-|**Reasoning**  | Rule-based | Generic AI | Domain-specific intelligence |
-|**Collaboration**  | Manual integration | N/A | Native mesh communication |
-|**Fault Tolerance**  | Tool outages break flow | Single point of failure | Distributed resilience |
-|**Scalability**  | Add more tools | Scale up one system | Add more agents |
-|**Transparency**  | Logs everywhere | Black box | Agent-level audit trails |
-|**Learning**  | Humans update rules | Model retraining | Continuous agent learning |
+| **Specialization**  | Tools per domain | One system does all | Agents per expertise |
+| **Reasoning**  | Rule-based | Generic AI | Domain-specific intelligence |
+| **Collaboration**  | Manual integration | N/A | Native mesh communication |
+| **Fault Tolerance**  | Tool outages break flow | Single point of failure | Distributed resilience |
+| **Scalability**  | Add more tools | Scale up one system | Add more agents |
+| **Transparency**  | Logs everywhere | Black box | Agent-level audit trails |
+| **Learning**  | Humans update rules | Model retraining | Continuous agent learning |
 
 ---
 
@@ -295,7 +295,7 @@ Each agent reports:
 
 <AccordionGroup>
   <Accordion title=" Healthy Agent">
-    - Status:**Active**  - Last seen:**Active**  (within 60 seconds)
+    - Status:**Active **  - Last seen:**Active**  (within 60 seconds)
     - Response time: less than 2 seconds
     - Error rate: less than 1%
   </Accordion>
@@ -309,7 +309,7 @@ Each agent reports:
   </Accordion>
 
   <Accordion title=" Failed Agent">
-    - Status:**Error**  or**Error**  - Last seen: greater than 5 minutes ago
+    - Status:**Error **  or**Error**  - Last seen: greater than 5 minutes ago
     - No responses
     - Error rate: greater than 5%
     
@@ -364,7 +364,7 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
 
 <AccordionGroup>
   <Accordion title="How many agents run in my cluster?">
-**In your cluster:** Just the** In your cluster:** runs (lightweight, ~100MB RAM).
+**In your cluster:** Just the ** In your cluster:** runs (lightweight, ~100MB RAM).
     
 **In RubixKube Cloud:** All other agents (RCA, Remediation, Memory, Guardian) run centrally - no additional load on your infrastructure.
     
@@ -373,7 +373,7 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
 
   <Accordion title="Can agents act without permission?">
     ### By default: NO.
-    Agents operate in**observe-only mode**  initially. They will:
+    Agents operate in **observe-only mode**  initially. They will:
     -  Detect issues
     -  Investigate root causes
     -  Propose fixes

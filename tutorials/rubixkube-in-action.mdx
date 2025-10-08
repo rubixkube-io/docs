@@ -5,7 +5,7 @@ description: 'Real-world scenario - Watch RubixKube detect multiple failures and
 
 # RubixKube in Action: Multi-Failure Detection
 
-See RubixKube handle**multiple simultaneous failures**  - just like real production incidents. This tutorial demonstrates the power of the Agent Mesh and Memory Engine working together.
+See RubixKube handle **multiple simultaneous failures**  - just like real production incidents. This tutorial demonstrates the power of the Agent Mesh and Memory Engine working together.
 
 <Info>
 **Real Scenario:** We created 3 different pod failures at once. RubixKube detected all of them, prioritized by severity, and provided specific guidance for each.
@@ -34,13 +34,13 @@ In our demo, we deployed 3 pods that would fail in different ways:
   </Card>
 </CardGroup>
 
-This simulates a real incident where**multiple things go wrong at once**  (bad deployment, resource misconfiguration, application bug).
+This simulates a real incident where **multiple things go wrong at once**  (bad deployment, resource misconfiguration, application bug).
 
 ---
 
 ## RubixKube's Response (Real Data)
 
-Within** 2 minutes** , RubixKube detected ALL THREE failures:
+Within ** 2 minutes** , RubixKube detected ALL THREE failures:
 
 <Frame>
   <img
@@ -53,7 +53,7 @@ Within** 2 minutes** , RubixKube detected ALL THREE failures:
 ### What Happened
 
 **Dashboard Metrics Changed:** - ** Active Insights:** - ** Dashboard Metrics Changed:** (three separate issues detected)
-- **Notifications:** 0 →**  20+** (detailed event stream)
+- **Notifications:** 0 → **  20+** (detailed event stream)
 - **System Health:** 100% (overall cluster still healthy - isolated failures)
 - **Agents:** 3/3 Active (all AI agents working)
 
@@ -69,14 +69,14 @@ Within** 2 minutes** , RubixKube detected ALL THREE failures:
 ```
 
 <Note>
-**Intelligent Prioritization:** RubixKube marked the OOMKilled as** Intelligent Prioritization:** RubixKube marked the OOMKilled as** Intelligent Prioritization:** because they're isolated pod failures.
+**Intelligent Prioritization:** RubixKube marked the OOMKilled as ** Intelligent Prioritization:** RubixKube marked the OOMKilled as ** Intelligent Prioritization:** because they're isolated pod failures.
 </Note>
 
 ---
 
 ## Detailed Incident Analysis
 
-Navigate to**Insights**  to see comprehensive analysis:
+Navigate to **Insights**  to see comprehensive analysis:
 
 <Frame>
   <img
@@ -120,7 +120,7 @@ Namespace: rubixkube-tutorials
 
 ### Incident #3: CrashLoop in memory-hog-demo
 
-**Related Incident:** - This crash loop is** Related Incident:** the OOMKilled
+**Related Incident:** - This crash loop is ** Related Incident:** the OOMKilled
 - RubixKube shows the correlation
 - Fixing the memory issue resolves both
 
@@ -189,7 +189,7 @@ Behind the scenes, multiple agents worked together:
 
 ### 3. Event Correlation
 
-**RubixKube connected related incidents:** - Recognized memory-hog-demo's crash loop is** RubixKube connected related incidents:** OOMKilled
+**RubixKube connected related incidents:** - Recognized memory-hog-demo's crash loop is ** RubixKube connected related incidents:** OOMKilled
 - Suggested fixing the root cause (memory) would resolve both
 
 **This prevents wasted effort** fixing symptoms instead of causes.

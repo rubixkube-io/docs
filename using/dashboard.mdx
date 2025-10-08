@@ -5,7 +5,7 @@ description: 'Master the RubixKube Dashboard - your command center for infrastru
 
 # Using the Dashboard: Complete Guide
 
-The**Dashboard**  is your central command center - providing real-time system health, active incidents, agent status, infrastructure overview, and live activity streams all in one view.
+The **Dashboard**  is your central command center - providing real-time system health, active incidents, agent status, infrastructure overview, and live activity streams all in one view.
 
 <Info>
 <strong>Based on real data:</strong> This guide uses actual screenshots from a live RubixKube dashboard monitoring a Kubernetes cluster with 14 pods, 7 namespaces, and 4 deployments.
@@ -149,10 +149,10 @@ The dashboard header shows:
 ### Summary metrics:
 | Metric | Our Cluster | What It Means |
 |--------|-------------|---------------|
-|**Nodes**  | 1 | Physical/virtual machines |
-|**Pods**  | 14 | Running containers (including our 3 failing + healthy pods) |
-|**Deployments**  | 4 | Managed application sets |
-|**Services**  | 3 | Network endpoints |
+| **Nodes**  | 1 | Physical/virtual machines |
+| **Pods**  | 14 | Running containers (including our 3 failing + healthy pods) |
+| **Deployments**  | 4 | Managed application sets |
+| **Services**  | 3 | Network endpoints |
 
 **Visual indicators:** - Server icon for Nodes
 - Cube icon for Pods
@@ -173,8 +173,8 @@ The dashboard header shows:
 ### Click "Show details" to reveal:
 | Additional Metric | Value | What It Means |
 |-------------------|-------|---------------|
-|**NAMESPACES**  | 7 | Kubernetes namespaces in cluster |
-|**AGENTS**  | 1 | RubixKube agent pods deployed |
+| **NAMESPACES**  | 7 | Kubernetes namespaces in cluster |
+| **AGENTS**  | 1 | RubixKube agent pods deployed |
 
 **When expanded:** - Button changes to "Hide details"
 - Two additional metrics appear at the bottom
@@ -239,7 +239,7 @@ The dashboard header shows:
 ### Example from our dashboard:
      "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
     - **Type**: INSIGHT
-    - **Severity**:**  high**(red text)
+    - **Severity **:**  high**(red text)
     - **Status**: active
     - **Time**: 10/4/2025 01:58 AM
     
@@ -353,7 +353,7 @@ Each event card shows:
 ### What appeared in Activity Feed:
 >  "Out of memory (OOMKilled) detected on a pod in Pod/memory-hog-demo"
 > - **Type**: INSIGHT
-> - **Severity**:**  high**(red text)
+> - **Severity **:**  high**(red text)
 > - **Status**: active
 > - **Time**: 01:58 AM
 
@@ -962,13 +962,13 @@ Each event card shows:
 ### Dashboard at a glance:
 | Panel | What You'll See | Normal Range | Action When Abnormal |
 |-------|-----------------|--------------|----------------------|
-|**System Health**  | Percentage | 95-100% | Below 95% → Check Active Insights |
-|**Active Insights**  | Count + badge | 0-2 | 3+ → Review Activity Feed by severity |
-|**RCA Analysis**  | Report count | Varies | New report → Read findings in Insights |
-|**Agents**  | Fraction | 3/3 or 4/4 | Not all active → Go to Agents page |
-|**Infrastructure**  | Resource counts | Your baseline | Unexpected changes → Verify cluster |
-|**Activity Feed**  | Event stream | Varies | New HIGH severity → Investigate immediately |
-|**RCA Stream**  | Live status | LIVE 0 events | IN_PROGRESS → Watch completion |
+| **System Health**  | Percentage | 95-100% | Below 95% → Check Active Insights |
+| **Active Insights**  | Count + badge | 0-2 | 3+ → Review Activity Feed by severity |
+| **RCA Analysis**  | Report count | Varies | New report → Read findings in Insights |
+| **Agents**  | Fraction | 3/3 or 4/4 | Not all active → Go to Agents page |
+| **Infrastructure**  | Resource counts | Your baseline | Unexpected changes → Verify cluster |
+| **Activity Feed**  | Event stream | Varies | New HIGH severity → Investigate immediately |
+| **RCA Stream**  | Live status | LIVE 0 events | IN_PROGRESS → Watch completion |
 
 ---
 
@@ -978,7 +978,7 @@ Each event card shows:
 -  Active Insights:** 3 **  (broken-image-demo, crash-loop-demo, memory-hog-demo)
 -  Intelligent Analysis:** 3 RCA reports**  (all analyzed with root causes)
 -  Agents:** 3/4 active**  (1 offline, 3 operational)
--  Infrastructure:** 1 node, 14 pods, 4 deployments, 3 services**  -  Expanded:** 1 node, 14 pods, 4 deployments, 3 services**  -  Activity Feed:** 1 node, 14 pods, 4 deployments, 3 services**  (4 INSIGHTS, 3 RCA reports)
+-  Infrastructure:** 1 node, 14 pods, 4 deployments, 3 services **  -  Expanded:** 1 node, 14 pods, 4 deployments, 3 services **  -  Expanded:** 1 node, 14 pods, 4 deployments, 3 services**  (4 INSIGHTS, 3 RCA reports)
 -  RCA Stream:**LIVE**  with 0 active events
 
 **This demonstrates:** - Dashboard provides complete visibility even when things are failing
@@ -993,15 +993,15 @@ Each event card shows:
 ### Clickable actions:
 | Element | Action | Result |
 |---------|--------|--------|
-|**Refresh all data**  | Click button | Updates all dashboard metrics |
-|**Active Insights card**  | Click card | Navigate to Insights page |
-|**Agents card**  | Click card | Navigate to Agents page |
-|**Infrastructure "Refresh data"**  | Click button | Updates only infrastructure metrics |
-|**Infrastructure "Show details"**  | Click button | Expands to show namespaces and agents |
-|**Infrastructure "View page"**  | Click link | Navigate to full Infrastructure topology |
-|**Activity Feed event**  | Click event card | View full event details and insights |
-|**INSIGHT badge**  | Click badge | View insight details |
-|**RCA badge**  | Click badge | View RCA report with findings |
+| **Refresh all data**  | Click button | Updates all dashboard metrics |
+| **Active Insights card**  | Click card | Navigate to Insights page |
+| **Agents card**  | Click card | Navigate to Agents page |
+| **Infrastructure "Refresh data"**  | Click button | Updates only infrastructure metrics |
+| **Infrastructure "Show details"**  | Click button | Expands to show namespaces and agents |
+| **Infrastructure "View page"**  | Click link | Navigate to full Infrastructure topology |
+| **Activity Feed event**  | Click event card | View full event details and insights |
+| **INSIGHT badge**  | Click badge | View insight details |
+| **RCA badge**  | Click badge | View RCA report with findings |
 
 ---
 

@@ -60,7 +60,7 @@ Autonomous systems without guardrails are dangerous:
 
 ## The Seven Layers of Guardrails
 
-RubixKube implements**defense in depth**  with multiple safety layers:
+RubixKube implements **defense in depth**  with multiple safety layers:
 
 ### 1. Scope Limiting
 
@@ -69,10 +69,10 @@ RubixKube implements**defense in depth**  with multiple safety layers:
 <Tabs>
   <Tab title="What It Does">
 ### Blast Radius Containment:
-    - Changes affect**one pod**  → not the deployment
-    - Changes affect**one deployment**  → not the namespace
-    - Changes affect**one namespace**  → not the cluster
-    - Changes affect**one cluster**  → not all clusters
+    - Changes affect **one pod**  → not the deployment
+    - Changes affect **one deployment**  → not the namespace
+    - Changes affect **one namespace**  → not the cluster
+    - Changes affect **one cluster**  → not all clusters
     
 **Example:** ```yaml
     # Auto-fix will do this:
@@ -766,7 +766,7 @@ Result: Fast response when humans decide risk is acceptable
 
 ### Access Guardrail Settings
 
-Navigate to**Settings → Security → Guardrails**  (coming soon in Beta).
+Navigate to **Settings → Security → Guardrails**  (coming soon in Beta).
 
 Currently, configure via API or support team:
 
@@ -790,15 +790,15 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
 
 <CardGroup cols={2}>
   <Card title="Start Conservative" icon="shield">
-    Begin with**observe-only mode** . Let RubixKube watch for 1-2 weeks before enabling auto-fix.
+    Begin with **observe-only mode** . Let RubixKube watch for 1-2 weeks before enabling auto-fix.
   </Card>
   
   <Card title="Enable Gradually" icon="stairs">
-    Turn on auto-fix for**low-risk actions first**  (pod restarts). Add medium-risk after trust builds.
+    Turn on auto-fix for **low-risk actions first**  (pod restarts). Add medium-risk after trust builds.
   </Card>
   
   <Card title="Test in Staging" icon="flask">
-    Enable aggressive auto-fix in**staging first** . Learn guardrail behavior before production.
+    Enable aggressive auto-fix in **staging first** . Learn guardrail behavior before production.
   </Card>
   
   <Card title="Monitor Audit Logs" icon="list-check">
@@ -806,7 +806,7 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
   </Card>
   
   <Card title="Set Clear Policies" icon="file-contract">
-    Define**what's allowed when**  explicitly. Ambiguity creates risk.
+    Define **what's allowed when**  explicitly. Ambiguity creates risk.
   </Card>
   
   <Card title="Practice Rollbacks" icon="rotate-left">
@@ -820,7 +820,7 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
 
 <AccordionGroup>
   <Accordion title="Can I disable guardrails entirely?">
-**No.** Some guardrails are** No.** for safety:
+**No.** Some guardrails are ** No.** for safety:
     
     - Forbidden actions list (e.g., delete namespaces)
     - Audit logging
@@ -841,7 +841,7 @@ curl -X POST https://api.rubixkube.ai/v2/guardrails/config \
   <Accordion title="Do guardrails slow down incident response?">
 **For low-risk actions: NO**    Guardrail evaluation takes less than 100ms
     
-**For high-risk actions: YES, intentionally**    The 30-60 seconds for human approval is**  worth it**to prevent making incidents worse.
+**For high-risk actions: YES, intentionally **    The 30-60 seconds for human approval is**  worth it**to prevent making incidents worse.
     
 **Most incidents** (80%+) are low/medium risk → Fast autonomous response
 **Critical incidents** (20%) → Human judgment essential anyway

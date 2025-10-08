@@ -631,7 +631,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 
 1. Go back to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. You should see your cluster appear in the dashboard
-3. The **Observer Status** should change from "Awaiting installation" to **  "Connected"**
+3. The **Observer Status ** should change from "Awaiting installation" to **  "Connected"**
     <Note>
 <strong>Note:</strong> It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
     </Note>
@@ -808,20 +808,20 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 
 | Component | Requirement |
 |-----------|------------|
-|**OS**  | macOS 10.15+, Windows 10+, Linux (any modern distro) |
-|**RAM**  | 4GB minimum, 8GB recommended |
-|**Disk Space**  | 20GB free space |
-|**CPU**  | 2 cores minimum, 4 cores recommended |
-|**Docker**  | Version 20.10+ |
-|**Internet**  | Required for installation and RubixKube sync |
+| **OS**  | macOS 10.15+, Windows 10+, Linux (any modern distro) |
+| **RAM**  | 4GB minimum, 8GB recommended |
+| **Disk Space**  | 20GB free space |
+| **CPU**  | 2 cores minimum, 4 cores recommended |
+| **Docker**  | Version 20.10+ |
+| **Internet**  | Required for installation and RubixKube sync |
 
 ### For Production-Like Testing
 
 | Component | Recommendation |
 |-----------|---------------|
-|**RAM**  | 16GB+ |
-|**CPU**  | 4+ cores |
-|**Disk**  | SSD with 50GB+ free |
+| **RAM**  | 16GB+ |
+| **CPU**  | 4+ cores |
+| **Disk**  | SSD with 50GB+ free |
 
 ---
 
@@ -829,13 +829,13 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 
 | Feature | KIND (Local) | Cloud Cluster |
 |---------|-------------|---------------|
-|**Cost**  | Free | Paid |
-|**Setup Time**  | 5-10 minutes | 10-30 minutes |
-|**Use Case**  | Testing, Learning | Production |
-|**Performance**  | Limited by your machine | Full cloud resources |
-|**Persistence**  | Data lost when cluster deleted | Persistent storage |
-|**Internet Access**  | Works offline (after setup) | Always requires internet |
-|**Load Balancers**  | Simulated only | Real cloud load balancers |
+| **Cost**  | Free | Paid |
+| **Setup Time**  | 5-10 minutes | 10-30 minutes |
+| **Use Case**  | Testing, Learning | Production |
+| **Performance**  | Limited by your machine | Full cloud resources |
+| **Persistence**  | Data lost when cluster deleted | Persistent storage |
+| **Internet Access**  | Works offline (after setup) | Always requires internet |
+| **Load Balancers**  | Simulated only | Real cloud load balancers |
 
 <Tip>
 <strong>Best Practice:</strong> Start with KIND to learn RubixKube, then move to cloud for production workloads.

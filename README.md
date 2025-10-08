@@ -111,8 +111,6 @@ Open your dashboard and try:
 - **[Tutorials](https://docs.rubixkube.ai/tutorials/first-steps)**: Hands-on guides: break pods, analyze costs, troubleshoot
 - **[Core Concepts](https://docs.rubixkube.ai/concepts/what-is-sri)**: SRI, Agent Mesh, Memory Engine, Guardrails
 - **[Using RubixKube](https://docs.rubixkube.ai/using/dashboard)**: Dashboard, insights, agents, integrations
-- **[API Reference](https://docs.rubixkube.ai/api-reference/introduction)**: REST APIs, webhooks, and CLI commands
-
 ---
 
 ## 👥 Who Uses RubixKube?
@@ -162,7 +160,6 @@ mint dev
 - **[Documentation](https://docs.rubixkube.ai)**: Complete guides and API references
 - **[Console/Dashboard](https://console.rubixkube.ai)**: Manage your RubixKube deployment
 - **[Blog](https://rubixkube.ai/blog)**: Deep dives, tutorials, and announcements
-- **[Community Slack](https://rubixkube-community.slack.com)**: Connect with users and get support
 - **[X/Twitter](https://x.com/RubixKubeHQ)**: Follow for updates and tips
 - **[LinkedIn](https://linkedin.com/company/rubixkube)**: Company news and industry insights
 - **[GitHub](https://github.com/rubixkube-io)**: Open source components and examples
@@ -185,7 +182,6 @@ We ❤️ contributions! Here's how to help:
 
 ### Feature Requests
 - Have an idea? [Start a discussion](https://github.com/rubixkube-io/rubixkube/discussions)
-- Join our [Community Slack](https://rubixkube-community.slack.com)
 - Help us prioritize what to build next
 
 ### Platform Development

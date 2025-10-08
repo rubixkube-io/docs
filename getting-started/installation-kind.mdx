@@ -13,7 +13,7 @@ Welcome! This guide will help you install RubixKube on your **local machine** us
 <Info>
   Complete Beginner?
 
-   No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
+  No problem! We'll walk you through installing everything from scratch, even if you've never used Docker or Kubernetes before.
 </Info>
 
 ---
@@ -37,7 +37,7 @@ Before we can run RubixKube locally, we need a few tools:
 <Note>
   Estimated Time:
 
-   20-30 minutes for first-time installation (including downloads)
+  20-30 minutes for first-time installation (including downloads)
 </Note>
 
 ---
@@ -86,7 +86,7 @@ Docker is required to run KIND. Choose your operating system below:
     <Tip>
       First Time?
 
-       Docker may ask for system permissions. Click "OK" to allow it.
+      Docker may ask for system permissions. Click "OK" to allow it.
     </Tip>
   </Tab>
   <Tab title="Windows">
@@ -139,7 +139,7 @@ Docker is required to run KIND. Choose your operating system below:
     <Warning>
       Virtualization Required:
 
-       Docker Desktop requires hardware virtualization. Enable VT-x/AMD-V in your BIOS if you see errors.
+      Docker Desktop requires hardware virtualization. Enable VT-x/AMD-V in your BIOS if you see errors.
     </Warning>
   </Tab>
   <Tab title="Linux">
@@ -213,7 +213,7 @@ Docker is required to run KIND. Choose your operating system below:
     <Tip>
       Permission Denied?
 
-       Make sure you logged out and back in after adding your user to the docker group.
+      Make sure you logged out and back in after adding your user to the docker group.
     </Tip>
   </Tab>
 </Tabs>
@@ -466,7 +466,7 @@ kubectl cluster-info --context kind-rubixkube-local
 <Tip>
   Pro Tip:
 
-   The cluster automatically sets itself as your active Kubernetes context, so kubectl commands will target it.
+  The cluster automatically sets itself as your active Kubernetes context, so kubectl commands will target it.
 </Tip>
 
 ### Verify Your Cluster is Running
@@ -498,7 +498,7 @@ rubixkube-local-control-plane   Ready    control-plane   1m    v1.27.3
 <Note>
   Troubleshooting:
 
-   If the node shows "NotReady", wait 30 seconds and check again. It takes time to initialize.
+  If the node shows "NotReady", wait 30 seconds and check again. It takes time to initialize.
 </Note>
 
 ---
@@ -530,7 +530,7 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 <Warning>
   Important:
 
-   Use YOUR specific command from the dashboard - it contains your unique API key!
+  Use YOUR specific command from the dashboard - it contains your unique API key!
 </Warning>
 
 ### Run the Installation Command
@@ -556,7 +556,7 @@ secret/rubixkube-credentials created
 <Tip>
   What just happened?
 
-   RubixKube installed an "observer" agent in your cluster that monitors your infrastructure and reports back to the RubixKube platform.
+  RubixKube installed an "observer" agent in your cluster that monitors your infrastructure and reports back to the RubixKube platform.
 </Tip>
 
 ---
@@ -679,7 +679,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 <Tip>
   Tip:
 
-   If you see steady log output with [INFO] messages, everything is working correctly!
+  If you see steady log output with [INFO] messages, everything is working correctly!
 </Tip>
 
 ### Verify in RubixKube Dashboard
@@ -691,7 +691,7 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 <Note>
   Note:
 
-   It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
+  It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
 </Note>
 
 ---
@@ -741,15 +741,17 @@ kind get clusters
 docker stop rubixkube-local-control-plane
 ```
 
-**Start your cluster again:** 
-```bash docker start rubixkube-local-control-plane
+**Start your cluster again:**
 
-````
+```bash
+docker start rubixkube-local-control-plane
+```
 
 **Delete your cluster** (removes everything):
+
 ```bash
 kind delete cluster --name rubixkube-local
-````
+```
 
 **Create cluster with custom configuration:**
 
@@ -898,7 +900,7 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 <Tip>
   Best Practice:
 
-   Start with KIND to learn RubixKube, then move to cloud for production workloads.
+  Start with KIND to learn RubixKube, then move to cloud for production workloads.
 </Tip>
 
 ---
@@ -923,5 +925,5 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 <Note>
   Stuck?
 
-   Don't hesitate to reach out. We're here to help you get started with RubixKube!
+  Don't hesitate to reach out. We're here to help you get started with RubixKube!
 </Note>

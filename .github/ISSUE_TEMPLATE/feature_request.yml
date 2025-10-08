@@ -1,0 +1,109 @@
+name: ✨ Feature Request
+description: Suggest an improvement or new feature for the RubixKube documentation
+title: "[Feature]: "
+labels: ["enhancement", "documentation"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Documentation Feature Request
+
+        Thank you for helping improve the RubixKube documentation! We welcome suggestions for new content, improvements, or enhancements.
+
+  - type: checkboxes
+    attributes:
+      label: Before submitting this feature request
+      description: Please ensure you've completed these steps
+      options:
+        - label: I have searched existing [issues](https://github.com/rubixkube-io/docs/issues) for similar requests
+          required: true
+        - label: I have checked if this content already exists in the [current documentation](https://docs.rubixkube.ai)
+          required: true
+
+  - type: dropdown
+    attributes:
+      label: Request Type
+      description: What type of documentation improvement are you requesting?
+      options:
+        - New guide/tutorial
+        - New concept explanation
+        - Code example
+        - API documentation
+        - Troubleshooting guide
+        - FAQ addition
+        - Navigation/structure improvement
+        - Visual improvement (diagrams, screenshots)
+        - Translation to another language
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Description
+      description: Describe the feature or improvement you'd like to see
+      placeholder: |
+        I would like to see a guide that explains [topic] because [reason].
+
+        This would help users who [describe the user need] by [explaining the benefit].
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Use Case
+      description: Describe how users would benefit from this improvement
+      placeholder: |
+        Users who [describe the user scenario] would benefit because [explain the value].
+
+        For example:
+        - New users learning RubixKube would understand [concept] faster
+        - Developers integrating with the API would have clearer examples
+        - SREs troubleshooting issues would find solutions more quickly
+
+  - type: textarea
+    attributes:
+      label: Proposed Solution
+      description: If you have specific ideas for how this should be implemented, describe them here
+      placeholder: |
+        I suggest adding a new page at [proposed URL path] that covers:
+        1. [Section 1 topic]
+        2. [Section 2 topic]
+        3. [Section 3 topic]
+
+        The page should include:
+        - [Type of content, e.g., code examples, diagrams, screenshots]
+        - [Specific examples or use cases]
+        - [Links to related content]
+
+  - type: textarea
+    attributes:
+      label: Alternative Solutions
+      description: Have you considered other ways to address this need? What are the trade-offs?
+      placeholder: |
+        Alternative approaches I've considered:
+        1. [Alternative 1] - Pros: [pros], Cons: [cons]
+        2. [Alternative 2] - Pros: [pros], Cons: [cons]
+
+        I think this approach is best because [reasoning].
+
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Any additional information that might help us evaluate and implement this request
+      placeholder: |
+        - Similar content in other projects: [links or references]
+        - Target audience: [who would benefit most]
+        - Priority justification: [why this should be prioritized]
+        - Related issues or discussions: [links]
+
+  - type: checkboxes
+    attributes:
+      label: Contribution
+      description: Would you like to help implement this feature?
+      options:
+        - label: I'm willing to help write this content
+        - label: I can provide examples or screenshots
+        - label: I can help review and test the content
+

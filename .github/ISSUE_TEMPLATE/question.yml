@@ -1,0 +1,116 @@
+name: ❓ Question/Support
+description: Ask a question about the RubixKube documentation or get help with something
+title: "[Question]: "
+labels: ["question", "support"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ❓ Question or Support Request
+
+        Have a question about the RubixKube documentation? Need help understanding a concept or finding specific information? We're here to help!
+
+        **Note**: For technical issues with the RubixKube platform itself, please use the [main repository](https://github.com/rubixkube-io/rubixkube/issues).
+
+  - type: checkboxes
+    attributes:
+      label: Before asking your question
+      description: Please help us help you by checking these first
+      options:
+        - label: I have searched the [documentation](https://docs.rubixkube.ai) for an answer
+          required: true
+        - label: I have searched existing [issues](https://github.com/rubixkube-io/docs/issues) for similar questions
+          required: true
+        - label: I have checked the [FAQ](https://docs.rubixkube.ai/support/faq) for common questions
+          required: true
+
+  - type: dropdown
+    attributes:
+      label: Question Category
+      description: What type of question do you have?
+      options:
+        - Documentation content
+        - Navigation or site structure
+        - Installation or setup
+        - Concepts and terminology
+        - API reference
+        - Tutorials or examples
+        - Troubleshooting
+        - Contributing to docs
+        - Technical writing
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Your Question
+      description: Please describe your question clearly and provide as much context as possible
+      placeholder: |
+        I'm trying to [what you're trying to do] but I'm having trouble with [specific problem].
+
+        I expected [what you expected to happen] but instead [what actually happened].
+
+        Here are the steps I took:
+        1. [Step 1]
+        2. [Step 2]
+        3. [Step 3]
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Relevant Page/Documentation Section
+      description: If your question relates to a specific page or section, please provide the URL
+      placeholder: https://docs.rubixkube.ai/getting-started/installation-kind
+
+  - type: textarea
+    attributes:
+      label: What I've Tried
+      description: Describe what you've already attempted to resolve this issue
+      placeholder: |
+        I tried:
+        - [Method 1] but it resulted in [outcome]
+        - [Method 2] but encountered [specific error]
+        - Searched for [keywords] in the docs but didn't find what I needed
+
+  - type: textarea
+    attributes:
+      label: Environment Details (if applicable)
+      description: If this relates to a technical issue, please provide relevant environment information
+      placeholder: |
+        - RubixKube version: [version number]
+        - Operating System: [OS and version]
+        - Browser: [browser and version]
+        - Kubernetes version: [version number]
+        - Any error messages: [paste error messages here]
+
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Any other information that might help us answer your question
+      placeholder: |
+        - My background: [e.g., I'm new to Kubernetes/RubixKube]
+        - My goal: [what you're ultimately trying to achieve]
+        - Timeline: [e.g., I need this for a project deadline]
+        - Related topics I've looked at: [other docs or resources]
+
+  - type: checkboxes
+    attributes:
+      label: Response Preference
+      description: How would you like us to respond?
+      options:
+        - label: I need a detailed technical explanation
+        - label: I prefer a simple, high-level answer
+        - label: I need code examples or commands
+        - label: I need links to specific documentation
+        - label: I need help with next steps after getting an answer
+
+  - type: checkboxes
+    attributes:
+      label: Follow-up
+      description: Would you like to help improve the documentation based on this question?
+      options:
+        - label: I'm willing to help improve the documentation once I understand the answer
+

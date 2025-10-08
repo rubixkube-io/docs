@@ -1,0 +1,25 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation Website
+    url: https://docs.rubixkube.ai
+    about: Visit the live documentation site for guides, tutorials, and API references
+
+  - name: 💬 Community Slack
+    url: https://rubixkube-community.slack.com
+    about: Join our community Slack for discussions and support
+
+  - name: 🐛 Platform Bug Reports
+    url: https://github.com/rubixkube-io/rubixkube/issues
+    about: Report issues with the RubixKube platform (not documentation)
+
+  - name: 📧 Email Support
+    url: mailto:support@rubixkube.ai
+    about: Get help via email for technical issues or questions
+
+  - name: 🛡️ Security Issues
+    url: mailto:security@rubixkube.ai
+    about: Report security vulnerabilities (see SECURITY.md for details)
+
+  - name: 💼 Feature Requests (Platform)
+    url: https://github.com/rubixkube-io/rubixkube/discussions
+    about: Request features for the RubixKube platform

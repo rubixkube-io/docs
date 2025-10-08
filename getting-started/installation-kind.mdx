@@ -55,7 +55,8 @@ Docker is required to run KIND. Choose your operating system below:
 
 ### Option 2: Download from Docker Website
     1. Visit [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop)
-    2. Click **"Download for Mac"** 3. Choose your Mac type:
+    2. Click **"Download for Mac"**
+    3. Choose your Mac type:
        - **Apple Silicon** (M1/M2/M3 Macs)
        - **Intel Chip** (older Macs)
     4. Open the downloaded `.dmg` file
@@ -98,7 +99,8 @@ Docker is required to run KIND. Choose your operating system below:
 
 ### Step 2: Download Docker Desktop
     1. Visit [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-    2. Click **"Download for Windows"** 3. Run the installer (`Docker Desktop Installer.exe`)
+    2. Click **"Download for Windows"**
+    3. Run the installer (`Docker Desktop Installer.exe`)
     4. Follow the installation wizard
     5. Ensure **"Use WSL 2 instead of Hyper-V"** is checked
     6. Complete installation and restart if prompted
@@ -614,7 +616,8 @@ See what RubixKube observer is doing:
 kubectl logs -n rubixkube deployment/rubixkube-observer
 ```
 
-**Healthy logs look like:** ```
+**Healthy logs look like:**
+```text
 [INFO] RubixKube Observer starting...
 [INFO] Connected to RubixKube API
 [INFO] Cluster registration successful
@@ -623,18 +626,19 @@ kubectl logs -n rubixkube deployment/rubixkube-observer
 [INFO] Agent mesh initialized
 ```
 
-    <Tip>
+<Tip>
 <strong>Tip:</strong> If you see steady log output with [INFO] messages, everything is working correctly!
-    </Tip>
+</Tip>
 
 ### Verify in RubixKube Dashboard
 
 1. Go back to [console.rubixkube.ai](https://console.rubixkube.ai)
 2. You should see your cluster appear in the dashboard
-3. The **Observer Status ** should change from "Awaiting installation" to **  "Connected"**
-    <Note>
+3. The **Observer Status** should change from "Awaiting installation" to **"Connected"**
+
+<Note>
 <strong>Note:</strong> It may take 1-2 minutes for your cluster to appear in the dashboard after the pod starts running.
-    </Note>
+</Note>
 
 ---
 
@@ -711,8 +715,8 @@ This creates a cluster with 1 control plane and 2 worker nodes.
   <Accordion title="Docker daemon not running">
 **Error:** `Cannot connect to the Docker daemon`
 
-**Solution:**    -**  macOS/Windows:**Open Docker Desktop app and wait for it to start
-    -**Linux:**  Run `sudo systemctl start docker`
+**Solution:**    - **macOS/Windows:** Open Docker Desktop app and wait for it to start
+    - **Linux:** Run `sudo systemctl start docker`
   </Accordion>
 
   <Accordion title="KIND cluster creation fails">
@@ -747,19 +751,23 @@ This creates a cluster with 1 control plane and 2 worker nodes.
 
   <Accordion title="RubixKube observer not starting">
 ### Check these:
-    1.**Verify API key is correct**     ```bash
+    1. **Verify API key is correct**
+    ```bash
     kubectl get secret -n rubixkube rubixkube-credentials -o yaml
     ```
-    
-    2.**Check pod events**  ```bash
+
+    2. **Check pod events**
+    ```bash
     kubectl describe pod -n rubixkube -l app=rubixkube-observer
     ```
-    
-    3.**View logs**     ```bash
+
+    3. **View logs**
+    ```bash
     kubectl logs -n rubixkube deployment/rubixkube-observer
     ```
-    
-    4.**Reinstall**  ```bash
+
+    4. **Reinstall**
+    ```bash
     kubectl delete namespace rubixkube
     # Wait 30 seconds, then run install command again
     ```

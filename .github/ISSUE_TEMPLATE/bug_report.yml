@@ -1,0 +1,99 @@
+name: 🐛 Bug Report
+description: Report an issue with the RubixKube documentation
+title: "[Bug]: "
+labels: ["bug", "documentation"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Documentation Bug Report
+
+        Thank you for helping improve the RubixKube documentation! Please fill out the form below to report a documentation issue.
+
+  - type: checkboxes
+    attributes:
+      label: Before submitting this bug report
+      description: Please ensure you've completed these steps
+      options:
+        - label: I have searched existing [issues](https://github.com/rubixkube-io/docs/issues) for similar problems
+          required: true
+        - label: I have checked the [latest documentation](https://docs.rubixkube.ai) to confirm the issue still exists
+          required: true
+        - label: I am using the most recent version of the documentation
+          required: true
+
+  - type: input
+    attributes:
+      label: Page URL
+      description: The URL of the page where you found the issue
+      placeholder: https://docs.rubixkube.ai/getting-started/installation-kind
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Issue Type
+      description: What type of documentation issue is this?
+      options:
+        - Incorrect information
+        - Missing information
+        - Unclear explanation
+        - Broken link
+        - Typo/grammar error
+        - Outdated content
+        - Code example issue
+        - Navigation problem
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Description
+      description: Describe the issue in detail. What did you expect to see vs. what you actually saw?
+      placeholder: |
+        I expected to see [X] but instead saw [Y].
+
+        Steps I took:
+        1. Went to [page URL]
+        2. Looked for [specific section]
+        3. Found [the problem]
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Suggested Fix
+      description: If you know how to fix this issue, please describe your suggested solution
+      placeholder: |
+        The content should be updated to say [corrected information].
+
+        Or the code example should be:
+        ```bash
+        # corrected command here
+        ```
+
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Any additional information that might help us understand and fix the issue
+      placeholder: |
+        - Browser/version: Chrome 120.0
+        - Operating System: macOS Sonoma 14.2
+        - This affects my understanding of [specific concept]
+        - I tried [alternative approach] but it didn't work
+
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem
+      placeholder: Drag and drop screenshots here or paste image links
+
+  - type: checkboxes
+    attributes:
+      label: Contribution
+      description: Would you like to help fix this issue?
+      options:
+        - label: I'm willing to submit a PR to fix this issue
+

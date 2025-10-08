@@ -1,0 +1,157 @@
+name: 📚 Documentation Contribution
+description: Propose new content or improvements to the RubixKube documentation
+title: "[Docs]: "
+labels: ["documentation", "contribution"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📚 Documentation Contribution Proposal
+
+        Thank you for wanting to contribute to the RubixKube documentation! This template helps us understand your proposed contribution and ensure it aligns with our documentation strategy.
+
+        **Before submitting**: Please review our [Contributing Guide](CONTRIBUTING.md) and [Style Guide](https://docs.rubixkube.ai/essentials/markdown).
+
+  - type: checkboxes
+    attributes:
+      label: Preparation Checklist
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have read the [Contributing Guide](CONTRIBUTING.md)
+          required: true
+        - label: I have reviewed the [Style Guide](https://docs.rubixkube.ai/essentials/markdown)
+          required: true
+        - label: I have checked for similar content in the [existing documentation](https://docs.rubixkube.ai)
+          required: true
+        - label: I have searched existing [issues](https://github.com/rubixkube-io/docs/issues) for similar proposals
+          required: true
+
+  - type: dropdown
+    attributes:
+      label: Contribution Type
+      description: What type of documentation contribution are you proposing?
+      options:
+        - New guide or tutorial
+        - New concept explanation
+        - Improve existing content
+        - Add code examples
+        - Fix errors or outdated information
+        - Add screenshots or diagrams
+        - Restructure or reorganize content
+        - Translate to another language
+        - Create API documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Content Description
+      description: Describe what content you want to add or improve
+      placeholder: |
+        I want to create a new guide that explains [topic] for [target audience].
+
+        The content would cover:
+        - [Main topic 1]
+        - [Main topic 2]
+        - [Main topic 3]
+
+        This would help users who [describe the user need] by [explaining the benefit].
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Proposed Location
+      description: Where should this content live? (e.g., /tutorials/my-new-guide, /concepts/new-concept)
+      placeholder: /tutorials/new-guide-name
+
+  - type: textarea
+    attributes:
+      label: Outline or Structure
+      description: Provide a high-level outline or structure for your proposed content
+      placeholder: |
+        ## Proposed Structure
+
+        ### Section 1: [Title]
+        - [Key point 1]
+        - [Key point 2]
+        - Code example: [description]
+
+        ### Section 2: [Title]
+        - [Key point 1]
+        - [Key point 2]
+        - Diagram: [description]
+
+        ### Section 3: [Title]
+        - [Key point 1]
+        - [Key point 2]
+        - Next steps and related content
+
+  - type: textarea
+    attributes:
+      label: Why This Content is Needed
+      description: Explain why this content would be valuable for RubixKube users
+      placeholder: |
+        This content addresses [specific user need or pain point] that isn't currently covered in the documentation.
+
+        Users frequently ask about [related topic] in our community channels, indicating there's demand for this information.
+
+        This would complement existing content about [related topics] and provide a complete picture for users learning [broader concept].
+
+  - type: textarea
+    attributes:
+      label: Target Audience
+      description: Who would benefit most from this content?
+      placeholder: |
+        Primary audience: [e.g., new users, experienced DevOps engineers, platform teams]
+
+        Secondary audience: [e.g., developers integrating with APIs, SREs troubleshooting issues]
+
+        Prerequisites needed: [e.g., basic Kubernetes knowledge, familiarity with RubixKube concepts]
+
+  - type: textarea
+    attributes:
+      label: Resources and References
+      description: Any external resources, research, or references that informed your proposal
+      placeholder: |
+        Research and references:
+        - [Kubernetes documentation on related topic](https://kubernetes.io/docs/...)
+        - [Industry best practices article](https://...)
+        - [Community discussion thread](https://...)
+        - [Similar content from other projects](https://...)
+
+  - type: textarea
+    attributes:
+      label: Implementation Plan
+      description: How do you plan to implement this contribution?
+      placeholder: |
+        I plan to:
+        1. Create the initial draft with [main sections]
+        2. Add [type of examples, e.g., code examples, screenshots]
+        3. Include [navigation links, related content references]
+        4. Test all links and examples for accuracy
+
+        Timeline: [e.g., I can complete a draft within 2 weeks]
+
+  - type: checkboxes
+    attributes:
+      label: Assets and Examples
+      description: What supporting materials can you provide?
+      options:
+        - label: I can provide code examples
+        - label: I can create or obtain screenshots
+        - label: I can create diagrams or illustrations
+        - label: I have access to real-world use cases
+        - label: I can help with testing and validation
+
+  - type: checkboxes
+    attributes:
+      label: Long-term Commitment
+      description: Are you available for ongoing involvement?
+      options:
+        - label: I can help maintain and update this content
+        - label: I can review related contributions
+        - label: I can help answer questions about this topic in the future
+

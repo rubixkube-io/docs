@@ -1,0 +1,447 @@
+---
+title: 'Using Actions Center - Complete Guide'
+description: 'Manage and track remediation actions from RCA reports and incidents with RubixKube'
+---
+
+# Using Actions Center: Complete Guide
+
+The **Actions Center** is your command center for managing and tracking all remediation actions. This powerful interface helps you prioritize, track, and implement fixes across your infrastructure.
+
+<Info>
+<strong>Key Features:</strong> Quick actions with Ask SRI (⚡), Start Work (▶), Cancel (✕), RCA Report view, and advanced status management.
+</Info>
+
+---
+
+## Actions Center Overview
+
+<Frame>
+  <img
+    src="/images/using/using-action-header-01.png"
+    alt="Actions Center header with metrics"
+  />
+</Frame>
+
+**The header shows:**
+- **Total Actions**: 33 (all remediation tasks)
+- **In Progress**: 0 (no active work)
+- **Completed**: 1 (one action finished)
+- **High Priority**: 11 (urgent actions requiring attention)
+
+---
+
+## Navigation and Status Management
+
+The Actions Center provides comprehensive navigation through different action states and priority levels:
+
+### Status Navigation Tabs
+
+**Action States:**
+- **All** - Complete view of all actions
+- **Active** - Currently actionable items
+- **Waiting** - Blocked or dependent actions
+- **Review** - Items needing verification
+- **Completed** - Successfully resolved actions
+- **Closed** - Cancelled or dismissed items
+
+### Priority Filtering
+
+The Priority dropdown allows sorting actions by:
+- **High** - Urgent items requiring immediate attention
+- **Medium** - Important but not time-critical
+- **Low** - Minor improvements or optimizations
+
+---
+
+## Action Card Structure
+
+Each action displays:
+- **Priority indicator** (colored dot: red=HIGH, yellow=MEDIUM, gray=LOW)
+- **Action description** (what needs to be done)
+- **Resource tag** (affected component)
+- **Status badge** (Todo, In Progress, Completed)
+- **Created date**
+- **Action buttons:**
+  - ⚡ **Ask SRI** - Get AI assistance for implementation
+  - ▶ **Start Work** - Begin working on the action
+  - ✕ **Cancel** - Dismiss the action
+  - 📄 **RCA Report** - View root cause analysis
+  - ⟳ **Reassign** - Change ownership (for assigned items)
+  - ⋮ **More options** - Additional actions like Delete
+
+---
+
+## Action Detail Panel
+
+<Frame>
+  <img
+    src="/images/using/using-action-header-02.png"
+    alt="Expanded action showing full details"
+  />
+</Frame>
+
+**Click any action** to expand details showing:
+
+### RCA SUMMARY
+Root cause explanation from the analysis that generated this action.
+
+### DETAILS
+- **Namespace**: Where the issue exists
+- **Severity**: Impact level (HIGH, MEDIUM, LOW)
+
+### TIMELINE
+Tracks status changes with timestamps and actors.
+
+### RELATED
+- **RCA Report**: Link to full analysis
+- **Incident**: Link to original incident in Insights
+
+---
+
+## Action Buttons
+
+### ⚡ Ask SRI (Quick AI Help)
+- Get instant implementation guidance
+- Access step-by-step instructions
+- Receive code examples and commands
+- Ask follow-up questions
+- Context-aware assistance based on the action
+
+### ▶ Start Work
+- Marks action as "In Progress"
+- Assigns it to you
+- Updates status in dashboard
+- Adds timestamp to action history
+- Makes you the owner
+
+### ✕ Cancel
+- Moves action to "Closed" status
+- Reversible decision
+- Use when:
+  - Action is not needed
+  - Already fixed another way
+  - Duplicate of another task
+  
+### 📄 RCA Report
+- View complete analysis
+- See related evidence
+- Understand root cause
+- Access all recommendations
+- View affected resources
+
+### ⟳ Reassign
+- Change action ownership
+- Available for assigned items
+- Returns to unassigned pool
+- Resets progress status
+- Keeps action history
+
+### ⋮ More Options
+- Delete action (permanent)
+- Add notes/comments
+- Change priority
+- Link related actions
+- View full history
+
+---
+
+## Action Status Lifecycle
+
+Actions in RubixKube follow a defined lifecycle through various states:
+
+```
+Todo → In Progress → Review → Completed
+ ↓          ↓           ↓
+Waiting   Waiting    Waiting
+ ↓          ↓           ↓
+       Cancelled/Closed
+```
+
+### Status Definitions
+
+#### Todo
+- Initial state for new actions
+- Ready to be worked on
+- Not yet assigned to anyone
+
+#### In Progress
+- Action being actively worked on
+- Assigned to a team member
+- Implementation underway
+
+#### Waiting
+- Blocked by dependencies
+- Awaiting external input
+- Can occur at any stage
+
+#### Review
+- Implementation completed
+- Needs verification
+- Awaiting testing or approval
+
+#### Completed
+- Successfully implemented
+- Verified working
+- No further action needed
+
+#### Cancelled/Closed
+- Action no longer needed
+- Duplicate of another action
+- Invalid or irrelevant
+- Can be reopened if needed
+
+### State Transitions
+
+1. **Todo → In Progress**
+   - Triggered by "Start Work" button
+   - Assigns action to current user
+
+2. **In Progress → Review**
+   - Work completed
+   - Ready for verification
+
+3. **Review → Completed**
+   - Verification successful
+   - Fix confirmed working
+
+4. **Any State → Waiting**
+   - Blocked by dependency
+   - External input needed
+
+5. **Any State → Cancelled**
+   - No longer relevant
+   - Duplicate identified
+   - Alternative solution found
+
+---
+
+## Action Workflows
+
+### Daily Workflow
+
+<Steps>
+  <Step title="Check High Priority">
+    Filter: Priority → High
+    
+    Focus on urgent actions first
+  </Step>
+
+  <Step title="Select Action">
+    Click HIGH priority action to expand details
+  </Step>
+
+  <Step title="Get AI Guidance">
+    Click **⚡ Ask SRI** for implementation steps
+  </Step>
+
+  <Step title="Start Work">
+    Click **▶ Start Work** to mark as In Progress
+  </Step>
+
+  <Step title="Implement Fix">
+    Follow AI guidance, test in non-production first
+  </Step>
+
+  <Step title="Verify">
+    Confirm issue resolved:
+    - Check pod status
+    - Review logs
+    - Monitor for recurrence
+  </Step>
+
+  <Step title="Mark Complete">
+    Click **✓ Complete** button
+  </Step>
+</Steps>
+
+---
+
+### Emergency Response (When High Priority > 5)
+
+<Steps>
+  <Step title="Triage">
+    Filter: Priority → High
+    
+    Sort by severity impact
+  </Step>
+
+  <Step title="Assign Actions">
+    Distribute HIGH actions to multiple team members
+  </Step>
+
+  <Step title="Quick Wins First">
+    Start with fast fixes:
+    - Restart deployments
+    - Increase limits
+    - Apply ConfigMaps
+  </Step>
+
+  <Step title="Use AI Acceleration">
+    Click **⚡ Ask SRI** on each action for instant commands
+  </Step>
+
+  <Step title="Mark Complete Immediately">
+    Update status as you finish each action
+  </Step>
+</Steps>
+
+---
+
+## Priority Levels
+
+| Priority | Meaning | Timeline |
+|----------|---------|----------|
+| **HIGH** | Significant impact | Resolve within hours/days |
+| **MEDIUM** | Moderate impact | Resolve within week |
+| **LOW** | Minor issues | Next sprint |
+
+
+---
+
+## Integration with Other Features
+
+### Actions → Chat
+**⚡ Ask SRI** sends full context to Chat including RCA summary, affected resources, and evidence.
+
+### Actions → Insights
+**📄 RCA Report** opens full incident with complete Root Cause Analysis.
+
+### Actions → Infrastructure
+Namespace badges and resource tags link to topology view.
+
+---
+
+## Real Example: Configuration Fix
+
+**Action:**
+> "Remove hardcoded dependencies: Refactor the application to accept dependencies via external configuration (e.g., ConfigMaps)"
+
+**Namespace:** RUBIXKUBE-SYSTEM  
+**Severity:** HIGH  
+**Status:** Todo
+
+### Implementation Steps:
+
+<Steps>
+  <Step title="Click ⚡ Ask SRI">
+    AI provides ConfigMap example and refactoring guidance
+  </Step>
+
+  <Step title="Create ConfigMap">
+```yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: app-dependencies
+      namespace: rubixkube-system
+    data:
+      ONLINE_BOUTIQUE_ENABLED: "false"
+```
+  </Step>
+
+  <Step title="Update Deployment">
+```yaml
+    spec:
+      containers:
+      - name: app
+        envFrom:
+        - configMapRef:
+            name: app-dependencies
+```
+  </Step>
+
+  <Step title="Test and Verify">
+```bash
+    kubectl apply -f configmap.yaml
+    kubectl apply -f deployment.yaml
+    kubectl logs -l app=kubernetes-mcp-server --tail=50
+```
+  </Step>
+
+  <Step title="Mark Complete">
+    Click **✓ Complete** and add comment
+  </Step>
+</Steps>
+
+---
+
+## Troubleshooting
+
+### Actions not appearing from RCA
+- Check RCA confidence level (may be below threshold)
+- Look for recommendations in RCA Analysis tab
+- Check RCA Pipeline logs for errors
+
+### Action stuck "In Progress"
+- Check timeline for last update
+- Contact assigned person
+- Reassign if needed via **⋮ More Options**
+
+### High Priority count keeps increasing
+- Daily action review meetings
+- Assign owners to every HIGH action
+- Group related actions and fix root causes
+
+---
+
+## Best Practices
+
+<Accordion title="1. Always Prioritize HIGH First">
+- Filter by HIGH priority daily
+- Don't work on MEDIUM until HIGH = 0
+- Review priorities weekly
+</Accordion>
+
+<Accordion title="2. Use Ask SRI Before Implementing">
+- Click **⚡ Ask SRI** for every action
+- Get command examples and best practices
+- Ask follow-up questions
+- Saves 30-60 minutes per action
+</Accordion>
+
+<Accordion title="3. Verify Before Completing">
+**Checklist:**
+- [ ] Changes deployed successfully
+- [ ] No errors in logs (monitor 15+ minutes)
+- [ ] Related incident resolved
+- [ ] Metrics show improvement
+- [ ] No new incidents created
+</Accordion>
+
+<Accordion title="4. Batch Related Actions">
+Look for actions with:
+- Same namespace
+- Same RCA report
+- Related dependencies
+
+Implement together for efficiency
+</Accordion>
+
+---
+
+## Quick Reference
+
+| Element | Purpose |
+|---------|---------|
+| **⚡ Ask SRI** | Get AI implementation guidance |
+| **▶ Start Work** | Mark as In Progress |
+| **✕ Cancel** | Dismiss action (reversible) |
+| **📄 RCA Report** | View source analysis |
+| **🗑️ Delete** | Permanently remove (irreversible) |
+| **Priority Filter** | Focus on urgent tasks |
+| **Active Tab** | Default view for daily work |
+
+---
+
+## Need Help?
+
+import ContactSupport from '/snippets/contact-support.mdx';
+
+<ContactSupport />
+
+---
+
+*Last updated: October 26, 2025*
+*Guide version: 1.0*
+*Based on RubixKube Console v1.0*
+

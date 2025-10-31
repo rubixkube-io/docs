@@ -7,8 +7,9 @@ description: 'Manage and track remediation actions from RCA reports and incident
 
 The **Actions Center** is your command center for managing and tracking all remediation actions. This powerful interface helps you prioritize, track, and implement fixes across your infrastructure.
 
+
 <Info>
-<strong>Key Features:</strong> Quick actions with Ask SRI (⚡), Start Work (▶), Cancel (✕), RCA Report view, and advanced status management.
+<strong>Key Features:</strong> Prioritize, assign, and track remediation actions. Use Ask SRI (⚡) for instant implementation help at any stage. Start, review, complete, or reopen actions with a single click.
 </Info>
 
 ---
@@ -51,27 +52,40 @@ The Priority dropdown allows sorting actions by:
 - **Medium** - Important but not time-critical
 - **Low** - Minor improvements or optimizations
 
+### Search
+
+Use the search bar at the top of the actions list to quickly find items.
+
+### Sorting
+
+On the right side of the list header there is a sort dropdown. Use it to order the list by:
+- **Updated** (default) — most recently changed actions first
+- **Created Date** — chronological by creation time
+- **Priority** — group items by priority (High → Low)
+
+The search input and the sort dropdown together let you quickly narrow and order results to focus work.
+
 ---
 
 ## Action Card Structure
 
-Each action displays:
-- **Priority indicator** (colored dot: red=HIGH, yellow=MEDIUM, gray=LOW)
-- **Action description** (what needs to be done)
-- **Resource tag** (affected component)
-- **Status badge** (Todo, In Progress, Completed)
-- **Created date**
-- **Action buttons:**
-  - ⚡ **Ask SRI** - Get AI assistance for implementation
-  - ▶ **Start Work** - Begin working on the action
-  - ✕ **Cancel** - Dismiss the action
-  - 📄 **RCA Report** - View root cause analysis
-  - ⟳ **Reassign** - Change ownership (for assigned items)
-  - ⋮ **More options** - Additional actions like Delete
+Each action card shows:
+- Priority (color dot)
+- Description
+- Resource tag
+- Status badge
+- Created date
+- Key buttons: Ask SRI (⚡), Start Work (▶), Cancel (✕), RCA Report (📄), Reassign (⟳), More (⋮)
 
 ---
 
 ## Action Detail Panel
+
+Click any action to expand details, including:
+- RCA summary
+- Namespace and severity
+- Timeline of status changes
+- Links to RCA report and related incidents
 
 <Frame>
   <img
@@ -80,82 +94,67 @@ Each action displays:
   />
 </Frame>
 
-**Click any action** to expand details showing:
+---
 
-### RCA SUMMARY
-Root cause explanation from the analysis that generated this action.
+## Key Action Buttons
 
-### DETAILS
-- **Namespace**: Where the issue exists
-- **Severity**: Impact level (HIGH, MEDIUM, LOW)
-
-### TIMELINE
-Tracks status changes with timestamps and actors.
-
-### RELATED
-- **RCA Report**: Link to full analysis
-- **Incident**: Link to original incident in Insights
+- **Ask SRI (⚡):** Get instant implementation help, code, and troubleshooting at any stage.
+- **Start Work (▶):** Assigns the action to you and moves it to In Progress.
+- **Cancel (✕):** Moves action to Closed (reversible).
+- **RCA Report (📄):** View full root cause analysis and evidence.
+- **Reassign (⟳):** Change ownership or return to unassigned pool.
+- **More (⋮):** Delete, add notes, change priority, or view full history.
 
 ---
 
-## Action Buttons
 
-### ⚡ Ask SRI (Quick AI Help)
-- Get instant implementation guidance
-- Access step-by-step instructions
-- Receive code examples and commands
-- Ask follow-up questions
-- Context-aware assistance based on the action
+## Workflow Stages
 
-### ▶ Start Work
-- Marks action as "In Progress"
-- Assigns it to you
-- Updates status in dashboard
-- Adds timestamp to action history
-- Makes you the owner
+At any stage, use **Ask SRI (⚡)** for instant help, code, or troubleshooting. The professional workflow is:
 
-### ✕ Cancel
-- Moves action to "Closed" status
-- Reversible decision
-- Use when:
-  - Action is not needed
-  - Already fixed another way
-  - Duplicate of another task
-  
-### 📄 RCA Report
-- View complete analysis
-- See related evidence
-- Understand root cause
-- Access all recommendations
-- View affected resources
+**Stage 0 – Start Work (Play ▶):** Click Play to assign the action to yourself (Assigned status).
+<Frame><img src="/images/using/stage-0-todo.png" alt="Stage 0: Play button to start work (Todo)" /></Frame>
 
-### ⟳ Reassign
-- Change action ownership
-- Available for assigned items
-- Returns to unassigned pool
-- Resets progress status
-- Keeps action history
+**Stage 1 – Begin Work (Play ▶ again):** Click Play again to mark as In Progress. Replay button appears for reassignment.
+<Frame><img src="/images/using/stage-1-assign.png" alt="Stage 1: Play button to begin work (Assigned)" /></Frame>
 
-### ⋮ More Options
-- Delete action (permanent)
-- Add notes/comments
-- Change priority
-- Link related actions
-- View full history
+**Stage 2 – In Progress:** Work on the task while it’s In Progress. Replay is available for reassignment. Once finished, click Complete (✔) or Review for feedback and verification.
+<Frame><img src="/images/using/stage-2-inprogress.png" alt="Stage 2: In Progress status with replay option" /></Frame>
+
+
+**Stage 3 – Review Actions:** Reviewer can Complete (finalize) or select Changes (Replay) to send back to In Progress.
+<Frame><img src="/images/using/stage-3-complete-review.png" alt="Stage 4: Review actions - Complete or Changes" /></Frame>
+
+**Stage 4 – Completed & Reopen:** After marking as Complete, use Reopen to move back to In Progress if needed.
+<Frame><img src="/images/using/stage-4-completed.png" alt="Stage 4: Completed with Reopen option" /></Frame>
 
 ---
 
-## Action Status Lifecycle
+## Action Lifecycle (at-a-glance)
 
-Actions in RubixKube follow a defined lifecycle through various states:
+Below is a clean, easy-to-read diagram that summarizes the primary state transitions for an action. Use this as a quick reference for how tasks flow through the system.
 
 ```
-Todo → In Progress → Review → Completed
- ↓          ↓           ↓
-Waiting   Waiting    Waiting
- ↓          ↓           ↓
-       Cancelled/Closed
+  Todo
+    |
+    v
+   Assigned
+    |
+    v
+  In Progress -----> Review -----> Completed
+    ^                |              |
+    |                |              v
+    |                +----------> Reopened
+    |                               |
+    +-------------------------------+
+
+Other transitions:
+- Any state -> Waiting (blocked)
+- Any state -> Cancelled/Closed
 ```
+
+This diagram highlights the common linear flow (Todo → Assigned → In Progress → Review → Completed) and the two important loops: Replay/Reopen sends items back to In Progress, and any state can be moved to Waiting or Cancelled when appropriate.
+
 
 ### Status Definitions
 
@@ -189,111 +188,6 @@ Waiting   Waiting    Waiting
 - Duplicate of another action
 - Invalid or irrelevant
 - Can be reopened if needed
-
-### State Transitions
-
-1. **Todo → In Progress**
-   - Triggered by "Start Work" button
-   - Assigns action to current user
-
-2. **In Progress → Review**
-   - Work completed
-   - Ready for verification
-
-3. **Review → Completed**
-   - Verification successful
-   - Fix confirmed working
-
-4. **Any State → Waiting**
-   - Blocked by dependency
-   - External input needed
-
-5. **Any State → Cancelled**
-   - No longer relevant
-   - Duplicate identified
-   - Alternative solution found
-
----
-
-## Action Workflows
-
-### Daily Workflow
-
-<Steps>
-  <Step title="Check High Priority">
-    Filter: Priority → High
-    
-    Focus on urgent actions first
-  </Step>
-
-  <Step title="Select Action">
-    Click HIGH priority action to expand details
-  </Step>
-
-  <Step title="Get AI Guidance">
-    Click **⚡ Ask SRI** for implementation steps
-  </Step>
-
-  <Step title="Start Work">
-    Click **▶ Start Work** to mark as In Progress
-  </Step>
-
-  <Step title="Implement Fix">
-    Follow AI guidance, test in non-production first
-  </Step>
-
-  <Step title="Verify">
-    Confirm issue resolved:
-    - Check pod status
-    - Review logs
-    - Monitor for recurrence
-  </Step>
-
-  <Step title="Mark Complete">
-    Click **✓ Complete** button
-  </Step>
-</Steps>
-
----
-
-### Emergency Response (When High Priority > 5)
-
-<Steps>
-  <Step title="Triage">
-    Filter: Priority → High
-    
-    Sort by severity impact
-  </Step>
-
-  <Step title="Assign Actions">
-    Distribute HIGH actions to multiple team members
-  </Step>
-
-  <Step title="Quick Wins First">
-    Start with fast fixes:
-    - Restart deployments
-    - Increase limits
-    - Apply ConfigMaps
-  </Step>
-
-  <Step title="Use AI Acceleration">
-    Click **⚡ Ask SRI** on each action for instant commands
-  </Step>
-
-  <Step title="Mark Complete Immediately">
-    Update status as you finish each action
-  </Step>
-</Steps>
-
----
-
-## Priority Levels
-
-| Priority | Meaning | Timeline |
-|----------|---------|----------|
-| **HIGH** | Significant impact | Resolve within hours/days |
-| **MEDIUM** | Moderate impact | Resolve within week |
-| **LOW** | Minor issues | Next sprint |
 
 
 ---
@@ -386,36 +280,10 @@ Namespace badges and resource tags link to topology view.
 
 ## Best Practices
 
-<Accordion title="1. Always Prioritize HIGH First">
-- Filter by HIGH priority daily
-- Don't work on MEDIUM until HIGH = 0
-- Review priorities weekly
-</Accordion>
-
-<Accordion title="2. Use Ask SRI Before Implementing">
-- Click **⚡ Ask SRI** for every action
-- Get command examples and best practices
-- Ask follow-up questions
-- Saves 30-60 minutes per action
-</Accordion>
-
-<Accordion title="3. Verify Before Completing">
-**Checklist:**
-- [ ] Changes deployed successfully
-- [ ] No errors in logs (monitor 15+ minutes)
-- [ ] Related incident resolved
-- [ ] Metrics show improvement
-- [ ] No new incidents created
-</Accordion>
-
-<Accordion title="4. Batch Related Actions">
-Look for actions with:
-- Same namespace
-- Same RCA report
-- Related dependencies
-
-Implement together for efficiency
-</Accordion>
+- Always prioritize High priority actions first.
+- Use **Ask SRI (⚡)** before implementing for best practices and code.
+- Verify changes before completing: deploy, monitor logs, confirm incident resolved, and check metrics.
+- Batch related actions (same namespace, RCA, or dependencies) for efficiency.
 
 ---
 

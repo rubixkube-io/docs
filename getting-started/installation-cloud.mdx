@@ -388,7 +388,7 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 **What gets installed:**
 
 ```
-namespace/rubixkube created
+namespace/rubixkube-system created
 serviceaccount/rubixkube-observer created
 clusterrole.rbac.authorization.k8s.io/rubixkube-observer created
 clusterrolebinding.rbac.authorization.k8s.io/rubixkube-observer created
@@ -418,18 +418,18 @@ Let's confirm RubixKube is running correctly in your cluster.
 ### Check Namespace Created
 
 ```bash
-kubectl get namespaces | grep rubixkube
+kubectl get namespaces | grep rubixkube-system
 ```
 
 Expected output:
 ```
-rubixkube   Active   30s
+rubixkube-system   Active   30s
 ```
 
 ### Check Pod Status
 
 ```bash
-kubectl get pods -n rubixkube
+kubectl get pods -n rubixkube-system
 ```
 
 **Initial output** (pods starting):
@@ -441,7 +441,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   0/1     ContainerCreating   0          15s
 **Wait 1-2 minutes**, then check again:
 
 ```bash
-kubectl get pods -n rubixkube
+kubectl get pods -n rubixkube-system
 ```
 
 ** Success - Pod Running:**
@@ -476,7 +476,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     
     1. **Check pod details:**
     ```bash
-    kubectl describe pod -n rubixkube -l app=rubixkube-observer
+    kubectl describe pod -n rubixkube-system -l app=rubixkube-observer
     ```
     
     2. **Verify internet connectivity:**
@@ -486,7 +486,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     
     3. **Check events:**
     ```bash
-    kubectl get events -n rubixkube --sort-by='.lastTimestamp'
+    kubectl get events -n rubixkube-system --sort-by='.lastTimestamp'
     ```
     
     If issue persists after 5 minutes, contact support@rubixkube.ai
@@ -501,7 +501,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     
     1. **Check logs to see error:**
     ```bash
-    kubectl logs -n rubixkube deployment/rubixkube-observer
+    kubectl logs -n rubixkube-system deployment/rubixkube-observer
     ```
     
     2. **Look for authentication errors:**
@@ -512,7 +512,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     3. **Reinstall with correct API key:**
     ```bash
     # Delete existing installation
-    kubectl delete namespace rubixkube
+    kubectl delete namespace rubixkube-system
     
     # Wait 30 seconds
     sleep 30
@@ -539,7 +539,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
     
     2. **Check pod events:**
     ```bash
-    kubectl describe pod -n rubixkube -l app=rubixkube-observer
+    kubectl describe pod -n rubixkube-system -l app=rubixkube-observer
     ```
     
     3. **Scale your node pool** if resources are exhausted
@@ -551,7 +551,7 @@ rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
 View what RubixKube is doing:
 
 ```bash
-kubectl logs -n rubixkube deployment/rubixkube-observer --tail=50
+kubectl logs -n rubixkube-system deployment/rubixkube-observer --tail=50
 ```
 
 **Healthy logs should show:**
@@ -595,17 +595,17 @@ Want to see RubixKube in action? Deploy some test applications!
 
 ```bash
 # Create a test namespace
-kubectl create namespace rubixkube-demo
+kubectl create namespace rubixkube-system
 
 # Deploy nginx
-kubectl create deployment nginx --image=nginx:latest -n rubixkube-demo
-kubectl expose deployment nginx --port=80 --type=LoadBalancer -n rubixkube-demo
+kubectl create deployment nginx --image=nginx:latest -n rubixkube-system
+kubectl expose deployment nginx --port=80 --type=LoadBalancer -n rubixkube-system
 
 # Deploy redis
-kubectl create deployment redis --image=redis:latest -n rubixkube-demo
+kubectl create deployment redis --image=redis:latest -n rubixkube-system
 
 # Deploy a broken pod (to test RubixKube detection)
-kubectl create deployment broken-app --image=invalid-image:latest -n rubixkube-demo
+kubectl create deployment broken-app --image=invalid-image:latest -n rubixkube-system
 ```
 
 ### Watch RubixKube Detect Issues
@@ -656,7 +656,7 @@ AKS uses managed identities by default. No additional configuration needed for R
 ### View All RubixKube Resources
 
 ```bash
-kubectl get all -n rubixkube
+kubectl get all -n rubixkube-system
 ```
 
 ### Update RubixKube Observer
@@ -675,19 +675,19 @@ RubixKube will automatically update to the latest version.
 If you need to restart the observer:
 
 ```bash
-kubectl rollout restart deployment/rubixkube-observer -n rubixkube
+kubectl rollout restart deployment/rubixkube-observer -n rubixkube-system
 ```
 
 ### View Observer Configuration
 
 ```bash
-kubectl get configmap -n rubixkube rubixkube-config -o yaml
+kubectl get configmap -n rubixkube-system rubixkube-config -o yaml
 ```
 
 ### Check Resource Usage
 
 ```bash
-kubectl top pod -n rubixkube
+kubectl top pod -n rubixkube-system
 ```
 
 Expected resource usage:
@@ -704,7 +704,7 @@ If you want to uninstall RubixKube:
 
 ```bash
 # Delete the entire RubixKube namespace
-kubectl delete namespace rubixkube
+kubectl delete namespace rubixkube-system
 ```
 
 This removes:
@@ -802,10 +802,10 @@ When you're done testing:
     **Diagnosis:**
     ```bash
     # Check logs for errors
-    kubectl logs -n rubixkube deployment/rubixkube-observer --previous
+    kubectl logs -n rubixkube-system deployment/rubixkube-observer --previous
     
     # Check events
-    kubectl get events -n rubixkube --sort-by='.lastTimestamp'
+    kubectl get events -n rubixkube-system --sort-by='.lastTimestamp'
     ```
     
     **Common causes:**
@@ -825,17 +825,17 @@ When you're done testing:
     1. **Wait 2-3 minutes** - Initial sync takes time
     2. **Check pod is Running:**
     ```bash
-    kubectl get pods -n rubixkube
+    kubectl get pods -n rubixkube-system
     ```
     
     3. **Check observer logs for connection:**
     ```bash
-    kubectl logs -n rubixkube deployment/rubixkube-observer | grep -i "connect"
+    kubectl logs -n rubixkube-system deployment/rubixkube-observer | grep -i "connect"
     ```
     
     4. **Verify API key is correct:**
     ```bash
-    kubectl get secret -n rubixkube rubixkube-credentials -o yaml
+    kubectl get secret -n rubixkube-system rubixkube-credentials -o yaml
     ```
     
     5. **Check outbound connectivity:**
@@ -855,7 +855,7 @@ When you're done testing:
     kind: NetworkPolicy
     metadata:
       name: allow-rubixkube-egress
-      namespace: rubixkube
+      namespace: rubixkube-system
     spec:
       podSelector:
         matchLabels:
@@ -1066,7 +1066,7 @@ resources:
     Your API key is stored as a Kubernetes secret:
     
     ```bash
-    kubectl get secret -n rubixkube rubixkube-credentials -o yaml
+    kubectl get secret -n rubixkube-system rubixkube-credentials -o yaml
     ```
     
     **Best practices:**

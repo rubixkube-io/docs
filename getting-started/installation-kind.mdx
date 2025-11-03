@@ -544,7 +544,7 @@ kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_
 ### Expected Output:
 
 ```
-namespace/rubixkube created
+namespace/rubixkube-system created
 serviceaccount/rubixkube-observer created
 clusterrole.rbac.authorization.k8s.io/rubixkube-observer created
 clusterrolebinding.rbac.authorization.k8s.io/rubixkube-observer created
@@ -568,7 +568,7 @@ Let's make sure RubixKube is running correctly in your cluster!
 ### Check if Pods are Running
 
 ```bash
-kubectl get pods -n rubixkube
+kubectl get pods -n rubixkube-system
 ```
 
 **Initial output** (pods are starting):
@@ -581,7 +581,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   0/1     ContainerCreating   0          10s
 **Wait 30-60 seconds**, then run the command again:
 
 ```bash
-kubectl get pods -n rubixkube
+kubectl get pods -n rubixkube-system
 ```
 
 **Success!** You should see:
@@ -614,20 +614,20 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
     **Solution:** Wait 2-3 minutes and check again:
 
     ```bash
-    kubectl get pods -n rubixkube
+    kubectl get pods -n rubixkube-system
     ```
 
     If still failing after 5 minutes, delete and reinstall:
 
     ```bash
-    kubectl delete namespace rubixkube
+    kubectl delete namespace rubixkube-system
     # Wait 30 seconds, then run the install command again
     ```
   </Accordion>
   <Accordion title=" What if STATUS shows 'CrashLoopBackOff'?">
     This means the pod started but crashed.
 
-    **Check logs to see why:** \`\`\`bash kubectl logs -n rubixkube deployment/rubixkube-observer
+    **Check logs to see why:** \`\`\`bash kubectl logs -n rubixkube-system deployment/rubixkube-observer
 
     ````
     
@@ -637,7 +637,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
     **Solution:**    1. Double-check you used YOUR api key from the dashboard
     2. Delete and reinstall with correct command:
     ```bash
-    kubectl delete namespace rubixkube
+    kubectl delete namespace rubixkube-system
     # Get fresh command from dashboard and run it
     ````
   </Accordion>
@@ -645,7 +645,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
     Get detailed information about the pod:
 
     ```bash
-    kubectl describe pod -n rubixkube -l app=rubixkube-observer
+    kubectl describe pod -n rubixkube-system -l app=rubixkube-observer
     ```
 
     This shows:
@@ -662,7 +662,7 @@ rubixkube-observer-7d4b9c8f6d-x7k2p   1/1     Running   0          1m
 See what RubixKube observer is doing:
 
 ```bash
-kubectl logs -n rubixkube deployment/rubixkube-observer
+kubectl logs -n rubixkube-system deployment/rubixkube-observer
 ```
 
 **Healthy logs look like:**
@@ -817,25 +817,25 @@ This creates a cluster with 1 control plane and 2 worker nodes.
     1. **Verify API key is correct**
 
     ```bash
-    kubectl get secret -n rubixkube rubixkube-credentials -o yaml
+    kubectl get secret -n rubixkube-system rubixkube-credentials -o yaml
     ```
 
     2. **Check pod events**
 
     ```bash
-    kubectl describe pod -n rubixkube -l app=rubixkube-observer
+    kubectl describe pod -n rubixkube-system -l app=rubixkube-observer
     ```
 
     3. **View logs**
 
     ```bash
-    kubectl logs -n rubixkube deployment/rubixkube-observer
+    kubectl logs -n rubixkube-system deployment/rubixkube-observer
     ```
 
     4. **Reinstall**
 
     ```bash
-    kubectl delete namespace rubixkube
+    kubectl delete namespace rubixkube-system
     # Wait 30 seconds, then run install command again
     ```
   </Accordion>

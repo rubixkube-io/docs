@@ -48,6 +48,7 @@
           "pages": [
             "using/dashboard",
             "using/insights",
+            "using/action", 
             "using/infrastructure",
             "using/agents",
             "using/clusters",

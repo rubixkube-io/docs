@@ -364,7 +364,7 @@ The Agent Mesh is extensible - you can add custom agents for your specific needs
 
 <AccordionGroup>
   <Accordion title="How many agents run in my cluster?">
-**In your cluster:** Just the ** In your cluster:** runs (lightweight, ~100MB RAM).
+**In your cluster:** Two lightweight components run locally — the **RubixKube Observer** and the **Kubernetes MCP Server**. Combined, they typically use around 255Mi RAM and minimal CPU (under 10 millicores during normal operation).
     
 **In RubixKube Cloud:** All other agents (RCA, Remediation, Memory, Guardian) run centrally - no additional load on your infrastructure.
     

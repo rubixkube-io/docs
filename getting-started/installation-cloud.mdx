@@ -691,14 +691,17 @@ kubectl top pod -n rubixkube-system
 ```
 
 Expected resource usage per component:
-- **CPU:** 50-200m (0.05-0.2 cores)
-- **Memory:** 128Mi-512Mi
+- **CPU Request:** 100m (0.1 cores)
+- **Memory Request:** 128Mi
+- **Memory Limit:** 512Mi
 
 RubixKube deploys two in-cluster components:
 - **rubixkube-observer** — Event collection and monitoring
 - **kubernetes-mcp-server** — Kubernetes API integration
 
-Combined typical footprint: **~255MB memory, under 10 millicores CPU** during normal operation.
+**Typical resource footprint during normal operation:**
+- **Memory:** ~255MB combined (observer ~150MB, MCP server ~110MB)
+- **CPU:** Under 10 millicores combined
 
 ---
 

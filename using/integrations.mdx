@@ -1,11 +1,11 @@
 ---
 title: 'Managing Integrations'
-description: 'Connect RubixKube with Slack, PagerDuty, Prometheus, and other tools'
+description: 'Connect RubixKube with Slack, PagerDuty, Prometheus, and your own private tools'
 ---
 
 # Managing Integrations
 
-The **Integrations**  page connects RubixKube with your existing tools for notifications, metrics, and workflows.
+The **Integrations** page connects RubixKube with your existing tools for notifications, metrics, workflows, and agent capabilities.
 
 <Frame>
   <img
@@ -33,7 +33,7 @@ The **Integrations**  page connects RubixKube with your existing tools for notif
 
 ---
 
-## Available Integrations
+## System Integrations
 
 <CardGroup cols={2}>
   <Card title="Slack" icon="slack">
@@ -87,23 +87,335 @@ The **Integrations**  page connects RubixKube with your existing tools for notif
 
 ---
 
+## Custom Integrations
+
+**Custom Integrations** let you connect your own private MCP servers and REST APIs to RubixKube. Once registered, their tools appear automatically alongside system integrations — available to the SRI Agent through Chat, with zero extra plumbing.
+
+<Info>
+<strong>Enterprise feature.</strong> Custom integrations are available on the Enterprise plan. Free and Pro tenants will see a <code>403</code> response.
+</Info>
+
+### Two Protocols
+
+Custom integrations support two protocols. Choose based on what you're connecting:
+
+<CardGroup cols={2}>
+  <Card title="MCP Server" icon="server">
+    Connect a private **Model Context Protocol** server — the same standard used by system integrations. Supports SSE, HTTP, and stdio transports.
+
+    **Best for:** MCP-native tools like Linear, GitHub, Notion, or any server that speaks MCP.
+  </Card>
+
+  <Card title="REST API" icon="code">
+    Expose any **REST API** as agent tools by defining tool schemas and HTTP mappings. No MCP server needed — RubixKube translates tool calls to HTTP requests.
+
+    **Best for:** Internal APIs, ticketing systems, CMDB, or any service with a REST endpoint.
+  </Card>
+</CardGroup>
+
+---
+
+### Adding an MCP Server
+
+<Frame>
+  <img
+    src="/images/using/custom_integrations/custom_int_1.png" 
+    alt="Add Custom Integration dialog showing MCP Server and REST API protocol options with metadata fields"
+  />
+  <Caption>The Add Custom Integration dialog — choose MCP Server or REST API, then fill in the metadata</Caption>
+</Frame>
+
+<Steps>
+  <Step title="Open Integrations">
+    Navigate to **Integrations** in the left sidebar.
+  </Step>
+
+  <Step title="Click + Add Custom Integration">
+    Select **MCP Server** as the protocol type.
+  </Step>
+
+  <Step title="Fill in Metadata">
+    | Field | Description |
+    |-------|-------------|
+    | **Name** | URL-safe slug (lowercase, numbers, hyphens). Unique per tenant |
+    | **Display Name** | Human-readable name for the integration card |
+    | **Description** | Short description of what this integration does |
+    | **Logo URL** | URL to the integration's logo/icon |
+    | **Category** | Category for filtering (e.g., `version_control`, `project_management`) |
+  </Step>
+
+  <Step title="Configure MCP Connection">
+    <Frame>
+      <img
+        src="/images/using/custom_integrations/custom_int_2.png"
+        alt="MCP configuration showing Server URL, Transport, Auth type, and API Token fields"
+      />
+      <Caption>MCP connection settings — Server URL, transport protocol, auth type, and API token</Caption>
+    </Frame>
+
+    | Field | Description |
+    |-------|-------------|
+    | **Server URL** | Full URL to your MCP server endpoint (e.g., `https://mcp.zapier.com/api/v1/connect`) |
+    | **Transport** | `SSE` (default), `HTTP`, or `stdio` |
+    | **Auth Type** | `Bearer / API Key` (default), `OAuth2`, or `None` |
+    | **Auth Header Prefix** | Prefix for the Authorization header (default `Bearer`, use `Token` for GitHub) |
+    | **API Token** | Your authentication token |
+
+    You can also use the **Edit as JSON** panel on the right to configure the integration directly as JSON.
+  </Step>
+
+  <Step title="Test Connection">
+    After creation, click **Test** to verify connectivity. The test negotiates the MCP handshake with the remote server and updates the health status on the card.
+  </Step>
+</Steps>
+
+<Tip>
+Once connected, the integration's tools appear immediately in the MCP gateway — no restart or config change needed.
+</Tip>
+
+---
+
+### Adding a REST API
+
+<Frame>
+  <img
+    src="/images/using/custom_integrations/custom_int_3.png"
+    alt="Add Custom Integration dialog with REST API selected and metadata fields"
+  />
+  <Caption>Adding a REST API integration — select REST API, then fill in metadata</Caption>
+</Frame>
+
+<Steps>
+  <Step title="Select REST API Protocol">
+    Choose **REST API** as the protocol type when adding a new custom integration.
+  </Step>
+
+  <Step title="Enter Metadata">
+    Fill in the metadata fields: **Name** (slug), **Display Name**, **Description**, **Logo URL**, and **Category**.
+  </Step>
+
+  <Step title="Enter Base URL and Auth">
+    <Frame>
+      <img
+        src="/images/using/custom_integrations/custom_int_4.png"
+        alt="REST API configuration showing Base URL, Auth type, Access token, and Custom headers"
+      />
+      <Caption>REST connection settings — Base URL, auth type, access token, and custom headers</Caption>
+    </Frame>
+
+    | Field | Description |
+    |-------|-------------|
+    | **Base URL** | Base URL of your API (e.g., `https://api.example.com`) |
+    | **Auth Type** | `Bearer token`, `API Key`, `Basic auth`, or `OAuth2` |
+    | **Access Token** | Your authentication token (encrypted at rest) |
+    | **Custom Headers** | Optional static headers merged into every request (click **+ Add header**) |
+  </Step>
+
+  <Step title="Define Tools">
+    <Frame>
+      <img
+        src="/images/using/custom_integrations/custom_int_5.png"
+        alt="Tools section with Import from OpenAPI and Define manually tabs"
+      />
+      <Caption>Tools section — import from an OpenAPI spec or define tools manually</Caption>
+    </Frame>
+
+    You can define tools in two ways:
+    - **Import from OpenAPI** — upload or paste an OpenAPI 3.x / Swagger 2.0 spec to auto-generate tools
+    - **Define manually** — click **+ Add tool** to define each tool by hand
+
+    Each tool represents one API operation the SRI Agent can invoke:
+
+    | Field | Description |
+    |-------|-------------|
+    | **Name** | Tool identifier (e.g., `list_tickets`) |
+    | **Description** | What the tool does — the agent reads this to decide when to use it |
+    | **HTTP Method** | `GET`, `POST`, `PUT`, `PATCH`, or `DELETE` |
+    | **Path** | URL path appended to the base URL (supports path params like `/tickets/{id}`) |
+    | **Parameters** | Query params and body params for the tool |
+  </Step>
+
+  <Step title="Create and Test">
+    Click **Add Integration** and then **Test** to verify connectivity. REST tests probe common health paths (`/healthcheck`, `/healthz`, `/health`, `/ping`) with your configured auth.
+  </Step>
+</Steps>
+
+---
+
+### Managing Custom Integrations
+
+**Update** — Edit any field on an existing integration. Passing new credentials replaces them entirely (re-encrypted). Omit credentials to preserve existing ones.
+
+**Disable / Re-enable** — Toggle the integration's status between `active` and `disabled`. Disabled integrations are excluded from the MCP gateway.
+
+**Tool Filtering** — Control which tools are available to agents:
+- **Enabled tools** — allowlist of specific tool names. Empty means all tools allowed.
+- **Disabled tools** — blocklist applied after the allowlist. If a tool appears in both, it's blocked.
+
+**Delete** — Permanently removes the integration and all associated credentials.
+
+**Test Connection** — Run a health check at any time. Health status is displayed on the integration card with consecutive failure count and last error.
+
+---
+
+### Authentication
+
+Credentials are passed **plaintext on create** — the server encrypts them before storing. They are **always masked** in responses.
+
+<AccordionGroup>
+  <Accordion title="MCP — Bearer Token">
+    ```json
+    {
+      "auth_type": "bearer",
+      "api_token": "your-token-here"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="MCP — OAuth 2.1 (Authorization Code)">
+    For user-facing OAuth flows (e.g., Atlassian, GitHub):
+    ```json
+    {
+      "auth_type": "oauth2",
+      "oauth": {
+        "grant_type": "authorization_code",
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret",
+        "authorization_url": "https://provider.com/oauth/authorize",
+        "token_url": "https://provider.com/oauth/token",
+        "scope": "read write",
+        "use_pkce": true
+      }
+    }
+    ```
+
+    Or with **OIDC discovery** (auto-discovers endpoints from issuer URL):
+    ```json
+    {
+      "auth_type": "oidc",
+      "oauth": {
+        "grant_type": "authorization_code",
+        "client_id": "your-client-id",
+        "issuer_url": "https://auth.provider.com",
+        "scope": "openid read:data",
+        "use_pkce": true
+      }
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="MCP — OAuth 2.1 (Client Credentials)">
+    For server-to-server flows:
+    ```json
+    {
+      "auth_type": "oauth2",
+      "oauth": {
+        "grant_type": "client_credentials",
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret",
+        "token_url": "https://provider.com/oauth/token",
+        "scope": "api:read api:write"
+      }
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="MCP — No Auth">
+    Set <code>auth_type: "none"</code> and omit credentials entirely.
+  </Accordion>
+
+  <Accordion title="REST — Bearer Token">
+    ```json
+    { "access_token": "eyJhbGciOi..." }
+    ```
+    Also accepts <code>api_token</code> or <code>token</code>.
+  </Accordion>
+
+  <Accordion title="REST — API Key">
+    ```json
+    { "api_key": "your-api-key" }
+    ```
+  </Accordion>
+
+  <Accordion title="REST — Basic Auth">
+    ```json
+    { "username": "alice", "password": "s3cr3t" }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### OAuth Flows
+
+For OAuth-based integrations, RubixKube handles the full authorization code flow:
+
+<Steps>
+  <Step title="Create the Integration">
+    Register the integration with <code>auth_type: "oauth2"</code> and your OAuth credentials (client ID, secret, URLs).
+  </Step>
+
+  <Step title="Authorize">
+    Click **Authorize** on the integration card. This opens the OAuth provider's consent page in a popup or redirect.
+  </Step>
+
+  <Step title="Complete Consent">
+    After you approve, the provider redirects back to RubixKube's callback endpoint. Tokens are automatically encrypted and stored.
+  </Step>
+
+  <Step title="Token Refresh">
+    Token refresh happens automatically during tool calls. You can also manually trigger a refresh from the integration card to verify token health.
+  </Step>
+</Steps>
+
+<Info>
+<strong>OAuth discovery:</strong> RubixKube can auto-discover authorization and token URLs from the MCP server's <code>.well-known/oauth-authorization-server</code> or the standard OIDC <code>.well-known/openid-configuration</code> endpoint.
+</Info>
+
+---
+
+### How Custom Integrations Appear to Agents
+
+Once created, custom integration tools surface automatically in the tenant's MCP gateway alongside system integration tools:
+
+- **Tool discovery** — custom tools appear in `tools/list` and `discover_tools()`
+- **Tool execution** — `tools/call` routes to your server or API with the configured auth
+- **Namespacing** — tools are namespaced by the integration's `name` slug
+
+<Info>
+There's no difference between a system integration tool and a custom integration tool from the agent's perspective. Both go through the same MCP gateway.
+</Info>
+
+---
+
+### Custom vs System Integrations
+
+| | System Integrations | Custom Integrations |
+|---|---|---|
+| **Source** | Global registry (managed by RubixKube) | Tenant self-served |
+| **Protocol** | Determined by registry | `mcp` or `rest` (your choice) |
+| **Visibility** | All tenants (based on config) | Your tenant only |
+| **Tool definitions** | From registry | You provide them |
+| **Deletion** | Disable only | Hard delete |
+| **Plan** | All plans | Enterprise only |
+
+---
+
 ## What You Learned
 
- Available integrations  
- How to connect Slack, PagerDuty  
- Notification rules  
+- Available system integrations (Slack, PagerDuty, Prometheus, Webhooks)
+- Notification rules and delivery channels
+- How to register private MCP servers and REST APIs as custom integrations
+- Authentication options: Bearer, OAuth 2.1, API Key, Basic Auth
+- How custom integrations appear automatically in the MCP gateway
 
 ---
 
 ## Related Guides
 
-- [Dashboard](/using/dashboard)
-- [Insights](/using/insights)
-- [Infrastructure](/using/infrastructure)
-- [Clusters](/using/clusters)
-- [Agents](/using/agents)
-- [Workspace](/using/workspace)
-- [Settings](/using/settings)
+- [Using Agent Skills](/using/skills) — Extend agents with structured workflows
+- [Using Agents & Tools](/using/agents) — Monitor agent health and capabilities
+- [Dashboard](/using/dashboard) — Your command center for infrastructure health
 
 ---
 

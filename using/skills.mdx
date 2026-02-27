@@ -190,6 +190,42 @@ Using templates is the fastest way to create custom skills — start from a prov
 
 ---
 
+## Editing Custom Skills
+
+You can edit any custom skill after it has been created. System skills cannot be edited directly — use **"Use as template"** to create an editable copy instead.
+
+<Steps>
+  <Step title="Open the Custom Skill">
+    Click on the custom skill in the catalog to open its detail panel.
+  </Step>
+
+  <Step title="Click Edit">
+    Click the **"Edit"** button in the top-right of the detail panel. The skill form opens pre-populated with the current values.
+  </Step>
+
+  <Step title="Update the Fields">
+    Modify any of the editable fields:
+
+    | Field | Description |
+    |-------|-------------|
+    | **Name** | Unique skill identifier (lowercase, numbers, hyphens) |
+    | **Description** | What the skill does and when to use it |
+    | **Agent** | Which agent will use this skill (SRI Agent) |
+    | **Allowed Tools** | Comma-separated tool names the skill can use |
+    | **Instructions** | Step-by-step workflow the agent follows |
+  </Step>
+
+  <Step title="Save Changes">
+    Click **"Update skill"** to save. Changes take effect immediately — the next Chat interaction will use the updated skill definition.
+  </Step>
+</Steps>
+
+<Warning>
+Editing a skill's instructions or allowed tools takes effect immediately for all future executions. If a skill is currently in use by an active Chat session, the updated version applies to the next invocation.
+</Warning>
+
+---
+
 ## Agent Selection
 
 <Frame>

@@ -244,7 +244,36 @@ Once connected, the integration's tools appear immediately in the MCP gateway �
 
 ### Managing Custom Integrations
 
-**Update** — Edit any field on an existing integration. Passing new credentials replaces them entirely (re-encrypted). Omit credentials to preserve existing ones.
+#### Editing a Custom Integration
+
+To update an existing custom integration, click on its card in the catalog and select **Edit**. The edit form opens pre-populated with all current values.
+
+<Steps>
+  <Step title="Open the Integration Card">
+    Find the custom integration in the catalog. Custom integrations are shown in the **Custom** section below the system integrations.
+  </Step>
+
+  <Step title="Click Edit">
+    Click the **Edit** (pencil) icon on the integration card or in the settings panel.
+  </Step>
+
+  <Step title="Update Fields">
+    Modify any metadata or connection settings:
+
+    | Field | Behavior on Update |
+    |-------|--------------------|
+    | **Display Name / Description / Logo URL / Category** | Updated immediately |
+    | **Connection settings (URL, transport, etc.)** | Replaced on save |
+    | **Credentials (API token, OAuth config)** | Passing new credentials replaces them entirely (re-encrypted). **Omit to preserve existing credentials.** |
+    | **Tools** | Add, remove, or redefine tool schemas |
+  </Step>
+
+  <Step title="Save Changes">
+    Click **Save** to apply. The updated integration takes effect immediately in the MCP gateway.
+  </Step>
+</Steps>
+
+#### Other Integration Actions
 
 **Disable / Re-enable** — Toggle the integration's status between `active` and `disabled`. Disabled integrations are excluded from the MCP gateway.
 

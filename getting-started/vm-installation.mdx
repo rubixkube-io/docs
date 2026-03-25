@@ -1,14 +1,14 @@
 ---
 title: 'Cloud VM Installation (Beta)'
-description: 'Install RubixKube Observer on AWS EC2 or GCP Compute Engine — provision a new instance or install on an existing VM'
+description: 'Install RubixKube Observer on AWS EC2 or GCP Compute Engine - provision a new instance or install on an existing VM'
 ---
 
-Install RubixKube on a **cloud virtual machine** to monitor your AWS or GCP infrastructure with our Site Reliability Intelligence platform.
+Install RubixKube on a **cloud virtual machine environment** to monitor your AWS or GCP infrastructure with our Site Reliability Intelligence platform.
 
 <Warning>
 <strong>Beta Release Notice</strong>
 
-RubixKube is currently in <strong>Beta</strong>. While you can install it on cloud VMs for <strong>testing and evaluation</strong>, it is <strong>NOT recommended for production environments</strong> yet.
+RubixKube is currently in <strong>Beta</strong>. While you can install it on cloud VM environments for <strong>testing and evaluation</strong>, it is <strong>NOT recommended for production environments</strong> yet.
 
 ✅ <strong>Safe for:</strong> Development, staging, testing environments<br/>
 ❌ <strong>Not ready for:</strong> Production workloads, critical infrastructure<br/>
@@ -16,14 +16,33 @@ RubixKube is currently in <strong>Beta</strong>. While you can install it on clo
 </Warning>
 
 <Info>
-<strong>Why install on a Cloud VM?</strong>
+<strong>Why install on a Cloud VM environment?</strong>
 
-Running the RubixKube Observer on a cloud VM gives you full visibility into your real AWS or GCP resources — EC2 instances, VPCs, RDS databases, S3 buckets, GKE clusters, Lambda functions, and more — with zero impact on your existing workloads.
+Running the RubixKube Observer on a cloud VM gives you full visibility into your real AWS or GCP resources - EC2 instances, VPCs, RDS databases, S3 buckets, GKE clusters, Lambda functions, and more - with zero impact on your existing workloads.
 </Info>
 
 ---
 
-## Supported Platforms
+## Environment Quick Starts
+
+<CardGroup cols={2}>
+  <Card title="AWS Quick Start" icon="aws" href="/getting-started/environment-quickstart-aws">
+    Fast path for account-level AWS observation.
+  </Card>
+  <Card title="GCP Quick Start" icon="google" href="/getting-started/environment-quickstart-gcp">
+    Fast path for project-level GCP observation.
+  </Card>
+  <Card title="VM Quick Start" icon="server" href="/getting-started/environment-quickstart-vm">
+    Fast path for generic Linux VM monitoring.
+  </Card>
+  <Card title="Kubernetes Quick Start" icon="cubes" href="/getting-started/environment-quickstart-kubernetes">
+    Use this if you want cluster-native deployment instead.
+  </Card>
+</CardGroup>
+
+---
+
+## Supported Environments
 
 <CardGroup cols={2}>
   <Card title="AWS EC2" icon="aws">
@@ -35,7 +54,7 @@ Running the RubixKube Observer on a cloud VM gives you full visibility into your
 </CardGroup>
 
 <Note>
-<strong>Kubernetes instead?</strong> If you want to monitor a Kubernetes cluster, see the <a href="/getting-started/installation-cloud">Cloud Kubernetes Installation</a> guide instead.
+<strong>Kubernetes instead?</strong> If you want to monitor a Kubernetes environment, see the <a href="/getting-started/installation-cloud">Cloud Kubernetes Installation</a> guide instead.
 </Note>
 
 ---

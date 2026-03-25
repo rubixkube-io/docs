@@ -24,17 +24,17 @@ RubixKube is an AI-native mesh of agents that prevents downtime, safeguards reve
 
 ## What is RubixKube?
 
-RubixKube combines **AI agents, deep Kubernetes knowledge, and automated remediation**  to create a self-healing infrastructure layer:
+RubixKube combines **AI agents, deep infrastructure knowledge, and automated remediation** to create a self-healing reliability layer across Kubernetes, AWS, GCP, and VM environments:
 
 <CardGroup cols={2}>
   <Card title="Observes Like an SRE" icon="eye">
-    Continuously monitors your infrastructure, understanding context and dependencies
+    Continuously monitors your environments with service and dependency context
   </Card>
   <Card title="Diagnoses Root Causes" icon="magnifying-glass">
     Automatically analyzes failures with dependency graphs and timelines
   </Card>
   <Card title="Prevents Incidents" icon="shield">
-    Detects risky deployments and configuration drift before they cause outages
+    Detects risky changes and drift before they cause outages
   </Card>
   <Card title="Fixes Issues Autonomously" icon="wand-magic-sparkles">
     Proposes or applies safe remediations with built-in guardrails
@@ -60,30 +60,44 @@ Get up and running with RubixKube in just a few steps:
     </Card>
   </Step>
 
-  <Step title="Choose Your Installation Method">
-    Install RubixKube on a Kubernetes cluster - local or cloud
-    
+  <Step title="Choose Your Environment">
+    Pick the quick start that matches where you want to observe and troubleshoot
+
     <CardGroup cols={2}>
       <Card
-        title="Local with KIND"
-        icon="laptop"
-        href="/getting-started/installation-kind"
+        title="Kubernetes"
+        icon="cubes"
+        href="/getting-started/environment-quickstart-kubernetes"
       >
-        Perfect for learning and testing on your laptop
+        EKS, GKE, AKS, or local KIND
       </Card>
       <Card
-        title="Cloud (AWS/GKE/AKS)"
-        icon="cloud"
-        href="/getting-started/installation-cloud"
+        title="AWS"
+        icon="aws"
+        href="/getting-started/environment-quickstart-aws"
       >
-        Test on real cloud infrastructure (Beta)
+        Account-level AWS infrastructure observation
+      </Card>
+      <Card
+        title="GCP"
+        icon="google"
+        href="/getting-started/environment-quickstart-gcp"
+      >
+        Project-level GCP infrastructure observation
+      </Card>
+      <Card
+        title="Generic VM"
+        icon="server"
+        href="/getting-started/environment-quickstart-vm"
+      >
+        System-level Linux VM observation
       </Card>
     </CardGroup>
   </Step>
 
   <Step title="Start Monitoring">
-    Watch RubixKube observe your infrastructure and detect issues
-    
+    Watch RubixKube observe your environment and detect issues
+
     <Card
       title="First Steps Tutorial"
       icon="compass"
@@ -94,10 +108,10 @@ Get up and running with RubixKube in just a few steps:
   </Step>
 
   <Step title="See It in Action">
-    Break things on purpose and watch RubixKube fix them
-    
+    Run safe failure simulations and watch RubixKube diagnose and remediate
+
     <Card
-      title="Try Breaking a Pod"
+      title="Try a Kubernetes Failure Drill"
       icon="flask"
       href="/tutorials/break-pod-image-error"
     >
@@ -183,7 +197,7 @@ Hands-on guides to help you master RubixKube:
     icon="comments"
     href="/tutorials/talk-to-infra"
   >
-    Use natural language to query your cluster
+    Use natural language to query your environment
   </Card>
 </CardGroup>
 
@@ -219,9 +233,9 @@ What makes RubixKube different:
   </Accordion>
 
   <Accordion title=" Conversational Infrastructure Control" icon="message">
-    Manage your cluster using natural language:
+    Manage your environment using natural language:
     - "Why is my checkout service slow?"
-    - "Show me pods with high memory usage"
+    - "Show me resources with high memory usage"
     - "What changed in the last hour?"
     - "Restart the payment service"
   </Accordion>
@@ -266,11 +280,11 @@ What makes RubixKube different:
 
 <Warning>
 ### Not Production Ready
-RubixKube is currently in **Beta** . While powerful, it should only be deployed on:
--  Development environments
--  Staging clusters  
--  Testing environments
--  Local KIND clusters
+RubixKube is currently in **Beta**. While powerful, it should only be deployed on:
+- Development environments
+- Staging environments
+- Testing environments
+- Local KIND environments
 - **NOT** on production infrastructure (yet)
 
 Read our [Beta Disclaimers](/getting-started/disclaimers) before proceeding.

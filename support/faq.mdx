@@ -8,7 +8,7 @@ description: "Quick answers to common RubixKube questions"
 ## General
 
 ### What is RubixKube?
-An AI-assisted Site Reliability Intelligence platform for Kubernetes, AWS, GCP, and VM environments.
+An AI-assisted Site Reliability Intelligence platform for Kubernetes.
 
 ### What browsers are supported?
 Latest Chrome, Edge, Safari, and Firefox.
@@ -17,18 +17,18 @@ Latest Chrome, Edge, Safari, and Firefox.
 
 ## Setup
 
-### How do I connect my first environment?
-Choose your path from [Environment Quick Starts](/getting-started/environment-quickstarts). Kubernetes environments use `kubectl` install, while AWS/GCP/VM environments use the observer installer script.
+### How do I connect my first cluster?
+Open Clusters → Connect Cluster → run the provided kubectl apply command. The observer agent installs in your cluster and connects automatically.
 
 ### How long until data shows up?
-Within 1-2 minutes after installation, depending on environment size.
+Within 1–2 minutes after installation, depending on cluster size.
 
 ---
 
 ## Insights & RCA
 
 ### How are incidents detected?
-RubixKube continuously analyzes infrastructure signals (events, logs, metrics) to detect abnormal patterns.
+RubixKube continuously analyzes Kubernetes signals (events, logs, metrics) to detect abnormal patterns.
 
 ### Can I trust the RCA?
 RCA includes confidence levels and evidence so you can validate conclusions.
@@ -41,7 +41,7 @@ RCA includes confidence levels and evidence so you can validate conclusions.
 Observer, RCA Pipeline, and SRI. Optional: Memory Engine and MCP server.
 
 ### What if an agent is inactive?
-For Kubernetes: check `rubixkube-system` namespace pods and logs. For VM/cloud environments: validate observer service status and credentials. See the Troubleshooting guide.
+Check `rubixkube-system` namespace pods and logs. See the Troubleshooting guide.
 
 ---
 
@@ -66,11 +66,11 @@ Use the Troubleshooting guide or contact support with Tenant ID, repro steps, an
 ---
 
 ## Related Guides
-- [Environment Quick Starts](/getting-started/environment-quickstarts)
-- [Environment Types](/getting-started/environment-types)
 - [Troubleshooting](/support/troubleshooting)
 - [Dashboard](/using/dashboard)
 - [Insights](/using/insights)
 - [Infrastructure](/using/infrastructure)
 - [Agents](/using/agents)
 - [Settings](/using/settings)
+
+

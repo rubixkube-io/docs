@@ -1,0 +1,847 @@
+---
+title: 'Cloud VM Installation (Beta)'
+description: 'Install RubixKube Observer on AWS EC2 or GCP Compute Engine - provision a new instance or install on an existing VM'
+---
+
+Install RubixKube on a **cloud virtual machine environment** to monitor your AWS or GCP infrastructure with our Site Reliability Intelligence platform.
+
+<Warning>
+<strong>Beta Release Notice</strong>
+
+RubixKube is currently in <strong>Beta</strong>. While you can install it on cloud VM environments for <strong>testing and evaluation</strong>, it is <strong>NOT recommended for production environments</strong> yet.
+
+✅ <strong>Safe for:</strong> Development, staging, testing environments<br/>
+❌ <strong>Not ready for:</strong> Production workloads, critical infrastructure<br/>
+🔜 <strong>Coming soon:</strong> Production-ready release with SLA guarantees
+</Warning>
+
+<Info>
+<strong>Why install on a Cloud VM environment?</strong>
+
+Running the RubixKube Observer on a cloud VM gives you full visibility into your real AWS or GCP resources - EC2 instances, VPCs, RDS databases, S3 buckets, GKE clusters, Lambda functions, and more - with zero impact on your existing workloads.
+</Info>
+
+---
+
+## Environment Quick Starts
+
+<CardGroup cols={2}>
+  <Card title="AWS Quick Start" icon="aws" href="/getting-started/environment-quickstart-aws">
+    Fast path for account-level AWS observation.
+  </Card>
+  <Card title="GCP Quick Start" icon="google" href="/getting-started/environment-quickstart-gcp">
+    Fast path for project-level GCP observation.
+  </Card>
+  <Card title="VM Quick Start" icon="server" href="/getting-started/environment-quickstart-vm">
+    Fast path for generic Linux VM monitoring.
+  </Card>
+  <Card title="Kubernetes Quick Start" icon="cubes" href="/getting-started/environment-quickstart-kubernetes">
+    Use this if you want cluster-native deployment instead.
+  </Card>
+</CardGroup>
+
+---
+
+## Supported Environments
+
+<CardGroup cols={2}>
+  <Card title="AWS EC2" icon="aws">
+    Provision a new Amazon Linux 2023 instance or install on an existing Linux VM
+  </Card>
+  <Card title="Google GCP" icon="google">
+    Provision a new Compute Engine instance (Container-Optimized OS) or install on an existing Linux VM
+  </Card>
+</CardGroup>
+
+<Note>
+<strong>Kubernetes instead?</strong> If you want to monitor a Kubernetes environment, see the <a href="/getting-started/installation-cloud">Cloud Kubernetes Installation</a> guide instead.
+</Note>
+
+---
+
+## Two Ways to Install
+
+| Method | Best for | What it does |
+|--------|----------|--------------|
+| **Provision a new VM** | Starting fresh | Installer creates an EC2 / Compute Engine instance automatically |
+| **Install on this machine** | Existing VMs | Downloads and runs the observer binary directly on your current Linux host |
+
+Both paths use the same interactive installer script.
+
+---
+
+## Prerequisites
+
+### Required Tools
+
+<AccordionGroup>
+  <Accordion title="RubixKube Account" icon="user">
+    You need a RubixKube account to obtain your API key.
+
+    If you don't have one:
+    1. Visit [console.rubixkube.ai](https://console.rubixkube.ai)
+    2. [Sign up for free](/getting-started/sign-up)
+    3. Verify your email
+    4. [Log in](/getting-started/login) to access your dashboard and copy your API key
+  </Accordion>
+
+  <Accordion title="AWS CLI (for AWS paths)" icon="aws">
+    Required to provision an EC2 instance or to install on an existing AWS VM.
+
+    **Installation:**
+    ```bash
+    # macOS
+    brew install awscli
+
+    # Windows
+    msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+
+    # Linux
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+    ```
+
+    **Configure credentials:**
+    ```bash
+    aws configure
+    ```
+
+    **Verify:**
+    ```bash
+    aws sts get-caller-identity
+    ```
+  </Accordion>
+
+  <Accordion title="gcloud CLI (for GCP paths)" icon="google">
+    Required to provision a Compute Engine instance or to install on an existing GCP VM.
+
+    **Installation:**
+    ```bash
+    # macOS
+    brew install google-cloud-sdk
+
+    # Other platforms: https://cloud.google.com/sdk/docs/install
+    ```
+
+    **Authenticate:**
+    ```bash
+    gcloud auth login
+    gcloud config set project YOUR_PROJECT_ID
+    ```
+
+    **Verify:**
+    ```bash
+    gcloud config get-value project
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Step 1: Run the Installer
+
+The RubixKube installer is a single interactive bash script. Run it from any terminal where your cloud CLI is configured.
+
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+<Warning>
+<strong>Important:</strong> Always copy your personal command from the <a href="https://console.rubixkube.ai">RubixKube dashboard</a> — your API key is embedded in the command.
+</Warning>
+
+The script opens an interactive menu. Your choices determine exactly what gets installed and where.
+
+---
+
+## Step 2: Choose Install or Uninstall
+
+```
+RubixKube Observer
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+What would you like to do?
+  1) Install Observer
+  2) Uninstall Observer
+
+>
+```
+
+Select **1** to install.
+
+---
+
+## Step 3: Choose Where to Deploy
+
+```
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+
+>
+```
+
+<Tabs>
+  <Tab title="New AWS EC2 Instance">
+    Select **2**. The installer will:
+    - Create an IAM policy, role, and instance profile with read-only permissions
+    - Find the latest Amazon Linux 2023 AMI in your chosen region
+    - Launch a `t3.micro` instance and configure the observer automatically via user data
+    - No SSH or manual steps required
+
+    Skip to [Provisioning a New AWS EC2 Instance](#provisioning-a-new-aws-ec2-instance).
+  </Tab>
+  <Tab title="New GCP Compute Engine Instance">
+    Select **3**. The installer will:
+    - Enable required GCP APIs
+    - Create a service account with read-only IAM bindings
+    - Set up Cloud NAT for outbound internet access (no public IP needed)
+    - Launch an `e2-micro` Container-Optimized OS instance
+    - No SSH or manual steps required
+
+    Skip to [Provisioning a New GCP Compute Engine Instance](#provisioning-a-new-gcp-compute-engine-instance).
+  </Tab>
+  <Tab title="This Machine (Existing VM)">
+    Select **1**. You'll be asked which platform you're monitoring:
+
+    ```
+    Which platform are you monitoring?
+      1) VM (generic Linux)
+      2) AWS
+      3) GCP
+
+    >
+    ```
+
+    - Select **2** for AWS infrastructure monitoring
+    - Select **3** for GCP infrastructure monitoring
+
+    Skip to [Installing on an Existing VM](#installing-on-an-existing-vm-aws).
+  </Tab>
+</Tabs>
+
+---
+
+## Provisioning a New AWS EC2 Instance
+
+### Region
+
+```
+AWS Region [us-east-1]:
+```
+
+Enter the region where you want to launch the observer VM. This is also the **primary region** the observer uses to call the AWS metadata service and AWS MCP endpoint.
+
+### Select Regions to Monitor
+
+```
+Which regions should the observer monitor?
+  1) us-east-1 only (recommended)
+  2) All enabled regions (N regions)
+  3) Select specific regions
+```
+
+| Option | When to use |
+|--------|-------------|
+| **1 – Primary region only** | Best for most teams; lower API call volume |
+| **2 – All enabled regions** | Full multi-region visibility; higher API usage |
+| **3 – Specific regions** | Pick from a numbered list of your enabled regions |
+
+If you choose option **3**, the installer lists every enabled region and lets you pick by number (e.g. `1,3,5`). Invalid selections are skipped; if nothing valid is selected it falls back to the primary region.
+
+### IAM Resources Created
+
+The installer automatically creates the following IAM resources (idempotent — safe to re-run):
+
+| Resource | Name | Purpose |
+|----------|------|---------|
+| IAM Policy | `RubixKubeObserverPolicy` | Read-only access to AWS services |
+| IAM Role | `RubixKubeObserverRole` | EC2 instance role |
+| Instance Profile | `RubixKubeObserverProfile` | Attaches the role to the EC2 instance |
+
+**Permissions granted (read-only):**
+
+```
+ec2:Describe*           elasticloadbalancing:Describe*
+rds:Describe*           cloudwatch:Describe* / GetMetric* / ListMetrics
+s3:ListAllMyBuckets     logs:Describe* / FilterLogEvents / GetLogEvents
+s3:GetBucket*           cloudtrail:LookupEvents
+iam:ListRoles           sts:GetCallerIdentity
+eks:ListClusters        aws-mcp:*
+eks:DescribeCluster
+lambda:List* / GetFunction*
+```
+
+<Note>
+If <strong>RubixKubeObserverPolicy</strong> or <strong>RubixKubeObserverRole</strong> already exist in your account, the installer skips creation and reuses them. The policy attachment is always verified.
+</Note>
+
+### Existing Observer Check
+
+Before launching, the installer scans for any running instances tagged `rubixkube=observer` in your region:
+
+```
+Checking for existing observer instances...
+⚠  Observer instance(s) already running in us-east-1:
+   • i-0abc123def456789   rk-observer-20250101120000   [running]
+
+Launch another instance anyway? [y/N]:
+```
+
+Type `y` only if you intentionally want a second observer (e.g. testing a new version alongside an existing one).
+
+### What Gets Launched
+
+```
+Launching EC2 instance (t3.micro, Amazon Linux 2023)...
+✓ Instance launched: i-0abc123def456789
+```
+
+| Setting | Value |
+|---------|-------|
+| **Instance type** | `t3.micro` |
+| **AMI** | Latest Amazon Linux 2023 (x86_64), auto-detected |
+| **IAM profile** | `RubixKubeObserverProfile` |
+| **IMDSv2** | Enforced (`HttpTokens=required`) |
+| **Tags** | `rubixkube=observer`, `managed-by=rk-installer` |
+
+The observer binary is installed and started via **user data** on first boot. No SSH access is required.
+
+<Tip>
+<strong>Cost:</strong> A <code>t3.micro</code> costs approximately $8–10/month depending on your region. The instance runs 24/7. Stop or terminate it from the EC2 console when not in use.
+</Tip>
+
+---
+
+## Provisioning a New GCP Compute Engine Instance
+
+### Project and Region
+
+```
+GCP Project ID [my-project]:
+
+Region [us-central1]:
+```
+
+The installer reads your current `gcloud` project as the default. The zone is derived automatically (`<region>-a`).
+
+### APIs Enabled Automatically
+
+The installer enables the following GCP APIs if not already active:
+
+```
+compute.googleapis.com          run.googleapis.com
+monitoring.googleapis.com       cloudfunctions.googleapis.com
+logging.googleapis.com          container.googleapis.com
+storage.googleapis.com          pubsub.googleapis.com
+sqladmin.googleapis.com         cloudresourcemanager.googleapis.com
+```
+
+### IAM Resources Created
+
+| Resource | Name | Permissions |
+|----------|------|-------------|
+| Service Account | `rk-observer@PROJECT.iam.gserviceaccount.com` | Listed below |
+| Custom Role | `RKObserverStorageViewer` | `storage.buckets.get`, `storage.buckets.list` |
+
+**Predefined roles bound to the service account (all read-only):**
+
+```
+roles/compute.viewer            roles/cloudsql.viewer
+roles/monitoring.viewer         roles/run.viewer
+roles/logging.viewer            roles/cloudfunctions.viewer
+projects/PROJECT/roles/RKObserverStorageViewer
+roles/container.viewer
+roles/pubsub.viewer
+```
+
+### Network Resources Created
+
+Because the Compute Engine VM is launched **without a public IP address**, the installer creates Cloud NAT so the observer can reach the RubixKube API:
+
+| Resource | Name |
+|----------|------|
+| Cloud Router | `rk-observer-router` |
+| Cloud NAT | `rk-observer-nat` |
+| Firewall rule (egress TCP 4222) | `rk-observer-allow-nats` |
+| Firewall rule (egress TCP 443) | `rk-observer-allow-https` |
+
+All resources are created **idempotently** — re-running the installer is safe.
+
+### Existing Observer Check
+
+```
+Checking for existing observer instances...
+⚠  Observer instance(s) already running in project my-project:
+   • rk-observer-20250101   zone: us-central1-a   [RUNNING]
+
+Launch another instance anyway? [y/N]:
+```
+
+### What Gets Launched
+
+```
+Creating Compute Engine instance (e2-micro, Container-Optimized OS)...
+✓ Instance created: rk-observer-20250121 (us-central1-a)
+```
+
+| Setting | Value |
+|---------|-------|
+| **Machine type** | `e2-micro` |
+| **OS** | Container-Optimized OS (latest) |
+| **Service account** | `rk-observer@PROJECT.iam.gserviceaccount.com` |
+| **Scopes** | `cloud-platform` |
+| **Public IP** | None (uses Cloud NAT) |
+| **Network tags** | `rk-observer` |
+| **Labels** | `rubixkube=observer`, `managed-by=rk-installer` |
+
+<Tip>
+<strong>Cost:</strong> An <code>e2-micro</code> with Cloud NAT costs approximately $10–15/month. Delete the instance and NAT resources from the Cloud Console when not in use.
+</Tip>
+
+---
+
+## Installing on an Existing VM (AWS)
+
+If you already have a Linux VM that you want to run the observer on, select **1 → On this machine → 2 → AWS**.
+
+### What You'll Need
+
+- An IAM user with the read-only permissions listed in the IAM table above
+- The user's **Access Key ID** and **Secret Access Key**
+
+The installer prints setup instructions and optionally shows the full IAM policy JSON:
+
+```
+Would you like to print the full policy JSON? [y/N]:
+```
+
+Enter your credentials when prompted:
+
+```
+AWS Access Key ID:
+AWS Secret Access Key:
+```
+
+<Warning>
+Credentials are written to <code>/etc/rk-observer/observer.env</code> with mode <code>600</code> (root-only). Never commit this file to version control.
+</Warning>
+
+After entering credentials, the region-selection prompt appears (same as the EC2 provisioning flow).
+
+### What Gets Installed
+
+| File | Purpose |
+|------|---------|
+| `/usr/local/bin/rk-observer` | Observer binary |
+| `/etc/rk-observer/observer.env` | Configuration and credentials (mode 600) |
+| `/etc/rk-observer/mcp.aws.json` | AWS MCP server config |
+| `/etc/systemd/system/rk-observer.service` | systemd unit |
+
+The observer is enabled and started immediately via **systemd**:
+
+```
+✓ Service rk-observer started
+✅ Connected! Your environment is being monitored.
+   Dashboard: https://console.rubixkube.ai
+```
+
+<Note>
+<strong>Root required:</strong> The binary installation writes to <code>/usr/local/bin</code> and <code>/etc/systemd/system</code>. Re-run with <code>sudo</code> if needed.
+</Note>
+
+---
+
+## Installing on an Existing VM (GCP)
+
+Select **1 → On this machine → 3 → GCP**.
+
+The installer detects your `gcloud` project from the CLI and prompts to confirm:
+
+```
+GCP Project ID [my-project]:
+```
+
+### Credentials Handling
+
+The observer reads GCP credentials from:
+
+1. **Mounted gcloud config** — If `~/.config/gcloud` exists, it is mounted into the Docker container automatically.
+2. **Service account key** — If `GOOGLE_APPLICATION_CREDENTIALS` is set, the key file is mounted and passed to the container.
+3. **Workload Identity / attached service accounts** — Works automatically on GCP VMs with an attached service account.
+
+<Warning>
+If no gcloud credentials are found, the installer warns:
+
+```
+⚠  No gcloud credentials found at ~/.config/gcloud
+⚠  Run: gcloud auth application-default login
+```
+
+Run that command before starting the observer.
+</Warning>
+
+---
+
+## Step 4: Verify the Connection
+
+### Check the Dashboard
+
+1. Go to [console.rubixkube.ai](https://console.rubixkube.ai)
+2. Navigate to **Dashboard** or **Clusters**
+3. Your environment should appear with:
+   - ✅ **Green status indicator** (Connected)
+   - **Metrics** populating within 1–2 minutes
+   - **Observer Status:** Active
+
+<Note>
+<strong>Sync delay:</strong> Provisioned VMs boot and connect in approximately 1–2 minutes. Locally installed observers connect within seconds.
+</Note>
+
+### Check Observer Logs
+
+**For binary installs (systemd):**
+
+```bash
+journalctl -u rk-observer -f
+```
+
+**Healthy output:**
+
+```
+[INFO] RubixKube Observer v0.x.x starting...
+[INFO] Connecting to RubixKube API at https://api.rubixkube.ai
+[INFO] Authentication successful
+[INFO] Cluster registered: aws-123456789012
+[INFO] Starting infrastructure monitoring...
+[INFO] AWS inventory poll started (regions: us-east-1,us-west-2)
+[INFO] Agent mesh initialized
+[INFO] Connected to RubixKube platform
+[INFO] Heartbeat: cluster healthy
+```
+
+<Tip>
+Regular <code>[INFO]</code> messages about monitoring, watching, and heartbeats mean everything is working correctly.
+</Tip>
+
+---
+
+## Managing Your Installation
+
+### Restart the Observer
+
+**systemd (binary install):**
+```bash
+sudo systemctl restart rk-observer
+```
+
+### Check Service Status
+
+```bash
+sudo systemctl status rk-observer
+```
+
+### View Configuration
+
+```bash
+sudo cat /etc/rk-observer/observer.env
+sudo cat /etc/rk-observer/mcp.aws.json    # AWS
+sudo cat /etc/rk-observer/mcp.gcp.json    # GCP
+```
+
+### Update the Observer
+
+Re-run the installer command — it installs the latest binary and restarts the service.
+
+### Resource Usage
+
+The observer is designed to be lightweight:
+
+| Metric | Typical Value |
+|--------|--------------|
+| **Memory** | ~146 Mi |
+| **CPU** | Under 10 millicores |
+| **Disk** | < 100 MB |
+
+---
+
+## Uninstalling
+
+Run the installer script again and select **2 – Uninstall Observer** at the first prompt.
+
+### Uninstall: Binary (This Machine — VM / AWS)
+
+```
+What do you want to uninstall?
+  1) This machine (local install)
+  ...
+
+Which platform was installed?
+  1) VM / AWS (binary + systemd)
+```
+
+The installer:
+- Stops and disables the `rk-observer` systemd service
+- Removes `/usr/local/bin/rk-observer`
+- Removes `/etc/rk-observer/` (config, credentials, MCP config)
+
+### Uninstall: AWS EC2 Instance
+
+```
+What do you want to uninstall?
+  2) AWS EC2 instance + IAM resources
+```
+
+The installer lists all observer instances tagged `rubixkube=observer` in your chosen region and lets you select which to terminate:
+
+```
+Found 2 observer instance(s):
+  1) rk-observer-20250101   i-0abc123   [running]
+  2) rk-observer-20250110   i-0def456   [running]
+  a) All instances
+```
+
+If you terminate **all** instances, the installer also removes the shared IAM resources (`RubixKubeObserverProfile`, `RubixKubeObserverRole`, `RubixKubeObserverPolicy`). If you terminate a subset, IAM resources are kept.
+
+<Warning>
+Instance termination is <strong>permanent and irreversible</strong>. The installer asks you to type <code>yes</code> to confirm.
+</Warning>
+
+### Uninstall: GCP Compute Engine Instance
+
+```
+What do you want to uninstall?
+  3) GCP Compute Engine instance + IAM + network resources
+```
+
+The installer lists all observer instances labeled `rubixkube=observer` in your project. If you delete **all** instances, it also removes:
+
+- Firewall rules: `rk-observer-allow-nats`, `rk-observer-allow-https`
+- Cloud NAT: `rk-observer-nat`
+- Cloud Router: `rk-observer-router`
+- Service account and all IAM role bindings
+- Custom storage role `RKObserverStorageViewer`
+
+<Warning>
+<strong>Data Retention:</strong> Historical data in the RubixKube cloud platform is retained for 30 days after uninstalling the agent.
+</Warning>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="AWS credentials not configured">
+    **Error:** `AWS credentials not configured. Run: aws configure`
+
+    **Solution:**
+    ```bash
+    aws configure
+    # Enter your Access Key ID, Secret Access Key, region, and output format
+    aws sts get-caller-identity  # Verify it works
+    ```
+  </Accordion>
+
+  <Accordion title="Observer not appearing in dashboard">
+    **Checklist:**
+    1. Wait 2–3 minutes — initial sync takes time
+    2. For provisioned VMs, wait for the instance to fully boot (~2 min)
+    3. Check the observer logs:
+       ```bash
+       journalctl -u rk-observer --no-pager | tail -50
+       ```
+    4. Look for "Authentication successful" in the logs — if missing, your API key may be incorrect
+    5. Verify outbound connectivity to `api.rubixkube.ai` on TCP 443 and `nats.rubixkube.ai` on TCP 4222
+  </Accordion>
+
+  <Accordion title="Observer service keeps restarting">
+    **Diagnosis:**
+    ```bash
+    journalctl -u rk-observer --no-pager | grep -i "error\|fail\|unauthori"
+    ```
+
+    **Common causes:**
+    - Invalid or expired API key — get a fresh command from the dashboard
+    - AWS/GCP credentials are missing or have insufficient permissions
+    - Network policy blocking outbound connections
+
+    **Reinstall with correct API key:**
+    ```bash
+    # Run uninstall first, then reinstall with your fresh command
+    curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_NEW_KEY
+    ```
+  </Accordion>
+
+  <Accordion title="GCP: No gcloud credentials found">
+    **Error:**
+    ```
+    ⚠  No gcloud credentials found at ~/.config/gcloud
+    ```
+
+    **Solution:**
+    ```bash
+    gcloud auth application-default login
+    # Then re-run the installer
+    ```
+  </Accordion>
+
+  <Accordion title="AWS IAM: insufficient permissions to create resources">
+    **Error:** `An error occurred (AccessDenied) when calling the CreatePolicy operation`
+
+    **Solution:** Ensure the AWS credentials you're using have IAM admin permissions, or ask your AWS administrator to pre-create the `RubixKubeObserverPolicy`, `RubixKubeObserverRole`, and `RubixKubeObserverProfile` resources manually before running the installer.
+  </Accordion>
+
+  <Accordion title="GCP: API not enabled">
+    **Error:** `API [compute.googleapis.com] not enabled on project`
+
+    **Solution:** The installer enables APIs automatically, but requires the `serviceusage.services.enable` permission. Ensure your `gcloud` account has the `roles/serviceusage.serviceUsageAdmin` role, or enable APIs manually:
+    ```bash
+    gcloud services enable compute.googleapis.com monitoring.googleapis.com logging.googleapis.com --project=YOUR_PROJECT_ID
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Security Considerations
+
+<AccordionGroup>
+  <Accordion title="What data does RubixKube collect?" icon="shield">
+    The observer collects:
+
+    ✅ **Metadata:** Resource names, namespaces, labels, tags  
+    ✅ **Metrics:** CPU, memory, network usage  
+    ✅ **Events:** Cloud provider events and state changes  
+    ✅ **Status:** Health checks and availability  
+
+    ❌ **NEVER collects:** Application logs, secrets, environment variables, database contents, or business data  
+
+    All data is encrypted in transit (TLS) and at rest.
+  </Accordion>
+
+  <Accordion title="What permissions does RubixKube need?" icon="key">
+    All permissions are **read-only**. The observer can view resources but cannot create, modify, or delete anything in your cloud account.
+
+    **AWS:** View EC2, VPC, RDS, S3, IAM, EKS, Lambda, ELB, CloudWatch, CloudTrail  
+    **GCP:** View Compute, Monitoring, Logging, Storage, Cloud SQL, Cloud Run, Cloud Functions, GKE, Pub/Sub
+  </Accordion>
+
+  <Accordion title="Is my API key secure?" icon="lock">
+    Your API key is stored in `/etc/rk-observer/observer.env` with permissions `600` (readable by root only).
+
+    **Best practices:**
+    - Never commit the env file or API key to version control
+    - Rotate keys every 90 days from the RubixKube dashboard
+    - Revoke keys immediately if compromised
+    - Use separate API keys per environment
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Beta Testing Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Use Test Environments Only" icon="flask">
+    - Install on dev or staging accounts
+    - Never on production (yet)
+    - Use non-critical workloads and resources
+  </Card>
+
+  <Card title="Monitor Resource Usage" icon="chart-line">
+    - Observer uses under 10 millicores CPU
+    - Memory footprint ~146 Mi
+    - Report any unexpected resource usage
+  </Card>
+
+  <Card title="Provide Feedback" icon="comments">
+    - Report bugs to support@rubixkube.ai
+    - Suggest features you need
+    - Share your use cases with the team
+  </Card>
+
+  <Card title="Stay Updated" icon="bell">
+    - Watch for new releases
+    - Re-run the installer to update
+    - Test new features as they ship
+  </Card>
+</CardGroup>
+
+---
+
+## Installation Comparison
+
+| Feature | New EC2 Instance | New GCP VM | Existing VM |
+|---------|-----------------|------------|-------------|
+| **Setup time** | ~5 min (+ ~2 min boot) | ~5 min (+ ~1 min boot) | ~2 min |
+| **SSH required** | No | No | Yes (you're already on it) |
+| **IAM created automatically** | ✅ | ✅ | Manual or pre-existing |
+| **Cost** | ~$8–10/mo | ~$10–15/mo | Depends on existing VM |
+| **Uninstall** | Terminates instance + IAM | Deletes instance + NAT + IAM | Removes binary + service |
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Explore the Dashboard"
+    icon="gauge"
+    href="/tutorials/first-steps"
+  >
+    Take your first tour of the RubixKube console
+  </Card>
+
+  <Card
+    title="Chat with Your Infrastructure"
+    icon="comments"
+    href="/tutorials/talk-to-infra"
+  >
+    Use natural language to query your AWS or GCP resources
+  </Card>
+
+  <Card
+    title="Understand Core Concepts"
+    icon="brain"
+    href="/concepts/what-is-sri"
+  >
+    Learn about Site Reliability Intelligence
+  </Card>
+
+  <Card
+    title="Troubleshooting Guide"
+    icon="wrench"
+    href="/support/troubleshooting"
+  >
+    Full troubleshooting reference and FAQ
+  </Card>
+</CardGroup>
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Support" icon="envelope">
+    Email: support@rubixkube.ai  
+    For installation issues
+  </Card>
+
+  <Card title="Bug Reports" icon="bug">
+    Email: bugs@rubixkube.ai  
+    Found a bug? Let us know!
+  </Card>
+
+  <Card title="Documentation" icon="book">
+    Visit our [troubleshooting guide](/support/troubleshooting)
+  </Card>
+
+  <Card title="Community" icon="users">
+    Join our Slack for real-time help
+  </Card>
+</CardGroup>
+
+<Warning>
+<strong>Beta Reminder:</strong> You're using beta software. Things may break. Please report any issues to help us improve!
+</Warning>

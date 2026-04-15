@@ -1,0 +1,398 @@
+---
+title: 'GCP Installation'
+description: 'Install RubixKube Observer to monitor your Google Cloud environment - provision a new Compute Engine instance or install on an existing VM'
+---
+
+Install RubixKube on **Google Cloud to monitor project-level infrastructure** including Compute Engine instances, Cloud SQL databases, Cloud Storage buckets, Cloud Functions, GKE clusters, and more.
+
+<Warning>
+    **Beta Release Notice**
+
+    RubixKube is currently in **Beta**. While you can install it for **testing and evaluation**, it is **NOT recommended for production environments** yet.
+
+    - ✅ **Safe for:** Development, staging, testing environments
+    - ❌ **Not ready for:** Production workloads, critical infrastructure
+    - 🔜 **Coming soon:** Production-ready release with SLA guarantees
+</Warning>
+
+## Quick Start
+
+For a quick path, see [GCP Quick Start](/getting-started/environment-quickstart-gcp).
+
+## Prerequisites
+
+<AccordionGroup>
+    <Accordion title="RubixKube Account & API Key" icon="user">
+        You need a RubixKube account to obtain your API key.
+
+        1. Visit [console.rubixkube.ai](https://console.rubixkube.ai)
+        2. [Sign up for free](/getting-started/sign-up) if needed
+        3. [Log in](/getting-started/login) to your dashboard
+        4. Copy your API key from settings
+    </Accordion>
+
+    <Accordion title="Google Cloud CLI (gcloud)" icon="google">
+        Required to provision Compute Engine instances or install on existing VMs.
+
+        **Installation:**
+        ```bash
+        # macOS
+        brew install google-cloud-sdk
+
+        # Linux
+        curl https://sdk.cloud.google.com | bash
+        exec -l $SHELL
+
+        # Windows: https://cloud.google.com/sdk/docs/install-sdk
+        ```
+
+        **Authenticate:**
+        ```bash
+        gcloud auth login
+        gcloud auth application-default login
+        ```
+
+        **Set your project:**
+        ```bash
+        gcloud config set project YOUR_PROJECT_ID
+        ```
+
+        **Verify:**
+        ```bash
+        gcloud config get-value project
+        gcloud auth list
+        ```
+    </Accordion>
+
+    <Accordion title="Permissions Required" icon="shield">
+        The observer needs read-only permissions for GCP services. The installer automatically creates a service account with these roles:
+        ```
+        roles/compute.viewer                 # Compute Engine instances, networks
+        roles/container.viewer               # GKE cluster inventory
+        roles/storage.viewer                 # Cloud Storage buckets
+        roles/monitoring.viewer              # Cloud Monitoring metrics
+        roles/logging.viewer                 # Cloud Logging entries
+        ```
+
+        <Tip>
+            The installer creates a service account `rubix-observer` and attaches these roles automatically. If it already exists, it's reused.
+        </Tip>
+    </Accordion>
+
+    <Accordion title="Enable Required APIs" icon="gear">
+        The installer enables these APIs automatically, but you can do it manually:
+        ```bash
+        gcloud services enable compute.googleapis.com
+        gcloud services enable container.googleapis.com
+        gcloud services enable monitoring.googleapis.com
+        gcloud services enable logging.googleapis.com
+        gcloud services enable storage.googleapis.com
+        gcloud services enable iam.googleapis.com
+        ```
+    </Accordion>
+</AccordionGroup>
+
+## Step 1: Run the Installer
+
+The RubixKube installer is a single interactive bash script.
+
+<Warning>
+    <strong>Important:</strong> Use your personal command from the <a href="https://console.rubixkube.ai">RubixKube dashboard</a> — your API key is embedded in the command.
+</Warning>
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+## Step 2: Choose Install or Uninstall
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RubixKube Observer
+  1) Install Observer
+  2) Uninstall Observer
+>
+```
+
+Select **1** to install.
+
+## Step 3: Choose Deployment Method
+```
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+>
+```
+
+Choose one of the two GCP options:
+
+<Tabs>
+    <Tab title="Create New Compute Engine Instance (Recommended)">
+        Select **3**.
+
+        The installer will:
+        - Enable required Google Cloud APIs
+        - Create a service account `rubix-observer` with read-only IAM roles
+        - Set up Cloud NAT for outbound internet access (no public IP needed)
+        - Launch an `e2-micro` Container-Optimized OS instance with auto-configuration (no SSH needed)
+        - Tag it as `rubixkube-observer` for easy identification
+
+        Then proceed to [Provisioning a New GCP Compute Engine Instance](#provisioning-a-new-gcp-compute-engine-instance).
+    </Tab>
+
+    <Tab title="Install on Existing Machine">
+        Select **1**, then choose **GCP** when prompted for platform:
+        ```
+        Which platform are you monitoring?
+        1) VM (generic Linux)
+        2) AWS
+        3) GCP
+        >
+        ```
+
+        Then proceed to [Installing on an Existing Linux VM](#installing-on-an-existing-linux-vm).
+    </Tab>
+</Tabs>
+
+## Provisioning a New GCP Compute Engine Instance
+
+### Choose Your Project
+
+Enter your GCP project ID. This is the project the observer will monitor.
+```
+GCP Project ID [current-project]:
+```
+
+### Choose Your Region
+
+Enter the Google Cloud region where you want to launch the observer. This becomes the **primary region** for the observer instance.
+```
+GCP Region [us-central1]:
+```
+
+<Info>
+    The observer can monitor resources in all regions of your project, regardless of where the instance is launched. The region choice just determines where the instance runs.
+</Info>
+
+### Service Account Setup
+
+The installer creates a service account named `rubix-observer` with these roles attached:
+
+| Role | Purpose |
+|------|---------|
+| `roles/compute.viewer` | Read Compute Engine instances, networks, zones |
+| `roles/container.viewer` | Read GKE cluster inventory |
+| `roles/storage.viewer` | List Cloud Storage buckets |
+| `roles/monitoring.viewer` | Read Cloud Monitoring metrics |
+| `roles/logging.viewer` | Read Cloud Logging entries |
+
+**If the service account exists:** It's reused and roles are verified.
+
+### API Enablement
+
+The installer enables these APIs automatically:
+- `compute.googleapis.com` — Compute Engine API
+- `container.googleapis.com` — GKE API
+- `monitoring.googleapis.com` — Cloud Monitoring API
+- `logging.googleapis.com` — Cloud Logging API
+- `storage.googleapis.com` — Cloud Storage API
+- `iam.googleapis.com` — Identity and Access Management API
+
+### Network Setup
+
+The installer creates or uses an existing Cloud NAT so the observer instance has outbound internet access without a public IP:
+```
+Setting up Cloud NAT for outbound connectivity...
+✓ NAT gateway configured in us-central1
+```
+
+### Instance Launched
+```
+Launching Compute Engine instance (e2-micro, Container-Optimized OS)...
+✓ Instance launched: rk-observer-20250101120000
+✓ Service account attached
+✓ Startup script running (configure observer in background)
+```
+
+The instance automatically configures itself. In 2-3 minutes, it will:
+- Download and start the RubixKube observer
+- Authenticate using the service account
+- Connect to your GCP project
+- Begin publishing insights to RubixKube
+
+### Verify in Dashboard
+
+1. Open [console.rubixkube.ai](https://console.rubixkube.ai)
+2. Go to **Environments** or **Infrastructure**
+3. Look for your GCP environment (labeled with project ID)
+4. Wait 1-2 minutes for metrics to appear
+
+## Installing on an Existing Linux VM
+
+### Prerequisites
+
+- Linux VM (Container-Optimized OS, Ubuntu 20.04+, or similar) running in GCP
+- Outbound access to `api.rubixkube.ai:443`
+- Google Cloud CLI (`gcloud`) installed and authenticated
+- Service account key or application default credentials configured
+- Systemd (most modern Linux distributions)
+
+### Run the Installer
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+When prompted:
+```
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+> 1
+```
+
+Then:
+```
+Which platform are you monitoring?
+  1) VM (generic Linux)
+  2) AWS
+  3) GCP
+> 3
+```
+
+### What Gets Installed
+
+The installer will:
+1. Download the observer binary for GCP monitoring
+2. Create a systemd service: `rubixkube-observer`
+3. Configure environment variables (API key, GCP settings, thresholds)
+4. Start the service automatically on boot
+
+### Verify Installation
+
+Check service status:
+```bash
+sudo systemctl status rubixkube-observer
+```
+
+Tail logs:
+```bash
+sudo journalctl -u rubixkube-observer -f
+```
+
+Look for:
+```
+[INFO] RubixKube Observer started
+[INFO] GCP mode enabled
+[INFO] Connected to orchestrator
+[INFO] Publishing insights to NATS
+```
+
+## Configuration
+
+### Environment Variables
+
+All configuration uses environment variables. The installer sets these automatically, but you can modify them:
+```bash
+sudo nano /etc/rubixkube/observer.env
+sudo systemctl restart rubixkube-observer
+```
+
+**Key variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `API_KEY` | - | Your RubixKube API key (required) |
+| `CLUSTER_TYPE` | `gcp` | Environment mode |
+| `GCP_ENABLED` | `true` | Enable GCP monitoring |
+| `GCP_PROJECT_IDS` | - | Comma-separated project IDs to monitor |
+| `GCP_INVENTORY_POLL_INTERVAL` | `10m` | How often to refresh inventory |
+| `GCP_METRICS_POLL_INTERVAL` | `2m` | How often to fetch metrics |
+| `GCP_LOGS_POLL_INTERVAL` | `5m` | How often to check logs |
+| `SYSTEM_POLL_INTERVAL` | `30s` | How often to check VM metrics |
+| `GCE_CPU_THRESHOLD` | `80` | Compute Engine CPU % to trigger alert |
+| `CLOUDSQL_CPU_THRESHOLD` | `80` | Cloud SQL CPU % to trigger alert |
+
+### Thresholds
+
+Customize alert thresholds for your environment:
+```bash
+sudo tee -a /etc/rubixkube/observer.env << EOF
+GCE_CPU_THRESHOLD=75
+CLOUDSQL_CPU_THRESHOLD=75
+CLOUDSQL_STORAGE_THRESHOLD=85
+GCF_ERROR_THRESHOLD=5
+EOF
+sudo systemctl restart rubixkube-observer
+```
+
+### Cloud Monitoring Agent (Optional)
+
+For advanced VM-level metrics (memory, disk I/O, network errors), install Google Cloud Ops Agent on VMs you want to monitor:
+```bash
+curl https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh | sudo bash
+sudo apt-get update && sudo apt-get install -y google-cloud-ops-agent
+```
+
+## Monitoring Multiple GCP Projects
+
+To monitor multiple GCP projects, you can:
+
+**Option 1:** Run the installer once and set `GCP_PROJECT_IDS` to multiple projects:
+```bash
+sudo tee /etc/rubixkube/observer.env << EOF
+API_KEY=rk_YOUR_API_KEY
+GCP_PROJECT_IDS=project-1,project-2,project-3
+EOF
+sudo systemctl restart rubixkube-observer
+```
+
+**Option 2:** Run the installer **once per project** with different service accounts:
+```bash
+# Project 1 (primary)
+gcloud config set project project-1
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+
+# Project 2
+gcloud config set project project-2
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+<Tip>
+    Option 1 is simpler if projects are in the same organization. Option 2 is better for cross-org monitoring.
+</Tip>
+
+## Troubleshooting
+
+### Observer fails to start
+
+Check logs:
+```bash
+sudo journalctl -u rubixkube-observer -n 50
+```
+
+Common issues:
+- **"Invalid API key"** — Verify your key in `observer.env`
+- **"GCP credentials not found"** — Ensure service account is attached or `gcloud auth` is configured
+- **"Cannot reach orchestrator"** — Check firewall/security groups for outbound 443 access
+- **"API not enabled"** — Run: `gcloud services enable compute.googleapis.com monitoring.googleapis.com logging.googleapis.com`
+
+### Metrics not appearing
+
+1. Verify GCP API access: `gcloud compute instances list`
+2. Check observer logs: `sudo journalctl -u rubixkube-observer -f`
+3. Wait 2-3 minutes for first metrics
+4. Verify environment appears in [console.rubixkube.ai](https://console.rubixkube.ai)
+
+### High API quota usage
+
+If you're approaching quota limits, try:
+- Increasing `GCP_METRICS_POLL_INTERVAL` (default: 2m)
+- Increasing `GCP_INVENTORY_POLL_INTERVAL` (default: 10m)
+- Reducing the number of projects in `GCP_PROJECT_IDS`
+
+## Next Steps
+
+- [Using Environments](/using/environments) — Manage your monitoring environments
+- [Viewing Infrastructure](/using/infrastructure) — Explore your GCP resources
+- [Understanding Insights](/using/insights) — Read environment insights
+- [Integrations](/using/integrations) — Connect with other tools

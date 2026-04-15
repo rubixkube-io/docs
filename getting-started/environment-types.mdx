@@ -1,0 +1,141 @@
+---
+title: "Environment Types"
+description: "Choose the right RubixKube environment for Kubernetes, AWS, GCP, and VM monitoring"
+---
+
+RubixKube supports multiple environment types so teams can start where they run today.
+
+## What is an Environment?
+
+In RubixKube, an **environment** is any infrastructure you want to observe and get reliability insights from. Each environment connects independently to RubixKube and publishes its own metrics, events, and insights.
+
+<Info>
+<strong>Note:</strong> Internal API fields may still use names like `cluster_id` and `cluster_type` for compatibility. In product docs, we use "environment" unless a section is Kubernetes-specific.
+</Info>
+
+---
+
+## Environment Types
+
+| Environment type | Best for | Primary setup path | Monitoring scope |
+|---|---|---|---|
+| **Kubernetes** | Workload and pod-level reliability | [Kubernetes Quick Start](/getting-started/environment-quickstart-kubernetes) | Pods, deployments, services, namespaces |
+| **AWS** | Account-level cloud infrastructure visibility | [AWS Quick Start](/getting-started/environment-quickstart-aws) | EC2, RDS, S3, Lambda, ELB, CloudTrail |
+| **GCP** | Project-level cloud infrastructure visibility | [GCP Quick Start](/getting-started/environment-quickstart-gcp) | Compute Engine, Cloud SQL, Cloud Functions, GKE |
+| **VM** | Single-host Linux system monitoring | [VM Quick Start](/getting-started/environment-quickstart-vm) | CPU, memory, disk, network, processes |
+
+---
+
+## How to Choose
+
+Choose the environment type that matches your infrastructure:
+
+<AccordionGroup>
+  <Accordion title="Choose Kubernetes if..." icon="cubes">
+    - Your incidents are usually tied to pods, deployments, or namespaces
+    - You run workloads on EKS, GKE, AKS, or local KIND
+    - You want pod-level visibility and service mesh observability
+    - You need to monitor multiple environments within a cluster
+
+    **Start with:** [Kubernetes Quick Start](/getting-started/environment-quickstart-kubernetes)
+  </Accordion>
+
+  <Accordion title="Choose AWS if..." icon="aws">
+    - You want account-wide cloud service signals
+    - You run EC2 instances, RDS databases, S3 buckets, Lambda functions
+    - You need to monitor CloudTrail events and API activity
+    - You want cost and usage insights across AWS services
+
+    **Start with:** [AWS Quick Start](/getting-started/environment-quickstart-aws)
+  </Accordion>
+
+  <Accordion title="Choose GCP if..." icon="google">
+    - You want project-level cloud infrastructure monitoring
+    - You run Compute Engine instances, Cloud SQL, Cloud Functions
+    - You need Cloud Logging and Cloud Monitoring integration
+    - You want to monitor multiple GCP projects from one observer
+
+    **Start with:** [GCP Quick Start](/getting-started/environment-quickstart-gcp)
+  </Accordion>
+
+  <Accordion title="Choose VM if..." icon="server">
+    - You need host-level CPU, memory, disk, and network monitoring
+    - You run on-premises servers or edge computing infrastructure
+    - You want to monitor Linux VMs in any cloud
+    - You don't need cloud service-specific insights
+
+    **Start with:** [VM Quick Start](/getting-started/environment-quickstart-vm)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Can I Use Multiple Environment Types?
+
+**Yes!** You can monitor multiple environment types simultaneously:
+
+- Monitor a **Kubernetes cluster** for pod-level issues
+- Monitor your **AWS account** for cloud service issues
+- Monitor your **GCP project** for cloud infrastructure
+- Monitor **Linux VMs** for host-level metrics
+
+Each gets its own environment in RubixKube, and you can correlate insights across them.
+
+**Example multi-environment setup:**
+```
+Organization
+├── Kubernetes (prod-eks)      → pod-level insights
+├── Kubernetes (prod-gke)      → pod-level insights
+├── AWS (account-123)          → cloud service insights
+├── GCP (project-acme)         → cloud service insights
+└── VM (on-prem-server-1)      → host-level insights
+```
+
+---
+
+## Environment Comparison
+
+<CardGroup cols={2}>
+  <Card title="Kubernetes vs AWS" icon="code-compare">
+    **Kubernetes:** Optimized for pod/workload reliability, best for app-centric infrastructure
+
+    **AWS:** Optimized for cloud service reliability, best for account-wide observability
+
+    **Use both:** Monitor your AWS-hosted EKS cluster for complete visibility
+  </Card>
+
+  <Card title="Kubernetes vs VM" icon="code-compare">
+    **Kubernetes:** Abstracted resource management, multi-pod insights
+
+    **VM:** Direct host-level access, per-process visibility
+
+    **Use both:** Monitor both K8s workloads AND underlying host metrics
+  </Card>
+
+  <Card title="VM vs Cloud (AWS/GCP)" icon="code-compare">
+    **VM:** Generic Linux host monitoring, works anywhere
+
+    **Cloud:** Cloud service-specific insights (RDS, Lambda, Cloud SQL)
+
+    **Use both:** Monitor the observer VM itself + the cloud resources it's observing
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quick Start Guide" icon="bolt" href="/getting-started/environment-quickstarts">
+    Get a focused setup guide for your chosen environment.
+  </Card>
+
+  <Card title="Full Installation Guides" icon="book" href="/getting-started/installation-kubernetes">
+    Explore advanced setup, troubleshooting, and management for each environment type.
+  </Card>
+
+  <Card title="Beta Disclaimers" icon="triangle-exclamation" href="/getting-started/disclaimers">
+    Review current limitations before rollout.
+  </Card>
+</CardGroup>
+

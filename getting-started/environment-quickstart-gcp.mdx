@@ -1,0 +1,202 @@
+---
+title: "GCP Quick Start"
+description: "Connect a GCP environment to RubixKube using the observer installer"
+---
+
+Use this path for **GCP project-level observation** — monitor your Google Cloud resources with Compute Engine, Cloud SQL, Cloud Functions, and more.
+
+<Tip>
+⏱️ **Expected time:** 5-10 minutes
+</Tip>
+
+---
+
+## 1) Prerequisites
+
+<AccordionGroup>
+  <Accordion title="RubixKube Account" icon="user">
+    - Visit [console.rubixkube.ai](https://console.rubixkube.ai)
+    - [Sign up](/getting-started/sign-up) or [log in](/getting-started/login)
+    - Copy your API key from the dashboard
+  </Accordion>
+
+  <Accordion title="Google Cloud CLI" icon="google">
+    - Install `gcloud` from [cloud.google.com/sdk](https://cloud.google.com/sdk/docs/install)
+    - Run `gcloud auth login`
+    - Set your project: `gcloud config set project YOUR_PROJECT_ID`
+    - Verify: `gcloud config get-value project`
+  </Accordion>
+
+  <Accordion title="IAM Permissions" icon="shield">
+    Your GCP user needs permissions to:
+    - Create service accounts and grant IAM roles
+    - Enable APIs
+    - View compute and monitoring resources
+
+    The installer automatically creates the required service account and IAM roles.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 2) Run the Installer
+
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+<Warning>
+Use your personal command from [console.rubixkube.ai](https://console.rubixkube.ai) — your API key is embedded in it.
+</Warning>
+
+---
+
+## 3) Follow the Interactive Flow
+
+When prompted:
+
+```
+What would you like to do?
+  1) Install Observer
+  2) Uninstall Observer
+> 1
+```
+
+Then:
+
+```
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+> 3  (or 1 for existing VM)
+```
+
+Then select your project and region:
+
+```
+GCP Project ID [current-project]:
+```
+
+```
+GCP Region [us-central1]:
+```
+
+---
+
+## 4) Verify Installation
+
+### Option A: New Compute Engine Instance
+
+Check your GCP Console:
+```bash
+# View running observers
+gcloud compute instances list --filter="labels.rubixkube=observer"
+```
+
+Expected output:
+```
+NAME                          ZONE           MACHINE_TYPE   STATUS
+rk-observer-20250101120000    us-central1-a  e2-micro       RUNNING
+```
+
+### Option B: Existing Machine
+
+Check service status:
+```bash
+sudo systemctl status rubixkube-observer
+```
+
+View logs:
+```bash
+sudo journalctl -u rubixkube-observer -f
+```
+
+---
+
+## 5) Verify in RubixKube Dashboard
+
+1. Open [console.rubixkube.ai](https://console.rubixkube.ai)
+2. Go to **Environments** or **Infrastructure**
+3. Your GCP environment should appear (labeled with project ID)
+4. Wait 1-2 minutes for metrics to populate
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Observer won't start">
+    Check for errors:
+    ```bash
+    # For Compute Engine instance (via serial console in GCP)
+    gcloud compute instances get-serial-port-output INSTANCE_ID
+
+    # For existing machine
+    sudo journalctl -u rubixkube-observer -n 50
+    ```
+
+    Common issues: Invalid API key, missing GCP credentials, API not enabled, firewall blocking 443
+  </Accordion>
+
+  <Accordion title="Metrics not appearing">
+    1. Verify observer is running (see above)
+    2. Wait 2-3 minutes for first metrics
+    3. Check GCP API access: `gcloud compute instances list`
+    4. Verify all required APIs are enabled: `gcloud services list --enabled | grep monitoring`
+  </Accordion>
+
+  <Accordion title="Permission denied errors">
+    Ensure your service account has these roles:
+    ```
+    roles/compute.viewer
+    roles/container.viewer
+    roles/storage.viewer
+    roles/monitoring.viewer
+    roles/logging.viewer
+    ```
+
+    Or use your personal GCP credentials with appropriate permissions.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## What's Being Monitored?
+
+Your GCP observer is now collecting:
+- ✅ Compute Engine instance metrics and status
+- ✅ Cloud SQL database performance and connections
+- ✅ Cloud Storage bucket inventory and access patterns
+- ✅ Cloud Functions invocations and errors
+- ✅ GKE cluster status and node metrics
+- ✅ Cloud Logging errors and important events
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Full GCP Installation Guide" icon="book" href="/getting-started/installation-gcp">
+    Learn advanced configuration, multi-project setup, and detailed troubleshooting
+  </Card>
+
+  <Card title="View Your Infrastructure" icon="network-wired" href="/using/infrastructure">
+    Explore your GCP resources in the dashboard
+  </Card>
+
+  <Card title="Read Insights" icon="lightbulb" href="/using/insights">
+    See what RubixKube discovered about your environment
+  </Card>
+
+  <Card title="Set Up Integrations" icon="plug" href="/using/integrations">
+    Connect to Slack, PagerDuty, and other tools
+  </Card>
+</CardGroup>
+
+---
+
+## Full Installation Guide
+
+For advanced setup, multi-project monitoring, and detailed troubleshooting, see [GCP Installation](/getting-started/installation-gcp).
+

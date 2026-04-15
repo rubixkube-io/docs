@@ -1,0 +1,418 @@
+---
+title: 'AWS Installation'
+description: 'Install RubixKube Observer to monitor your AWS account - provision a new EC2 instance or install on an existing VM'
+---
+
+Install RubixKube on **AWS to monitor account-level infrastructure** including EC2 instances, RDS databases, S3 buckets, Lambda functions, ELB load balancers, and more.
+
+<Warning>
+<strong>Beta Release Notice</strong>
+
+RubixKube is currently in <strong>Beta</strong>. While you can install it for <strong>testing and evaluation</strong>, it is <strong>NOT recommended for production environments</strong> yet.
+
+✅ <strong>Safe for:</strong> Development, staging, testing environments<br/>
+❌ <strong>Not ready for:</strong> Production workloads, critical infrastructure<br/>
+🔜 <strong>Coming soon:</strong> Production-ready release with SLA guarantees
+</Warning>
+
+---
+
+## Why Monitor AWS with RubixKube?
+
+Running the RubixKube Observer on AWS gives you full visibility into your account:
+- **EC2 instances** - CPU, memory, disk, network metrics
+- **RDS databases** - Query performance, connections, replication
+- **S3 buckets** - Storage, access patterns, cost insights
+- **Lambda functions** - Invocations, errors, duration, throttling
+- **Load Balancers** - Traffic patterns, error rates, latency
+- **CloudTrail logs** - API activity, configuration changes, compliance events
+
+---
+
+## Quick Start
+
+For a quick path, see [AWS Quick Start](/getting-started/environment-quickstart-aws).
+
+---
+
+## Prerequisites
+
+### Required Tools
+
+<AccordionGroup>
+  <Accordion title="RubixKube Account & API Key" icon="user">
+    You need a RubixKube account to obtain your API key.
+
+    1. Visit [console.rubixkube.ai](https://console.rubixkube.ai)
+    2. [Sign up for free](/getting-started/sign-up) if needed
+    3. [Log in](/getting-started/login) to your dashboard
+    4. Copy your API key from settings
+  </Accordion>
+
+  <Accordion title="AWS CLI v2" icon="aws">
+    Required to provision EC2 instances or install on existing VMs.
+
+    **Installation:**
+    ```bash
+    # macOS
+    brew install awscli
+
+    # Windows
+    msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+
+    # Linux
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+    ```
+
+    **Configure credentials:**
+    ```bash
+    aws configure
+    ```
+
+    **Verify:**
+    ```bash
+    aws sts get-caller-identity
+    ```
+  </Accordion>
+
+  <Accordion title="Permissions Required" icon="shield">
+    The observer needs read-only permissions for AWS services. The installer automatically creates an IAM policy with these permissions:
+
+    ```
+    ec2:Describe*                          elasticloadbalancing:Describe*
+    rds:Describe*                          cloudwatch:Describe*, GetMetric*, ListMetrics
+    s3:ListAllMyBuckets, GetBucket*        logs:Describe*, FilterLogEvents, GetLogEvents
+    iam:ListRoles                          cloudtrail:LookupEvents
+    eks:ListClusters, DescribeCluster      sts:GetCallerIdentity
+    lambda:List*, GetFunction*             aws-mcp:*
+    ```
+
+    <Tip>
+    The installer creates an IAM role `RubixKubeObserverRole` and policy `RubixKubeObserverPolicy` automatically. If they already exist, they're reused.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Step 1: Run the Installer
+
+The RubixKube installer is a single interactive bash script.
+
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+<Warning>
+<strong>Important:</strong> Use your personal command from the <a href="https://console.rubixkube.ai">RubixKube dashboard</a> — your API key is embedded in the command.
+</Warning>
+
+---
+
+## Step 2: Choose Install or Uninstall
+
+```
+RubixKube Observer
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+What would you like to do?
+  1) Install Observer
+  2) Uninstall Observer
+
+>
+```
+
+Select **1** to install.
+
+---
+
+## Step 3: Choose Deployment Method
+
+```
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+
+>
+```
+
+Choose one of the two AWS options:
+
+<Tabs>
+  <Tab title="Create New EC2 Instance (Recommended)">
+    Select **2**.
+
+    The installer will:
+    - Create IAM policy, role, and instance profile with read-only permissions
+    - Find the latest Amazon Linux 2023 AMI in your region
+    - Launch a `t3.micro` instance with auto-configuration (no SSH needed)
+    - Tag it as `rubixkube=observer` for easy identification
+
+    Then proceed to [Provisioning a New AWS EC2 Instance](#provisioning-a-new-aws-ec2-instance).
+  </Tab>
+  <Tab title="Install on Existing Machine">
+    Select **1**, then choose **AWS** when prompted for platform:
+
+    ```
+    Which platform are you monitoring?
+      1) VM (generic Linux)
+      2) AWS
+      3) GCP
+
+    >
+    ```
+
+    Then proceed to [Installing on an Existing Linux VM](#installing-on-an-existing-linux-vm).
+  </Tab>
+</Tabs>
+
+---
+
+## Provisioning a New AWS EC2 Instance
+
+### Choose Your Region
+
+```
+AWS Region [us-east-1]:
+```
+
+Enter the AWS region where you want to launch the observer. This becomes the **primary region** for AWS metadata API calls.
+
+### Select Regions to Monitor
+
+```
+Which regions should the observer monitor?
+  1) us-east-1 only (recommended)
+  2) All enabled regions (N regions)
+  3) Select specific regions
+
+>
+```
+
+| Option | When to use |
+|--------|-------------|
+| **1 – Primary region only** | Recommended; lower API call volume |
+| **2 – All enabled regions** | Full multi-region visibility; higher API usage |
+| **3 – Specific regions** | Pick from a list of enabled regions (e.g., `1,3,5`) |
+
+<Info>
+Choose option **1** for most setups. Multi-region monitoring increases AWS API throttling risk and costs.
+</Info>
+
+### IAM Resources
+
+The installer creates the following IAM resources (idempotent — safe to re-run):
+
+| Resource | Name | Purpose |
+|----------|------|---------|
+| Policy | `RubixKubeObserverPolicy` | Read-only AWS service access |
+| Role | `RubixKubeObserverRole` | Assumed by EC2 instance |
+| Instance Profile | `RubixKubeObserverProfile` | Attaches role to EC2 |
+
+**If they already exist:** The installer reuses them and verifies policy attachment.
+
+### Existing Observers
+
+The installer checks for running observer instances:
+
+```
+Checking for existing observer instances...
+⚠  Observer instance(s) already running in us-east-1:
+   • i-0abc123def456789   rk-observer-20250101120000   [running]
+
+Launch another instance anyway? [y/N]:
+```
+
+Type `y` only if you want a second observer (e.g., testing a new version).
+
+### Instance Launched
+
+```
+Launching EC2 instance (t3.micro, Amazon Linux 2023)...
+✓ Instance launched: i-0abc123def456789
+✓ User data script running (configure observer in background)
+```
+
+The instance automatically configures itself. In 2-3 minutes, it will:
+- Download and start the RubixKube observer
+- Connect to your AWS account using the instance role
+- Begin publishing insights to RubixKube
+
+### Verify in Dashboard
+
+1. Open [console.rubixkube.ai](https://console.rubixkube.ai)
+2. Go to **Environments** or **Infrastructure**
+3. Look for your AWS environment (labeled with account ID)
+4. Wait 1-2 minutes for metrics to appear
+
+---
+
+## Installing on an Existing Linux VM
+
+### Prerequisites
+
+- Linux VM (Amazon Linux 2023, Ubuntu 20.04+, or similar)
+- Outbound access to `api.rubixkube.ai:443`
+- AWS CLI configured on the VM
+- AWS credentials with permissions listed above
+- Systemd (most modern Linux distributions)
+
+### Run the Installer
+
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+When prompted:
+```
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+
+> 1
+```
+
+Then:
+```
+Which platform are you monitoring?
+  1) VM (generic Linux)
+  2) AWS
+  3) GCP
+
+> 2
+```
+
+### What Gets Installed
+
+The installer will:
+1. Download the observer binary for AWS monitoring
+2. Create a systemd service: `rubixkube-observer`
+3. Configure environment variables (API key, AWS settings, thresholds)
+4. Start the service automatically on boot
+
+### Verify Installation
+
+Check service status:
+```bash
+sudo systemctl status rubixkube-observer
+```
+
+Tail logs:
+```bash
+sudo journalctl -u rubixkube-observer -f
+```
+
+Look for:
+```
+[INFO] RubixKube Observer started
+[INFO] AWS mode enabled
+[INFO] Connected to orchestrator
+[INFO] Publishing insights to NATS
+```
+
+---
+
+## Configuration
+
+### Environment Variables
+
+All configuration uses environment variables. The installer sets these automatically, but you can modify them:
+
+```bash
+sudo nano /etc/rubixkube/observer.env
+sudo systemctl restart rubixkube-observer
+```
+
+**Key variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `API_KEY` | - | Your RubixKube API key (required) |
+| `CLUSTER_TYPE` | `aws` | Environment mode |
+| `AWS_ENABLED` | `true` | Enable AWS monitoring |
+| `AWS_REGION_MODE` | `auto` | `auto` (use instance region) or `manual` |
+| `AWS_REGIONS` | - | Comma-separated region list (if `manual` mode) |
+| `AWS_MAX_CONCURRENCY` | `5` | Parallel AWS API calls |
+| `AWS_INCLUDE_SERVICES` | `ec2,vpc,rds,s3,iam,eks,lambda,elb` | Services to monitor |
+| `AWS_INVENTORY_POLL_INTERVAL` | `10m` | How often to refresh inventory |
+| `AWS_METRICS_POLL_INTERVAL` | `2m` | How often to fetch metrics |
+| `SYSTEM_POLL_INTERVAL` | `30s` | How often to check VM metrics |
+| `EC2_CPU_THRESHOLD` | `80` | CPU % to trigger alert |
+| `RDS_CPU_THRESHOLD` | `80` | RDS CPU % to trigger alert |
+
+### Thresholds
+
+Customize alert thresholds for your environment:
+
+```bash
+sudo tee -a /etc/rubixkube/observer.env << EOF
+EC2_CPU_THRESHOLD=75
+RDS_CPU_THRESHOLD=75
+RDS_STORAGE_THRESHOLD=85
+ELB_5XX_THRESHOLD=5
+LAMBDA_ERROR_THRESHOLD=5
+EOF
+
+sudo systemctl restart rubixkube-observer
+```
+
+---
+
+## Monitoring Multiple AWS Accounts
+
+To monitor multiple AWS accounts, run the installer **once per account** with different IAM roles:
+
+```bash
+# Account 1 (primary)
+export AWS_PROFILE=account-1
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+
+# Account 2
+export AWS_PROFILE=account-2
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+Each observer instance represents one AWS account.
+
+---
+
+## Troubleshooting
+
+### Observer fails to start
+
+Check logs:
+```bash
+sudo journalctl -u rubixkube-observer -n 50
+```
+
+Common issues:
+- **"Invalid API key"** — Verify your key in `observer.env`
+- **"AWS credentials not found"** — Ensure instance role has permissions or AWS CLI is configured
+- **"Cannot reach orchestrator"** — Check firewall/security groups for outbound 443 access
+
+### Metrics not appearing
+
+1. Verify AWS API access: `aws ec2 describe-instances`
+2. Check observer logs: `sudo journalctl -u rubixkube-observer -f`
+3. Wait 2-3 minutes for first metrics
+4. Verify environment appears in [console.rubixkube.ai](https://console.rubixkube.ai)
+
+### High API call volume
+
+If you're monitoring too many resources, try:
+- Reducing `AWS_MAX_CONCURRENCY` (default: 5)
+- Increasing `AWS_INVENTORY_POLL_INTERVAL` (default: 10m)
+- Limiting `AWS_INCLUDE_SERVICES` to what you need
+
+---
+
+## Next Steps
+
+- [Using Environments](/using/environments) — Manage your monitoring environments
+- [Viewing Infrastructure](/using/infrastructure) — Explore your AWS resources
+- [Understanding Insights](/using/insights) — Read environment insights
+- [Integrations](/using/integrations) — Connect with other tools
+

@@ -1,0 +1,42 @@
+---
+title: "Managing Environments"
+description: "Understand and operate Kubernetes, AWS, GCP, and VM environments in RubixKube"
+---
+
+RubixKube uses an **environment-first** model. This page helps you navigate how different environment types appear and behave in the product.
+
+## Environment Types in RubixKube
+
+| Environment type | Typical data shape | Primary guide |
+|---|---|---|
+| Kubernetes | Cluster, node, namespace, pod signals | [Managing Clusters (Kubernetes)](/using/clusters) |
+| AWS | Account and regional cloud service signals | [AWS Quick Start](/getting-started/environment-quickstart-aws) |
+| GCP | Project and regional cloud service signals | [GCP Quick Start](/getting-started/environment-quickstart-gcp) |
+| VM | Single-host system and process signals | [VM Quick Start](/getting-started/environment-quickstart-vm) |
+
+---
+
+## Terminology Rules
+
+- Use **environment** for generic product usage.
+- Use **cluster** only for Kubernetes-specific topics.
+- API compatibility terms like `cluster_id` may still appear in logs or payloads.
+
+---
+
+## Common Operations
+
+- Confirm environment connection status.
+- Review incoming insights and infrastructure snapshots.
+- Validate observer credentials/permissions for each environment.
+- Use guided troubleshooting when data stops flowing.
+
+---
+
+## Related Guides
+
+- [Environment Quick Starts](/getting-started/environment-quickstarts)
+- [Infrastructure](/using/infrastructure)
+- [Insights](/using/insights)
+- [Agents](/using/agents)
+

@@ -21,17 +21,8 @@
               "getting-started/disclaimers",
               "getting-started/sign-up",
               "getting-started/login",
-              "getting-started/environment-types",
-              "getting-started/environment-quickstarts",
-              "getting-started/environment-quickstart-kubernetes",
-              "getting-started/environment-quickstart-aws",
-              "getting-started/environment-quickstart-gcp",
-              "getting-started/environment-quickstart-vm",
-              "getting-started/installation-kubernetes",
-              "getting-started/installation-kind",
-              "getting-started/installation-aws",
-              "getting-started/installation-gcp",
-              "getting-started/installation-vm"
+              "getting-started/installation-cloud",
+              "getting-started/installation-kind"
             ]
           },
           {
@@ -61,7 +52,6 @@
               "using/infrastructure",
               "using/agents",
               "using/skills",
-              "using/environments",
               "using/clusters",
               "using/workspace",
               "using/settings",

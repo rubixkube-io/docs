@@ -1,0 +1,163 @@
+---
+title: "Rubix CLI troubleshooting"
+sidebarTitle: "Troubleshooting"
+description: "Common issues with the Rubix CLI: login failures, stale credentials, proxy and firewall problems, Node.js version mismatches."
+keywords: ["rubix cli troubleshooting", "rubix login fails", "rubix cli errors", "cli proxy", "cli node version"]
+"og:title": "Rubix CLI troubleshooting"
+"og:description": "Login failures, stale credentials, proxy and firewall problems, Node.js version mismatches."
+---
+
+If the CLI is not behaving, start here. Each section covers a common failure mode with the quickest known fix.
+
+## Login or device-code fails
+
+<AccordionGroup>
+  <Accordion title="Browser never opens" icon="browser">
+    The CLI prints a URL and code even if a browser does not launch automatically. Copy the URL manually, open it in any browser, paste the code.
+  </Accordion>
+  <Accordion title="Code expired" icon="clock">
+    Codes expire after a few minutes. Run `rubix login` again to get a fresh code.
+  </Accordion>
+  <Accordion title="Auth succeeds in browser but CLI hangs" icon="spinner">
+    Typically a local firewall blocking the token exchange callback. Check outbound HTTPS to `api.rubixkube.ai:443`. Corporate proxies can also rewrite the request; set `HTTPS_PROXY` if needed.
+  </Accordion>
+  <Accordion title="401 Unauthorized after a successful login" icon="triangle-exclamation">
+    The token was invalidated (new workspace role, long inactivity). Force a clean re-login:
+
+    ```bash
+    rubix logout
+    rubix login
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Stale or conflicting auth
+
+If the CLI reports a workspace or user that is no longer correct:
+
+```bash
+rubix logout
+rm -f ~/.rubix/auth.json
+rubix login
+```
+
+This resets auth completely and walks through the device-code flow again.
+
+## Command not found
+
+<AccordionGroup>
+  <Accordion title="`rubix: command not found` after install" icon="circle-xmark">
+    Your global npm bin is not on `PATH`. Find it:
+
+    ```bash
+    npm bin -g
+    ```
+
+    Add the printed directory to your shell profile (`~/.zshrc`, `~/.bashrc`, or PowerShell profile) and reload.
+  </Accordion>
+  <Accordion title="Using nvm or asdf" icon="node-js">
+    Rubix installs into the currently active Node version. If you switch Node versions, you may need to reinstall. Alternatively, install globally under a version manager setup that persists across Node switches (e.g. via `npm config set prefix`).
+  </Accordion>
+</AccordionGroup>
+
+## Node.js version errors
+
+The CLI requires Node.js 18 or later. Check:
+
+```bash
+node --version
+```
+
+If you see 16 or earlier, upgrade:
+
+```bash
+# macOS with Homebrew
+brew install node@20
+
+# With nvm
+nvm install --lts
+nvm use --lts
+```
+
+Then reinstall the CLI.
+
+## Proxy, VPN, or strict egress
+
+The CLI needs outbound HTTPS to:
+
+- `api.rubixkube.ai:443`
+- `nats.rubixkube.ai:443`
+
+Test from the shell:
+
+```bash
+curl -I https://api.rubixkube.ai
+curl -I https://nats.rubixkube.ai
+```
+
+If behind a proxy:
+
+```bash
+export HTTPS_PROXY=http://proxy.example.internal:3128
+export HTTP_PROXY=http://proxy.example.internal:3128
+export NO_PROXY=localhost,127.0.0.1
+```
+
+## Chat is slow or unresponsive
+
+<AccordionGroup>
+  <Accordion title="Slow responses (5 seconds or more)" icon="hourglass">
+    Usually network latency between your terminal and `api.rubixkube.ai`. Verify with a plain `curl -I`. If latency is fine but Chat feels slow, try `/new` to drop a long context, or `/models` to switch to a faster model.
+  </Accordion>
+  <Accordion title="Responses stop mid-stream" icon="plug-circle-exclamation">
+    NATS connection dropped. Rubix reconnects automatically, but you may need to resubmit the last prompt. If drops are frequent, check for aggressive VPN or firewall idle timeouts.
+  </Accordion>
+  <Accordion title="Messages return empty" icon="comment-slash">
+    Rare. Run `/status` to confirm environment and agent are healthy. If they are, send `/new` to start a fresh session and retry.
+  </Accordion>
+</AccordionGroup>
+
+## Terminal display glitches
+
+<AccordionGroup>
+  <Accordion title="Colours look wrong" icon="palette">
+    Some terminals need truecolor enabled. Check `COLORTERM` is set to `truecolor` or `24bit`. Mainstream terminals (iTerm2, Alacritty, modern VS Code terminal, Windows Terminal) support it by default.
+  </Accordion>
+  <Accordion title="Pasting long text gets truncated" icon="clipboard">
+    Use `/paste` inside chat. It bypasses the terminal's paste buffer and uses the system clipboard directly.
+  </Accordion>
+  <Accordion title="Unicode characters render as boxes" icon="font">
+    Install a font with broad Unicode coverage, like JetBrains Mono, Fira Code, or any Nerd Font variant.
+  </Accordion>
+</AccordionGroup>
+
+## CI-specific issues
+
+<AccordionGroup>
+  <Accordion title="Login prompt in a non-interactive run" icon="terminal">
+    Set `RUBIX_API_KEY` in the environment. The CLI uses that token directly and skips the device-code prompt.
+  </Accordion>
+  <Accordion title="Wrong environment scope" icon="server">
+    Set `RUBIX_ENV_ID` to pin the environment for the run.
+  </Accordion>
+  <Accordion title="Caching issues with npx" icon="box">
+    For repeat runs, install globally or cache `@rubixkube/rubix` in the CI image. `npx` re-downloads on every run.
+  </Accordion>
+</AccordionGroup>
+
+## Still stuck?
+
+<Card title="Email support" icon="envelope" href="mailto:connect@rubixkube.ai">
+  Include the output of `rubix --version`, your Node version (`node --version`), a short description of what you were doing, and any error output. A human engineer will respond.
+</Card>
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="sliders" href="/cli/configuration">
+    Where things live and how trust is scoped.
+  </Card>
+  <Card title="FAQ" icon="circle-question" href="/cli/faq">
+    Quick answers to common questions.
+  </Card>
+</CardGroup>

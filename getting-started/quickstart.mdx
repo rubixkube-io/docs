@@ -1,0 +1,55 @@
+---
+title: "Quickstart"
+sidebarTitle: "Quickstart"
+description: "The shortest path to RubixKube. Create an account, connect an environment, and ask your first question."
+keywords: ["rubixkube quickstart", "get started rubixkube", "AI SRE setup"]
+"og:title": "RubixKube Quickstart"
+"og:description": "The shortest path to RubixKube. Create an account, connect an environment, and ask your first question."
+---
+
+Three steps to get productive. Each one links out to the page that covers it in depth.
+
+<Steps titleSize="h3">
+  <Step title="Create your account">
+    Sign up at [console.rubixkube.ai](https://console.rubixkube.ai) using email, GitHub, or Google. Already have an account? Just [log in](https://console.rubixkube.ai).
+
+    The free tier covers one environment, up to five monitored apps, and ten investigations per month. See [Pricing](https://rubixkube.ai/pricing) for higher tiers.
+  </Step>
+
+  <Step title="Connect an environment">
+    RubixKube needs something to observe. Pick the environment you want to start with and run the install.
+
+    <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
+      Full install flow for Kubernetes, AWS, GCP, and Linux VMs. Five to ten minutes.
+    </Card>
+  </Step>
+
+  <Step title="Ask your first question">
+    Once the environment card shows **Healthy**, open **Chat** in the console and try:
+
+    ```
+    What is the health of the payments service?
+    Which resources restarted most in the last 24 hours?
+    Any hosts running above 80% memory right now?
+    ```
+
+    Answers come with cited evidence. Investigations worth escalating surface in **Insights** as RCA reports.
+  </Step>
+</Steps>
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Monitor infrastructure health" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
+    Set up the dashboard, insights, and notifications for your team.
+  </Card>
+  <Card title="Understand the concepts" icon="brain-circuit" href="/concepts/how-rubixkube-works">
+    Site Reliability Intelligence, the Agent Mesh, and the OPEL loop.
+  </Card>
+  <Card title="Invite your team" icon="users" href="/using/workspace">
+    Roles, workspaces, and collaboration.
+  </Card>
+  <Card title="Need help?" icon="life-ring" href="mailto:connect@rubixkube.ai">
+    Email connect@rubixkube.ai with your tenant ID. A human engineer will respond.
+  </Card>
+</CardGroup>

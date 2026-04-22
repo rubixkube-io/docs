@@ -1,0 +1,93 @@
+---
+title: "Microsoft Teams integration"
+sidebarTitle: "Microsoft Teams"
+description: "Route insights, RCA reports, and action approvals into Microsoft Teams. Interactive cards for acknowledgement and approvals."
+keywords: ["microsoft teams integration", "teams bot", "incident teams", "SRE teams", "rubixkube teams"]
+"og:title": "Microsoft Teams integration"
+"og:description": "Route insights, RCAs, and action approvals into Microsoft Teams."
+---
+
+Connect Microsoft Teams to route RubixKube events into your team channels. Insights, RCA reports, and action approvals land as adaptive cards with evidence links and interactive buttons.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="Per-channel routing" icon="route">
+    Route events into specific Teams channels by environment, namespace, or severity.
+  </Card>
+  <Card title="Interactive approvals" icon="circle-check">
+    Approve or reject action proposals from inside Teams with button clicks that map to your RubixKube role.
+  </Card>
+  <Card title="Mention the bot" icon="at">
+    Ask questions in-thread and get cited answers from the SRI Agent.
+  </Card>
+  <Card title="Digest mode" icon="envelope">
+    Low-severity insights roll up into a daily card at a time you pick.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Steps titleSize="h3">
+  <Step title="Start the install">
+    In RubixKube, open **Integrations → Microsoft Teams** and click **Install**. You will be redirected to Microsoft to authorise the app.
+  </Step>
+  <Step title="Approve scopes">
+    The app requests channel read and send permissions. No message history is ingested.
+  </Step>
+  <Step title="Pick default channels">
+    Choose one or more channels where the bot should post. You can route more finely per event later.
+  </Step>
+  <Step title="Add the bot to each channel">
+    Right-click a channel, **Manage channel → Members**, and add `RubixKube`.
+  </Step>
+</Steps>
+
+## Event types
+
+Same set as Slack: Insight opened, Insight escalated, RCA Report ready, Action approval needed, Action applied, Action verified or reverted, Environment degraded, Budget alert.
+
+See [Notifications](/using/notifications) for the full event list.
+
+## Interactive cards
+
+<AccordionGroup>
+  <Accordion title="Insight opened" icon="lightbulb">
+    Adaptive card with headline, affected resources, severity. Buttons for **Ack**, **Snooze**, **Investigate in Chat**.
+  </Accordion>
+  <Accordion title="Action approval needed" icon="shield-halved">
+    Shows scope, blast radius, and confidence. Buttons for **Approve** and **Reject with reason**. Clicks only work from users mapped to the environment's approver role.
+  </Accordion>
+  <Accordion title="RCA Report ready" icon="file-magnifying-glass">
+    Root cause headline, top recommended action, deep link to the full report.
+  </Accordion>
+</AccordionGroup>
+
+## Permissions and data
+
+The Teams integration posts only. It does not ingest channel history or private chats. Scope is limited to the channels you add the bot to.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Bot is not posting">
+    Add the bot as a member of the channel. Teams does not allow a bot to post to a channel it is not a member of.
+  </Accordion>
+  <Accordion title="Approvals fail with 'not authorised'">
+    The Teams user clicking the button must map to a RubixKube user with approver role on the target environment. Check the user mapping in **Integrations → Microsoft Teams → Users**.
+  </Accordion>
+  <Accordion title="Missing cards after tenant restrictions">
+    Some tenants block adaptive cards from external apps by default. Ask your Teams admin to allow the RubixKube app.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Notifications overview" icon="bell" href="/using/notifications">
+    Cross-channel routing model and event types.
+  </Card>
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    Same model for Slack-first organisations.
+  </Card>
+</CardGroup>

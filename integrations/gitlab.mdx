@@ -1,0 +1,82 @@
+---
+title: "GitLab integration"
+sidebarTitle: "GitLab"
+description: "Link deployments, merge requests, and issues to RubixKube incidents. Auto-create issues from RCA reports."
+keywords: ["gitlab integration", "deployment correlation", "merge request", "issue tracker", "rubixkube gitlab"]
+"og:title": "GitLab integration"
+"og:description": "Link deployments, MRs, and issues to RubixKube incidents."
+---
+
+Connect GitLab so RubixKube can correlate your CI deployments and merge requests with infrastructure incidents. When the RCA Pipeline investigates, GitLab becomes part of the evidence graph: what was deployed, when, by whom.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="Pipeline correlation" icon="rocket">
+    GitLab CI deployments appear in the Knowledge Graph alongside your infrastructure. RCAs cite them automatically.
+  </Card>
+  <Card title="MR context" icon="code-pull-request">
+    Recent merges to the affected service surface in RCA reports as candidate causes.
+  </Card>
+  <Card title="Auto-create issues" icon="circle-plus">
+    Open a GitLab issue from any RCA with one click. Full context pre-populated.
+  </Card>
+  <Card title="Commit lookup" icon="code-commit">
+    Chat can answer "what commit introduced this" by walking the pipeline history.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Steps titleSize="h3">
+  <Step title="Create a group access token">
+    In GitLab, on the group or instance level, create an access token with the `api`, `read_repository`, and `write_issues` scopes. RubixKube needs read access broadly and write only for issue creation.
+  </Step>
+  <Step title="Paste in the console">
+    Open **Integrations → GitLab**, paste the token, and choose the groups or projects to monitor.
+  </Step>
+  <Step title="Map projects to services">
+    Optional. Map GitLab projects to the services they deploy so Chat can answer "what changed in payments" with commit-level precision.
+  </Step>
+</Steps>
+
+## What gets ingested
+
+| Source | Signals |
+| --- | --- |
+| CI deployments | Timestamp, actor, commit SHA, environment, success or failure |
+| Merge requests | Author, merge timestamp, files changed (summary), linked issues |
+| Releases and tags | Tag name, release notes, timestamp |
+| Project metadata | Default branch, CODEOWNERS (for routing) |
+
+No source code is ingested. File-change summaries are counts and paths only.
+
+## Auto-creating issues from an RCA
+
+On any RCA report, click **Create GitLab issue**. A new issue opens in the project mapped to the affected service, with root cause, evidence links, and recommended actions pre-filled.
+
+## Self-hosted GitLab
+
+Self-hosted instances work the same way. Provide the base URL of your GitLab instance during install. For air-gapped setups, [reach out](mailto:connect@rubixkube.ai) to discuss a deployment mode that fits your network controls.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Deployments not appearing">
+    Confirm the token has `read_api` scope and covers the right projects. For self-hosted instances, make sure the webhook URL from RubixKube is reachable from your GitLab instance.
+  </Accordion>
+  <Accordion title="Issue creation fails">
+    The token needs `write_issues` on the target project. Regenerate with the right scope if needed.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="GitHub" icon="github" href="/integrations/github">
+    Equivalent integration for GitHub-hosted repos.
+  </Card>
+  <Card title="Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
+    How source control signals join infrastructure signals.
+  </Card>
+</CardGroup>

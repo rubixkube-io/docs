@@ -1,0 +1,58 @@
+---
+title: "Azure with RubixKube"
+sidebarTitle: "Azure"
+description: "AKS today through the Kubernetes path. Subscription-level Azure observation for App Service, Azure VMs, and managed data is on the roadmap."
+keywords: ["azure monitoring", "AKS monitoring", "azure AI SRE", "app service monitoring", "azure VM monitoring"]
+"og:title": "Azure with RubixKube"
+"og:description": "AKS today through the Kubernetes path. Subscription-level Azure observation is on the roadmap."
+---
+
+<Info>
+  **AKS is supported today through the Kubernetes path.** Subscription-level Azure observation (App Service, Azure VMs, Cosmos DB, managed data services) is on the roadmap. Join the early-access list at [connect@rubixkube.ai](mailto:connect@rubixkube.ai).
+</Info>
+
+## What works today
+
+If your Azure workload runs on **Azure Kubernetes Service**, RubixKube treats the cluster like any other Kubernetes cluster. You get the full Agent Mesh: topology, insights, RCA, chat, and memory.
+
+<Card title="Install on AKS via the Kubernetes path" icon="dharmachakra" href="/environments/kubernetes">
+  Same `kubectl apply` command, full feature parity with EKS and GKE.
+</Card>
+
+## What is coming
+
+Subscription-level Azure support is in active development. The feature set will mirror what is available on AWS and GCP today.
+
+<CardGroup cols={2}>
+  <Card title="App Service and Azure VMs" icon="server">
+    Health, restarts, deployments, scale events.
+  </Card>
+  <Card title="Managed data services" icon="database">
+    Azure SQL, Cosmos DB, Redis Cache, Storage accounts.
+  </Card>
+  <Card title="Azure Monitor integration" icon="chart-line">
+    Native metrics and alert signals flowing into the same knowledge graph.
+  </Card>
+  <Card title="ARM topology" icon="diagram-project">
+    Resource graph across subscriptions and resource groups.
+  </Card>
+</CardGroup>
+
+No firm date yet. Early access rolls out before general availability, and we prioritise based on customer pull.
+
+## Want this sooner?
+
+<Card title="Tell us about your Azure footprint" icon="envelope" href="mailto:connect@rubixkube.ai?subject=Azure%20early%20access">
+  A short note about what you run on Azure and the incidents that hurt most. The sharper the picture, the faster we ship it.
+</Card>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Kubernetes (for AKS)" icon="dharmachakra" href="/environments/kubernetes">
+    Full install path for Azure Kubernetes Service.
+  </Card>
+  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
+    The full picker covering every supported environment today.
+  </Card>
+</CardGroup>

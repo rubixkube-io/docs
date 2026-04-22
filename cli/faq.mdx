@@ -1,0 +1,114 @@
+---
+title: "Rubix CLI FAQ"
+sidebarTitle: "Frequently Asked Questions"
+description: "Quick answers to common questions about the Rubix CLI: scope, safety, CI usage, Windows support, and more."
+keywords: ["rubix cli faq", "rubix cli questions", "cli safety", "cli windows", "cli CI"]
+"og:title": "Rubix CLI FAQ"
+"og:description": "Quick answers to common Rubix CLI questions."
+---
+
+Quick answers to the questions we hear most.
+
+## General
+
+<AccordionGroup>
+  <Accordion title="What is the Rubix CLI?">
+    A terminal-native client for RubixKube. Same SRI Agent, same skills, same workspace as the console. Launched with `rubix`.
+  </Accordion>
+  <Accordion title="Do I need the console installed anything to use the CLI?">
+    No. Sign up at [console.rubixkube.ai](https://console.rubixkube.ai) once, then run `rubix login` from the terminal. Everything else happens over HTTPS.
+  </Accordion>
+  <Accordion title="Does the CLI touch my infrastructure directly?">
+    No. The CLI sends your prompt to RubixKube Cloud, where the SRI Agent runs the same Guardian-gated flow as the console. Any mutating action requires explicit approval before it lands in your environment.
+  </Accordion>
+  <Accordion title="Is the CLI open source?">
+    The docs and several SDKs are open source. The CLI itself is proprietary, installed from the public npm registry. [Reach out](mailto:connect@rubixkube.ai) if you need a private build for regulated environments.
+  </Accordion>
+</AccordionGroup>
+
+## Installation and compatibility
+
+<AccordionGroup>
+  <Accordion title="What versions of Node.js are supported?">
+    Node.js 18 or later. LTS versions are recommended for stability.
+  </Accordion>
+  <Accordion title="Does it work on Windows?">
+    Yes. PowerShell and Windows Subsystem for Linux both work. Unicode renders cleanly in Windows Terminal and modern VS Code integrated terminals.
+  </Accordion>
+  <Accordion title="Does it work over SSH?">
+    Yes. Behaves the same as running locally. Just make sure the remote host has Node.js 18+ and outbound HTTPS.
+  </Accordion>
+  <Accordion title="Can I install it in a Docker image?">
+    Yes. Add `npm install -g @rubixkube/rubix` to your Dockerfile. Set `RUBIX_API_KEY` at runtime so it can authenticate without a device-code prompt.
+  </Accordion>
+</AccordionGroup>
+
+## Auth and security
+
+<AccordionGroup>
+  <Accordion title="Where are my credentials stored?">
+    `~/.rubix/auth.json`. Encrypted at rest on your disk when your OS supports it (Keychain on macOS, DPAPI on Windows). On Linux, file-system permissions restrict it to your user.
+  </Accordion>
+  <Accordion title="Can I use an API key instead of the device-code flow?">
+    Yes. Set `RUBIX_API_KEY` in the environment. Useful for CI and ephemeral runners. The CLI uses the env var and skips the browser prompt.
+  </Accordion>
+  <Accordion title="Can the CLI run shell commands for me?">
+    Only inside a trusted folder, and only when you ask via chat. Rubix drafts the command; running it still requires a confirmation step or explicit approval depending on your Guardian policy.
+  </Accordion>
+  <Accordion title="How do I rotate credentials?">
+    `rubix logout && rubix login` re-issues a fresh token. Previous tokens are invalidated server-side.
+  </Accordion>
+</AccordionGroup>
+
+## Scope and capabilities
+
+<AccordionGroup>
+  <Accordion title="Does the CLI work with all supported environments?">
+    Yes. Kubernetes, AWS, GCP, and Linux VMs are all reachable from the same CLI. Switch scope with `/environments`.
+  </Accordion>
+  <Accordion title="Can I invoke skills from the CLI?">
+    Yes. `/skills skill-name` runs any enabled skill. Same intent-matching behaviour as the console Chat.
+  </Accordion>
+  <Accordion title="Can I see RCA reports in the terminal?">
+    Chat can summarise them and link out. Full RCA reports render best in the console because of their evidence tables and graph views. Use `/console` from inside chat to jump over.
+  </Accordion>
+  <Accordion title="Can I approve action recommendations from the CLI?">
+    Chat surfaces recommended actions and can deep-link you into the console for approval. Inline approval from the CLI is on the roadmap. For urgent cases, `/console` opens the right page directly.
+  </Accordion>
+</AccordionGroup>
+
+## CI and automation
+
+<AccordionGroup>
+  <Accordion title="How do I run the CLI in GitHub Actions or similar CI?">
+    Set `RUBIX_API_KEY` as a secret. Optionally set `RUBIX_ENV_ID` to pin the environment. Use `npx @rubixkube/rubix chat --prompt "..."` for single-shot invocations. See [Examples](/cli/examples) for a full workflow.
+  </Accordion>
+  <Accordion title="Does a CLI run count as an investigation on my plan?">
+    A full detect-to-recommend cycle counts. Simple questions and slash commands do not.
+  </Accordion>
+  <Accordion title="Can I pipe CLI output into other tools?">
+    Yes. `rubix chat --prompt "..."` writes to stdout, so `>`, `>>`, and `|` all work.
+  </Accordion>
+</AccordionGroup>
+
+## Getting help
+
+<AccordionGroup>
+  <Accordion title="How do I report a bug?">
+    Email [connect@rubixkube.ai](mailto:connect@rubixkube.ai) with the output of `rubix --version`, your Node version, and a short description. A human engineer will respond.
+  </Accordion>
+  <Accordion title="Is there a public changelog?">
+    Yes, on the npm package page at [npmjs.com/package/@rubixkube/rubix](https://www.npmjs.com/package/@rubixkube/rubix) and in the CLI itself when a new release is available.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="compass" href="/cli/overview">
+    What the CLI is and who it is for.
+  </Card>
+  <Card title="Examples" icon="lightbulb" href="/cli/examples">
+    Daily flows you can steal.
+  </Card>
+</CardGroup>

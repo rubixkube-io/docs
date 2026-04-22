@@ -1,436 +1,121 @@
 ---
-title: 'Agent Mesh Architecture'
-description: 'How specialized AI agents collaborate to investigate, remediate, and protect your infrastructure'
+title: "The Agent Mesh"
+sidebarTitle: "Agent Mesh"
+description: "A coordinated set of specialised AI agents, each expert in one slice of reliability work. They share a Knowledge Graph and run the OPEL loop together."
+keywords: ["agent mesh", "multi-agent system", "AI SRE architecture", "agent orchestration", "specialised agents", "RubixKube architecture"]
+"og:title": "The Agent Mesh"
+"og:description": "Specialised AI agents that share a knowledge graph and run the OPEL loop together."
 ---
 
-# Agent Mesh: Distributed Intelligence for Reliability
+The Agent Mesh is how RubixKube gets reliability work done. Rather than one general-purpose AI, the mesh is a set of specialists, each expert in one slice of the loop. They share a Knowledge Graph, communicate through typed events, and coordinate under Guardian policies.
 
-The **Agent Mesh** is RubixKube's core architectural pattern - a network of specialized AI agents that work together like a distributed SRE team, each bringing unique expertise to infrastructure reliability.
+Specialisation matters because reliability work is not one job. Watching an environment is different from investigating an incident, which is different from applying a fix safely. Giving each job to its own agent makes the whole system more accurate and more auditable than a single "do-everything" bot.
 
-<Info>
-<strong>Think of it like this:</strong> Instead of one overworked engineer handling everything, you have a team of specialists - one investigates issues, one proposes fixes, one ensures safety, and one remembers everything. They never sleep, never forget, and always collaborate perfectly.
-</Info>
-
-<Warning>
-### Beta Release Status - Active Agents
-<strong>Currently Active (Beta):</strong> - <strong>Observer Agent</strong> - Monitors your cluster continuously
-- <strong>RCA Pipeline Agent</strong> - Analyzes incidents and generates root cause reports
-- <strong>Memory Agent</strong> - Stores incidents and learns patterns
-- <strong>SRI Agent</strong> - Provides conversational interface via Chat
-
-<strong>Coming in Future Releases:</strong> - <strong>Remediation Agent</strong> - Autonomous fix execution (suggestions available now, requires manual approval)
-- <strong>Guardian Agent</strong> - Full guardrail enforcement (basic safety checks active)
-
-This page describes the <strong>complete Agent Mesh architecture</strong>, including agents being finalized for production release.
-</Warning>
-
----
-
-## Why a Mesh of Agents?
-
-### The Problem with Monolithic AI
-
-A single "do-everything" AI faces fundamental limitations:
-
-- **Jack of all trades, master of none** - Can't specialize deeply
-- **Single point of failure** - If it fails, everything stops
-- **Slow decision-making** - Must consider everything at once
-- **Hard to trust** - Black box with unclear reasoning
-
-### The Agent Mesh Solution
-
-Multiple specialized agents working together:
-
-- **Deep expertise** - Each agent masters one domain
-- **Distributed resilience** - System continues if one agent fails
-- **Parallel processing** - Agents work simultaneously
-- **Transparent reasoning** - See which agent did what and why
-
----
-
-## Core Agents in the Mesh
-
-RubixKube's Agent Mesh includes several specialized agents:
+## The agents at a glance
 
 <CardGroup cols={2}>
-  <Card title="RCA Pipeline Agent" icon="magnifying-glass">
-**Role:** Root Cause Analysis
-    
-    - Investigates incidents systematically
-    - Builds dependency graphs
-    - Correlates logs, metrics, and events
-    - Generates evidence-linked RCA reports
+  <Card title="Observer Agent" icon="eye" href="/concepts/observer-agent">
+    Eyes on every connected environment. Discovers topology, collects signals, keeps the graph current.
   </Card>
-  
-  <Card title="Observer Agent" icon="eye">
-**Role:** Infrastructure Monitoring
-    
-    - Watches cluster resources continuously
-    - Collects metrics and events
-    - Detects anomalies and deviations
-    - Reports to other agents
+  <Card title="Memory Agent" icon="database" href="/concepts/memory-engine">
+    Stores incidents, resolutions, and operator context. Surfaces prior art when relevant.
   </Card>
-  
-  <Card title="SRI Agent" icon="comments">
-**Role:** Conversational Interface
-    
-    - Provides natural language interaction
-    - Translates questions into actions
-    - Explains system state in plain English
-    - Guides troubleshooting workflows
+  <Card title="RCA Pipeline Agent" icon="magnifying-glass" href="/concepts/root-cause-analysis">
+    Builds evidence-linked causal chains from raw signals. Produces RCA reports.
   </Card>
-  
+  <Card title="SRI Agent" icon="comments" href="/using/rubix-chat-agent">
+    The conversational surface. Answers questions, runs skills, drafts actions.
+  </Card>
   <Card title="Remediation Agent" icon="wand-magic-sparkles">
-**Role:** Fix Proposals & Execution
-    
-    - Proposes safe remediation actions
-    - Calculates risk and blast radius
-    - Applies fixes (with approval)
-    - Verifies remediation success
+    Applies approved fixes inside their scoped blast radius. Watches for the stabilisation window.
   </Card>
-  
-  <Card title="Memory Agent" icon="database">
-**Role:** Knowledge Management
-    
-    - Stores incident history
-    - Recalls similar past events
-    - Suggests fixes from memory
-    - Updates knowledge graph
-  </Card>
-  
-  <Card title="Guardian Agent" icon="shield">
-**Role:** Safety & Policy Enforcement
-    
-    - Enforces guardrails
-    - Assesses action risk
-    - Requires approvals when needed
-    - Prevents dangerous operations
+  <Card title="Guardian Agent" icon="shield-halved" href="/concepts/guardrails">
+    Enforces policy on everything that could change state. Requires approvals where it matters.
   </Card>
 </CardGroup>
 
----
+## Who does what in the OPEL loop
 
-## How Agents Collaborate
+The mesh maps cleanly onto the four phases of the [OPEL loop](/concepts/opel-loop).
 
-### Example: Pod Crashes with OOMKilled
+| Phase | Primary agent | Supporting agents |
+| --- | --- | --- |
+| Observe | Observer Agent | Memory Agent (surfaces relevant prior incidents) |
+| Plan | RCA Pipeline Agent | Memory Agent, SRI Agent |
+| Execute | SRI Agent (draft) and Remediation Agent (apply) | Guardian Agent (validate) |
+| Learn | Memory Agent | Observer Agent (continuing verification) |
 
-Here's how the Agent Mesh handles a memory overflow incident:
+## How the agents communicate
 
-<Steps>
-  <Step title="Detection (Observer Agent)">
-    ```
-    Observer Agent: "Pod 'checkout-service-7f9d' crashed at 14:23:15"
-    Status: OOMKilled
-    Namespace: production
-    → Alert sent to RCA Pipeline Agent
-    ```
+<Steps titleSize="h3">
+  <Step title="Typed events on a shared bus">
+    Agents publish and subscribe to events: "anomaly detected", "RCA ready", "action proposed", "verification complete". Every event has a schema and a source.
   </Step>
-
-  <Step title="Investigation (RCA Pipeline Agent)">
-    ```
-    RCA Pipeline Agent: "Analyzing incident..."
-    
-    Evidence gathered:
-    - Container memory limit: 512Mi
-    - Actual memory used at crash: 487Mi (95%)
-    - Memory usage growing 50Mi/hour
-    - Recent code deploy 2 hours ago increased payload size
-    
-    Root Cause: Memory leak in v2.3.1 + undersized container
-    Confidence: 94%
-    
-    → Forward to Remediation Agent
-    ```
+  <Step title="The Knowledge Graph as shared state">
+    Durable state lives in the graph, not in individual agent memory. Any agent that needs a resource, a signal, or a relationship reads it from the graph. Any update is applied there and broadcast.
   </Step>
-
-  <Step title="Memory Recall (Memory Agent)">
-    ```
-    Memory Agent: "Checking similar incidents..."
-    
-    Found: 3 similar OOMKilled events in last 30 days
-    Previous fix: Increased memory 512Mi → 1Gi
-    Success rate: 100% (3/3 incidents resolved)
-    
-    → Suggest proven fix to Remediation Agent
-    ```
+  <Step title="Guardian as the gate">
+    Anything that mutates your environment passes through Guardian policy. Policies are per-environment and versioned. Approvals are auditable.
   </Step>
-
-  <Step title="Fix Proposal (Remediation Agent)">
-    ```
-    Remediation Agent: "Proposing remediation..."
-    
-    Action: Update deployment 'checkout-service'
-    Change: memory.limits: 512Mi → 1Gi
-    Blast Radius: Single deployment (low risk)
-    Expected Impact: Pod restart (~10s downtime)
-    Rollback Plan: Revert to previous deployment manifest
-    
-    → Submit to Guardian Agent for approval
-    ```
-  </Step>
-
-  <Step title="Safety Check (Guardian Agent)">
-    ```
-    Guardian Agent: "Evaluating safety..."
-    
-    Risk Assessment:
-    - Scope: Single deployment 
-    - Change type: Resource adjustment (low risk) 
-    - Rollback available: Yes 
-    - Production impact: Minimal 
-    - Policy compliance: Within limits 
-    
-    Decision: APPROVED (auto-fix authorized)
-    
-    → Execute
-    ```
-  </Step>
-
-  <Step title="Execution & Learning">
-    ```
-    Remediation Agent: Applying fix...
-     Deployment updated
-     Pod restarted
-     Memory usage stabilized at 680Mi
-     Service healthy
-    
-    Memory Agent: Storing learning...
-     Pattern recorded
-     Fix validated
-     Knowledge graph updated
-    
-    Total resolution time: 42 seconds
-    ```
+  <Step title="Per-run context">
+    Each incident gets an investigation context: the signals involved, the relevant graph region, the prior art surfaced. Agents work on that context, not on the entire graph.
   </Step>
 </Steps>
 
-<Tip>
-<strong>This entire process happened automatically</strong> while your SRE team slept. They wake up to a complete RCA report and a fixed system.
-</Tip>
-
----
-
-## Agent Communication Protocols
-
-### How Agents Talk to Each Other
-
-Agents communicate through:
-
-1.**Event Bus**  - Asynchronous message passing
-2.**Shared Context**  - Common understanding of cluster state
-3.**Priority Queuing**  - Critical incidents get immediate attention
-4.**Feedback Loops**  - Agents learn from each other's successes
-
-```yaml
-# Example Agent Communication Flow
-
-Observer → Detection Event → {
-  "type": "pod_crash",
-  "severity": "high",
-  "pod": "checkout-7f9d",
-  "reason": "OOMKilled",
-  "timestamp": "2025-10-03T14:23:15Z"
-}
-
-RCA Pipeline → Investigation Result → {
-  "root_cause": "memory_leak + undersized_container",
-  "evidence": ["logs", "metrics", "deployment_diff"],
-  "confidence": 0.94
-}
-
-Memory Agent → Historical Context → {
-  "similar_incidents": 3,
-  "proven_fix": "increase_memory_512_to_1024",
-  "success_rate": 1.0
-}
-
-Remediation → Fix Proposal → {
-  "action": "update_deployment",
-  "changes": {"memory.limits": "1Gi"},
-  "risk": "low",
-  "blast_radius": "single_deployment"
-}
-
-Guardian → Safety Decision → {
-  "approved": true,
-  "reason": "within_policy_limits"
-}
-```
-
----
-
-## Agent Mesh vs Traditional Approaches
-
-| Feature | Traditional Monitoring | Single AI Bot | Agent Mesh (SRI) |
-|---------|----------------------|---------------|------------------|
-| **Specialization**  | Tools per domain | One system does all | Agents per expertise |
-| **Reasoning**  | Rule-based | Generic AI | Domain-specific intelligence |
-| **Collaboration**  | Manual integration | N/A | Native mesh communication |
-| **Fault Tolerance**  | Tool outages break flow | Single point of failure | Distributed resilience |
-| **Scalability**  | Add more tools | Scale up one system | Add more agents |
-| **Transparency**  | Logs everywhere | Black box | Agent-level audit trails |
-| **Learning**  | Humans update rules | Model retraining | Continuous agent learning |
-
----
-
-## Agent States and Health
-
-### Monitoring Your Agents
-
-<Frame>
-  <img
-    style={{ borderRadius: '0.5rem' }}
-    src="/images/dashboard/agents-01-list-view.png"
-    alt="RubixKube Agents dashboard showing active agents"
-  />
-</Frame>
-
-Each agent reports:
-- **Status** - Active, idle, or error
-- **Last Activity** - When it last performed work
-- **Capabilities** - What it can do
-- **Type** - System agent vs custom agent
-
-### Agent Health Indicators
+## Why specialisation beats a single generalist
 
 <AccordionGroup>
-  <Accordion title=" Healthy Agent">
-    - Status:**Active **  - Last seen:**Active**  (within 60 seconds)
-    - Response time: less than 2 seconds
-    - Error rate: less than 1%
+  <Accordion title="Each agent has a narrow surface">
+    A narrow surface means better prompts, smaller tool sets, cleaner evaluations. The Observer has one job. So does Guardian. The combined system is far more predictable than a single general-purpose agent with dozens of tools.
   </Accordion>
-
-  <Accordion title=" Degraded Agent">
-    - Status:**Slow response**  - Last seen: 1-5 minutes ago
-    - Response time: 2-10 seconds
-    - Error rate: 1-5%
-    
-**Action:** Monitor, may self-recover
+  <Accordion title="Auditing is clean">
+    Every action has exactly one agent accountable for it. When something goes wrong, you can trace which agent produced which output and why.
   </Accordion>
-
-  <Accordion title=" Failed Agent">
-    - Status:**Error **  or**Error**  - Last seen: greater than 5 minutes ago
-    - No responses
-    - Error rate: greater than 5%
-    
-**Action:** Alert sent, manual intervention may be needed
+  <Accordion title="Upgrades are independent">
+    The Observer upgrades on its own cadence. The SRI Agent upgrades on another. You never rebuild the entire stack to improve one phase of the loop.
+  </Accordion>
+  <Accordion title="Policies can be tight without being brittle">
+    Guardian can enforce strict limits on the Remediation Agent without constraining how the RCA Pipeline thinks. Different agents, different policy surfaces.
   </Accordion>
 </AccordionGroup>
 
----
-
-## Extensibility: Custom Agents
-
-### Adding Your Own Agents
-
-The Agent Mesh is extensible - you can add custom agents for your specific needs:
-
-**Example Use Cases:** - ** Example Use Cases:** - Ensures changes meet regulatory requirements
-- **Cost Agent** - Optimizes resource usage for budget targets
-- **Security Agent** - Scans for vulnerabilities and misconfigurations
-- **Performance Agent** - Optimizes application response times
-
-**Coming in Future Releases:** Full SDK for custom agent development
-
----
-
-## Agent Mesh Benefits
+## Where each agent runs
 
 <CardGroup cols={2}>
-  <Card title="Speed" icon="bolt">
-### Parallel Processing
-    Multiple agents work simultaneously, not sequentially. Investigation, planning, and safety checks happen in parallel.
+  <Card title="Observer Agent" icon="server">
+    Runs in your environment (cluster, cloud VM, or Linux host). Lightweight, read-only.
   </Card>
-  
-  <Card title="Accuracy" icon="bullseye">
-### Specialized Knowledge
-    Each agent is expert in its domain, leading to better decisions than generalist systems.
-  </Card>
-  
-  <Card title="Resilience" icon="shield">
-### No Single Point of Failure
-    If one agent fails, others continue working. System degradation is gradual, not catastrophic.
-  </Card>
-  
-  <Card title="Evolution" icon="seedling">
-### Independent Improvement
-    Each agent can be upgraded independently without affecting the mesh.
+  <Card title="Every other agent" icon="cloud">
+    Runs in RubixKube Cloud. You never install, upgrade, or patch them.
   </Card>
 </CardGroup>
 
----
+This hybrid placement keeps local cluster overhead at around 255Mi RAM, under 10 millicores of CPU for Kubernetes (lower for VM installs). Heavy compute (LLM inference, graph queries, memory indexing) stays on the Cloud side.
 
-## Frequently Asked Questions
+## Common questions
 
 <AccordionGroup>
-  <Accordion title="How many agents run in my cluster?">
-**In your cluster:** Two lightweight components run locally — the **RubixKube Observer** and the **Kubernetes MCP Server**. Combined, they typically use around 255Mi RAM and minimal CPU (under 10 millicores during normal operation).
-    
-**In RubixKube Cloud:** All other agents (RCA, Remediation, Memory, Guardian) run centrally - no additional load on your infrastructure.
-    
-    This hybrid architecture gives you powerful AI without cluster overhead.
+  <Accordion title="Can I add my own agents to the mesh?">
+    Custom agents are on the roadmap. In the meantime, [custom skills](/concepts/skills) let you extend the SRI Agent with your own runbooks, and [custom integrations](/tutorials/add-custom-integrations) let you add tools any agent can use.
   </Accordion>
-
-  <Accordion title="Can agents act without permission?">
-    ### By default: NO.
-    Agents operate in **observe-only mode**  initially. They will:
-    -  Detect issues
-    -  Investigate root causes
-    -  Propose fixes
-    - **NOT** apply changes without approval
-
-    You enable auto-remediation gradually as trust builds.
+  <Accordion title="How does the mesh scale with more environments?">
+    Agents are stateless relative to the graph, so adding environments scales linearly. The Observer fans out per environment. The Cloud-side agents work against the shared graph and spread load across investigation contexts.
   </Accordion>
-
-  <Accordion title="What if an agent makes a mistake?">
-    ### Multiple safety layers:
-    1.**Guardian Agent**  - Reviews all actions before execution
-    2.**Blast Radius Limits**  - Actions are scoped, never cluster-wide
-    3.**Dry-Run Mode**  - Test changes before applying
-    4.**Instant Rollback**  - Every change is reversible
-    5.**Audit Logs**  - Complete trail of who did what
-
-    Plus: All high-risk actions require human approval.
+  <Accordion title="What if one agent fails?">
+    The bus is fault-tolerant. If an agent is unreachable, events queue and retry. The Guardian never permits an action that relies on a missing agent's output.
   </Accordion>
-
-  <Accordion title="How do I see what agents are doing?">
-    Three ways:
-
-    1.**Agents Page**  - Real-time status of all agents
-    2.**Activity Feed**  - Stream of agent actions and decisions
-    3.**RCA Reports**  - Detailed explanation of agent reasoning
-
-    Full transparency into the mesh.
+  <Accordion title="Do all agents see the same data?">
+    They see the same graph, but each agent has a scoped view of what matters to its job. The Observer does not need to read RCA reports. The Memory Agent does not need to stream raw metrics. This scoping keeps the system fast and the permissions sensible.
   </Accordion>
 </AccordionGroup>
 
----
+## Related concepts
 
-## Related Concepts
-
-<CardGroup cols={3}>
-  <Card 
-    title="What is SRI?" 
-    icon="brain"
-    href="/concepts/what-is-sri"
-  >
-    Learn about Site Reliability Intelligence
+<CardGroup cols={2}>
+  <Card title="The OPEL Loop" icon="rotate" href="/concepts/opel-loop">
+    The rhythm every agent in the mesh follows.
   </Card>
-  
-  <Card 
-    title="Memory Engine" 
-    icon="database"
-    href="/concepts/memory-engine"
-  >
-    How agents learn and remember
-  </Card>
-  
-  <Card 
-    title="Guardrails" 
-    icon="shield-halved"
-    href="/concepts/guardrails"
-  >
-    Safety mechanisms for autonomous ops
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    The policy layer that bounds what the mesh can do.
   </Card>
 </CardGroup>
-

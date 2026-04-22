@@ -1,0 +1,75 @@
+---
+title: "Notion integration"
+sidebarTitle: "Notion"
+description: "Push RCA reports into Notion as wiki pages. Build institutional knowledge from every investigation."
+keywords: ["notion integration", "post-mortem notion", "knowledge base", "wiki", "rubixkube notion"]
+"og:title": "Notion integration"
+"og:description": "Push RCA reports into Notion as wiki pages."
+---
+
+Connect Notion to publish RCA reports into your team wiki. Useful for post-mortem workflows, knowledge sharing, and turning every investigation into durable documentation.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="RCA to Notion page" icon="file-lines">
+    Publish any RCA report as a Notion page, formatted and linked back to the source incident.
+  </Card>
+  <Card title="Post-mortem workflow" icon="clipboard-list">
+    Pair with Linear to turn RCAs into tickets and post-mortems in one click.
+  </Card>
+  <Card title="Skill-powered sync" icon="sparkles">
+    The `linear-tickets-to-notion` system skill brings a weekly incident digest into Notion automatically.
+  </Card>
+  <Card title="Database integration" icon="database">
+    Write into a structured Notion database (status, severity, service, owner) for reporting.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Steps titleSize="h3">
+  <Step title="Create a Notion integration">
+    In Notion, go to **Settings → Integrations → Develop your own integrations** and create an internal integration. Copy the token.
+  </Step>
+  <Step title="Share pages or a database">
+    In Notion, open the pages or database you want RubixKube to write into and **Add connection → RubixKube**. The integration only sees what you explicitly share.
+  </Step>
+  <Step title="Configure in RubixKube">
+    In the console, open **Integrations → Notion**, paste the token, and pick the default page or database for RCA publication.
+  </Step>
+</Steps>
+
+## What a published RCA looks like in Notion
+
+- **Title** matching the RCA headline.
+- **Callout** at the top linking back to the RubixKube report.
+- **Observed conditions**, **Causal chain**, and **Recommended actions** as sections.
+- **Evidence** inline as links to the source signals in RubixKube.
+- **Properties** (when writing to a database): severity, environment, service, status.
+
+## Using the system skill
+
+Once connected, enable the `linear-tickets-to-notion` system skill from the Skills catalogue. It fetches your assigned Linear issues and writes them into a new Notion page, typically used for weekly incident reviews. See [Agent Skills Store](/using/agent-skills-store).
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Publish fails with 'not found'">
+    The Notion integration cannot see a page or database unless you explicitly share it. Open the target in Notion and add the RubixKube connection.
+  </Accordion>
+  <Accordion title="Pages missing properties">
+    When publishing into a database, RubixKube needs the database schema to match (severity, environment, service, status). Add missing properties or adjust the mapping in **Integrations → Notion → Schema**.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Linear" icon="list-check" href="/integrations/linear">
+    Pair with Notion for ticket-and-doc workflows.
+  </Card>
+  <Card title="Agent Skills Store" icon="store" href="/using/agent-skills-store">
+    Find `linear-tickets-to-notion` and other bridge skills.
+  </Card>
+</CardGroup>

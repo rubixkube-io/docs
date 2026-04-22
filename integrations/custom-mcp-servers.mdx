@@ -1,0 +1,140 @@
+---
+title: "Custom MCP Servers"
+sidebarTitle: "Custom MCP Servers"
+description: "Extend RubixKube with your own Model Context Protocol servers. Expose internal tools to the SRI Agent with typed arguments and scoped authorisation."
+keywords: ["MCP server", "model context protocol", "custom integration", "internal tools", "rubixkube MCP"]
+"og:title": "Custom MCP Servers"
+"og:description": "Extend RubixKube with your own MCP servers. Typed tools, scoped auth, sandboxed execution."
+---
+
+MCP (Model Context Protocol) is the open standard the RubixKube agent mesh uses to reach external tools. A Custom MCP Server lets you expose internal tools, data platforms, or bespoke runbooks to the SRI Agent with typed arguments and scoped authorisation.
+
+Use this path when you want richer-than-REST behaviour: bidirectional tool calls, streaming responses, shared context, or tools that orchestrate multiple underlying APIs behind one call.
+
+## When to choose MCP over REST
+
+<CardGroup cols={2}>
+  <Card title="MCP is best for" icon="circle-check">
+    Tools that need structured tool schemas, rich return types, streaming outputs, or coordinated multi-call workflows.
+  </Card>
+  <Card title="REST is best for" icon="network-wired">
+    Single endpoints that already have OpenAPI specs and simple request-response semantics. See [Custom REST Integrations](/integrations/custom-rest).
+  </Card>
+</CardGroup>
+
+## What an MCP server exposes
+
+An MCP server advertises a set of **tools**. Each tool has:
+
+- A **name** (unique handle).
+- A **description** (one sentence, used for intent matching).
+- A **JSON schema** for its arguments (types, enums, ranges).
+- A **handler** that runs the tool and returns structured output.
+
+RubixKube reads the advertised tool list and makes each tool callable by the SRI Agent, scoped by the skill's `allowed_tools` list.
+
+## Minimal server (TypeScript SDK)
+
+```ts
+import { Server } from "@modelcontextprotocol/sdk/server";
+import { z } from "zod";
+
+const server = new Server({ name: "internal-incident-runbook", version: "1.0.0" });
+
+server.tool(
+  "fetch_customer_impact",
+  {
+    description: "Look up which customers are currently affected by a service outage.",
+    inputSchema: z.object({
+      serviceName: z.string(),
+      sinceMinutes: z.number().int().min(1).max(1440)
+    })
+  },
+  async ({ serviceName, sinceMinutes }) => {
+    // Your internal implementation
+    return {
+      affectedCustomerCount: 142,
+      topRegions: ["ap-south-1", "eu-west-1"]
+    };
+  }
+);
+
+server.start();
+```
+
+## Hosting modes
+
+<Tabs>
+  <Tab title="RubixKube-managed">
+    Push a container image to a registry we can pull from, plus a manifest that declares resources. RubixKube runs the server in an isolated sandbox inside RubixKube Cloud. Simplest path for most teams.
+  </Tab>
+  <Tab title="Self-hosted">
+    Run the MCP server on your own infrastructure. RubixKube connects over an outbound tunnel, so no inbound firewall holes are needed. Best for tools that need local data access or strict data residency.
+  </Tab>
+</Tabs>
+
+## Register the server
+
+<Steps titleSize="h3">
+  <Step title="Declare the server in the console">
+    Open **Integrations → Custom MCP** and choose **RubixKube-managed** or **Self-hosted**. Provide the image reference or tunnel endpoint.
+  </Step>
+  <Step title="Validate the tool schemas">
+    The console lists every tool the server advertises. Click each to inspect the JSON schema and run a test call.
+  </Step>
+  <Step title="Set auth">
+    Pick the auth type that matches your server (API key, OAuth, mTLS). Store credentials in the workspace secret vault. See [OAuth and Auth Types](/integrations/oauth-and-auth-types).
+  </Step>
+  <Step title="Scope to skills">
+    Add the server's tools to the `allowed_tools` list of the skills that need them. Do not enable tools globally unless they are strictly read-only.
+  </Step>
+</Steps>
+
+## Design guidelines
+
+<CardGroup cols={2}>
+  <Card title="Narrow, typed arguments" icon="list-check">
+    Enums and ranges beat free-form strings. The planner's accuracy rises sharply with good schemas.
+  </Card>
+  <Card title="Idempotent reads, explicit writes" icon="shield-halved">
+    Read tools can run freely. Write tools should require approval via the RubixKube action flow.
+  </Card>
+  <Card title="Fast responses" icon="bolt">
+    Target sub-second p95 for read tools. Long-running operations should return a task handle and let Chat poll.
+  </Card>
+  <Card title="Descriptive errors" icon="circle-exclamation">
+    Return structured error payloads with reason codes. They feed back into planning and future recommendations.
+  </Card>
+</CardGroup>
+
+## Safety and Guardian
+
+A custom MCP server is not a bypass of Guardian. Mutating tools still pass through the approval flow before they can run. Reads are permitted freely but can still be scoped by environment, team, or time window.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Server registered, tools not appearing">
+    RubixKube discovers tools via the MCP `tools/list` call on connect. If nothing appears, check the server log for errors during the handshake and that the SDK version is at least 1.0.
+  </Accordion>
+  <Accordion title="Tool call returns 'arguments do not match schema'">
+    The argument the SRI Agent sent did not match your schema. Tighten the description and examples so intent mapping aligns with what the tool accepts.
+  </Accordion>
+  <Accordion title="Self-hosted server unreachable">
+    The outbound tunnel dropped. Check the tunnel health in **Integrations → Custom MCP → Tunnel**. Most commonly this is a restart of the self-hosted host without auto-reconnect.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    When OpenAPI is enough.
+  </Card>
+  <Card title="OAuth and Auth Types" icon="lock" href="/integrations/oauth-and-auth-types">
+    Reference for every supported authentication method.
+  </Card>
+  <Card title="How to add custom integrations" icon="plus" href="/tutorials/add-custom-integrations">
+    Walkthrough of the full custom integration flow.
+  </Card>
+</CardGroup>

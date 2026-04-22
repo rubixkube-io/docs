@@ -1,0 +1,120 @@
+---
+title: "Insights"
+sidebarTitle: "Insights"
+description: "An Insight is an anomaly RubixKube thinks a human should know about. Learned baselines, scoped severity, and evidence behind every card."
+keywords: ["insights", "anomaly detection", "AI insights", "SRE insights", "infrastructure anomaly", "magic insights"]
+"og:title": "Insights"
+"og:description": "Anomalies worth your attention, with evidence and scoped severity."
+---
+
+An Insight is RubixKube's answer to the question "what should I look at right now?" It is an anomaly significant enough that a human should be aware of it, surfaced with the evidence behind it and the resources it affects.
+
+Insights are not alerts. Alerts fire on thresholds humans set. Insights surface on baselines the system learns. Threshold alerts train people to ignore them; learned baselines produce far less noise.
+
+## What makes an Insight
+
+<CardGroup cols={2}>
+  <Card title="Learned baseline" icon="chart-line">
+    Each resource has a baseline the system builds over time. Insights surface when a signal drifts outside that baseline.
+  </Card>
+  <Card title="Severity" icon="thermometer">
+    Low, Medium, High, Critical. Scored against blast radius, trend, and prior art.
+  </Card>
+  <Card title="Cited evidence" icon="file-magnifying-glass">
+    Every claim on an insight links back to the signal it came from. Verification is a click away.
+  </Card>
+  <Card title="Scope" icon="box">
+    An insight always names the affected resources and the environment they live in. No ambiguity.
+  </Card>
+</CardGroup>
+
+## How Insights differ from alerts
+
+| Aspect | Traditional alert | RubixKube Insight |
+| --- | --- | --- |
+| Trigger | Static threshold | Learned baseline |
+| Tuning | Manual, per rule | Automatic, per resource |
+| Noise | High over time | Drops as baselines mature |
+| Context | Single metric | Cross-signal with blast radius |
+| Follow-through | Requires a human to correlate | Automatically links to RCA when one applies |
+
+## The Insight lifecycle
+
+<Steps titleSize="h3">
+  <Step title="Open">
+    A signal crosses the learned band. An Insight card opens in Magic Insights. Subscribers get notified on the channels you configured.
+  </Step>
+  <Step title="Investigate">
+    If the signal shape warrants a full causal analysis, the RCA Pipeline starts. The insight gains an attached [RCA report](/concepts/root-cause-analysis) when it is ready.
+  </Step>
+  <Step title="Act">
+    Either from the RCA's recommended actions, or by routing the insight to Chat, Slack, Teams, Linear, or PagerDuty for human follow-up.
+  </Step>
+  <Step title="Close">
+    When the underlying signal returns to baseline, the insight closes automatically. Resolution notes, if any, are stored in the Memory Engine for future matches.
+  </Step>
+</Steps>
+
+## Severity, and how it is set
+
+Severity is not a single number. Four inputs blend into the score.
+
+<AccordionGroup>
+  <Accordion title="Signal magnitude" icon="chart-line">
+    How far outside the baseline the signal is, normalised per metric.
+  </Accordion>
+  <Accordion title="Blast radius" icon="explosion">
+    How many dependent resources are affected (or likely to be) based on the graph.
+  </Accordion>
+  <Accordion title="Trend" icon="arrow-trend-up">
+    Worsening drifts score higher than stable ones. Flat drifts score lower than worsening ones.
+  </Accordion>
+  <Accordion title="Prior art" icon="database">
+    If a similar pattern has caused real incidents before, the severity reflects that history.
+  </Accordion>
+</AccordionGroup>
+
+## What to do with an Insight
+
+<CardGroup cols={2}>
+  <Card title="Read" icon="eye">
+    Open the card. Skim the observed signals and the attached resources. Thirty seconds.
+  </Card>
+  <Card title="Investigate" icon="magnifying-glass">
+    Open in Chat if you want to interrogate further. The session starts with the insight's context preloaded.
+  </Card>
+  <Card title="Route" icon="arrow-right-from-bracket">
+    Escalate to a teammate, PagerDuty, or a Linear ticket. Each route preserves the evidence trail.
+  </Card>
+  <Card title="Dismiss" icon="circle-xmark">
+    If it is a known false positive, dismiss with a reason. The system learns from the reason.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Why did I not get an Insight for this?">
+    Usually one of three reasons. The baseline has not matured yet (give it a week of traffic). The drift is inside the learned noise band. Or the insight was deduplicated into an already-open one for the same resource.
+  </Accordion>
+  <Accordion title="Can I turn Insights off for a resource?">
+    Yes. Mute specific resources or namespaces through the console. Muted resources still stream signals, they just do not produce notifications.
+  </Accordion>
+  <Accordion title="How fast is detection?">
+    Most drifts surface within one to two minutes of the underlying signal. The OPEL loop runs continuously, not on a fixed cron.
+  </Accordion>
+  <Accordion title="Does every Insight become an RCA Report?">
+    No. An insight is any anomaly worth a human look. An [RCA Report](/concepts/root-cause-analysis) is a full causal chain. Incidents without a single identifiable root cause stay as insights.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Root Cause Analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
+    How insights turn into full causal chains.
+  </Card>
+  <Card title="Magic Insights in the console" icon="lightbulb" href="/using/insights">
+    The console view where insights live.
+  </Card>
+</CardGroup>

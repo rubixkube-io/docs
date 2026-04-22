@@ -1,0 +1,77 @@
+---
+title: "Atlassian Rovo integration"
+sidebarTitle: "Atlassian Rovo"
+description: "Let Atlassian Rovo agents invoke RubixKube capabilities, and have RubixKube reach into Jira, Confluence, and Bitbucket through Rovo."
+keywords: ["atlassian rovo", "rovo integration", "jira integration", "confluence integration", "bitbucket integration"]
+"og:title": "Atlassian Rovo integration"
+"og:description": "Bridge RubixKube and the Atlassian stack through Rovo agents."
+---
+
+Atlassian Rovo is Atlassian's AI platform for agents across Jira, Confluence, and Bitbucket. The RubixKube integration makes both sides talk to each other: Rovo agents can invoke RubixKube capabilities for infrastructure context, and RubixKube can reach into the Atlassian stack for tickets, docs, and source.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="RCA to Jira issue" icon="ticket">
+    Open a Jira issue from any RCA. Severity, environment, and ownership auto-mapped to your Jira fields.
+  </Card>
+  <Card title="Publish to Confluence" icon="book-open">
+    Write RCA reports and post-mortems as Confluence pages, linked back to the original incident.
+  </Card>
+  <Card title="Rovo agent calls" icon="sparkles">
+    Rovo agents can call the RubixKube SRI Agent for infrastructure context ("what is the health of payments before this deploy").
+  </Card>
+  <Card title="Bitbucket context" icon="code-branch">
+    Correlate Bitbucket deployments with infrastructure incidents, same as the GitHub and GitLab integrations.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Steps titleSize="h3">
+  <Step title="Install from the Atlassian Marketplace">
+    Find **RubixKube for Atlassian** in the marketplace and install it into your Atlassian site. An admin needs to approve the app.
+  </Step>
+  <Step title="Authorise in RubixKube">
+    In the RubixKube console, open **Integrations → Atlassian Rovo** and complete the OAuth flow with your Atlassian account.
+  </Step>
+  <Step title="Pick Jira projects and Confluence spaces">
+    Choose which projects can receive tickets and which spaces can host published pages.
+  </Step>
+  <Step title="Enable Rovo agent access">
+    To let Rovo agents invoke RubixKube, turn on **Allow Rovo agents** on the integration. You can scope which capabilities they can call.
+  </Step>
+</Steps>
+
+## Directions of flow
+
+| Direction | Example |
+| --- | --- |
+| RubixKube → Atlassian | Create Jira ticket from RCA, publish Confluence page, correlate Bitbucket deployments |
+| Atlassian → RubixKube | A Rovo agent asks the SRI Agent "what is the health of payments", and the answer returns inline in Jira or Confluence |
+
+## Permissions
+
+The integration uses OAuth scoped to the projects and spaces you select. No Atlassian data is read outside those boundaries. Rovo agent calls into RubixKube follow the same Guardian policies as every other caller.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Cannot see projects or spaces">
+    The Atlassian OAuth scope needs refreshing. Open **Integrations → Atlassian Rovo → Reauthorise** and complete the flow again.
+  </Accordion>
+  <Accordion title="Rovo agents cannot reach RubixKube">
+    Check that **Allow Rovo agents** is enabled and the Rovo admin has granted the RubixKube capability to the agent in the Atlassian console.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    Under the hood, the Rovo bridge uses MCP. Build your own for other platforms.
+  </Card>
+  <Card title="Notion" icon="book" href="/integrations/notion">
+    For teams on Notion instead of Confluence.
+  </Card>
+</CardGroup>

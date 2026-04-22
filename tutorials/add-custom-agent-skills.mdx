@@ -1,0 +1,185 @@
+---
+title: "How to add custom agent skills"
+sidebarTitle: "How to add custom agent skills"
+description: "Turn a runbook into a reusable skill the SRI Agent can run. This tutorial covers the skill file format, allowed tools, scope, and testing."
+keywords: ["custom agent skills", "agent skills", "AI skill", "runbook automation", "sri agent", "agent skills format"]
+"og:title": "How to add custom agent skills"
+"og:description": "Turn a runbook into a reusable skill the SRI Agent can run."
+---
+
+Agent Skills are short, structured runbooks the SRI Agent can invoke on demand. Writing one turns your best on-call playbook into something Chat runs for the team, consistently, every time. This tutorial walks through building and shipping one from scratch.
+
+<Info>
+  RubixKube uses the open [Agent Skills format](https://rubixkube.ai/blog) pioneered by Anthropic and adopted by Cursor, Claude Code, and GitHub Copilot. A skill written for RubixKube is portable to those tools, and vice versa.
+</Info>
+
+## Prerequisites
+
+- A RubixKube workspace you can admin.
+- A runbook or playbook you already use, in any format (Google Doc, Notion, markdown).
+- About twenty minutes.
+
+## What a skill looks like
+
+A skill is a YAML file plus optional prompt instructions. Minimal shape:
+
+```yaml
+name: post-deploy-verification
+scope: tenant
+agent: sre-agent
+description: Compare error rate, latency, and resource usage for a service against the last stable window.
+allowed_tools:
+  - fetch_infrastructure_snapshot
+  - fetch_deployment_history
+  - analyze_service_health
+instructions: |
+  1. Take a baseline from the last 30 minutes of the previous stable deployment.
+  2. Take the current window (10 minutes after the new rollout).
+  3. Compare error rate, p95 latency, CPU, and memory.
+  4. Flag any metric worse than 20% against baseline.
+  5. Summarise in a short Slack-ready paragraph.
+```
+
+Fields to know:
+
+| Field | Purpose |
+| --- | --- |
+| `name` | Unique handle, kebab-case. Used when invoking with `/skills`. |
+| `scope` | `system` (RubixKube-maintained) or `tenant` (your workspace). Custom skills are always `tenant`. |
+| `agent` | Which agent can run this. Today only the SRI Agent is supported. |
+| `description` | One sentence. Used in the skill catalogue and for intent matching. |
+| `allowed_tools` | Explicit tool allowlist. Anything not listed is blocked. |
+| `instructions` | Plain-English runbook. Numbered steps work best. |
+
+## Step 1: Pick a real runbook
+
+Skills work best when they wrap something your team already does in a specific way. Good candidates:
+
+<CardGroup cols={2}>
+  <Card title="Post-deploy verification" icon="check-double">
+    Compare current metrics to the last stable window after a rollout.
+  </Card>
+  <Card title="On-call handoff" icon="user-clock">
+    Summarise open incidents, pending actions, and high-risk changes for the incoming rotation.
+  </Card>
+  <Card title="Cost anomaly review" icon="chart-line">
+    Weekly pass to spot services drifting over budget.
+  </Card>
+  <Card title="Pre-change safety check" icon="shield-halved">
+    Before a risky deploy, run a standard readiness check.
+  </Card>
+</CardGroup>
+
+## Step 2: Write the skill
+
+Open **Skills** in the console and click **New skill**. Paste your YAML into the editor. The console validates the schema live.
+
+<Tip>
+  Start with `instructions` that read like a senior engineer's handover note. Short imperative sentences. Specific numbers where it matters ("20% worse than baseline", not "significantly worse").
+</Tip>
+
+## Step 3: Pick the right tools
+
+The `allowed_tools` list is the safety boundary. The SRI Agent can only call tools listed here. A few of the most common:
+
+| Tool | What it does |
+| --- | --- |
+| `fetch_infrastructure_snapshot` | Reads current state of resources across environments |
+| `fetch_kubernetes_graph_snapshot` | Full topology of a connected cluster |
+| `fetch_deployment_history` | Recent rollouts, rollbacks, and config changes |
+| `analyze_service_health` | Aggregated metric view for one or more services |
+| `query_logs` | Read-only log access for a scoped window |
+| `run_linear_issue` | Create a Linear issue with the output |
+
+Only add what the skill needs. Narrower allowed_tools means safer, more predictable runs.
+
+## Step 4: Test before enabling
+
+Click **Test** in the console. The skill runs against your live environment and renders the output. Iterate on the instructions until the answer is what you want.
+
+<Warning>
+  A skill that touches mutating tools (create issue, scale deployment) runs inside Guardian policies. Anything truly destructive requires human approval at runtime, regardless of what the skill tells the agent to do.
+</Warning>
+
+## Step 5: Enable and share
+
+Flip **Enabled** on the skill. Now the SRI Agent can invoke it two ways.
+
+- **Intent match.** A user asks a question the skill description fits, and the agent picks it up automatically.
+- **Explicit call.** A user types `/skills skill-name` in Chat.
+
+For team-critical skills, link the skill from your on-call README so the rotation knows it exists.
+
+## Step 6: Watch it learn
+
+Every run feeds the Memory Engine. Common follow-up questions on top of a skill's output get folded into its context, so the next run is tighter. You can inspect a skill's run history and adjust the instructions with real traffic as signal.
+
+## Examples to copy
+
+<AccordionGroup>
+  <Accordion title="On-call handoff (fully worked example)">
+    ```yaml
+    name: on-call-handoff
+    scope: tenant
+    agent: sre-agent
+    description: Summarise open incidents, pending actions, and risky changes for the next on-call shift.
+    allowed_tools:
+      - fetch_infrastructure_snapshot
+      - fetch_deployment_history
+      - list_open_incidents
+      - list_pending_actions
+    instructions: |
+      1. List every open incident across all environments. Include severity, owner, and age.
+      2. List pending actions (awaiting approval) with their RCA link.
+      3. List deployments or config changes in the last 24 hours with rollback risk above medium.
+      4. Flag any environment with degraded agents.
+      5. Produce a six-line Slack message. Use bullet points. No adverbs.
+    ```
+  </Accordion>
+  <Accordion title="Cost anomaly review (fully worked example)">
+    ```yaml
+    name: weekly-cost-anomaly
+    scope: tenant
+    agent: sre-agent
+    description: Weekly pass to spot services or resources drifting over their typical cost baseline.
+    allowed_tools:
+      - fetch_infrastructure_snapshot
+      - analyze_cost_drift
+      - rank_resources_by_spend
+    instructions: |
+      1. Pull cost data for the last 7 days, grouped by service and environment.
+      2. Compare against a 28-day rolling baseline.
+      3. Return any service more than 15% above baseline.
+      4. For each flagged service, suggest the single most likely reason (scale event, traffic shift, config change).
+      5. Produce a table for the engineering leads channel.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="What is the difference between a system skill and a custom skill?">
+    System skills ship with RubixKube and are maintained by the team. Custom skills live inside your workspace (`scope: tenant`). Both use the same format.
+  </Accordion>
+  <Accordion title="Can I version skills?">
+    Yes. Every save creates a revision. You can roll back from the skill detail page. Versioning in Git via the RubixKube CLI is on the roadmap.
+  </Accordion>
+  <Accordion title="Do skills cost investigations?">
+    A skill run counts as one investigation on your plan. High-frequency skills (like a daily handoff) are usually the best use of the quota.
+  </Accordion>
+  <Accordion title="Can I share skills across workspaces?">
+    Enterprise customers can mark a tenant skill as shareable and export it to another workspace. On lower tiers, copy the YAML.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Agent Skills concepts" icon="sparkles" href="/concepts/skills">
+    The underlying model: why skills matter, how they are scored, where they run.
+  </Card>
+  <Card title="Talk to your infra" icon="comments" href="/tutorials/talk-to-infra">
+    Writing good skills starts with writing good prompts in Chat.
+  </Card>
+</CardGroup>

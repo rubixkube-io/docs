@@ -1,0 +1,121 @@
+---
+title: "Custom REST Integrations"
+sidebarTitle: "Custom REST Integrations"
+description: "Point RubixKube at a REST API with an OpenAPI spec. Every endpoint becomes a tool the SRI Agent can call, with scoped auth and approval gates."
+keywords: ["custom REST integration", "OpenAPI integration", "API integration", "internal tools", "rubixkube REST"]
+"og:title": "Custom REST Integrations"
+"og:description": "Point RubixKube at a REST API. Every endpoint becomes a scoped, typed tool."
+---
+
+If your internal tool exposes a REST API with an OpenAPI specification, a Custom REST Integration is the fastest way to let the SRI Agent call it. Each endpoint becomes a typed tool with scoped authentication and optional approval gates.
+
+Use this path when the integration is read-heavy, the tool already has an OpenAPI spec, and you do not need streaming or rich bidirectional behaviour.
+
+## When to choose REST over MCP
+
+<CardGroup cols={2}>
+  <Card title="REST is best for" icon="circle-check">
+    Tools with existing OpenAPI specs, simple request-response flows, single endpoints per operation.
+  </Card>
+  <Card title="MCP is best for" icon="server">
+    Streaming responses, coordinated multi-call workflows, richer tool schemas. See [Custom MCP Servers](/integrations/custom-mcp-servers).
+  </Card>
+</CardGroup>
+
+## What RubixKube reads from your spec
+
+| OpenAPI field | How it maps |
+| --- | --- |
+| `paths` and `operationId` | One tool per endpoint |
+| `summary` and `description` | Tool description, used for intent matching |
+| `parameters` and `requestBody` | Argument schema, passed to the planner |
+| `responses` | Return schema, used when interpreting results |
+| `security` schemes | Auth requirement for the endpoint |
+
+RubixKube validates against OpenAPI 3.0 and 3.1.
+
+## Register the integration
+
+<Steps titleSize="h3">
+  <Step title="Upload the spec">
+    Open **Integrations → Custom REST** and upload the OpenAPI document (YAML or JSON). The console parses it and lists every endpoint.
+  </Step>
+  <Step title="Pick endpoints to enable">
+    Select the endpoints you want exposed as tools. Start narrow: usually read endpoints first, mutating ones once you have tested.
+  </Step>
+  <Step title="Choose an auth type">
+    <Tabs>
+      <Tab title="API key">
+        Simplest option. The console stores the key in the workspace secret vault and injects it on each call.
+      </Tab>
+      <Tab title="OAuth 2.0">
+        Preferred for user-scoped APIs. RubixKube handles the authorisation code flow and token refresh.
+      </Tab>
+      <Tab title="mTLS">
+        For private APIs where network-level trust matters. Upload the client certificate into the vault.
+      </Tab>
+      <Tab title="Custom header or signed request">
+        For HMAC, JWT-in-header, or webhook-style signatures. Configurable per endpoint.
+      </Tab>
+    </Tabs>
+    See [OAuth and Auth Types](/integrations/oauth-and-auth-types) for the full reference.
+  </Step>
+  <Step title="Approval rules">
+    For mutating endpoints (POST, PUT, PATCH, DELETE), require approval via the Guardian. Reads can run freely.
+  </Step>
+  <Step title="Test">
+    Use the test pane in the console to call each enabled endpoint. Confirm auth, request shape, and response parsing before going live.
+  </Step>
+  <Step title="Scope to skills">
+    Add the endpoints you enabled to the `allowed_tools` list of the skills that need them. Do not enable mutating endpoints globally.
+  </Step>
+</Steps>
+
+## Design guidelines
+
+<CardGroup cols={2}>
+  <Card title="Describe endpoints well" icon="pen">
+    Good OpenAPI descriptions make the difference between an agent calling the right endpoint and guessing. Spend five minutes polishing summaries.
+  </Card>
+  <Card title="Use enums and ranges" icon="list-check">
+    Narrow argument types mean higher planning accuracy. Free-form strings are the enemy.
+  </Card>
+  <Card title="Paginate" icon="layer-group">
+    Long lists should paginate. The agent respects cursor-based or offset-based schemes out of the box.
+  </Card>
+  <Card title="Structured errors" icon="circle-exclamation">
+    Return well-typed error payloads. The planner uses error shapes when deciding whether to retry, adjust arguments, or surface to the user.
+  </Card>
+</CardGroup>
+
+## Safety and Guardian
+
+Every mutating endpoint passes through the Guardian approval flow. Read endpoints can be called without approval, but can still be scoped by environment or by time window. Nothing becomes callable before you have tested it in the console.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Upload fails with 'invalid OpenAPI'">
+    Validate your spec against the 3.x spec first (e.g. `swagger-cli validate`). RubixKube is strict about required fields.
+  </Accordion>
+  <Accordion title="Endpoint returns auth errors">
+    Verify the secret in the vault and the scheme in the OpenAPI `security` block. For OAuth flows, make sure the token scope matches what the endpoint requires.
+  </Accordion>
+  <Accordion title="Agent keeps calling the wrong endpoint">
+    Sharpen the `summary` and `description` on the endpoint it should prefer. Intent matching depends heavily on good text.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When REST is not enough.
+  </Card>
+  <Card title="OAuth and Auth Types" icon="lock" href="/integrations/oauth-and-auth-types">
+    Reference for every supported authentication method.
+  </Card>
+  <Card title="How to add custom integrations" icon="plus" href="/tutorials/add-custom-integrations">
+    Walkthrough of the full custom integration flow.
+  </Card>
+</CardGroup>

@@ -1,6 +1,7 @@
 ---
 title: 'Chat Basics: Your First Queries'
-description: 'Learn the Chat interface with hands-on examples - start here for your first conversation with RubixKube'
+sidebarTitle: 'Chat Basics'
+description: 'Learn the Chat interface with hands-on examples. Start here for your first conversation with RubixKube.'
 ---
 
 # Chat Basics: Your First Queries
@@ -415,23 +416,22 @@ All your conversations are saved in the left sidebar:
 
 ---
 
-## Beta Limitations
+## Scope of what Chat does
 
-<Warning>
-**What Chat DOES (Beta):** -  Answer questions about your cluster
--  Analyze incidents and provide RCA
--  Explain Kubernetes concepts
--  Provide troubleshooting guidance
--  Show you kubectl commands to run
+<Info>
+**What Chat does today:**
+- Answers questions about any connected environment.
+- Investigates incidents and generates evidence-linked RCA reports.
+- Explains platform concepts using your own resources as examples.
+- Provides step-by-step troubleshooting guidance.
+- Drafts the exact commands or configuration changes needed to fix an issue.
 
-**What Chat CANNOT do (Yet):** -  Execute kubectl commands automatically
--  Apply configuration changes
--  Restart pods or deployments
+**What Chat does not do without approval:**
+- Apply mutating changes directly to your environment.
+- Restart, scale, or delete workloads on its own.
 
-**Coming Q1 2026:** Automated execution with approval gates
-
-For now,**Chat is advisory**  - it tells you WHAT and HOW, you execute.
-</Warning>
+Every recommended action is gated by Guardian policies and needs explicit human sign-off before it lands. See [Safety and Guardrails](/concepts/guardrails) for the full picture.
+</Info>
 
 ---
 
@@ -515,7 +515,7 @@ Now that you know the basics, let's use Chat to troubleshoot actual failing pods
 
 **Response Time:** Usually 5-30 seconds depending on query complexity
 
-**Cost:** No limits in Beta - ask as many questions as you want!
+**Quota:** Questions are unmetered. Only full detect-to-resolution cycles (investigations) count against your plan.
 
 ---
 

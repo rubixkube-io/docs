@@ -1,0 +1,83 @@
+---
+title: "Linear integration"
+sidebarTitle: "Linear"
+description: "Turn RCAs into tickets with one click. Sync incident status between RubixKube and Linear."
+keywords: ["linear integration", "incident ticket", "issue tracker", "SRE linear", "rubixkube linear"]
+"og:title": "Linear integration"
+"og:description": "Turn RCAs into Linear tickets and sync incident status."
+---
+
+Connect Linear to turn every RubixKube RCA into a tracked ticket. The integration populates the ticket with root cause, evidence links, and recommended actions, and keeps status in sync between the two systems.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="One-click RCA to ticket" icon="wand-magic-sparkles">
+    From any RCA report, open a Linear issue with the full context preloaded.
+  </Card>
+  <Card title="Auto-assign by team" icon="users">
+    Route tickets to the team or project that owns the affected service.
+  </Card>
+  <Card title="Status sync" icon="arrows-rotate">
+    Moving the Linear issue to Done marks the RCA as resolved. Reopening works too.
+  </Card>
+  <Card title="Post-mortem template" icon="file-lines">
+    Optional Linear template that pre-fills a post-mortem doc from the RCA's evidence chain.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Steps titleSize="h3">
+  <Step title="Authorise in the console">
+    Open **Integrations → Linear** and click **Connect**. Sign in to Linear and authorise the app.
+  </Step>
+  <Step title="Pick the default team">
+    Choose the Linear team that should receive tickets by default. You can override per route.
+  </Step>
+  <Step title="Map projects to environments">
+    Optional. If your Linear projects mirror your RubixKube environments (payments, platform, data), map them now. Tickets land in the matching project automatically.
+  </Step>
+  <Step title="Enable status sync">
+    Turn on bidirectional sync to keep RCA and ticket status aligned.
+  </Step>
+</Steps>
+
+## Ticket contents
+
+Every Linear issue created from an RCA includes:
+
+- **Title** matching the RCA headline.
+- **Description** with observed conditions, causal chain, and recommended actions, formatted as Markdown.
+- **Evidence links** back to the RubixKube console.
+- **Labels** for severity, environment, and incident type.
+- **Priority** mapped from RCA severity.
+
+## System skill
+
+The RubixKube system skill `linear-tickets-to-notion` uses this integration to pull your Linear issues and post them into a Notion page, useful for weekly reviews. See [Skills](/concepts/skills).
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tickets not being created">
+    Confirm the app is still authorised in **Integrations → Linear**. Linear tokens expire after 90 days of inactivity.
+  </Accordion>
+  <Accordion title="Tickets landing in the wrong team">
+    Adjust the default team or add a route that maps environments to Linear teams in **Integrations → Linear → Routing**.
+  </Accordion>
+  <Accordion title="Status sync lag">
+    Sync runs on webhook. If Linear webhooks are delayed, status can take a minute to reflect. Manual sync is available on the RCA report.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="RCA Reports" icon="file-magnifying-glass" href="/concepts/root-cause-analysis">
+    What is in a report and how to read one.
+  </Card>
+  <Card title="Notion" icon="book" href="/integrations/notion">
+    Pair with Linear for post-mortem-to-knowledge-base workflows.
+  </Card>
+</CardGroup>

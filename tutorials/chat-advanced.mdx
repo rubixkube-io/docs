@@ -1,6 +1,7 @@
 ---
-title: 'Advanced Chat: Personas & Workflows'
-description: 'Master Chat for different roles - SRE, DevOps, Platform Engineer workflows with real examples'
+title: 'Advanced Chat: Personas and Workflows'
+sidebarTitle: 'Advanced Chat'
+description: 'Master Chat for different roles. SRE, DevOps, and platform engineer workflows with real examples.'
 ---
 
 # Advanced Chat: Personas & Workflows
@@ -19,13 +20,17 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 **Goal:** Triage and resolve production incidents FAST
 
-**Morning routine:** ```
+**Morning routine:**
+
+```
 "Good morning! Any HIGH severity incidents?"
 "Show me production pod health"
 "What changed overnight?"
 ```
 
-**During incident:** ```
+**During incident:**
+
+```
 "URGENT: What's down in production?"
 ↓
 "Which services are affected?"
@@ -39,7 +44,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 **Time: 3-5 minutes** (vs. 20+ minutes)
 
-**Post-mortem:** ```
+**Post-mortem:**
+
+```
 "Summarize today's incidents"
 "What was the root cause?"
 "How long was each service down?"
@@ -56,7 +63,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 **Goal:** Validate and deploy without breaking things
 
-**Pre-deployment checklist:** ```
+**Pre-deployment checklist:**
+
+```
 1. "Status of api-gateway deployment?"
 2. "Any recent issues with api-gateway?"
 3. [Upload new-deployment.yaml via ]
@@ -65,13 +74,17 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 6. "Looks good - deploying now"
 ```
 
-**Post-deployment verification:** ```
+**Post-deployment verification:**
+
+```
 "How's the new api-gateway version?"
 "Any errors in the logs?"
 "Resource usage vs. previous version?"
 ```
 
-**During rollout:** ```
+**During rollout:**
+
+```
 "Are new pods coming up?"
 "Any errors during rollout?"
 "Should I continue or rollback?"
@@ -87,7 +100,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 **Goal:** Resource efficiency and capacity planning
 
-**Resource optimization:** ```
+**Resource optimization:**
+
+```
 "Show me pods with limits less than requests"
 "What pods are over-provisioned?"
 "Calculate actual vs. requested resources"
@@ -95,14 +110,18 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 "Resource waste by namespace"
 ```
 
-**Capacity planning:** ```
+**Capacity planning:**
+
+```
 "Cluster utilization percentage?"
 "How many more pods can we run?"
 "Memory headroom per node?"
 "Project resource needs for 2x traffic"
 ```
 
-**Cost optimization:** ```
+**Cost optimization:**
+
+```
 "What pods consume the most resources?"
 "Show me idle resources"
 "Which nodes are underutilized?"
@@ -118,7 +137,9 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 
 **Goal:** Learn Kubernetes while working
 
-**Learning queries:** ```
+**Learning queries:**
+
+```
 "What is a pod?"
 "Explain CrashLoopBackOff in simple terms"
 "Why does Kubernetes kill OOM pods?"
@@ -126,14 +147,18 @@ You've learned the basics and troubleshooting. Now let's explore how different t
 "How do resource limits work?"
 ```
 
-**Exploration:** ```
+**Exploration:**
+
+```
 "What applications are deployed here?"
 "How does payment-service connect to the database?"
 "What technologies are we using?"
 "Show me an example of a healthy pod"
 ```
 
-**Safe experimentation:** ```
+**Safe experimentation:**
+
+```
 "If I delete this pod, what happens?"
 "What would breaking this service impact?"
 "Is it safe to restart api-gateway?"
@@ -235,7 +260,9 @@ Click****to upload Kubernetes YAML files.
 2. Select `deployment.yaml`
 3. Agent analyzes automatically
 
-**Sample response:** ```
+**Sample response:**
+
+```
 Analyzed your deployment:
 
  Valid YAML syntax
@@ -277,7 +304,9 @@ Would you like a fixed version?
   <Tab title="Chat + Memory Engine">
 **Automatic:**    Agent queries historical incidents
     
-**Example:**    ```
+**Example:**
+
+```
     You: "We have an OOMKilled incident"
     Agent: "I found 3 similar past incidents:
             - incident-123: fixed by increasing memory
@@ -411,21 +440,17 @@ Would you like a fixed version?
 
 ---
 
-## Beta Limitations & Workarounds
+## What Chat will and will not do on its own
 
-<Warning>
-### Current Limitations:
-**Chat CANNOT (yet):** - Execute kubectl commands for you
-- Apply configuration changes
-- Restart pods/deployments
-- Create/modify resources
+<Info>
+Chat recommends actions. It does not apply them silently.
 
-**Workarounds:** - Agent provides kubectl commands → You run them
-- Agent suggests YAML changes → You apply them
-- Agent explains steps → You execute them
+- Mutating commands (`kubectl apply`, `kubectl delete`, scale, rollback, restart) and anything similar on AWS, GCP, or VMs require explicit approval before they land in your environment.
+- Guardian policies define what is approvable and by whom, per environment. Production typically needs a second reviewer, staging a single approver, lab nothing at all. You set the policy.
+- Every applied action is audited: actor, time, scope, outcome. Rollbacks are one click.
 
-**Coming Q1 2026:** Automated execution with approval workflow
-</Warning>
+See [Safety and Guardrails](/concepts/guardrails) for the full model.
+</Info>
 
 ---
 
@@ -471,14 +496,11 @@ Click **Export conversation**  to:
     - Evidence-based RCA
     - Validated against best practices
     
-**But:** In Beta, always verify critical changes before applying
+**Always verify critical changes before approving, especially in production.**
   </Accordion>
 
   <Accordion title="Can Chat execute commands?">
-### Not in Beta.
-    Chat provides the kubectl command - you run it.
-    
-**Q1 2026:** Automated execution with approval gates
+    Chat drafts the commands and proposes the apply. Nothing lands in your environment without explicit approval, scoped by Guardian policies. On lab environments you can set policies to auto-approve; on production you typically require at least one human reviewer.
   </Accordion>
 
   <Accordion title="What if Chat can't find something?">
@@ -500,9 +522,7 @@ Click **Export conversation**  to:
   </Accordion>
 
   <Accordion title="How long is conversation history kept?">
-**Indefinitely** (in Beta, no retention limits)
-    
-    You can delete conversations manually
+    Retention follows your plan: 7 days on Free, 30 days on Business, unlimited on Enterprise. You can delete conversations manually at any time.
   </Accordion>
 
   <Accordion title="Can I customize the agent?">
@@ -547,7 +567,9 @@ Click **Export conversation**  to:
 
 ### Pattern 1: Morning Standup
 
-**Every day at 9 AM:** ```
+**Every day at 9 AM:**
+
+```
 "Cluster health?"
 "Any new incidents?"
 "Team can deploy today?"
@@ -559,7 +581,9 @@ Click **Export conversation**  to:
 
 ### Pattern 2: Pre-Deploy Validation
 
-**Before EVERY deploy:** ```
+**Before EVERY deploy:**
+
+```
 [Upload deployment.yaml]
 "Validate this"
 "What's the risk?"
@@ -571,7 +595,9 @@ Click **Export conversation**  to:
 
 ### Pattern 3: Incident Response Template
 
-**When paged:** ```
+**When paged:**
+
+```
 "What's down?"
 "Impact?"
 "Root cause?"
@@ -584,7 +610,9 @@ Click **Export conversation**  to:
 
 ### Pattern 4: Learning Hour
 
-**Friday afternoons:** ```
+**Friday afternoons:**
+
+```
 "Explain [concept] with examples from my cluster"
 ```
 

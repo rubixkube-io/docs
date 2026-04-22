@@ -1,0 +1,158 @@
+---
+title: "How to add custom integrations"
+sidebarTitle: "How to add custom integrations"
+description: "Connect RubixKube to your own internal tools. Covers Custom MCP servers, REST integrations, and the OAuth flows that make them safe."
+keywords: ["custom integrations", "MCP server", "REST integration", "custom API", "internal tools", "RubixKube MCP"]
+"og:title": "How to add custom integrations"
+"og:description": "Connect RubixKube to your own internal tools via Custom MCP or REST integrations."
+---
+
+Out-of-the-box integrations cover the popular tools: Slack, Linear, PagerDuty, Notion, Teams, GitHub, GitLab. For everything else you run internally, RubixKube supports two custom paths. This tutorial walks through both.
+
+## Two paths, different trade-offs
+
+<CardGroup cols={2}>
+  <Card title="Custom MCP Server" icon="server">
+    Run a Model Context Protocol server that exposes your tool. Best for rich, bidirectional integrations where the agent needs tool-shaped access.
+  </Card>
+  <Card title="Custom REST Integration" icon="network-wired">
+    Point RubixKube at a REST endpoint with an OpenAPI spec. Best for simple read-or-write integrations with an existing API.
+  </Card>
+</CardGroup>
+
+<Info>
+  If the tool you want to integrate already ships an MCP server, use that. If it only has a REST API, the REST path is simpler. If neither exists, write an MCP server for anything beyond a single endpoint.
+</Info>
+
+## Prerequisites
+
+- Admin access to your RubixKube workspace.
+- The internal tool's API reachable from RubixKube Cloud (for SaaS-hosted tools), or a site-to-site tunnel for private endpoints.
+- About thirty minutes for a simple integration, longer for MCP.
+
+## Path A: Custom REST Integration
+
+Use this when the tool exposes a REST API and an OpenAPI spec.
+
+<Steps titleSize="h3">
+  <Step title="Gather the OpenAPI spec">
+    Most internal tools already have one, or you can generate it from the service. RubixKube validates against OpenAPI 3.0 or 3.1.
+  </Step>
+  <Step title="Pick an auth type">
+    <Tabs>
+      <Tab title="API key">
+        Simplest option. Pass in a header or query parameter. Good for read-only or low-risk endpoints.
+      </Tab>
+      <Tab title="OAuth 2.0">
+        Preferred for anything user-scoped. RubixKube handles the handshake and token refresh.
+      </Tab>
+      <Tab title="mTLS">
+        For private APIs where network-level trust matters. RubixKube stores the client cert in the workspace secret vault.
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Register the integration">
+    Open **Integrations → Custom REST**, upload the OpenAPI spec, select the auth type, and scope which environments can use it.
+  </Step>
+  <Step title="Test a single endpoint">
+    The console has a test pane. Call one endpoint, confirm the response shape, fix any auth issues before enabling broadly.
+  </Step>
+  <Step title="Expose to the agent">
+    Once green, the endpoints become tools the SRI Agent can call. Scope them in skill `allowed_tools` lists to keep the safety boundary tight.
+  </Step>
+</Steps>
+
+<Warning>
+  Enable **Require approval** for any endpoint that creates, updates, or deletes data. Read-only endpoints can run unattended.
+</Warning>
+
+## Path B: Custom MCP Server
+
+Use this when the integration is richer than REST (think: a runbook framework, a bespoke deployment tool, or an internal data platform).
+
+<Steps titleSize="h3">
+  <Step title="Write or adopt an MCP server">
+    MCP is an open protocol. SDKs exist for TypeScript, Python, Go, and Rust. The server exposes a set of tools, each with a JSON schema for its arguments.
+  </Step>
+  <Step title="Host the server">
+    <Tabs>
+      <Tab title="RubixKube-managed">
+        Point RubixKube at a container registry and a manifest. We run the server for you in an isolated sandbox. Easiest for most teams.
+      </Tab>
+      <Tab title="Self-hosted">
+        Run the MCP server on your own infrastructure. RubixKube connects over an outbound tunnel, so no inbound firewall holes. Best for workloads that need local data access.
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Register in the console">
+    **Integrations → Custom MCP**, then point at either the hosted URL or the manifest. Upload any required credentials to the workspace secret vault.
+  </Step>
+  <Step title="Validate tool schemas">
+    The console lists every tool the server advertises. Click each to see its JSON schema and test it. Fix schema issues here, not in production prompts.
+  </Step>
+  <Step title="Scope to skills and agents">
+    A custom MCP server's tools are available to the SRI Agent once enabled. Scope them to specific skills via `allowed_tools` to avoid scope creep.
+  </Step>
+</Steps>
+
+## Auth types supported
+
+<AccordionGroup>
+  <Accordion title="API key, Bearer, HMAC" icon="key">
+    Static credentials stored in the workspace secret vault. Rotated on a schedule you control.
+  </Accordion>
+  <Accordion title="OAuth 2.0 (Authorization Code, Client Credentials)" icon="lock">
+    Full handshake and refresh managed by RubixKube. Use this whenever the upstream tool supports it.
+  </Accordion>
+  <Accordion title="mTLS" icon="certificate">
+    Client certificates for private APIs. Certificates are stored in the secret vault and attached per outbound call.
+  </Accordion>
+  <Accordion title="Custom headers and signatures" icon="signature">
+    Webhook-style signed requests, JWT-in-header, and similar patterns. Configurable per endpoint.
+  </Accordion>
+</AccordionGroup>
+
+## What a good custom integration looks like
+
+<CardGroup cols={2}>
+  <Card title="Narrow scope" icon="crosshairs">
+    One job, one tool schema per endpoint. The agent plans better against small, clear surfaces than sprawling ones.
+  </Card>
+  <Card title="Read-first" icon="eye">
+    Ship read-only endpoints first. Add mutating ones once the read side proves reliable.
+  </Card>
+  <Card title="Approval on writes" icon="shield-halved">
+    Anything that mutates state needs human approval by default. You can relax later, never start permissive.
+  </Card>
+  <Card title="Typed arguments" icon="code">
+    JSON schema with enums and ranges beats free-form strings. Planning accuracy jumps.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Can I self-host an MCP server inside my cluster?">
+    Yes. Point RubixKube at the internal URL via a tunnel, or ship a small runner in the same cluster as the Observer. No inbound firewall changes required.
+  </Accordion>
+  <Accordion title="How are secrets stored?">
+    Workspace secret vault. Encrypted at rest, scoped per integration, rotated on a schedule or on demand. Secrets never appear in agent prompts or logs.
+  </Accordion>
+  <Accordion title="Does a custom integration affect my investigation count?">
+    No. Tool calls are not billed. Investigations count only whole detect-to-resolution cycles.
+  </Accordion>
+  <Accordion title="Can I share a custom integration across workspaces?">
+    Enterprise customers can publish a custom integration as an internal template shared across their organisation's workspaces. On lower tiers, configure each workspace separately.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="How to add custom agent skills" icon="sparkles" href="/tutorials/add-custom-agent-skills">
+    Skills use these custom integrations as their tool surface.
+  </Card>
+  <Card title="Integrations overview" icon="plug" href="/using/integrations">
+    The out-of-the-box integrations and how they fit together.
+  </Card>
+</CardGroup>

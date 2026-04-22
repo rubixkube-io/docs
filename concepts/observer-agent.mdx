@@ -1,0 +1,131 @@
+---
+title: "The Observer Agent"
+sidebarTitle: "Observer Agent"
+description: "The Observer is the eyes of RubixKube. It runs near your workload, discovers topology, collects signals, and keeps the Knowledge Graph current."
+keywords: ["observer agent", "infrastructure observer", "topology discovery", "signal collector", "AI SRE agent", "RubixKube observer"]
+"og:title": "The Observer Agent"
+"og:description": "Eyes-on-the-ground component that discovers topology and streams signals to RubixKube Cloud."
+---
+
+The Observer is the eyes of the Agent Mesh. It is the only component that runs near your workload. Every other agent lives in RubixKube Cloud and consumes what the Observer streams.
+
+Observer is deliberately light. It discovers topology, collects the signals that matter, and streams them to the Cloud. It does nothing else. That narrow mandate is what keeps cluster overhead negligible.
+
+## What the Observer does
+
+<CardGroup cols={2}>
+  <Card title="Discovers topology" icon="diagram-project">
+    Walks every reachable API (Kubernetes, AWS, GCP, systemd) to build a live map of services, nodes, and dependencies.
+  </Card>
+  <Card title="Collects signals" icon="satellite-dish">
+    Metrics, events, logs, and state, at the rate each one changes. No polling for the sake of polling.
+  </Card>
+  <Card title="Streams to the Cloud" icon="cloud-arrow-up">
+    Structured events and state snapshots over HTTPS and NATS. Raw payloads stay with you unless you opt in.
+  </Card>
+  <Card title="Stays read-only" icon="lock">
+    No mutating permissions by default. Any action that could change state goes through the Guardian, not the Observer.
+  </Card>
+</CardGroup>
+
+## Where it runs, and how small
+
+| Environment | Install shape | Typical footprint |
+| --- | --- | --- |
+| Kubernetes | `kubectl apply` manifest into `rubixkube-system` namespace | About 255Mi RAM, under 10 millicores of CPU combined across Observer and Kubernetes MCP server |
+| AWS | Systemd service on any Linux host, or a fresh EC2 instance the installer creates | About 200Mi RAM |
+| GCP | Systemd service on any Linux host, or a fresh GCE instance | About 200Mi RAM |
+| Linux VM | Systemd service directly on the host | About 150Mi RAM |
+
+The Cloud-side agents (RCA Pipeline, Memory, Guardian, Remediation) run in RubixKube Cloud. You never install them. That keeps the local footprint predictable and the upgrade path clean.
+
+## What the Observer sees
+
+Each environment type has a slightly different signal set, but the shape is consistent.
+
+<AccordionGroup>
+  <Accordion title="Kubernetes" icon="dharmachakra">
+    - Pod, deployment, replicaset, statefulset, daemonset state.
+    - Node health, capacity, allocatable.
+    - Services, endpoints, ingress routes.
+    - Events from the cluster event bus.
+    - Logs from pods you scope into the Observer.
+    - Standard metrics (CPU, memory, network, disk) via Kubernetes APIs.
+  </Accordion>
+  <Accordion title="AWS" icon="aws">
+    - EC2 instances, RDS databases, Lambda functions, S3 buckets, ELB health, CloudTrail events.
+    - CloudWatch metrics for each of the above.
+    - Account-level changes and IAM events that might affect reliability.
+  </Accordion>
+  <Accordion title="GCP" icon="google">
+    - Compute Engine instances, GKE clusters, Cloud SQL, Cloud Run, Cloud Storage, Cloud Functions.
+    - Monitoring metrics from Google Cloud Monitoring.
+    - Project-level audit logs for reliability-relevant operations.
+  </Accordion>
+  <Accordion title="Linux VM" icon="server">
+    - CPU per core, load averages, memory, swap.
+    - Disk usage per mount, I/O metrics.
+    - Network interface statistics, errors, drops.
+    - Per-process metrics, top consumers, zombie detection.
+    - Systemd unit state for services you care about.
+  </Accordion>
+</AccordionGroup>
+
+## How the Observer decides what is worth streaming
+
+Not every signal is equal. The Observer uses three filters to keep the signal stream light and the Knowledge Graph useful.
+
+<Steps titleSize="h3">
+  <Step title="Rate of change">
+    A value that has not moved in an hour does not need to ship again. Static values stream on change, not on interval.
+  </Step>
+  <Step title="Relevance to open incidents">
+    Signals tied to resources already under investigation upgrade to higher sampling frequency automatically.
+  </Step>
+  <Step title="Learned baselines">
+    Once the system has a baseline for a resource, signals inside the noise band are summarised. Drift outside the band is sent verbatim.
+  </Step>
+</Steps>
+
+## Outbound network requirements
+
+The Observer needs two outbound endpoints over HTTPS.
+
+- `api.rubixkube.ai:443` for control and structured events.
+- `nats.rubixkube.ai:443` for streaming signals.
+
+No inbound connections are required. If neither endpoint is reachable, the Observer queues locally and resumes when connectivity returns.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Does the Observer need privileged access to my cluster or cloud?">
+    Read-only is the default. Kubernetes installs create a `ClusterRole` scoped to the resources the Observer watches. AWS and GCP installers create a read-only IAM role or service account. Nothing mutating is provisioned.
+  </Accordion>
+  <Accordion title="Can I run multiple Observers in one environment?">
+    Yes, though usually unnecessary. The common case is one Observer per Kubernetes cluster, one per cloud account, and one per VM.
+  </Accordion>
+  <Accordion title="How often does the Observer talk to the Cloud?">
+    Continuously. The NATS channel stays open for streaming. The HTTPS control channel exchanges heartbeats every 30 seconds.
+  </Accordion>
+  <Accordion title="What happens if the Observer is unreachable from the Cloud?">
+    The environment card shows a degraded state after two missed heartbeats. Collected signals queue locally, up to a bounded buffer, and catch up once the connection returns. Alerts about the Observer itself go through the Notifications channels you have configured.
+  </Accordion>
+  <Accordion title="Can I upgrade the Observer without downtime?">
+    Yes. The Kubernetes manifest uses a rolling update. The systemd installer downloads the new binary, restarts the service, and the local buffer covers the few seconds of restart.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="The Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
+    How the Observer fits with the other agents in the mesh.
+  </Card>
+  <Card title="Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
+    What the Observer builds and keeps current.
+  </Card>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    Why the Observer stays read-only by design.
+  </Card>
+</CardGroup>

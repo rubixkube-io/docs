@@ -1,0 +1,99 @@
+---
+title: "Install the Rubix CLI"
+sidebarTitle: "Installation"
+description: "Install the Rubix CLI globally with npm, or run it without installing via npx. Node.js 18 or later required."
+keywords: ["install rubix cli", "npm install rubix", "rubixkube cli install", "npx rubix"]
+"og:title": "Install the Rubix CLI"
+"og:description": "Install with npm or run with npx. Node.js 18 or later."
+---
+
+The Rubix CLI ships as `@rubixkube/rubix` on npm. Node.js 18 or later is the only prerequisite. A free [console.rubixkube.ai](https://console.rubixkube.ai) account is all you need to sign in.
+
+## Install
+
+<Tabs>
+  <Tab title="Global install (recommended)">
+    ```bash
+    npm install -g @rubixkube/rubix
+    ```
+
+    Binary: `rubix`.
+  </Tab>
+  <Tab title="One-off with npx">
+    ```bash
+    npx @rubixkube/rubix
+    ```
+
+    Useful for trying the CLI without installing. Each run downloads the package; for repeat use the global install is faster.
+  </Tab>
+  <Tab title="Yarn or pnpm">
+    ```bash
+    yarn global add @rubixkube/rubix
+    # or
+    pnpm add -g @rubixkube/rubix
+    ```
+  </Tab>
+</Tabs>
+
+## Verify
+
+```bash
+rubix --version
+```
+
+You should see the installed semver (for example, `0.0.7`). If the command is not found, check that your global npm bin is on your `PATH`:
+
+```bash
+npm bin -g
+# Add the printed path to your shell profile if needed
+```
+
+## Update
+
+Global install:
+
+```bash
+npm update -g @rubixkube/rubix
+```
+
+The CLI also prints a short update notice when a newer release is available.
+
+## Uninstall
+
+```bash
+npm uninstall -g @rubixkube/rubix
+```
+
+This removes the binary. Your local auth credentials at `~/.rubix/auth.json` stay untouched; delete that file too if you want a fully clean removal.
+
+## Requirements and support
+
+<CardGroup cols={2}>
+  <Card title="Node.js" icon="node-js">
+    Version **18 or later**. LTS releases recommended.
+  </Card>
+  <Card title="Operating systems" icon="desktop">
+    macOS, Linux, and Windows (PowerShell and WSL both work).
+  </Card>
+  <Card title="Shell" icon="terminal">
+    Any POSIX-compatible shell, plus PowerShell on Windows. No special shell hooks required.
+  </Card>
+  <Card title="Account" icon="user" href="https://console.rubixkube.ai">
+    A RubixKube account. Sign up free at console.rubixkube.ai.
+  </Card>
+</CardGroup>
+
+## Air-gapped or restricted environments
+
+If npm registry access is blocked, mirror the package through your internal registry or reach out at [connect@rubixkube.ai](mailto:connect@rubixkube.ai) for a standalone tarball.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Usage" icon="play" href="/cli/usage">
+    First-run login, starting a chat, keyboard shortcuts.
+  </Card>
+  <Card title="Commands" icon="list" href="/cli/commands">
+    Every top-level command and slash command.
+  </Card>
+</CardGroup>

@@ -1,0 +1,86 @@
+---
+title: "GitHub integration"
+sidebarTitle: "GitHub"
+description: "Link deployments, pull requests, and issues to RubixKube incidents. Auto-create issues from RCA reports."
+keywords: ["github integration", "deployment correlation", "pr correlation", "issue tracker", "rubixkube github"]
+"og:title": "GitHub integration"
+"og:description": "Link deployments, PRs, and issues to RubixKube incidents."
+---
+
+Connect GitHub so RubixKube can correlate your deployments and pull requests with infrastructure incidents. When the RCA Pipeline investigates an incident, GitHub becomes part of the evidence graph: what was deployed, when, by whom.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="Deployment correlation" icon="rocket">
+    GitHub Actions deployments appear in the Knowledge Graph alongside your infrastructure. RCAs cite them automatically.
+  </Card>
+  <Card title="PR context" icon="code-pull-request">
+    Recent merges to the affected service surface in RCA reports as candidate causes.
+  </Card>
+  <Card title="Auto-create issues" icon="circle-plus">
+    Open a GitHub issue from any RCA with one click. Full context pre-populated.
+  </Card>
+  <Card title="Commit lookup" icon="code-commit">
+    Chat can answer "what commit introduced this" by walking the deploy history.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Steps titleSize="h3">
+  <Step title="Install the GitHub app">
+    In RubixKube, open **Integrations → GitHub** and click **Install**. You will be redirected to GitHub to authorise the RubixKube app.
+  </Step>
+  <Step title="Pick repositories">
+    Grant access to the repositories whose deployments and PRs should flow into the Knowledge Graph. You can change this later.
+  </Step>
+  <Step title="Map repos to services">
+    Optional. If your repos map 1-to-1 to services, confirm the mapping. This is what allows Chat to answer "what changed in payments" with commit-level precision.
+  </Step>
+</Steps>
+
+## What gets ingested
+
+| Source | Signals |
+| --- | --- |
+| GitHub Actions deployments | Timestamp, actor, commit SHA, environment tag, success or failure |
+| Pull request merges | Author, merge timestamp, files changed (summary only), linked issues |
+| Releases | Tag, release notes, timestamp |
+| Repository metadata | Default branch, CODEOWNERS (for routing) |
+
+No source code is ingested. File-change summaries are counts and paths, not contents.
+
+## Auto-creating issues from an RCA
+
+On any RCA report, click **Create GitHub issue**. A new issue opens in the repo mapped to the affected service (or the default repo if no mapping exists) with:
+
+- Title matching the RCA headline.
+- Body with root cause, evidence links back to RubixKube, and top recommended action.
+- Labels: `incident`, plus the severity level.
+- Linked deployment SHA if the RCA's causal chain implicates a deploy.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Deployments not appearing in the graph">
+    Check that the GitHub app has access to the right repo in **GitHub Settings → Installations → RubixKube**. If access is correct but deploys still do not show, make sure your workflow uses the `environment:` key so GitHub records them as deployments.
+  </Accordion>
+  <Accordion title="Issue creation fails with 'not authorised'">
+    The GitHub app needs `issues: write` for the target repo. Re-install and grant the scope if it was denied initially.
+  </Accordion>
+  <Accordion title="Commit lookup returns empty">
+    Chat can only cite commits it has ingested. Check deploy history in the console for the affected repo. For commits older than the retention window, the citation will point at the deploy event, not the individual commit.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="GitLab" icon="gitlab" href="/integrations/gitlab">
+    Equivalent integration for GitLab-hosted repos and CI.
+  </Card>
+  <Card title="Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
+    How GitHub signals join infrastructure signals in one graph.
+  </Card>
+</CardGroup>

@@ -1,122 +1,105 @@
 ---
 title: "Slack integration"
 sidebarTitle: "Slack"
-description: "Route insights, RCA reports, and action approvals into Slack. Interactive bot for acknowledgement, approvals, and quick investigations."
-keywords: ["slack integration", "slack bot", "incident slack", "SRE slack", "rubixkube slack"]
+description: "Slack is both an interface to RubixKube and a notification channel. Talk to the bot in any channel to ask questions, trigger investigations, and approve actions. Get insights, RCAs, approvals, and digests where your team already lives."
+keywords: ["slack integration", "slack bot", "rubixkube slack", "incident slack", "chatops", "digest"]
 "og:title": "Slack integration"
-"og:description": "Route insights, RCAs, and action approvals into Slack with an interactive bot."
+"og:description": "A bot you can talk to, and a notification channel for insights, RCAs, approvals, and digests."
 ---
 
-Connect Slack to route RubixKube events into the channels your team already lives in. Insights, RCA reports, and action approvals all land with full context. The bot lets you acknowledge, approve, or launch a quick investigation without leaving Slack.
+Slack is a bit different from the other integrations. It is both an **interface** to RubixKube (talk to the bot, trigger investigations, approve actions) and a **notification channel** (insights, RCA reports, action approvals, and digests).
 
-## What you can do
+## Two ways Slack works with RubixKube
 
 <CardGroup cols={2}>
-  <Card title="Per-channel routing" icon="route">
-    Route payments insights to `#payments-ops`, platform insights to `#platform`, everything else to `#rubixkube`.
+  <Card title="As an interface" icon="comments">
+    Add the bot to channels or threads. Mention it to ask about infrastructure, kick off an investigation, or approve a pending action, all without leaving Slack.
   </Card>
-  <Card title="Interactive approvals" icon="circle-check">
-    Approve or reject action proposals inline with buttons. Every click is audited.
-  </Card>
-  <Card title="Ask the SRI Agent" icon="comments">
-    Mention the bot with a question and get a cited answer right in the thread.
-  </Card>
-  <Card title="Digest mode" icon="envelope">
-    Low-severity insights roll up into a daily message at a time you pick.
+  <Card title="As a notification channel" icon="bell">
+    Insights, RCA reports, and action approvals post into the channels you pick. Daily and weekly digests keep the team aware of what happened and what to look at next.
   </Card>
 </CardGroup>
 
-## Install
+## Install the bot
 
 <Steps titleSize="h3">
-  <Step title="Start the install">
-    In the RubixKube console, open **Integrations → Slack** and click **Install**. You will be redirected to Slack to authorise the app.
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **Slack**.
   </Step>
-  <Step title="Approve scopes">
-    The app requests `channels:read`, `chat:write`, `commands`, and `users:read`. All are required for routing and interactive responses.
+  <Step title="Authorise with Slack">
+    Install the RubixKube Slack app into your workspace. A Slack admin approves the install.
   </Step>
-  <Step title="Pick default channels">
-    Choose one or more channels where the bot should post by default. You can route more finely per event later.
-  </Step>
-  <Step title="Invite the bot to the right channels">
-    For each channel the bot should post to, run `/invite @RubixKube` once. The bot only posts in channels it has been invited to.
+  <Step title="Invite the bot where you want it">
+    In each channel you want the bot to post in or listen in, run `/invite @RubixKube`. The bot only sees channels it has been invited to.
   </Step>
 </Steps>
 
-## Routing rules
+Once installed, Slack is available tenant-wide. Every agent across every environment can use it.
 
-Each rule has four fields.
+{/* TODO: screenshot of the Integrations page showing the Slack card */}
 
-| Field | Purpose |
-| --- | --- |
-| Event type | Insight opened, RCA ready, Action approval needed, etc. |
-| Scope | Environment, namespace, or tag |
-| Severity threshold | Post only when severity is at or above this level |
-| Destination | Slack channel (bot must be invited) |
+## Using the bot
 
-Add rules from **Integrations → Slack → Rules** in the console.
+### Ask anything
 
-## What each event looks like in Slack
-
-<AccordionGroup>
-  <Accordion title="Insight opened" icon="lightbulb">
-    A short card with the anomaly headline, affected resources, severity, and a link back to the console. Buttons for **Ack**, **Snooze**, and **Investigate in Chat**.
-  </Accordion>
-  <Accordion title="RCA Report ready" icon="file-magnifying-glass">
-    The root cause headline and top recommended action. Clicking **Open report** deep-links to the RCA. Clicking **Create Linear issue** opens a ticket if Linear is connected.
-  </Accordion>
-  <Accordion title="Action approval needed" icon="shield-halved">
-    The action's scope, blast radius, and confidence. Two buttons: **Approve** and **Reject with reason**. Both require at least one click from a user whose identity maps to an approver role.
-  </Accordion>
-  <Accordion title="Action applied or verified" icon="circle-check">
-    A short confirmation plus the verification outcome (Verified, Partial, Rollback Suggested).
-  </Accordion>
-</AccordionGroup>
-
-## Asking the bot a question
-
-Mention the bot with any question:
+Mention the bot with a question. Replies come back in-thread with evidence links.
 
 ```
-@RubixKube what is the health of the payments service?
+@RubixKube what is the current health of the payments service?
 ```
 
-The SRI Agent answers in-thread with evidence links. Threaded follow-ups preserve context, just like in the console Chat.
+### Trigger an investigation
 
-## Signing off and quiet hours
+Ask the bot to look into something. The agent opens an investigation and posts progress back to the thread as it goes.
 
-- **Quiet hours** per rule so low-severity routes do not wake people up. Configurable per rule.
-- **Acknowledging** an alert in Slack syncs back to the console, so the same insight is not reacted to twice.
-- **Snoozing** suppresses re-notifications for a window you choose.
+```
+@RubixKube investigate the latency spike in checkout from the last hour
+```
 
-## Permissions
+### Approve actions
 
-The Slack integration only posts. It does not read arbitrary messages, does not ingest channel history, and does not sync private DMs. Scope is limited to the channels you invite the bot into.
+When an action needs approval, the bot posts an interactive card with the scope and evidence. Approvers click Approve or Reject with reason. Clicks map to RubixKube identities and follow the same policies as approvals in the console.
+
+## Notifications and digests
+
+- **Insights, RCAs, and action approvals** post into the channels you pick during setup.
+- **Daily and weekly digests** roll up activity so the team can scan what happened without chasing individual alerts.
+- **Alerts and actionables** show up as cards you can act on in-thread.
+
+For per-service routing, per-team channels, or custom digest schedules, build a [Skill](/concepts/skills) that composes the notification behaviour you want.
+
+## Build custom workflows with skills
+
+The Slack connection gives agents tools for posting, replying, reading messages in invited channels, and responding to card clicks. Specific behaviours (route `#payments` insights to `#payments-ops`, pin the active incident card, send a weekly digest at 09:00 on Mondays) are built as [Skills](/concepts/skills).
+
+## Permissions and data
+
+The bot only posts and reads in channels you explicitly invite it to. It does not ingest channel history beyond what it sees while invited, does not read direct messages, and does not sync private channels it has not been added to.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Bot is not posting">
-    Make sure the bot is invited to the channel: `/invite @RubixKube`. The bot only posts in channels it can see.
+  <Accordion title="The bot is not posting">
+    Make sure the bot has been invited to the channel with `/invite @RubixKube`. Slack does not allow bots to post in channels they are not members of.
   </Accordion>
-  <Accordion title="Approvals fail with 'not authorised'">
-    The Slack user clicking the button must map to a RubixKube user with approver role on the target environment. Check the user mapping in **Integrations → Slack → Users**.
+  <Accordion title="Approval clicks fail">
+    The Slack user clicking the button must map to a RubixKube user with the right approver role. Check the user mapping in the integration settings.
   </Accordion>
   <Accordion title="Duplicate notifications">
-    Two rules are matching the same event. Open **Integrations → Slack → Rules**, and either narrow the scope on one, or mark one as primary.
+    Two skills are posting for the same event. Open the Skills page and check which skills are subscribing to that event type.
   </Accordion>
 </AccordionGroup>
 
 ## Related guides
 
 <CardGroup cols={2}>
-  <Card title="Notifications overview" icon="bell" href="/using/notifications">
-    Cross-channel routing model and event types.
-  </Card>
-  <Card title="PagerDuty" icon="pager" href="/integrations/pagerduty">
-    For on-call paging on critical insights.
-  </Card>
   <Card title="Microsoft Teams" icon="microsoft" href="/integrations/microsoft-teams">
     Same model for Teams-first organisations.
+  </Card>
+  <Card title="PagerDuty" icon="pager" href="/integrations/pagerduty">
+    Pair with Slack: chat for day-to-day, PagerDuty for on-call paging.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Slack capabilities into custom workflows.
   </Card>
 </CardGroup>

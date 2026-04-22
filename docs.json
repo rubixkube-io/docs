@@ -126,7 +126,7 @@
                     ]
                   },
                   {
-                    "group": "Observability (coming soon)",
+                    "group": "Observability",
                     "icon": "chart-line",
                     "expanded": false,
                     "pages": [

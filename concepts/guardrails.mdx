@@ -1,123 +1,254 @@
 ---
 title: "Safety and Guardrails"
 sidebarTitle: "Safety & Guardrails"
-description: "Autonomous without reckless. The policy model, the approval flow, and the Guardian Agent that enforces both so RubixKube never surprises you."
-keywords: ["safety", "guardrails", "guardian agent", "approval workflow", "blast radius", "RBAC", "AI safety", "responsible AIOps"]
+description: "How RubixKube stays autonomous without being reckless. Read-only by default, explicit approvals on every change, evidence-backed recommendations, and data handling you can actually audit."
+keywords: ["safety", "guardrails", "least privilege", "read only", "approval workflow", "AI safety", "responsible AIOps", "SOC 2", "GDPR", "multi-tenancy"]
 "og:title": "Safety and Guardrails"
-"og:description": "Autonomous without reckless. Policies, approvals, and the Guardian Agent."
+"og:description": "Autonomous without reckless. Least privilege, approvals on every change, audit on everything."
 ---
 
-RubixKube is autonomous, not reckless. The system can recommend and apply changes at machine speed, but every mutation passes through policies you control. This page is the plain-English model of how the safety layer works.
+RubixKube is autonomous, not reckless. The system can recommend and prepare changes at machine speed, but every mutation passes through controls you run. This page is the plain-English model of how the safety layer works.
 
-The single most important thing to know: **RubixKube does not touch your infrastructure without an explicit approval.** The Observer is read-only. Anything that could change state goes through the Guardian Agent and a policy you configured.
+In short: we watch, we analyse, we recommend. Your team decides what to do. Nothing changes without you.
 
-## The three layers
+That is the default posture. Policies let you adjust it for lab environments, tighten it for regulated production, or route mutating changes through your existing GitOps pipeline.
+
+## Three safety layers
 
 <CardGroup cols={3}>
-  <Card title="Read-only by default" icon="lock">
-    The Observer has read-only scopes on Kubernetes, AWS, GCP, and VMs. No mutating permissions are provisioned when you install.
+  <Card title="Least privilege, read only by default" icon="lock">
+    The Observer is the only component in your environment. Read only, scoped permissions, outbound only.
   </Card>
-  <Card title="Policy at the Guardian" icon="shield-halved">
-    Every Action runs through Guardian policy for the target environment. The policy decides who approves, how many approvers, and which scopes are forbidden.
+  <Card title="Explicit approvals on every change" icon="shield-halved">
+    Two approval shapes: in-product review, or a pull request against your infrastructure repo.
   </Card>
   <Card title="Audit on everything" icon="file-lines">
-    Every Action, approval, and outcome is logged with actor and timestamp. Rollback is one click. Audit is immutable.
+    Every proposal, approval, payload, and outcome is recorded and exportable.
   </Card>
 </CardGroup>
 
-## What the Guardian Agent does
+## Layer 1: Least privilege
+
+The Observer is the only RubixKube component deployed into your environment. It runs as a read-only workload. Cluster-admin is never required.
+
+### Kubernetes RBAC scope
+
+The Observer uses a Kubernetes `ServiceAccount` bound to a scoped `ClusterRole`. The role grants `get`, `list`, and `watch` on exactly these resource types:
+
+```
+pods, nodes, namespaces,
+deployments, replicasets,
+services, endpoints, ingress,
+events, configmaps
+```
+
+No write permissions. No access to secret contents. Nothing outside this list.
+
+### Configurable visibility
+
+You can tighten the scope further. The Observer supports:
+
+- **Inclusion and exclusion lists** by namespace, label, or resource type.
+- **Redaction rules** that strip sensitive patterns from signals before they leave your environment.
+- **Per-environment overrides** so staging and production can run different policies.
+
+### Outbound-only network
+
+The Observer opens exactly two outbound connections. Nothing else.
+
+| Endpoint | Purpose | Protocol |
+| --- | --- | --- |
+| `nats.rubixkube.ai:4222` | Signal streaming | TCP with TLS |
+| `api.rubixkube.ai:443` | Registration, control, token exchange | HTTPS |
+
+No inbound ports are opened. No VPN, tunnel, or exposed service. If either endpoint is unreachable, the Observer buffers locally and catches up when the connection returns.
+
+### Tokens and rotation
+
+The Observer authenticates with an API key issued during registration. It exchanges that key for a short-lived JWT on every subsequent control-plane call. Tokens can be rotated or revoked at any time through the console or the API.
+
+## Layer 2: Explicit approvals
+
+RubixKube will recommend changes. It will not apply them without an explicit human approval. There are two shapes that approval can take, depending on how you operate.
+
+### In-product approvals
+
+Every proposed action surfaces in the Action Center with its scope, reasoning, evidence, and expected blast radius. Approvers click Approve to run the change. Rejecting with a reason sends the proposal back for a rethink, and the reason feeds future recommendations.
+
+### Pull request based, for IaC and GitOps
+
+If you already run infrastructure as code, RubixKube can propose changes as pull requests against your infrastructure repository instead of applying through an API call.
+
+<CardGroup cols={2}>
+  <Card title="Supported workflows" icon="code-branch">
+    Terraform, Helm, Kustomize, Crossplane, ArgoCD, Flux. Any repo that drives your infrastructure.
+  </Card>
+  <Card title="How it looks" icon="code-pull-request">
+    A branch, a PR, a diff, a reviewer. Same flow your team already uses. RubixKube becomes one more contributor.
+  </Card>
+</CardGroup>
+
+The review, the approval, and the merge happen in your pipeline. Nothing bypasses your existing checks. This is the preferred path for teams who already have a mature deployment flow.
+
+## Layer 3: Audit on everything
+
+Every action has a complete trail:
+
+- **Actor**, which agent, skill, or user proposed the change.
+- **Approver**, who signed off.
+- **Scope**, exact resources affected.
+- **Payload**, the literal change (patch body, PR diff, or command).
+- **Outcome**, verified, partial, or reverted.
+
+Audit records are immutable. Retention follows your plan and is configurable per workspace. Export is supported out of the box (JSON via API or on request).
+
+## Evidence-backed reasoning
+
+Every RCA report cites its evidence. Every recommended action carries a confidence score, an expected blast radius, and a reversibility plan. When confidence is low, you can [rerun the analysis](/concepts/root-cause-analysis) with additional context rather than act on shaky ground.
+
+The confidence score is visible before you approve. Treat low-confidence actions the way you would treat a junior engineer's suggestion: plausible, worth discussing, not automatically correct.
+
+## Human in the loop
+
+Agents stop and ask when they need help. When an investigation runs into ambiguity, when an action carries more risk than expected, or when context is thin, the system escalates to a human rather than guess. This is the default behaviour, not a failure mode.
+
+## What RubixKube sees, and what it does not
 
 <AccordionGroup>
-  <Accordion title="Validates scope" icon="box">
-    Every Action names the resources it touches. The Guardian refuses anything outside the environment's allowed scope.
+  <Accordion title="What RubixKube sees" icon="eye">
+    - Infrastructure state: resource health, pod, deployment, node, and service status.
+    - Topology: workload relationships and dependency graphs.
+    - Logs relevant to anomaly detection and RCA context.
+    - Metrics: CPU, memory, OpenTelemetry signals, golden metrics, health indicators.
+    - Events: Kubernetes events and condition changes.
   </Accordion>
-  <Accordion title="Checks blast radius" icon="explosion">
-    If the Action's computed blast radius exceeds the policy's threshold, the Guardian requires extra approvers or outright blocks the Action.
-  </Accordion>
-  <Accordion title="Enforces approvers" icon="user-check">
-    How many approvers, who can approve, and whether the approver can be the person who proposed the Action. All configurable per environment.
-  </Accordion>
-  <Accordion title="Gates destructive operations" icon="skull-crossbones">
-    Delete, wipe, force-restart, secret rotation, and similar operations always require named approvers, regardless of environment.
-  </Accordion>
-  <Accordion title="Serialises conflicts" icon="arrow-right-arrow-left">
-    If two Actions would touch the same resource at the same time, the Guardian orders them. No interleaving, no race conditions.
+  <Accordion title="What RubixKube does not see" icon="eye-slash">
+    - Customer application data.
+    - Personally identifiable information (PII).
+    - Secret contents. The Observer sees secret metadata (names, keys, revision) only, never values.
+    - Anything outside the scoped RBAC resources listed above.
   </Accordion>
 </AccordionGroup>
 
-## Policy knobs, in plain language
+### Obfuscation layer
 
-Guardian policies are not abstract. They are concrete knobs per environment.
+The Observer applies a configurable obfuscation layer before signals leave your environment. Patterns to redact are set per workspace and per environment. Customers running against sensitive workloads typically tune this layer during onboarding.
 
-| Knob | What it controls |
-| --- | --- |
-| **Approver count** | How many humans must approve before Execute |
-| **Approver set** | Which users, teams, or roles can approve |
-| **Self-approval** | Whether the proposer can also be an approver |
-| **Blast-radius cap** | Maximum allowed blast radius in number of dependent resources |
-| **Destructive operations** | Explicit allow/block list for delete, wipe, force operations |
-| **Auto-approve scope** | Which specific low-risk Actions can run without approval (opt-in) |
-| **Quiet hours** | Windows when approvals route to a different on-call group |
-| **Read-only mode** | Hard lock that disables all Execute paths for the environment |
+## Multi-tenancy
 
-Defaults vary by environment criticality ([Environments](/concepts/environments)). Lab is permissive, production is strict.
+Isolation is a foundational design principle, enforced at every layer of the platform:
 
-## The approval flow, end to end
+- **API.** Every request is tenant-scoped and validated server-side.
+- **Auth.** JWT claims carry tenant id. All token validation is tenant-bounded.
+- **Data stores.** Every collection and query is tenant-scoped at the repository layer.
+- **Knowledge graph.** All graph queries anchor to the tenant node. Cross-tenant traversal is architecturally impossible.
+- **Event bus.** Streaming topics include a tenant segment. Consumers are tenant isolated.
+- **AI agent sessions.** Context, memory, and tool access are bounded to the tenant.
 
-<Steps titleSize="h3">
-  <Step title="Action proposed">
-    An RCA, a skill, or a chat thread produces an Action. It appears in the Action Center and in the configured notification channels.
-  </Step>
-  <Step title="Guardian validates">
-    Scope, blast radius, destructive content, and policy eligibility all checked. If any check fails, the Action moves to Blocked or Needs Extra Approvers.
-  </Step>
-  <Step title="Human reviews">
-    The approver sees the scope, the change payload, the blast radius, the confidence score, and the rollback plan. If anything is wrong, they reject with a reason.
-  </Step>
-  <Step title="Apply">
-    Approved Actions run inside their scoped blast radius. The Remediation Agent handles the mechanics.
-  </Step>
-  <Step title="Verify and audit">
-    Stabilisation window confirms the outcome. The audit record captures everything.
-  </Step>
-</Steps>
+No tenant can see any other tenant's signals, RCAs, or memory.
 
-## What never happens
+## Encryption
 
-- **RubixKube does not delete data without explicit named approvers and a confirmed backup reference.**
-- **RubixKube does not rotate secrets silently.** Every rotation produces an Action with the scope visible.
-- **RubixKube does not touch resources outside the environment's declared scope.**
-- **RubixKube does not apply two conflicting Actions in parallel.** They are serialised.
-- **RubixKube does not hide audit records.** Immutable, exportable, retained per plan.
+<CardGroup cols={2}>
+  <Card title="In transit" icon="shield">
+    TLS 1.2 or later on every path. NATS signal streaming is TLS encrypted. API and UI traffic is HTTPS only.
+  </Card>
+  <Card title="At rest" icon="lock">
+    AES-256 on every durable store.
+  </Card>
+  <Card title="Key management" icon="key">
+    Managed keys on the hyperscaler today. Customer-managed keys (CMEK) are on the roadmap for enterprise customers.
+  </Card>
+  <Card title="Secrets" icon="vault">
+    Platform credentials are held in a centralised secrets manager with strict access controls.
+  </Card>
+</CardGroup>
 
-## The quotable one-liner
+## Data ownership, export, and deletion
 
-From the pricing FAQ on [rubixkube.ai/pricing](https://rubixkube.ai/pricing):
+<AccordionGroup>
+  <Accordion title="Your data is yours" icon="user-shield">
+    Customer data belongs to the customer at all times. RubixKube operates as the processor, not the owner.
+  </Accordion>
+  <Accordion title="Export" icon="file-export">
+    Tenant data is exportable in JSON via the API or on request. Use this for archival, regulator requests, or switching deployment modes.
+  </Accordion>
+  <Accordion title="Deletion on termination" icon="trash">
+    All tenant data is permanently deleted from every storage system within 30 days of termination. Written confirmation is provided on request.
+  </Accordion>
+</AccordionGroup>
 
-> Does RubixKube touch my infrastructure? No. We watch, we analyse, we recommend. Your team decides what to do. Nothing changes without you.
+## Agent-level safeguards
 
-That is the default. Policies let you loosen it (for lab environments) or tighten it (for regulated production) exactly as much as your team wants.
+Network controls and RBAC protect the environment. Agent-level safeguards bound the agents themselves. RubixKube follows the practices laid out in Google's [ADK safety guidance](https://adk.dev/safety/).
+
+- **Scoped tool surface.** Each agent has an explicit list of tools it can call. The model cannot invent tools or reach beyond its declared surface.
+- **In-tool policy enforcement.** Tools validate their inputs against deterministic policies (tenant, environment, allowed scopes) before executing. Out-of-scope calls return an error to the agent without running.
+- **Pre-execution callbacks.** Every tool call is screened against the current workspace policy before it runs. A mismatch blocks the call and feeds the reason back to the agent.
+- **Safety filters on model I/O.** Provider-native content filters are enabled on the underlying LLMs. System prompts set scope and prohibited topics.
+- **Guard model screening.** A fast, light model screens inputs and tool outputs for prompt injection and jailbreak attempts before they reach the reasoning agent.
+- **PII redaction at the tool boundary.** PII detected in agent inputs or tool outputs is redacted before storage, logging, or onward model calls.
+- **Sandboxed code execution.** When an agent runs a command or a script, it runs inside a hermetic sandbox: no outbound network, no persistent state, full cleanup across runs. This prevents model-generated code from exfiltrating data or persisting across sessions.
+- **Output escaping in the UI.** Model-generated content is escaped before it renders in the console, so injected HTML or JavaScript cannot execute in a user's browser.
+- **Continuous evaluation.** Internal eval suites score agent outputs for correctness and alignment. New model versions must clear the bar before reaching production.
+
+Combined with least privilege, approvals, and audit, this keeps model errors recoverable rather than catastrophic.
+
+## Reducing hallucinations
+
+The agents use flagship frontier models from Anthropic, OpenAI, and Google. We layer the following on top of the base models:
+
+- **Targeted fine-tuning** on infrastructure reasoning tasks.
+- **Temperature controls** tuned per task through internal benchmarks.
+- **Tool-call boundaries** so each agent can only reach tools in its allowed list.
+- **Evidence requirement** on every claim, so an unfounded output cannot make it into an RCA.
+
+No single technique is a silver bullet. The combination of a narrow agent mesh, cited evidence, confidence scores, and mandatory approvals is what keeps the system recoverable when a model is wrong.
+
+## Compliance
+
+<CardGroup cols={2}>
+  <Card title="SOC 2 Type II" icon="certificate">
+    In progress. Type II report planned for Q3 2026.
+  </Card>
+  <Card title="GDPR" icon="shield-halved">
+    Data minimisation by design. Deletion requests honoured within 30 days.
+  </Card>
+  <Card title="ISO 27001 and PCI DSS" icon="clipboard-list">
+    Not currently in scope.
+  </Card>
+  <Card title="Detailed questionnaire" icon="envelope" href="mailto:security@rubixkube.ai">
+    For a full security questionnaire tailored to your deployment, contact security@rubixkube.ai.
+  </Card>
+</CardGroup>
+
+## Availability and incident response
+
+- **Availability target:** 99.9% uptime (SLO). Formal SLA available for enterprise agreements.
+- **Status page:** [https://rubixkube.ai/status](https://rubixkube.ai/status)
+- **Security contact:** [security@rubixkube.ai](mailto:security@rubixkube.ai)
+- **Incident response:** on-call rotation in place. Security incidents are triaged within 24 hours, with customer notification as part of the response flow.
 
 ## Common questions
 
 <AccordionGroup>
-  <Accordion title="Can I set different policies per environment?">
-    Yes. Every environment has its own Guardian policy. Production can require two approvers, staging can require one, lab can auto-approve low-risk changes. See [Environments](/concepts/environments).
+  <Accordion title="Does RubixKube ever apply changes without a human?">
+    Not in the default configuration. You can opt specific low-risk actions in specific environments into auto-approval, but this is opt-in, per environment, and audited. The default remains: human review before apply.
   </Accordion>
-  <Accordion title="Can I block an entire category of actions?">
-    Yes. The destructive operations list is configurable. If you want to disallow pod deletion, IAM changes, or secret rotation entirely in a given environment, a one-line policy does it.
+  <Accordion title="Can I run RubixKube in an air-gapped environment?">
+    Air-gapped is not supported in the current release. The platform needs outbound reachability to `api.rubixkube.ai:443` and `nats.rubixkube.ai:4222`. VPC-only and private-network deployments work as long as those two endpoints are reachable. A self-hosted option is on the roadmap for enterprise customers.
   </Accordion>
-  <Accordion title="What about RBAC for approvers?">
-    Enterprise workspaces integrate with SSO (SAML, OIDC). Approvers map to roles from your identity provider. Lower tiers use workspace-level roles.
+  <Accordion title="Where is my data stored and processed?">
+    On the RubixKube SaaS control plane. Primary data region is `ap-south-1` (Mumbai). Regional options for enterprise customers are on the roadmap. For specifics on your deployment, contact [security@rubixkube.ai](mailto:security@rubixkube.ai).
   </Accordion>
-  <Accordion title="Is the Guardian itself auditable?">
-    Yes. Every Guardian decision (approve, reject, require-extra, block) has an audit entry. Policies themselves are versioned and exportable.
+  <Accordion title="How do I rotate or revoke Observer credentials?">
+    From the console or API. Revoke the API key, issue a new one, redeploy the Observer with the new key. The old token is invalidated immediately.
   </Accordion>
-  <Accordion title="What if an urgent action cannot wait for approval?">
-    Break-glass is supported on Enterprise. A named user can bypass standard approval with a signed justification, logged as such. The audit record preserves the break-glass flag forever.
+  <Accordion title="Is there a way to limit what the Observer sees?">
+    Yes. Use inclusion and exclusion lists by namespace, label, or resource type. You can also tune the obfuscation layer to redact sensitive patterns before signals leave your environment.
   </Accordion>
-  <Accordion title="How does Guardian handle edge cases the policy did not anticipate?">
-    Deny by default. If a scope, blast radius, or operation type is not explicitly allowed, the Guardian refuses and asks for human review. Safe defaults over clever defaults.
+  <Accordion title="What happens to my data if I terminate the contract?">
+    All tenant data is permanently deleted from every storage system within 30 days. Written confirmation is provided on request. Export your data before termination if you need a copy.
   </Accordion>
 </AccordionGroup>
 
@@ -125,12 +256,15 @@ That is the default. Policies let you loosen it (for lab environments) or tighte
 
 <CardGroup cols={2}>
   <Card title="Actions" icon="play" href="/concepts/actions">
-    The unit of change the Guardian evaluates.
+    The unit of change the approval flow evaluates.
   </Card>
-  <Card title="Environments" icon="server" href="/concepts/environments">
-    Where Guardian policies attach.
+  <Card title="Observer Agent" icon="eye" href="/concepts/observer-agent">
+    The only component deployed in your environment, and why it stays read only.
   </Card>
   <Card title="Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
-    The Guardian's place in the broader mesh.
+    The broader system the safety layer protects.
+  </Card>
+  <Card title="Root Cause Analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
+    How evidence-backed reasoning works end to end.
   </Card>
 </CardGroup>

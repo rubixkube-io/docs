@@ -1,50 +1,77 @@
 ---
 title: "Datadog integration"
 sidebarTitle: "Datadog"
-description: "Bring Datadog APM, infrastructure, and logs into the RubixKube Knowledge Graph. Coming soon."
-keywords: ["datadog integration", "observability integration", "rubixkube datadog"]
+description: "Connect Datadog to RubixKube today via the custom integrations path. Agents can query metrics, logs, monitors, and APM services to enrich investigations and RCAs."
+keywords: ["datadog integration", "rubixkube datadog", "observability integration", "APM", "datadog MCP", "datadog REST"]
 "og:title": "Datadog integration"
-"og:description": "Bring Datadog APM, infrastructure, and logs into the RubixKube Knowledge Graph. Coming soon."
+"og:description": "Connect Datadog to RubixKube via Custom MCP or Custom REST."
 ---
 
-<Info>
-  **Coming soon.** Datadog data will flow into the RubixKube Knowledge Graph, joining the same correlation layer as your Observer signals. Join the early-access list at [connect@rubixkube.ai](mailto:connect@rubixkube.ai).
-</Info>
+Datadog connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams are up in under an hour via [Custom REST](/integrations/custom-rest), and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
 
-## What the integration will unlock
+## What to bring in
+
+The signals that matter most when agents are investigating or writing RCAs:
+
+- **Metrics** (`/api/v1/query`, `/api/v2/metrics`) for service-level and infrastructure metrics.
+- **Logs search** (`/api/v2/logs/events/search`) for targeted log lookups during RCA.
+- **Monitors** (`/api/v1/monitor`) to surface monitor state and recent events as insight candidates.
+- **APM services and spans** (`/api/v2/apm/*`) for service-level health and latency breakdowns.
+
+Read-only API keys are enough for all of the above.
+
+## Which path to pick
 
 <CardGroup cols={2}>
-  <Card title="APM in RCAs" icon="chart-line">
-    Service metrics (latency, error rate, Apdex) join RCA reports.
+  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
+    Datadog publishes a full OpenAPI spec. Upload it, enable the read endpoints, done.
   </Card>
-  <Card title="Metrics and logs" icon="database">
-    Datadog metrics and logs stream into the Knowledge Graph alongside Observer signals.
-  </Card>
-  <Card title="Monitor signals" icon="bell">
-    Datadog monitors show up as insight candidates inside RubixKube.
-  </Card>
-  <Card title="APM trace overlay" icon="timeline">
-    Distributed traces link to topology nodes in Infrastructure view.
+  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
+    Wrap multiple calls behind named tools (for example `datadog_service_health`) or return streamed results.
   </Card>
 </CardGroup>
 
-## Why integrate, rather than replace
+## Quick recipe: REST path
 
-Datadog does what it does well. RubixKube is not trying to become a Datadog replacement. What we are building is a correlation layer that joins Datadog signals with infrastructure observation, memory, and autonomous recommendation, producing one evidence graph instead of two parallel stories.
+<Steps titleSize="h3">
+  <Step title="Create a Datadog API key">
+    In Datadog, generate a read-scoped API key and an application key. Store both. No write scopes are needed for investigations.
+  </Step>
+  <Step title="Register the spec">
+    In the RubixKube console, go to **Integrations → Custom REST** and point it at Datadog's OpenAPI spec (or upload your own pruned copy).
+  </Step>
+  <Step title="Enable the endpoints you care about">
+    Start with metrics query, logs search, monitor list, and APM services. Leave everything else disabled.
+  </Step>
+  <Step title="Set auth">
+    Add the API key and application key to the workspace secret vault. Map them to the required headers.
+  </Step>
+  <Step title="Scope to skills">
+    Attach the enabled endpoints to the skills that need Datadog context.
+  </Step>
+</Steps>
 
-## Want to shape it?
+Once connected, the integration is tenant-wide.
 
-<Card title="Tell us about your Datadog setup" icon="envelope" href="mailto:connect@rubixkube.ai?subject=Datadog%20early%20access">
-  Your current use and the incidents that hurt most. The sharper the picture, the faster we ship it.
-</Card>
+## Example tools worth having
 
-## Today's alternatives
+- `query_datadog_metric(metric, window)` — returns the recent values for a given metric.
+- `search_datadog_logs(service, window, query)` — returns recent matching log lines for context during an incident.
+- `list_firing_monitors(service)` — returns monitors currently in `ALERT` or `WARN` for a given service.
+- `get_apm_service_health(service, window)` — returns latency p50/p95/p99 and error rate for the window.
+
+Define these as skills (or as MCP tools if you need them to compose multiple calls).
+
+## Related guides
 
 <CardGroup cols={2}>
-  <Card title="Connect your environment directly" icon="plug" href="/getting-started/connect-your-environment">
-    The RubixKube Observer covers Kubernetes, AWS, GCP, and VMs end to end. Many teams find strong coverage from the Agent Mesh alone.
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    The full REST flow with auth options and approval rules.
   </Card>
-  <Card title="Custom REST integration" icon="network-wired" href="/integrations/custom-rest">
-    If you have a narrower need today (e.g. pulling a specific Datadog API), a Custom REST integration can get you partway there.
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When you want richer tool schemas and multi-call workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Datadog endpoints into custom workflows.
   </Card>
 </CardGroup>

@@ -1,50 +1,77 @@
 ---
 title: "Dynatrace integration"
 sidebarTitle: "Dynatrace"
-description: "Bring Dynatrace OneAgent signals into the RubixKube Knowledge Graph. Coming soon."
-keywords: ["dynatrace integration", "observability integration", "rubixkube dynatrace"]
+description: "Connect Dynatrace to RubixKube today via the custom integrations path. Agents can pull problems, entity health, and metrics to enrich investigations and RCAs."
+keywords: ["dynatrace integration", "rubixkube dynatrace", "APM integration", "observability integration"]
 "og:title": "Dynatrace integration"
-"og:description": "Bring Dynatrace OneAgent signals into the RubixKube Knowledge Graph. Coming soon."
+"og:description": "Connect Dynatrace to RubixKube via Custom MCP or Custom REST."
 ---
 
-<Info>
-  **Coming soon.** Dynatrace data will flow into the RubixKube Knowledge Graph, joining the same correlation layer as your Observer signals. Join the early-access list at [connect@rubixkube.ai](mailto:connect@rubixkube.ai).
-</Info>
+Dynatrace connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
 
-## What the integration will unlock
+## What to bring in
+
+The signals that matter most when agents are investigating or writing RCAs:
+
+- **Problems** (`/api/v2/problems`) to surface active problems as insight candidates.
+- **Entity health** (`/api/v2/entities`) for service, host, and process group state.
+- **Metrics** (`/api/v2/metrics/query`) for any metric Dynatrace is holding.
+- **Events** (`/api/v2/events`) for deploy markers, config changes, and availability events.
+
+Read-only API tokens are enough for all of the above.
+
+## Which path to pick
 
 <CardGroup cols={2}>
-  <Card title="OneAgent signals" icon="chart-line">
-    OneAgent telemetry joins the Knowledge Graph with the same structure as Observer data.
+  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
+    Dynatrace exposes OpenAPI for its Environment API. Upload, enable read endpoints, done.
   </Card>
-  <Card title="Smartscape topology" icon="diagram-project">
-    Smartscape relationships merge into the RubixKube topology view.
-  </Card>
-  <Card title="Davis problems" icon="triangle-exclamation">
-    Davis problem detections surface as insight candidates.
-  </Card>
-  <Card title="Release signals" icon="rocket">
-    Release events and their outcomes feed causal analysis in RCAs.
+  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
+    Wrap multiple calls behind named tools (for example `dynatrace_entity_health`).
   </Card>
 </CardGroup>
 
-## Why integrate, rather than replace
+## Quick recipe: REST path
 
-Dynatrace does what it does well. RubixKube is not trying to become a Dynatrace replacement. What we are building is a correlation layer that joins Dynatrace signals with infrastructure observation, memory, and autonomous recommendation, producing one evidence graph instead of two parallel stories.
+<Steps titleSize="h3">
+  <Step title="Create a Dynatrace API token">
+    In Dynatrace, create a token with `entities.read`, `metrics.read`, `problems.read`, and `events.read` scopes. No write scopes required.
+  </Step>
+  <Step title="Register the spec">
+    In the RubixKube console, go to **Integrations → Custom REST** and upload the Dynatrace Environment API OpenAPI spec.
+  </Step>
+  <Step title="Enable the endpoints you care about">
+    Start with problems, entities, and metrics query.
+  </Step>
+  <Step title="Set auth">
+    Add the API token to the workspace secret vault. Map it to the `Authorization: Api-Token <token>` header.
+  </Step>
+  <Step title="Scope to skills">
+    Attach the enabled endpoints to the skills that need Dynatrace context.
+  </Step>
+</Steps>
 
-## Want to shape it?
+Once connected, the integration is tenant-wide.
 
-<Card title="Tell us about your Dynatrace setup" icon="envelope" href="mailto:connect@rubixkube.ai?subject=Dynatrace%20early%20access">
-  Your current use and the incidents that hurt most. The sharper the picture, the faster we ship it.
-</Card>
+## Example tools worth having
 
-## Today's alternatives
+- `dynatrace_active_problems(service)` — returns active problems affecting a given service.
+- `dynatrace_entity_health(entityId)` — returns availability, error rate, and response time for an entity.
+- `dynatrace_metric(metric, window)` — wraps metric query with a common default window.
+- `dynatrace_recent_events(service, window)` — returns deploy and config change events for the service.
+
+Define these as skills (or as MCP tools if you want them to compose multiple calls).
+
+## Related guides
 
 <CardGroup cols={2}>
-  <Card title="Connect your environment directly" icon="plug" href="/getting-started/connect-your-environment">
-    The RubixKube Observer covers Kubernetes, AWS, GCP, and VMs end to end. Many teams find strong coverage from the Agent Mesh alone.
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    The full REST flow with auth options and approval rules.
   </Card>
-  <Card title="Custom REST integration" icon="network-wired" href="/integrations/custom-rest">
-    If you have a narrower need today (e.g. pulling a specific Dynatrace API), a Custom REST integration can get you partway there.
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When you want richer tool schemas and multi-call workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Dynatrace queries into custom workflows.
   </Card>
 </CardGroup>

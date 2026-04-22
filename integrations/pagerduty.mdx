@@ -1,81 +1,76 @@
 ---
 title: "PagerDuty integration"
 sidebarTitle: "PagerDuty"
-description: "Promote critical insights into on-call pages. Bidirectional sync for acknowledgement and resolution."
-keywords: ["pagerduty integration", "on-call", "incident alerts", "SRE pagerduty", "rubixkube pagerduty"]
+description: "Connect PagerDuty so RubixKube agents can trigger incidents for critical insights, sync acknowledgement and resolution, and keep the on-call picture in step with RubixKube."
+keywords: ["pagerduty integration", "rubixkube pagerduty", "on-call", "incident alerts"]
 "og:title": "PagerDuty integration"
-"og:description": "Promote critical insights into on-call pages with bidirectional sync."
+"og:description": "Trigger on-call pages for critical insights. Sync ack and resolve state."
 ---
 
-Connect PagerDuty to page your on-call rotation when a RubixKube insight crosses a severity threshold. Acknowledgement and resolution sync in both directions, so the two systems stay in step.
+Connect PagerDuty so RubixKube agents can page the right on-call when a high-severity insight lands, and so acknowledgement and resolution stay in step between the two systems.
 
-## What you can do
+## What it unlocks
 
 <CardGroup cols={2}>
-  <Card title="Severity-based paging" icon="bell">
-    Page on Critical (and optionally High) insights. Lower severities stay in Slack or Teams.
+  <Card title="Trigger incidents" icon="bell">
+    Agents can create PagerDuty incidents for insights that cross the severity bar you set.
   </Card>
-  <Card title="Bidirectional sync" icon="arrows-rotate">
-    Acknowledging the page in PagerDuty marks the insight as acknowledged in RubixKube, and vice versa.
-  </Card>
-  <Card title="Multiple services" icon="layer-group">
-    Route different environments or tags to different PagerDuty services for team ownership.
+  <Card title="Acknowledge and resolve" icon="arrows-rotate">
+    State flows both ways. Acking in PagerDuty reflects in RubixKube, and vice versa, so the same incident is not worked twice.
   </Card>
   <Card title="RCA attached" icon="file-magnifying-glass">
-    Every page includes a deep link to the RCA report (or the insight, if no RCA has landed yet).
+    Every incident triggered by RubixKube carries a link to the RCA report (or the insight, if an RCA has not landed yet).
+  </Card>
+  <Card title="Tenant-wide by default" icon="globe">
+    Enable once. Every agent across every environment can use PagerDuty.
   </Card>
 </CardGroup>
 
-## Install
+## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Create an integration in PagerDuty">
-    In PagerDuty, on the target service, create an **Events API v2** integration. Copy the integration key.
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **PagerDuty**.
   </Step>
-  <Step title="Configure in RubixKube">
-    In the console, open **Integrations → PagerDuty** and paste the integration key. Pick the environments and severity thresholds that should route to this service.
+  <Step title="Authenticate">
+    Authorise with PagerDuty. An admin completes the flow and picks the services RubixKube can reach.
   </Step>
-  <Step title="Test the pipe">
-    Click **Send test event**. A low-priority test incident appears in PagerDuty, and the loop confirms in RubixKube.
+  <Step title="Configure access">
+    Choose the PagerDuty services and the default severity threshold. Anything at or above the threshold can trigger a page; anything below stays inside RubixKube and your chat tools.
   </Step>
 </Steps>
 
-## Routing rules
+Once connected, PagerDuty is available tenant-wide.
 
-The default rule pages on Critical in all production environments. Typical overrides:
+{/* TODO: screenshot of the Integrations page showing the PagerDuty card */}
 
-- Separate services per team: `payments-oncall`, `platform-oncall`, `data-oncall`.
-- Tighter thresholds on regulated environments (page on High too).
-- Looser thresholds on lab and dev (no paging, Slack only).
+## How the agents use it
 
-## What a page includes
+- When an insight crosses the severity bar, agents can trigger the right PagerDuty service and attach the RCA (or the insight, if the RCA is still in flight).
+- Ack and resolve state stays in sync, so the on-call person does not see a ghost incident in RubixKube after they have worked it in PagerDuty.
 
-- Headline from the insight or RCA.
-- Severity and affected resources.
-- Deep link back to the RubixKube console.
-- A one-line root cause summary if an RCA is attached.
+## Build custom workflows with skills
+
+The connection exposes trigger and update capabilities. Specific workflows (per-team service routing, tighter thresholds for regulated environments, quieter thresholds for lab, auto-follow-up if the page has not been acked within N minutes) are built as [Skills](/concepts/skills). Skills are where you shape paging behaviour to your on-call model.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Pages are not firing">
-    Check the integration key is correct and the Events API integration is enabled on the PagerDuty service. Use **Send test event** to validate end-to-end.
+  <Accordion title="Pages do not fire">
+    Confirm the service is still connected in **Integrations → PagerDuty** and the severity threshold is set to a level the insight actually crosses.
   </Accordion>
-  <Accordion title="Pages fire for events you expected to skip">
-    Your severity threshold is too low, or the environment mapping is too broad. Tighten the rule in **Integrations → PagerDuty → Rules**.
-  </Accordion>
-  <Accordion title="Acknowledgement does not sync back">
-    Bidirectional sync requires an additional Events API v3 webhook. Follow the prompt in the RubixKube console to add it.
+  <Accordion title="Ack does not sync back to RubixKube">
+    Reauthorise the integration to refresh webhooks. Webhook delivery from PagerDuty can also be delayed briefly under load.
   </Accordion>
 </AccordionGroup>
 
 ## Related guides
 
 <CardGroup cols={2}>
-  <Card title="Notifications overview" icon="bell" href="/using/notifications">
-    All event types and routing destinations.
-  </Card>
   <Card title="Slack" icon="slack" href="/integrations/slack">
     Pair PagerDuty with Slack for day-to-day comms.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose paging capabilities into custom workflows.
   </Card>
 </CardGroup>

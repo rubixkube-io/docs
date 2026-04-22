@@ -1,72 +1,71 @@
 ---
 title: "GitLab integration"
 sidebarTitle: "GitLab"
-description: "Link deployments, merge requests, and issues to RubixKube incidents. Auto-create issues from RCA reports."
-keywords: ["gitlab integration", "deployment correlation", "merge request", "issue tracker", "rubixkube gitlab"]
+description: "Give RubixKube agents read and write access to your GitLab repos so they can correlate CI deployments with incidents, cite MRs in RCAs, and propose soft remediations as merge requests."
+keywords: ["gitlab integration", "rubixkube gitlab", "ci correlation", "merge request", "soft remediation", "gitops"]
 "og:title": "GitLab integration"
-"og:description": "Link deployments, MRs, and issues to RubixKube incidents."
+"og:description": "Connect GitLab so agents can correlate CI deployments and propose fixes as merge requests."
 ---
 
-Connect GitLab so RubixKube can correlate your CI deployments and merge requests with infrastructure incidents. When the RCA Pipeline investigates, GitLab becomes part of the evidence graph: what was deployed, when, by whom.
+Connect GitLab so RubixKube agents can see what shipped through your pipelines, correlate CI deployments with incidents, and propose soft remediations as merge requests instead of direct cluster changes.
 
-## What you can do
+## What it unlocks
 
 <CardGroup cols={2}>
-  <Card title="Pipeline correlation" icon="rocket">
-    GitLab CI deployments appear in the Knowledge Graph alongside your infrastructure. RCAs cite them automatically.
+  <Card title="Pipelines and MRs in context" icon="rocket">
+    Agents can read recent deploys, merges, and commit history. RCAs cite pipeline runs that correlate with an incident when the evidence points that way.
   </Card>
-  <Card title="MR context" icon="code-pull-request">
-    Recent merges to the affected service surface in RCA reports as candidate causes.
+  <Card title="Merge requests as a remediation surface" icon="code-pull-request">
+    For IaC and GitOps repos, agents can open MRs with the proposed change. Your review, your merge, your pipeline.
   </Card>
-  <Card title="Auto-create issues" icon="circle-plus">
-    Open a GitLab issue from any RCA with one click. Full context pre-populated.
+  <Card title="Issue tracking" icon="list-check">
+    Agents can create, read, and update issues linked to insights and RCA reports.
   </Card>
-  <Card title="Commit lookup" icon="code-commit">
-    Chat can answer "what commit introduced this" by walking the pipeline history.
+  <Card title="Evidence, not source" icon="shield-halved">
+    The integration reads metadata and diffs. Source code is not ingested or stored.
   </Card>
 </CardGroup>
 
-## Install
+## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Create a group access token">
-    In GitLab, on the group or instance level, create an access token with the `api`, `read_repository`, and `write_issues` scopes. RubixKube needs read access broadly and write only for issue creation.
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **GitLab**.
   </Step>
-  <Step title="Paste in the console">
-    Open **Integrations → GitLab**, paste the token, and choose the groups or projects to monitor.
+  <Step title="Authenticate">
+    Authorise with GitLab. Both GitLab.com and self-hosted instances are supported. For self-hosted, provide your GitLab base URL.
   </Step>
-  <Step title="Map projects to services">
-    Optional. Map GitLab projects to the services they deploy so Chat can answer "what changed in payments" with commit-level precision.
+  <Step title="Configure access">
+    Pick the groups or projects RubixKube can see. Grant write access only to projects where you want agents to open merge requests.
   </Step>
 </Steps>
 
-## What gets ingested
+Once connected, GitLab is available tenant-wide. Every agent across every environment can use it without additional per-environment setup.
 
-| Source | Signals |
-| --- | --- |
-| CI deployments | Timestamp, actor, commit SHA, environment, success or failure |
-| Merge requests | Author, merge timestamp, files changed (summary), linked issues |
-| Releases and tags | Tag name, release notes, timestamp |
-| Project metadata | Default branch, CODEOWNERS (for routing) |
+{/* TODO: screenshot of the Integrations page showing the GitLab card */}
 
-No source code is ingested. File-change summaries are counts and paths only.
+## How the agents use it
 
-## Auto-creating issues from an RCA
+- During RCA, agents walk recent pipelines and merges to the affected service as candidate causes, citing them as evidence.
+- For IaC and GitOps-managed infrastructure, soft remediations are proposed as merge requests against the relevant project. See [Safety and Guardrails](/concepts/guardrails) for the full approval model.
+- Chat can answer questions like "what changed in payments before this spike" by walking the pipeline and merge history.
 
-On any RCA report, click **Create GitLab issue**. A new issue opens in the project mapped to the affected service, with root cause, evidence links, and recommended actions pre-filled.
+## Build custom workflows with skills
+
+Out of the box, the integration exposes read and MR-open capabilities to agents. To program specific workflows (auto-open an MR with a suggested config fix, weekly changelog digest, project-to-service mapping rules), build a [Skill](/concepts/skills) on top of the connection.
 
 ## Self-hosted GitLab
 
-Self-hosted instances work the same way. Provide the base URL of your GitLab instance during install. For air-gapped setups, [reach out](mailto:connect@rubixkube.ai) to discuss a deployment mode that fits your network controls.
+Self-hosted instances work the same way. Provide your instance's base URL during setup. For restricted networks, reach out to [connect@rubixkube.ai](mailto:connect@rubixkube.ai) and we will walk you through the right deployment mode.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Deployments not appearing">
-    Confirm the token has `read_api` scope and covers the right projects. For self-hosted instances, make sure the webhook URL from RubixKube is reachable from your GitLab instance.
+  <Accordion title="Agents cannot see a project">
+    Confirm the authorised account has access to the group or project, and that the project is included in the scope you chose during setup.
   </Accordion>
-  <Accordion title="Issue creation fails">
-    The token needs `write_issues` on the target project. Regenerate with the right scope if needed.
+  <Accordion title="MR proposals fail">
+    Check that the target project is included in the write scope. Reads work with a narrower scope than writes.
   </Accordion>
 </AccordionGroup>
 
@@ -76,7 +75,10 @@ Self-hosted instances work the same way. Provide the base URL of your GitLab ins
   <Card title="GitHub" icon="github" href="/integrations/github">
     Equivalent integration for GitHub-hosted repos.
   </Card>
-  <Card title="Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
-    How source control signals join infrastructure signals.
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose GitLab tools into custom workflows.
+  </Card>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    Why MR-based remediation is the preferred path.
   </Card>
 </CardGroup>

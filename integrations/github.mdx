@@ -1,76 +1,67 @@
 ---
 title: "GitHub integration"
 sidebarTitle: "GitHub"
-description: "Link deployments, pull requests, and issues to RubixKube incidents. Auto-create issues from RCA reports."
-keywords: ["github integration", "deployment correlation", "pr correlation", "issue tracker", "rubixkube github"]
+description: "Give RubixKube agents read and write access to your GitHub repos so they can correlate deployments with incidents, cite PRs in RCAs, and propose soft remediations as pull requests."
+keywords: ["github integration", "rubixkube github", "deployment correlation", "pull request", "soft remediation", "gitops"]
 "og:title": "GitHub integration"
-"og:description": "Link deployments, PRs, and issues to RubixKube incidents."
+"og:description": "Connect GitHub so agents can correlate deployments and propose fixes as pull requests."
 ---
 
-Connect GitHub so RubixKube can correlate your deployments and pull requests with infrastructure incidents. When the RCA Pipeline investigates an incident, GitHub becomes part of the evidence graph: what was deployed, when, by whom.
+Connect GitHub so RubixKube agents can see what shipped, correlate deployments with incidents, and propose soft remediations as pull requests instead of direct cluster changes.
 
-## What you can do
+## What it unlocks
 
 <CardGroup cols={2}>
-  <Card title="Deployment correlation" icon="rocket">
-    GitHub Actions deployments appear in the Knowledge Graph alongside your infrastructure. RCAs cite them automatically.
+  <Card title="Deploys and PRs in context" icon="rocket">
+    Agents can read recent deploys, merges, and commit history. RCAs cite the deploy that correlates with an incident when the evidence points that way.
   </Card>
-  <Card title="PR context" icon="code-pull-request">
-    Recent merges to the affected service surface in RCA reports as candidate causes.
+  <Card title="Pull requests as a remediation surface" icon="code-pull-request">
+    For IaC and GitOps repos, agents can open PRs with the proposed change. Your review, your merge, your pipeline.
   </Card>
-  <Card title="Auto-create issues" icon="circle-plus">
-    Open a GitHub issue from any RCA with one click. Full context pre-populated.
+  <Card title="Issue tracking" icon="list-check">
+    Agents can create, read, and update issues linked to insights and RCA reports.
   </Card>
-  <Card title="Commit lookup" icon="code-commit">
-    Chat can answer "what commit introduced this" by walking the deploy history.
+  <Card title="Evidence, not source" icon="shield-halved">
+    The integration reads metadata and diffs. Source code is not ingested or stored.
   </Card>
 </CardGroup>
 
-## Install
+## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Install the GitHub app">
-    In RubixKube, open **Integrations → GitHub** and click **Install**. You will be redirected to GitHub to authorise the RubixKube app.
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **GitHub**.
   </Step>
-  <Step title="Pick repositories">
-    Grant access to the repositories whose deployments and PRs should flow into the Knowledge Graph. You can change this later.
+  <Step title="Authenticate">
+    Install the RubixKube GitHub App into your organisation. An admin approves it once.
   </Step>
-  <Step title="Map repos to services">
-    Optional. If your repos map 1-to-1 to services, confirm the mapping. This is what allows Chat to answer "what changed in payments" with commit-level precision.
+  <Step title="Configure access">
+    Pick the repositories RubixKube can see. Grant write access only to repositories where you want agents to open pull requests.
   </Step>
 </Steps>
 
-## What gets ingested
+Once connected, GitHub is available tenant-wide. Every agent across every environment can use it without additional per-environment setup.
 
-| Source | Signals |
-| --- | --- |
-| GitHub Actions deployments | Timestamp, actor, commit SHA, environment tag, success or failure |
-| Pull request merges | Author, merge timestamp, files changed (summary only), linked issues |
-| Releases | Tag, release notes, timestamp |
-| Repository metadata | Default branch, CODEOWNERS (for routing) |
+{/* TODO: screenshot of the Integrations page showing the GitHub card */}
 
-No source code is ingested. File-change summaries are counts and paths, not contents.
+## How the agents use it
 
-## Auto-creating issues from an RCA
+- During RCA, agents walk recent deploys and merges to the affected service as candidate causes, citing them as evidence.
+- For IaC and GitOps-managed infrastructure, soft remediations are proposed as pull requests against the relevant repo. See [Safety and Guardrails](/concepts/guardrails) for the full approval model.
+- Chat can answer questions like "what changed in payments before this spike" by walking the deploy and PR history.
 
-On any RCA report, click **Create GitHub issue**. A new issue opens in the repo mapped to the affected service (or the default repo if no mapping exists) with:
+## Build custom workflows with skills
 
-- Title matching the RCA headline.
-- Body with root cause, evidence links back to RubixKube, and top recommended action.
-- Labels: `incident`, plus the severity level.
-- Linked deployment SHA if the RCA's causal chain implicates a deploy.
+Out of the box, the integration exposes read and PR-open capabilities to agents. To program specific workflows (auto-open a PR with a suggested config fix, weekly changelog digest, service-to-repo mapping rules), build a [Skill](/concepts/skills) on top of the connection. Skills are where you program RubixKube to behave the way your team needs.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Deployments not appearing in the graph">
-    Check that the GitHub app has access to the right repo in **GitHub Settings → Installations → RubixKube**. If access is correct but deploys still do not show, make sure your workflow uses the `environment:` key so GitHub records them as deployments.
+  <Accordion title="Agents cannot see a repo">
+    The GitHub App is installed per-organisation with repo-level access. Open your organisation's **GitHub → Settings → Installations → RubixKube** and add the repo to the allowed list.
   </Accordion>
-  <Accordion title="Issue creation fails with 'not authorised'">
-    The GitHub app needs `issues: write` for the target repo. Re-install and grant the scope if it was denied initially.
-  </Accordion>
-  <Accordion title="Commit lookup returns empty">
-    Chat can only cite commits it has ingested. Check deploy history in the console for the affected repo. For commits older than the retention window, the citation will point at the deploy event, not the individual commit.
+  <Accordion title="PR proposals fail">
+    Check that the target repo is included in the write scope. Reads work with a narrower scope than writes, so a repo can be readable without being writable.
   </Accordion>
 </AccordionGroup>
 
@@ -80,7 +71,10 @@ On any RCA report, click **Create GitHub issue**. A new issue opens in the repo 
   <Card title="GitLab" icon="gitlab" href="/integrations/gitlab">
     Equivalent integration for GitLab-hosted repos and CI.
   </Card>
-  <Card title="Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
-    How GitHub signals join infrastructure signals in one graph.
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose GitHub tools into custom workflows.
+  </Card>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    Why PR-based remediation is the preferred path.
   </Card>
 </CardGroup>

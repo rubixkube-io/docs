@@ -32,122 +32,127 @@
         "tab": "RubixKube Docs",
         "groups": [
           {
-            "group": "Getting Started",
-            "icon": "rocket",
-            "expanded": true,
+            "group": "Documentation",
             "pages": [
-              "getting-started/welcome",
-              "getting-started/overview",
-              "getting-started/quickstart",
-              "getting-started/connect-your-environment"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "icon": "brain-circuit",
-            "expanded": false,
-            "pages": [
-              "concepts/how-rubixkube-works",
-              "concepts/opel-loop",
-              "concepts/observer-agent",
-              "concepts/memory-engine",
-              "concepts/knowledge-graph",
-              "concepts/agent-mesh",
-              "concepts/skills",
-              "concepts/insights",
-              "concepts/root-cause-analysis",
-              "concepts/actions",
-              "concepts/environments",
-              "concepts/guardrails"
-            ]
-          },
-          {
-            "group": "Environments",
-            "icon": "server",
-            "expanded": false,
-            "pages": [
-              "environments/kubernetes",
-              "environments/aws",
-              "environments/gcp",
-              "environments/azure",
-              "environments/vm"
-            ]
-          },
-          {
-            "group": "Platform Capabilities",
-            "icon": "grid-2",
-            "expanded": false,
-            "pages": [
-              "using/dashboard",
-              "using/rubix-chat-agent",
-              "using/insights",
-              "using/action",
-              "using/rca-reports",
-              "using/analytics",
-              "using/environments",
-              "using/infrastructure",
-              "using/integrations",
-              "using/skills",
-              "using/notifications",
-              "using/workspace",
-              "using/agent-skills-store"
-            ]
-          },
-          {
-            "group": "Integrations",
-            "icon": "plug",
-            "expanded": false,
-            "pages": [
-              "integrations/github",
-              "integrations/gitlab",
-              "integrations/notion",
-              "integrations/atlassian-rovo",
-              "integrations/linear",
-              "integrations/pagerduty",
-              "integrations/slack",
-              "integrations/microsoft-teams",
-              "integrations/new-relic",
-              "integrations/datadog",
-              "integrations/dynatrace",
-              "integrations/prometheus",
-              "integrations/grafana",
-              "integrations/sentry",
-              "integrations/custom-mcp-servers",
-              "integrations/custom-rest",
-              "integrations/oauth-and-auth-types"
-            ]
-          },
-          {
-            "group": "Tutorials",
-            "icon": "graduation-cap",
-            "expanded": false,
-            "pages": [
-              "tutorials/monitor-infrastructure-health",
-              "tutorials/automate-incident-remediation",
               {
-                "group": "Talk to your infra",
-                "expanded": false,
+                "group": "Getting Started",
+                "icon": "rocket",
+                "expanded": true,
                 "pages": [
-                  "tutorials/talk-to-infra",
-                  "tutorials/chat-basics",
-                  "tutorials/chat-troubleshooting",
-                  "tutorials/chat-advanced",
-                  "tutorials/chat-cost-analysis"
+                  "getting-started/overview",
+                  "getting-started/quickstart",
+                  "getting-started/connect-your-environment"
                 ]
               },
-              "tutorials/add-custom-agent-skills",
-              "tutorials/add-custom-integrations"
-            ]
-          },
-          {
-            "group": "Support & Resources",
-            "icon": "life-ring",
-            "expanded": false,
-            "pages": [
-              "support/troubleshooting",
-              "support/faq",
-              "support/system-status",
-              "support/glossary"
+              {
+                "group": "Core Concepts",
+                "icon": "brain",
+                "expanded": false,
+                "pages": [
+                  "concepts/how-rubixkube-works",
+                  "concepts/opel-loop",
+                  "concepts/observer-agent",
+                  "concepts/memory-engine",
+                  "concepts/knowledge-graph",
+                  "concepts/agent-mesh",
+                  "concepts/skills",
+                  "concepts/insights",
+                  "concepts/root-cause-analysis",
+                  "concepts/actions",
+                  "concepts/environments",
+                  "concepts/guardrails"
+                ]
+              },
+              {
+                "group": "Environments",
+                "icon": "server",
+                "expanded": false,
+                "pages": [
+                  "environments/kubernetes",
+                  "environments/aws",
+                  "environments/gcp",
+                  "environments/azure",
+                  "environments/vm"
+                ]
+              },
+              {
+                "group": "Platform Capabilities",
+                "icon": "cubes",
+                "expanded": false,
+                "pages": [
+                  "using/dashboard",
+                  "using/rubix-chat-agent",
+                  "using/insights",
+                  "using/action",
+                  "using/rca-reports",
+                  "using/analytics",
+                  "using/environments",
+                  "using/infrastructure",
+                  "using/integrations",
+                  "using/skills",
+                  "using/notifications",
+                  "using/workspace",
+                  "using/agent-skills-store"
+                ]
+              },
+              {
+                "group": "Integrations",
+                "icon": "plug",
+                "expanded": false,
+                "pages": [
+                  "integrations/github",
+                  "integrations/gitlab",
+                  "integrations/notion",
+                  "integrations/atlassian-rovo",
+                  "integrations/linear",
+                  "integrations/pagerduty",
+                  "integrations/slack",
+                  "integrations/microsoft-teams",
+                  "integrations/new-relic",
+                  "integrations/datadog",
+                  "integrations/dynatrace",
+                  "integrations/prometheus",
+                  "integrations/grafana",
+                  "integrations/sentry",
+                  "integrations/custom-mcp-servers",
+                  "integrations/custom-rest",
+                  "integrations/oauth-and-auth-types"
+                ]
+              },
+              {
+                "group": "Tutorials",
+                "icon": "graduation-cap",
+                "expanded": false,
+                "pages": [
+                  "tutorials/monitor-infrastructure-health",
+                  "tutorials/automate-incident-remediation",
+                  {
+                    "group": "Talk to your infra",
+                    "icon": "comments",
+                    "expanded": false,
+                    "pages": [
+                      "tutorials/talk-to-infra",
+                      "tutorials/chat-basics",
+                      "tutorials/chat-troubleshooting",
+                      "tutorials/chat-advanced",
+                      "tutorials/chat-cost-analysis"
+                    ]
+                  },
+                  "tutorials/add-custom-agent-skills",
+                  "tutorials/add-custom-integrations"
+                ]
+              },
+              {
+                "group": "Support & Resources",
+                "icon": "life-ring",
+                "expanded": false,
+                "pages": [
+                  "support/troubleshooting",
+                  "support/faq",
+                  "support/system-status",
+                  "support/glossary"
+                ]
+              }
             ]
           }
         ]

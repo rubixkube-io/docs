@@ -36,7 +36,6 @@
             "pages": [
               {
                 "group": "Getting Started",
-                "icon": "rocket",
                 "expanded": true,
                 "pages": [
                   "getting-started/overview",
@@ -46,7 +45,6 @@
               },
               {
                 "group": "Core Concepts",
-                "icon": "brain",
                 "expanded": false,
                 "pages": [
                   "concepts/how-rubixkube-works",
@@ -65,7 +63,6 @@
               },
               {
                 "group": "Environments",
-                "icon": "server",
                 "expanded": false,
                 "pages": [
                   "environments/kubernetes",
@@ -77,7 +74,6 @@
               },
               {
                 "group": "Platform Capabilities",
-                "icon": "cubes",
                 "expanded": false,
                 "pages": [
                   "using/dashboard",
@@ -97,7 +93,6 @@
               },
               {
                 "group": "Integrations",
-                "icon": "plug",
                 "expanded": false,
                 "pages": [
                   "integrations/github",
@@ -121,14 +116,12 @@
               },
               {
                 "group": "Tutorials",
-                "icon": "graduation-cap",
                 "expanded": false,
                 "pages": [
                   "tutorials/monitor-infrastructure-health",
                   "tutorials/automate-incident-remediation",
                   {
                     "group": "Talk to your infra",
-                    "icon": "comments",
                     "expanded": false,
                     "pages": [
                       "tutorials/talk-to-infra",
@@ -144,7 +137,6 @@
               },
               {
                 "group": "Support & Resources",
-                "icon": "life-ring",
                 "expanded": false,
                 "pages": [
                   "support/troubleshooting",
@@ -162,7 +154,6 @@
         "groups": [
           {
             "group": "Rubix CLI",
-            "icon": "rectangle-terminal",
             "pages": [
               "cli/overview",
               "cli/installation",

@@ -1,0 +1,91 @@
+---
+title: "System Status"
+sidebarTitle: "System Status"
+description: "Check the real-time health of all RubixKube platform services at rubixkube.ai/status. See current operational state, 7-day uptime, and 30-day incident history."
+keywords: ["rubixkube status", "system status", "service health", "incident updates", "uptime", "status page", "rubixkube operational"]
+"og:title": "RubixKube System Status"
+"og:description": "Real-time health of all RubixKube platform services. 7-day uptime per service and 30-day incident history."
+---
+
+RubixKube publishes real-time status for every platform service at [rubixkube.ai/status](https://rubixkube.ai/status). Check there first whenever something feels slow or off, so you can quickly tell whether an issue is on our side or yours.
+
+<Card title="Open the live status page" icon="signal" href="https://rubixkube.ai/status" horizontal>
+  Real-time health for every RubixKube service, with 7-day uptime and 30-day incident history.
+</Card>
+
+## What the status page shows
+
+At a glance the page shows an **overall banner** (for example, "All systems operational") and a **live updated-seconds-ago timestamp**. Each service has its own row with a 7-day uptime bar, a uptime percentage, and an operational state pill.
+
+### Services tracked
+
+<AccordionGroup>
+  <Accordion title="Platform" icon="browser">
+    - **API.** The public API at `api.rubixkube.ai`. Powers the console, the Rubix CLI, Observer registration, and all integrations.
+    - **Dashboard.** The web console at `console.rubixkube.ai`.
+  </Accordion>
+  <Accordion title="Intelligence" icon="brain">
+    - **AI Agents.** The Cloud-side agents that power investigation, memory, and chat (RCA Pipeline, Memory, SRI Agent).
+    - **Investigations.** The orchestration layer that runs RCAs, turns insights into reports, and drives remediation proposals.
+  </Accordion>
+  <Accordion title="Data" icon="database">
+    - **Topology Engine.** Builds and maintains the live [Knowledge Graph](/concepts/knowledge-graph) of your environments.
+    - **Insights Engine.** Detects anomalies and opens insights that feed investigations.
+  </Accordion>
+  <Accordion title="Infrastructure" icon="server">
+    - **Event Streaming.** The ingestion path Observers use to stream signals into RubixKube Cloud.
+    - **Graph Store.** The storage layer behind the Knowledge Graph and historical incident data.
+  </Accordion>
+</AccordionGroup>
+
+### Incident history
+
+The status page also maintains a **30-day incident history** so you can see whether a recurring issue has happened before and how it was resolved.
+
+## During an incident
+
+<Steps titleSize="h3">
+  <Step title="Check the status page first">
+    Open [rubixkube.ai/status](https://rubixkube.ai/status). If the overall banner shows a degraded or outage state, the issue is on our side and the page will list the affected services.
+  </Step>
+  <Step title="Check your notification channels">
+    Critical incidents are also posted to the channels you have configured for RubixKube updates (Slack, Teams, email). See [Notifications](/using/notifications).
+  </Step>
+  <Step title="Reach support if impact is significant">
+    Email [connect@rubixkube.ai](mailto:connect@rubixkube.ai) with your Tenant ID, the timestamp of what you observed, and any relevant screenshots or logs. See [Collecting diagnostics](/support/troubleshooting#collecting-diagnostics) for the full list.
+  </Step>
+</Steps>
+
+## What counts as an incident
+
+RubixKube reports on the services listed above. If **your own infrastructure** is degraded (cluster nodes unready, cloud provider outage, network partition on your side), it shows up in your environment cards and insights, but it does not affect the public status page. The [Troubleshooting guide](/support/troubleshooting) is the starting point there.
+
+## Reporting a suspected issue
+
+If something feels off and the status page shows everything as operational, it is likely either a self-serve issue or a tenant-specific edge case.
+
+<CardGroup cols={2}>
+  <Card title="Try the Troubleshooting guide" icon="wrench" href="/support/troubleshooting">
+    Covers the common self-serve fixes for console, observer, and integration issues.
+  </Card>
+  <Card title="Email support" icon="envelope" href="mailto:connect@rubixkube.ai">
+    For tenant-specific problems. Include your Tenant ID, timestamps, and any relevant logs or screenshots.
+  </Card>
+</CardGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/support/troubleshooting">
+    Self-serve diagnostics for common RubixKube issues.
+  </Card>
+  <Card title="Frequently Asked Questions" icon="circle-question" href="/support/faq">
+    Quick answers to the most common questions.
+  </Card>
+  <Card title="Notifications" icon="bell" href="/using/notifications">
+    Route incident and status updates to your team channels.
+  </Card>
+  <Card title="Observer Agent" icon="eye" href="/concepts/observer-agent">
+    How the in-environment Observer connects back to the control plane.
+  </Card>
+</CardGroup>

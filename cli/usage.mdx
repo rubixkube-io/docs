@@ -35,6 +35,14 @@ You land in a terminal chat with your default environment selected. Type a quest
 
 The SRI Agent responds with cited evidence, the same way the web console does. Follow-up questions preserve session context.
 
+<Frame>
+  <img
+    src="/images/cli/chat-session.png"
+    alt="Rubix CLI session showing the user asking 'How is my infra doing?', the agent's thought 'Evaluating Infrastructure Status', an action calling get_observability_stats(), and a response stating the environment has 67 active issues and 68 total insights."
+  />
+  <Caption>A live Rubix CLI session. You see the agent's thinking, the tool calls it runs, and a concise answer, all inline.</Caption>
+</Frame>
+
 ## Scripting a single prompt
 
 To send a prompt and exit (useful in CI or for saving shell aliases):

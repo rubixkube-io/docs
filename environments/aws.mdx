@@ -11,6 +11,14 @@ Connect an AWS account and the Observer maps every major service in it: EC2, RDS
 
 You can run the Observer on an existing Linux VM inside your VPC, or let the installer create a fresh EC2 instance.
 
+<Frame>
+  <img
+    src="/images/platform/connect-aws.png"
+    alt="Connect Amazon AWS dialog with a one-line installer command, the API key input, the list of what will be monitored (EC2, ECS and Lambda, RDS, CloudWatch), and a system requirements callout."
+  />
+  <Caption>The AWS connect flow in the console. The one-line installer deploys the Observer on an EC2 instance. Credentials never leave your account, the Observer uses the instance role.</Caption>
+</Frame>
+
 ## Prerequisites
 
 <CardGroup cols={2}>

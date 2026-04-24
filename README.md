@@ -1,6 +1,6 @@
 # RubixKube Documentation
 
-![RubixKube](https://raw.githubusercontent.com/rubixkube-io/docs/main/images/hero-dark.png)
+![RubixKube](https://raw.githubusercontent.com/rubixkube-io/docs/main/images/value.png)
 
 > **Beyond observability. Your infrastructure, healing itself.**
 

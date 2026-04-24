@@ -1,0 +1,87 @@
+---
+title: "Atlassian Rovo integration"
+sidebarTitle: "Atlassian Rovo"
+description: "Connect the Atlassian stack so RubixKube agents can create Jira tickets, publish Confluence pages, read Bitbucket deploys, and bridge with Rovo agents."
+keywords: ["atlassian rovo", "jira integration", "confluence integration", "bitbucket integration", "rovo agents"]
+"og:title": "Atlassian Rovo integration"
+"og:description": "Bridge RubixKube with Jira, Confluence, Bitbucket, and Rovo agents."
+---
+
+Connect Atlassian Rovo so RubixKube agents can work across Jira, Confluence, and Bitbucket, and so Rovo agents on the Atlassian side can call RubixKube when they need infrastructure context.
+
+## What it unlocks
+
+<CardGroup cols={2}>
+  <Card title="Jira" icon="ticket">
+    Agents can read and create issues. Severity, environment, and ownership information can be mapped to your Jira fields through a skill.
+  </Card>
+  <Card title="Confluence" icon="book-open">
+    Agents can read pages in the spaces you share and publish new pages for RCA reports, post-mortems, or runbooks.
+  </Card>
+  <Card title="Bitbucket" icon="code-branch">
+    Read deploys and merges for context, same as the GitHub and GitLab integrations.
+  </Card>
+  <Card title="Rovo agent bridge" icon="sparkles">
+    Rovo agents can call RubixKube for infrastructure context, and RubixKube agents can call Rovo for document context. The bridge runs over MCP.
+  </Card>
+</CardGroup>
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **Atlassian Rovo**.
+  </Step>
+  <Step title="Authenticate">
+    Authorise with Atlassian. An admin completes the OAuth flow for your site.
+  </Step>
+  <Step title="Configure access">
+    Pick the Jira projects, Confluence spaces, and Bitbucket repos RubixKube can work with. Choose whether Rovo agents can call back into RubixKube.
+  </Step>
+</Steps>
+
+Once connected, Atlassian Rovo is available tenant-wide.
+
+{/* TODO: screenshot of the Integrations page showing the Atlassian Rovo card */}
+
+## Flow in both directions
+
+| Direction | Example |
+| --- | --- |
+| RubixKube → Atlassian | Create a Jira ticket from an RCA, publish a post-mortem to Confluence, correlate a Bitbucket deploy with an incident. |
+| Atlassian → RubixKube | A Rovo agent in Jira asks the RubixKube SRI Agent "what is the current health of payments" and the answer returns inline. |
+
+## How the agents use it
+
+- Ticket-first workflows live in Jira. Doc-first workflows live in Confluence. RubixKube participates in whichever your team already uses.
+- For soft remediation in IaC stored in Bitbucket, agents can propose changes as pull requests, following the same approval model as GitHub and GitLab.
+
+## Build custom workflows with skills
+
+The connection exposes Jira, Confluence, and Bitbucket capabilities to agents. Specific workflows (auto-create tickets on high-severity insights, publish RCAs to a specific space, weekly incident digest page, assign based on service owner) are built as [Skills](/concepts/skills).
+
+## Permissions and data
+
+The integration is scoped to the projects, spaces, and repos you select during setup. No Atlassian data is read outside that scope. Rovo agent calls into RubixKube follow the same guardrails as every other caller.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Cannot see a project or space">
+    The OAuth scope needs refreshing, or the project or space was not selected during setup. Reauthorise from **Integrations → Atlassian Rovo** and update the scope.
+  </Accordion>
+  <Accordion title="Rovo agents cannot reach RubixKube">
+    Check that the Rovo bridge is enabled in the integration settings and the Rovo admin has granted the RubixKube capability to the agent on the Atlassian side.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    The Rovo bridge uses MCP. Build your own for other platforms.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Atlassian capabilities into workflows.
+  </Card>
+</CardGroup>

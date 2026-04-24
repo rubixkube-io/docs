@@ -1,0 +1,82 @@
+---
+title: "Rubix CLI overview"
+sidebarTitle: "Overview"
+description: "The Rubix CLI brings RubixKube's Site Reliability Intelligence to your terminal. Chat with infrastructure, investigate incidents, and run skills without leaving the command line."
+keywords: ["rubix cli", "rubixkube cli", "terminal AI SRE", "infrastructure chat cli", "AI SRE terminal"]
+"og:title": "Rubix CLI overview"
+"og:description": "Site Reliability Intelligence in your terminal."
+---
+
+The **Rubix CLI** is the terminal-native front door to RubixKube. Same SRI Agent, same skills, same workspace, launched with a single word.
+
+```bash
+rubix
+```
+
+<Frame>
+  <img
+    src="/images/cli/welcome-screen.png"
+    alt="Rubix CLI welcome screen with the RUBIXKUBE ASCII logo, a 'What's New' panel for version 0.0.7, setup instructions for the device-code login, the prompt legend for commands, files, and shell, and options to log in or exit."
+  />
+  <Caption>The Rubix CLI on first launch. Release notes and setup steps on top, the prompt legend on the right, and the login entry point at the bottom.</Caption>
+</Frame>
+
+Use it when you want to stay in a terminal: on-call triage, SSH-bound hosts, CI runs, or when you prefer a keyboard-driven flow over a browser tab.
+
+## What the CLI can do
+
+<CardGroup cols={2}>
+  <Card title="Chat with your infrastructure" icon="comments">
+    Same conversational SRI Agent that powers the console, in a terminal UI.
+  </Card>
+  <Card title="Resume past sessions" icon="rotate-left">
+    Sessions persist across restarts. Jump back into an earlier investigation anytime.
+  </Card>
+  <Card title="Switch environment context" icon="shuffle">
+    `/environments` retargets the conversation at a different cluster, cloud account, or VM group.
+  </Card>
+  <Card title="Run skills on demand" icon="sparkles">
+    Invoke any enabled skill with `/skills skill-name` (or let the agent intent-match).
+  </Card>
+  <Card title="Feed shell output back" icon="arrow-right-from-bracket">
+    `/send` pushes the last shell command's output into chat, no copy-paste needed.
+  </Card>
+  <Card title="Works everywhere" icon="terminal">
+    macOS, Linux, Windows. Any host with Node.js 18 or later.
+  </Card>
+</CardGroup>
+
+## Who it is for
+
+<CardGroup cols={3}>
+  <Card title="SREs and on-call" icon="user-headset">
+    Investigate incidents from the same terminal you already SSH from.
+  </Card>
+  <Card title="Platform engineers" icon="layer-group">
+    Script common investigations into your runbooks with `rubix chat --prompt`.
+  </Card>
+  <Card title="CI and automation" icon="gear">
+    Run scheduled skills non-interactively against any connected environment.
+  </Card>
+</CardGroup>
+
+## How it relates to the console
+
+The CLI and the [Rubix Chat Agent](/using/rubix-chat-agent) in the console share everything: sessions, skills, environments, Memory Engine, Guardian policies. Start a conversation on one surface, finish it on the other.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/cli/installation">
+    Install with npm, run with npx, or use the standalone binary.
+  </Card>
+  <Card title="Usage" icon="play" href="/cli/usage">
+    First-run login, launching chat, the fundamental keystrokes.
+  </Card>
+  <Card title="Commands" icon="list" href="/cli/commands">
+    Reference for every command and slash command.
+  </Card>
+  <Card title="Examples" icon="lightbulb" href="/cli/examples">
+    Concrete flows for daily on-call, post-deploy verification, and more.
+  </Card>
+</CardGroup>

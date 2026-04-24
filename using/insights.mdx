@@ -1,6 +1,7 @@
 ---
-title: 'Using Insights & RCA - Complete Guide'
-description: 'Deep dive into incidents, root cause analysis, and evidence-based troubleshooting with RubixKube'
+title: 'Magic Insights'
+sidebarTitle: 'Magic Insights'
+description: 'Incident detection, root cause analysis, and evidence-based troubleshooting in the RubixKube console.'
 ---
 
 # Using Insights & RCA: Complete Guide
@@ -17,18 +18,18 @@ The **Insights**  page is where RubixKube's intelligence shines - showing you no
 
 <Frame>
   <img
-    src="/images/using/using-insights-01-header.png"
-    alt="Insights page header with health metrics"
+    src="/images/platform/magic-insights.png"
+    alt="Magic Insights page with counters for Total Insights, Critical, With RCA, and RCA failed. An insight is expanded showing Hypothesis, Immediate Steps, Root Cause, and Observed Conditions."
   />
+  <Caption>Magic Insights. The list shows every anomaly RubixKube has opened, and each one expands into a full hypothesis, immediate steps, and, when ready, a completed root cause.</Caption>
 </Frame>
 
-**The header shows:** - ** Title**: "Unified Insights" with description
-- **Health Metrics**:
-  - **Health**: 75% RCA coverage
-  - **Total Groups**: 4 incident groups
-  - **Critical Issues**: 0 (no critical incidents)
-  - **High Priority**: 1 (one high-severity issue)
-- **Refresh data** button for manual updates
+**The header shows:**
+- **Total Insights**: every open anomaly in the selected environment.
+- **Critical**: insights flagged as blocking.
+- **With RCA**: insights that already have a completed root-cause report.
+- **RCA failed**: insights where evidence did not converge on a single cause.
+- **Refresh data** button for a manual update.
 
 ---
 
@@ -757,7 +758,9 @@ NEW → QUEUED_FOR_RCA → RCA_IN_PROGRESS → RCA_COMPLETED → RCA_GENERATED �
 - Includes RCA, evidence, timeline
 - Chat can answer follow-up questions
 
-**Example questions to ask:** ```
+**Example questions to ask:**
+
+```
 "Explain this incident in simple terms"
 "How do I implement recommendation #1?"
 "Has this pod failed before?"
@@ -1174,7 +1177,7 @@ While on Insights page:
   <Card
     title="Use Chat for Investigation"
     icon="comments"
-    href="/tutorials/chat-troubleshooting"
+    href="/tutorials/talk-to-infra"
   >
     Ask AI about incidents with full RCA context
   </Card>
@@ -1205,7 +1208,7 @@ While on Insights page:
     Learn how RCA Pipeline generates analysis
   </Card>
   
-  <Card title="What is SRI?" icon="brain" href="/concepts/what-is-sri">
+  <Card title="What is SRI?" icon="brain" href="/concepts/how-rubixkube-works">
     Understand Site Reliability Intelligence philosophy
   </Card>
   

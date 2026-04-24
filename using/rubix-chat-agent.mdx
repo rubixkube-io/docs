@@ -1,0 +1,69 @@
+---
+title: "Rubix Chat Agent"
+sidebarTitle: "Rubix Chat Agent"
+description: "The conversational surface of RubixKube. Ask your infrastructure questions in plain English, run skills, and launch investigations from the terminal or the console."
+keywords: ["rubix chat", "SRI agent", "AI SRE chat", "infrastructure chat", "conversational AIOps"]
+"og:title": "Rubix Chat Agent"
+"og:description": "The conversational surface of RubixKube. Ask infrastructure questions, run skills, launch investigations."
+---
+
+Rubix Chat is the conversational front door to your infrastructure. It is powered by the SRI Agent, which reads signals from the Agent Mesh, runs skills, and answers questions with cited evidence.
+
+<Frame>
+  <img
+    src="/images/platform/chat.png"
+    alt="Rubix Chat in the console. Chat history on the left with Web, CLI, and Slack source filters. Rubix and Expert mode selectors at the top. Suggested questions and recent conversations in the main area."
+  />
+  <Caption>Rubix Chat in the console. Sessions are searchable across Web, CLI, and Slack, and you can switch between Rubix and Expert modes from the header.</Caption>
+</Frame>
+
+## Where Chat lives
+
+<CardGroup cols={2}>
+  <Card title="In the console" icon="display" href="https://console.rubixkube.ai">
+    Open **Chat** in the left nav. Shares sessions, skills, and environment context with the rest of the product.
+  </Card>
+  <Card title="In your terminal" icon="rectangle-terminal">
+    Install the Rubix CLI with `npm install -g @rubixkube/rubix`. Launch with `rubix`. Same agent, same skills.
+  </Card>
+</CardGroup>
+
+## What it can do
+
+- **Answer questions with evidence.** Every claim is cited back to the underlying log, metric, or event.
+- **Investigate proactively.** Open-ended prompts turn into multi-step investigations using the allowed tools.
+- **Run skills.** Invoke saved runbooks with `/skills skill-name` or by intent match.
+- **Switch environment context.** Use `/environments` to re-scope the conversation to a different cluster, cloud account, or VM group.
+- **Resume and rename sessions.** Past investigations stay searchable.
+
+## Best for
+
+<CardGroup cols={2}>
+  <Card title="Fast status reads" icon="bolt">
+    "What is the health of prod right now?"
+  </Card>
+  <Card title="Change correlation" icon="timeline">
+    "What changed in the checkout service in the last hour?"
+  </Card>
+  <Card title="Focused investigations" icon="magnifying-glass">
+    "Why did pod X restart three times at 14:05?"
+  </Card>
+  <Card title="On-call handoffs" icon="user-clock">
+    Save a skill that summarises open incidents and pending actions for the next shift.
+  </Card>
+</CardGroup>
+
+## Safety model
+
+Chat inherits the Guardian policies set on each environment. It can recommend and draft mutating actions, but nothing lands in your environment without an explicit approval step. See [Safety and Guardrails](/concepts/guardrails).
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Talk to your infra" icon="comments" href="/tutorials/talk-to-infra">
+    Prompt patterns and slash commands that actually work.
+  </Card>
+  <Card title="Agent Skills" icon="sparkles" href="/concepts/skills">
+    How runbooks become first-class tools the agent can run.
+  </Card>
+</CardGroup>

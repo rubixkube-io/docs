@@ -1,0 +1,76 @@
+---
+title: "Grafana integration"
+sidebarTitle: "Grafana"
+description: "Connect Grafana to RubixKube today via the custom integrations path. Agents can read dashboards, alert state, and datasource queries to enrich investigations and RCAs."
+keywords: ["grafana integration", "rubixkube grafana", "grafana alerting", "observability integration"]
+"og:title": "Grafana integration"
+"og:description": "Connect Grafana to RubixKube via Custom MCP or Custom REST."
+---
+
+Grafana connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+
+## What to bring in
+
+The signals that matter most when agents are investigating or writing RCAs:
+
+- **Alert state** (Grafana Alerting API) to surface firing alerts as insight candidates.
+- **Dashboards** (`/api/dashboards/*`) for the panels a team uses during an incident.
+- **Datasource proxy queries** (`/api/datasources/proxy/...`) to execute PromQL, LogQL, or SQL through Grafana's datasource layer.
+- **Annotations** to read deploy markers and runbook entries.
+
+Read-only service account tokens are enough for all of the above.
+
+## Which path to pick
+
+<CardGroup cols={2}>
+  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
+    Grafana ships a stable HTTP API. Point the custom REST integration at it with an OpenAPI wrapper.
+  </Card>
+  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
+    Wrap datasource queries behind named tools (for example `prom_via_grafana(service, window)`).
+  </Card>
+</CardGroup>
+
+## Quick recipe: REST path
+
+<Steps titleSize="h3">
+  <Step title="Create a Grafana service account token">
+    In Grafana, create a service account with a read role and generate a token.
+  </Step>
+  <Step title="Register the endpoint">
+    In the RubixKube console, go to **Integrations → Custom REST** and register the Grafana API.
+  </Step>
+  <Step title="Enable the calls you care about">
+    Start with alerts list, dashboard read, and datasource proxy queries for the specific datasources you want to reach through Grafana.
+  </Step>
+  <Step title="Set auth">
+    Add the service account token to the workspace secret vault. Map it to the `Authorization: Bearer <token>` header.
+  </Step>
+  <Step title="Scope to skills">
+    Attach the enabled endpoints to the skills that need Grafana context.
+  </Step>
+</Steps>
+
+For Grafana behind a VPN or private network, use [Custom MCP](/integrations/custom-mcp-servers) with a self-hosted server so no inbound exposure is needed.
+
+## Example tools worth having
+
+- `grafana_firing_alerts(service)` — returns alerts currently firing that tag or match the service.
+- `grafana_dashboard(id)` — returns the panels and queries from a dashboard, useful for agents trying to reproduce what a human would look at.
+- `grafana_datasource_query(datasource, query, window)` — runs a query through Grafana's datasource proxy (PromQL, LogQL, SQL, etc).
+
+Define these as skills (or as MCP tools if you want them to wrap multiple calls).
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    The full REST flow with auth options and approval rules.
+  </Card>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When you want richer tool schemas and multi-call workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Grafana queries into custom workflows.
+  </Card>
+</CardGroup>

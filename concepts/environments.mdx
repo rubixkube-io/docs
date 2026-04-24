@@ -1,0 +1,125 @@
+---
+title: "Environments"
+sidebarTitle: "Environments"
+description: "The unit of scope in RubixKube. A Kubernetes cluster, an AWS account, a GCP project, or a set of VMs. Mix any number in one workspace."
+keywords: ["environments", "workspace environments", "multi-cloud monitoring", "multi-environment", "RubixKube environments"]
+"og:title": "Environments"
+"og:description": "The unit of scope in RubixKube. Mix Kubernetes, AWS, GCP, and VMs in one workspace."
+---
+
+An Environment is the unit of scope in RubixKube. One Kubernetes cluster, one AWS account, one GCP project, or a group of Linux VMs. A workspace can hold any mix, and every part of the product (Chat, Insights, RCAs, Actions) respects that scope.
+
+Environments are how you connect infrastructure once and then work against it forever. Add one, you get the full loop. Add another, they correlate automatically.
+
+## What counts as an environment
+
+<CardGroup cols={2}>
+  <Card title="Kubernetes cluster" icon="dharmachakra">
+    One EKS, GKE, AKS, KIND, or bare metal cluster. Everything inside the cluster (pods, deployments, nodes, services) belongs to the environment.
+  </Card>
+  <Card title="AWS account" icon="aws">
+    One AWS account. EC2, RDS, Lambda, S3, ELB, CloudTrail, CloudWatch all flow into the environment's graph.
+  </Card>
+  <Card title="GCP project" icon="google">
+    One GCP project. GCE, GKE, Cloud SQL, Cloud Run, Cloud Storage, Cloud Functions.
+  </Card>
+  <Card title="Linux VM (or group)" icon="server">
+    A host or a defined group of hosts. CPU, memory, disk, network, and per-process signals per host.
+  </Card>
+</CardGroup>
+
+## Multi-environment workspaces
+
+A workspace is the top-level container. Inside it you can mix environments freely.
+
+A representative setup might look like:
+
+- One `prod-eks` Kubernetes environment.
+- One `staging-gke` Kubernetes environment.
+- One `rds-backbone` AWS account for shared data services.
+- One `observability-vms` group of Linux hosts running your own tooling.
+
+All four feed the same Knowledge Graph. All four contribute to the same Memory Engine. A chat question like "what changed in payments in the last hour" spans them. An RCA that starts on a Kubernetes pod can pick up correlated signals from the AWS account automatically.
+
+## Environment properties
+
+Every environment carries a small set of properties that shape how RubixKube works against it.
+
+| Property | Purpose |
+| --- | --- |
+| **Name** | Human-readable label used across the product |
+| **Type** | Kubernetes, AWS, GCP, or VM |
+| **Criticality** | Lab, Dev, Staging, Prod. Influences default severity thresholds |
+| **Guardian policy** | Which actions are approvable, by whom, with how many approvers |
+| **Notification rules** | Which channels receive which events from this environment |
+| **Retention** | How long signals, insights, and RCAs for this environment are kept |
+| **Redaction rules** | Patterns that strip sensitive content before signals ship to the Cloud |
+
+## How environments scale
+
+<Steps titleSize="h3">
+  <Step title="One environment">
+    You see the full shape of the product immediately. Topology, insights, chat, RCAs, actions.
+  </Step>
+  <Step title="Two to three environments">
+    Cross-environment correlation starts paying off. Chat answers questions that span environments automatically.
+  </Step>
+  <Step title="Tens of environments">
+    Enterprise workspaces segment through environment tags (team, region, criticality). Notifications, severity thresholds, and policies apply by tag.
+  </Step>
+</Steps>
+
+## Environment criticality, in practice
+
+Criticality is more than a label. It changes defaults across the product.
+
+<AccordionGroup>
+  <Accordion title="Lab" icon="flask">
+    Guardian policies can auto-approve low-risk Actions. Insights default to Low severity unless the signal is severe. Retention follows the free-tier minimum.
+  </Accordion>
+  <Accordion title="Dev" icon="code">
+    Guardian requires a single approver. Insights default to Medium. Notifications go to team channels, not on-call.
+  </Accordion>
+  <Accordion title="Staging" icon="arrow-up-right-dots">
+    Guardian requires a single approver. Stricter thresholds. Notifications go to team channels with a lower volume threshold.
+  </Accordion>
+  <Accordion title="Prod" icon="shield">
+    Guardian requires two approvers for non-trivial Actions. Insights default to High or Critical where merited. Notifications can escalate directly to on-call.
+  </Accordion>
+</AccordionGroup>
+
+These defaults are starting points. Every environment's policy can be tuned individually.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="How many environments can I connect?">
+    Free tier allows one. Business allows up to three. Enterprise is unlimited. See [Pricing](https://rubixkube.ai/pricing).
+  </Accordion>
+  <Accordion title="Does cross-environment correlation work automatically?">
+    Yes. Any pair of environments in the same workspace share the Knowledge Graph. Chat, RCAs, and Memory queries can span them without configuration.
+  </Accordion>
+  <Accordion title="Can I group environments by team or region?">
+    Yes. Tag environments with arbitrary labels (team, region, criticality, owner). Notifications, dashboards, and chat filters can scope to any tag set.
+  </Accordion>
+  <Accordion title="What happens if an environment is disconnected?">
+    The environment card shows degraded state. The Observer queues collected signals locally (bounded buffer) and catches up when connectivity returns. Cloud-side data and RCAs remain available; new ingestion pauses.
+  </Accordion>
+  <Accordion title="Can I delete an environment without losing history?">
+    Yes. Deletion removes active ingestion. Historical signals, RCAs, and Memory entries stay retained per plan. You can reconnect the same environment later and the history links up automatically.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Observer Agent" icon="eye" href="/concepts/observer-agent">
+    The component installed per environment.
+  </Card>
+  <Card title="Environments in the console" icon="server" href="/using/environments">
+    How to manage, tag, and configure environments day to day.
+  </Card>
+  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
+    How to onboard a new environment.
+  </Card>
+</CardGroup>

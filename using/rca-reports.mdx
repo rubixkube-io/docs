@@ -1,0 +1,106 @@
+---
+title: "RCA Reports"
+sidebarTitle: "RCA Reports"
+description: "Evidence-linked root cause reports for every incident. Observed conditions, causal chain, recommended actions, and verification, all in one place."
+keywords: ["RCA", "root cause analysis", "incident report", "evidence-linked RCA", "AI SRE", "incident review"]
+"og:title": "RCA Reports"
+"og:description": "Evidence-linked root cause reports: observed conditions, causal chain, recommended actions, verification."
+---
+
+An RCA Report is the output of a full investigation. When an insight has enough evidence for a single identifiable root cause, the RCA Pipeline Agent produces a report. These are the artefacts your team reviews, acts on, and references in post-incident writeups.
+
+<Frame>
+  <img
+    src="/images/platform/rca-report-pod-preemption.png"
+    alt="RCA Report for pod preemption. Header with severity, cluster, namespace, and fingerprint. Tabs for Overview, Action Items, Timeline, Evidence, and Full Report. Impact, Root Cause, and Contributing Factors filled in."
+  />
+  <Caption>An RCA Report in the console. Metadata on top, then tabs for Overview, Action Items, Timeline, Evidence, and the Full Report. Every claim is grounded in the evidence tab.</Caption>
+</Frame>
+
+## What is in a report
+
+<AccordionGroup>
+  <Accordion title="Observed conditions" icon="eye">
+    The state of the affected resources when the incident started. Snapshots of the metrics, events, and configuration that matter. Every data point is a clickable link back to the source.
+  </Accordion>
+  <Accordion title="Causal chain" icon="diagram-project">
+    Each link reads "A caused B because C". Every link cites the evidence behind it, so you can verify the reasoning rather than trust it blind.
+  </Accordion>
+  <Accordion title="Recommended actions" icon="wand-magic-sparkles">
+    Ranked fixes. Each one carries an expected blast radius, a recovery estimate, and a confidence score. High-confidence items sit at the top.
+  </Accordion>
+  <Accordion title="Verification" icon="circle-check">
+    After an action runs, the stabilisation window is recorded on the report. Verified, partial, or rollback-suggested outcomes are all tracked.
+  </Accordion>
+  <Accordion title="Timeline and audit" icon="clock">
+    Every status change, approval, applied action, and comment, with actor and timestamp. Ready for compliance review.
+  </Accordion>
+</AccordionGroup>
+
+## How a report is born
+
+<Steps titleSize="h3">
+  <Step title="Observer spots an anomaly">
+    A signal crosses a baseline the system has learned for your environment.
+  </Step>
+  <Step title="Insight opens">
+    If the anomaly is material, an insight appears in **Magic Insights**.
+  </Step>
+  <Step title="RCA Pipeline investigates">
+    If the insight has enough evidence for a single causal chain, the RCA Pipeline Agent takes over and produces a report.
+  </Step>
+  <Step title="Report lands in RCA Reports">
+    Route it to Slack, Teams, or Linear via integrations, or assign an owner inside the product.
+  </Step>
+</Steps>
+
+## What makes an RCA actionable
+
+<CardGroup cols={2}>
+  <Card title="Every claim cites evidence" icon="file-magnifying-glass">
+    Click any line, jump to the underlying log or metric. No black-box reasoning.
+  </Card>
+  <Card title="Actions come with blast radius" icon="shield-halved">
+    Before approving, you see what changes, where, and for how long.
+  </Card>
+  <Card title="Verification closes the loop" icon="circle-check">
+    You know when a fix worked because the system keeps watching after the action ran.
+  </Card>
+  <Card title="Feedback sharpens the next one" icon="database">
+    Your resolution notes feed the Memory Engine. Similar incidents surface the same fix faster next time.
+  </Card>
+</CardGroup>
+
+## Where RCA Reports fit in the flow
+
+<CardGroup cols={2}>
+  <Card title="Magic Insights" icon="lightbulb" href="/using/insights">
+    Where anomalies first surface. Not every insight becomes an RCA.
+  </Card>
+  <Card title="Action Center" icon="play" href="/using/action">
+    Where recommended actions get approved, applied, and tracked.
+  </Card>
+  <Card title="How to Automate Incident Remediation" icon="wand-magic-sparkles" href="/tutorials/automate-incident-remediation">
+    Full workflow from detection to verified fix.
+  </Card>
+  <Card title="Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
+    Which agent does what inside the investigation pipeline.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Why did my insight not become an RCA Report?">
+    Not every anomaly has a single identifiable root cause. Multi-cause incidents stay as insights, with the causal analysis inline. If you want a deeper dive, escalate from the insight card and Rubix will attempt a full RCA with the added context.
+  </Accordion>
+  <Accordion title="How long does it take to generate a report?">
+    Usually thirty seconds to a few minutes, depending on how wide the causal search is. Large blast radius incidents take longer because more evidence has to be correlated.
+  </Accordion>
+  <Accordion title="Can I export a report?">
+    Yes. Markdown export and a printable view are both available on the report detail page. Public share links are scoped and revocable.
+  </Accordion>
+  <Accordion title="Are RCAs stored indefinitely?">
+    Retention follows your plan: 7 days on Free, 30 days on Business, unlimited on Enterprise.
+  </Accordion>
+</AccordionGroup>

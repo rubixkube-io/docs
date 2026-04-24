@@ -1,0 +1,95 @@
+---
+title: "How RubixKube works"
+sidebarTitle: "How RubixKube Works"
+description: "The short version: a mesh of specialised AI agents runs the OPEL loop (Observe, Plan, Execute, Learn) against your infrastructure, backed by a memory that compounds over time."
+keywords: ["how RubixKube works", "site reliability intelligence architecture", "OPEL loop", "agent mesh", "AI SRE platform", "SRI"]
+"og:title": "How RubixKube works"
+"og:description": "A mesh of specialised AI agents running the OPEL loop, backed by a memory that compounds."
+---
+
+RubixKube is built around one idea: reliability is not a dashboard, it is a loop. A mesh of specialised agents runs that loop continuously against every environment you connect. Each pass through the loop leaves the system sharper than it was before.
+
+This page is the five-minute tour of how the pieces fit. Each piece has its own deep-dive linked below.
+
+## The short version
+
+<CardGroup cols={2}>
+  <Card title="The OPEL loop" icon="rotate" href="/concepts/opel-loop">
+    Observe, Plan, Execute, Learn. The rhythm every agent follows.
+  </Card>
+  <Card title="The Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
+    Specialised agents that each own one slice of the loop.
+  </Card>
+  <Card title="The Memory Engine" icon="database" href="/concepts/memory-engine">
+    Private knowledge that grows with every incident.
+  </Card>
+  <Card title="The Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
+    The live model of your stack that every agent shares.
+  </Card>
+</CardGroup>
+
+## Why a loop, not a dashboard
+
+Traditional observability tools see your infrastructure for the first time every time you log in. Dashboards do not remember. Alerts do not learn. Every incident starts from scratch.
+
+RubixKube is built differently. A single OPEL loop runs across every environment, every hour of every day. It observes the state, plans what to do when state drifts, executes (with your approval) when a fix is needed, and learns from the outcome. The Memory Engine holds that learning. The next incident starts warmer than the previous one did.
+
+## What you see, and when
+
+<Steps titleSize="h3">
+  <Step title="Day one: topology appears">
+    The Observer walks every connected environment and builds a live [Knowledge Graph](/concepts/knowledge-graph). Services, nodes, dependencies, relationships. You see the shape of your stack in under an hour.
+  </Step>
+  <Step title="Week one: baselines settle">
+    The system learns what normal looks like for every resource. Anomaly detection sharpens. Alert noise drops.
+  </Step>
+  <Step title="Month one: causality emerges">
+    The Memory Engine has enough incident history to spot repeating patterns. RCA reports surface prior-art fixes alongside the fresh investigation.
+  </Step>
+  <Step title="Ongoing: compounding value">
+    Every resolution you confirm feeds the graph. Every rejection teaches what not to recommend. The system is yours and only yours.
+  </Step>
+</Steps>
+
+## Where each agent fits
+
+Each agent in the mesh owns one piece of the loop. None of them work in isolation. The shared Knowledge Graph is how they stay coordinated.
+
+| Agent | Role | Loop phase |
+| --- | --- | --- |
+| [Observer Agent](/concepts/observer-agent) | Watches every environment, collects signals | Observe |
+| [Memory Agent](/concepts/memory-engine) | Stores incidents, surfaces prior art | Observe, Learn |
+| [RCA Pipeline Agent](/concepts/root-cause-analysis) | Builds causal chains from signals | Plan |
+| [SRI Agent](/using/rubix-chat-agent) | Powers Chat, invokes [skills](/concepts/skills) | Plan, Execute |
+| Remediation Agent | Applies approved fixes safely | Execute |
+| [Guardian Agent](/concepts/guardrails) | Enforces policies, bounds blast radius | Execute |
+
+Remediation and Guardian are live in production deployments. Observer, SRI, Memory, and RCA Pipeline are generally available today.
+
+## Where you start
+
+<CardGroup cols={2}>
+  <Card title="The OPEL Loop" icon="rotate" href="/concepts/opel-loop">
+    Read next if you want the mental model that makes everything else obvious.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
+    Read next if you want to see it running against a real environment.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Is this just another monitoring tool?">
+    No. Monitoring tells you something is wrong. RubixKube tells you what is wrong, why it is wrong, and what to do about it. Every answer is cited back to the signal it came from.
+  </Accordion>
+  <Accordion title="Does RubixKube replace Prometheus, Datadog, or similar?">
+    It does not have to. Those systems stay in place. Integrations are on the roadmap so their signal flows into the same Knowledge Graph your Observer is building. See [Integrations](/using/integrations).
+  </Accordion>
+  <Accordion title="What kinds of environments work?">
+    Kubernetes (EKS, GKE, AKS, KIND, bare metal), AWS accounts, GCP projects, and Linux VMs. Azure on AKS works today via the Kubernetes path. Subscription-level Azure is on the roadmap.
+  </Accordion>
+  <Accordion title="How is my data handled?">
+    The Memory Engine and Knowledge Graph belong to your workspace. They are not shared across tenants, and the raw signal streams stay inside the boundaries you configure. See [Safety and Guardrails](/concepts/guardrails).
+  </Accordion>
+</AccordionGroup>

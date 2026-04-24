@@ -1,0 +1,174 @@
+---
+title: "Bare metal and Linux VMs with RubixKube"
+sidebarTitle: "Bare Metal / VMs"
+description: "Host-level monitoring for any Linux VM or bare metal server. CPU, memory, disk, network, process, and systemd signals."
+keywords: ["VM monitoring", "bare metal monitoring", "Linux monitoring", "host monitoring", "systemd monitoring", "server AI SRE"]
+"og:title": "Bare metal and Linux VMs with RubixKube"
+"og:description": "Host-level monitoring for any Linux VM or bare metal server."
+---
+
+RubixKube runs on any modern Linux host, cloud or on premise. Install the Observer as a systemd service and you get CPU, memory, disk, network, process, and service-level signals per host.
+
+Useful for boxes that live outside your cloud accounts: bare metal in a colo, one-off VMs running legacy services, edge nodes, CI runners, anything with a shell.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="A Linux host" icon="server">
+    Ubuntu, Debian, RHEL, CentOS, Amazon Linux, or Alpine. x86_64 or arm64.
+  </Card>
+  <Card title="Basic tools" icon="terminal">
+    `curl` (or `wget`), `bash`, `systemd`, and sudo or root access.
+  </Card>
+  <Card title="Outbound HTTPS" icon="network-wired">
+    `api.rubixkube.ai:443` and `nats.rubixkube.ai:443` reachable from the host.
+  </Card>
+  <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
+    Create a new VM environment in the console to get your personal install command.
+  </Card>
+</CardGroup>
+
+## Install
+
+On the target host:
+
+```bash
+curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+```
+
+<Warning>
+  Always copy the command from the console. The embedded API key scopes the Observer to your workspace.
+</Warning>
+
+## Interactive flow
+
+For a plain Linux host:
+
+```
+What would you like to do?
+  1) Install Observer
+  2) Uninstall Observer
+> 1
+
+Where do you want to deploy the observer?
+  1) On this machine
+  2) Create a new AWS EC2 instance
+  3) Create a new GCP Compute Engine instance
+> 1
+
+Which platform are you monitoring?
+  1) VM (generic Linux)
+  2) AWS
+  3) GCP
+> 1
+```
+
+The installer places a binary at `/usr/local/bin/rubixkube-observer`, config at `/etc/rubixkube/`, and registers a systemd unit named `rubixkube-observer`.
+
+## Verify
+
+```bash
+sudo systemctl status rubixkube-observer
+```
+
+Expected:
+
+```
+● rubixkube-observer.service - RubixKube Observer
+   Loaded: loaded
+   Active: active (running)
+```
+
+Tail the logs:
+
+```bash
+sudo journalctl -u rubixkube-observer -f
+```
+
+Within a minute or two, the host shows up in **Environments** in the console, and Infrastructure Topology populates with system-level metrics.
+
+## What is being monitored
+
+| Signal | Detail |
+| --- | --- |
+| CPU | Per-core usage, load averages, steal time |
+| Memory | Used, available, swap, cached, buffers |
+| Disk | Usage per mount, read and write IOPS, latency |
+| Network | Per-interface throughput, errors, drops |
+| Processes | Top consumers by CPU and memory, zombie detection |
+| Systemd | Unit state for services you include in the scope list |
+| Kernel events | OOM kills, segfaults, reboots |
+
+## Monitoring many VMs at once
+
+Install the Observer on each host. All of them show up in the same environment group inside your workspace. Chat and Insights answer questions that span hosts ("which hosts are over 80% memory right now").
+
+For dozens of hosts, the install command is scriptable. Drop it into Ansible, Chef, cloud-init, or your configuration tool of choice. The embedded API key scopes every install to your workspace automatically.
+
+## Resource footprint
+
+Roughly **150Mi RAM** and **single-digit millicore CPU** during normal operation. The polling interval is 30 seconds by default. You can lengthen it if you are running on very small hosts:
+
+```bash
+sudo bash -c 'echo "SYSTEM_POLL_INTERVAL=60s" >> /etc/rubixkube/observer.env'
+sudo systemctl restart rubixkube-observer
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Service will not start">
+    ```bash
+    sudo journalctl -u rubixkube-observer -n 50
+    ```
+
+    Most common causes: invalid API key, permission denied on `/etc/rubixkube/` (check ownership), port already in use.
+  </Accordion>
+  <Accordion title="Metrics not appearing in console">
+    1. Confirm the service is running: `sudo systemctl status rubixkube-observer`.
+    2. Check connectivity: `curl -I https://api.rubixkube.ai`.
+    3. Check NATS reachability: `curl -I https://nats.rubixkube.ai`.
+    4. Wait two or three minutes for the first poll cycle.
+  </Accordion>
+  <Accordion title="High CPU or memory on a constrained host">
+    Lengthen the poll interval with `SYSTEM_POLL_INTERVAL=60s` (or `120s`) and restart. The Observer batches signals between polls, so longer intervals cost memory only linearly in the batch buffer.
+  </Accordion>
+  <Accordion title="Firewall blocking outbound traffic">
+    Ensure outbound TCP 443 is allowed to both:
+
+    ```
+    api.rubixkube.ai
+    nats.rubixkube.ai
+    ```
+
+    Test connectivity: `curl -I https://api.rubixkube.ai && curl -I https://nats.rubixkube.ai`.
+  </Accordion>
+</AccordionGroup>
+
+## Uninstall
+
+Rerun the installer and pick option 2 (Uninstall Observer). It stops the systemd service, removes the binary and config, and cleans up the systemd unit.
+
+Manual cleanup if needed:
+
+```bash
+sudo systemctl stop rubixkube-observer
+sudo systemctl disable rubixkube-observer
+sudo rm -f /etc/systemd/system/rubixkube-observer.service
+sudo rm -rf /etc/rubixkube /usr/local/bin/rubixkube-observer
+sudo systemctl daemon-reload
+```
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
+    The full install flow covering every supported environment.
+  </Card>
+  <Card title="Observer Agent concept" icon="eye" href="/concepts/observer-agent">
+    What the Observer does and why it stays light.
+  </Card>
+  <Card title="First tutorial" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
+    Monitor infrastructure health once the Observer is live.
+  </Card>
+</CardGroup>

@@ -1,6 +1,7 @@
 ---
 title: 'Troubleshooting with Chat'
-description: 'Use Chat to investigate real incidents - OOMKilled, CrashLoop, ImagePullBackOff with actual examples'
+sidebarTitle: 'Troubleshooting with Chat'
+description: 'Use Chat to investigate real incidents: OOMKilled, CrashLoop, ImagePullBackOff, latency spikes.'
 ---
 
 # Troubleshooting with Chat: Real Incident Investigation
@@ -278,15 +279,17 @@ Agent: [Explains ImagePullBackOff]
 3. Highlights ERROR or WARN messages
 4. Provides context about what logs mean
 
-**Example response:** ```
+**Example response:**
+
+```
 Recent logs from memory-hog-demo:
 
 dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 stress: dbug: [1] using backoff sleep of 3000us
-stress: dbug: [1] setting--> mem-stress worker 1 [2] forked
+stress: dbug: [1] setting mem-stress worker 1 forked
 
-This shows the container is intentionally consuming memory ("1 vm"), 
+This shows the container is intentionally consuming memory ("1 vm"),
 which is causing it to exceed the 50Mi limit and get OOMKilled.
 ```
 
@@ -404,55 +407,67 @@ Sometimes the agent needs more information. This is GOOD - it means it's being c
 
 <Tabs>
   <Tab title="Pod Failures">
-**Queries:** ```
+    **Queries:**
+
+    ```
     "Why is [pod-name] failing?"
     "What's wrong with [pod-name]?"
     "Diagnose [pod-name]"
     "Show me errors for [pod-name]"
     ```
-    
-**You'll Get:**    - Pod status
+
+    **You will get:**
+    - Pod status
     - Error messages
     - Root cause analysis
     - Fix suggestions
   </Tab>
 
   <Tab title="Performance Issues">
-**Queries:**    ```
+    **Queries:**
+
+    ```
     "Why is [pod-name] slow?"
     "What's using all the memory?"
     "Show me CPU hogs"
     "Is [pod-name] being throttled?"
     ```
-    
-**You'll Get:** - Resource metrics
+
+    **You will get:**
+    - Resource metrics
     - Limit comparisons
     - Bottleneck identification
-    - Optimization suggestions
+    - Optimisation suggestions
   </Tab>
 
   <Tab title="Log Analysis">
-**Queries:** ```
+    **Queries:**
+
+    ```
     "Show me logs for [pod-name]"
     "Find errors in [pod-name] logs"
     "What's the last log message from [pod-name]?"
     "Show me ERROR messages"
     ```
-    
-**You'll Get:**    - Filtered log output
+
+    **You will get:**
+    - Filtered log output
     - Error highlighting
     - Log analysis
   </Tab>
 
   <Tab title="Event Investigation">
-**Queries:**    ```
+    **Queries:**
+
+    ```
     "What events happened to [pod-name]?"
     "Show me Warning events"
     "Timeline for [namespace]"
     "What changed recently?"
     ```
-    
-**You'll Get:** - Event timeline
+
+    **You will get:**
+    - Event timeline
     - Change history
     - Configuration updates
   </Tab>
@@ -538,7 +553,9 @@ Here's a REAL conversation troubleshooting `memory-hog-demo`:
 
 ### OOMKilled (Out of Memory)
 
-**How to ask:** ```
+**How to ask:**
+
+```
 "Why is [pod] OOMKilled?"
 "What's the memory issue?"
 "Show me memory usage for [pod]"
@@ -553,7 +570,9 @@ Here's a REAL conversation troubleshooting `memory-hog-demo`:
 
 ### ImagePullBackOff
 
-**How to ask:** ```
+**How to ask:**
+
+```
 "Why can't [pod] pull its image?"
 "What's the image issue?"
 "Is the registry accessible?"
@@ -568,7 +587,9 @@ Here's a REAL conversation troubleshooting `memory-hog-demo`:
 
 ### CrashLoopBackOff
 
-**How to ask:** ```
+**How to ask:**
+
+```
 "Why is [pod] crash looping?"
 "What's making [pod] crash?"
 "Show me crash reasons"
@@ -668,13 +689,17 @@ You've mastered troubleshooting! Now learn advanced techniques:
 
 ## Quick Reference
 
-**Fastest troubleshooting query:** ```
+**Fastest troubleshooting query:**
+
+```
 "Diagnose [pod-name]"
 ```
 
 This single command triggers full RCA.
 
-**Most comprehensive query:** ```
+**Most comprehensive query:**
+
+```
 "Why is [pod-name] failing and how do I fix it?"
 ```
 
@@ -688,8 +713,8 @@ You get problem + solution in one response.
   <Card title="Support" icon="headset">
     Email: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
   </Card>
-  <Card title="Understand RCA" icon="book">
-    [How Root Cause Analysis Works](/using/root-cause-analysis)
+  <Card title="Understand RCA" icon="book" href="/concepts/root-cause-analysis">
+    How Root Cause Analysis works under the hood.
   </Card>
 </CardGroup>
 

@@ -1,0 +1,107 @@
+---
+title: "Rubix CLI configuration"
+sidebarTitle: "Configuration"
+description: "Where credentials and preferences live, how per-folder trust works, and how to switch environments and models."
+keywords: ["rubix cli config", "auth.json", "trust store", "per-folder trust", "rubixkube cli settings"]
+"og:title": "Rubix CLI configuration"
+"og:description": "Where credentials and preferences live, and how per-folder trust works."
+---
+
+The CLI keeps all configuration in your home directory. Nothing lives alongside your projects unless you explicitly opt into a trusted folder.
+
+## Configuration files
+
+| File | Purpose |
+| --- | --- |
+| `~/.rubix/auth.json` | Authentication credentials (device-code tokens). Rotated by the server, refreshed automatically. |
+| `~/.rubix/settings.json` | Local preferences: default environment, model preference, UI theme. |
+| `~/.rubix/sessions/` | Local session cache. Safe to delete; sessions remain available in the cloud. |
+| `~/.rubix/trust.json` | List of folders where the CLI has been granted trust (see below). |
+
+Do not hand-edit these. Use `rubix login` and `rubix logout` for auth, slash commands for preferences, and `/untrust` to remove a folder from the trust list.
+
+## Folder trust
+
+When you run the CLI inside a folder for the first time, Rubix asks whether to trust that folder. Trusting a folder enables:
+
+- Reading local files with `/paste` or for skill inputs.
+- Running shell commands the agent drafts without re-prompting each time.
+- `/send` of shell output directly into chat.
+
+Untrusted folders keep you in pure chat mode (no file or shell access). If you want to revoke trust for the current folder:
+
+```
+/untrust
+```
+
+Or remove entries manually by editing `~/.rubix/trust.json` if that is what you prefer.
+
+## Switching environments
+
+Inside chat:
+
+```
+/environments
+```
+
+Pick one from the list. The choice is remembered for the current session. To change the default environment for future sessions, pick it once and then let Rubix remember it (the CLI asks).
+
+## Switching the AI model
+
+Inside chat:
+
+```
+/models
+```
+
+From the shell:
+
+```bash
+rubix model set <model-id>
+rubix model get
+```
+
+Model availability depends on your plan. Enterprise accounts can restrict available models per workspace.
+
+## Switching agents (apps)
+
+If your workspace has multiple agent configurations (for example, different personas), you can switch which one new sessions default to:
+
+```
+/agents
+```
+
+Current sessions keep their original agent binding until you start a new one.
+
+## Console and docs shortcuts
+
+From inside chat, open the web console or this documentation in your default browser:
+
+```
+/console
+/docs
+```
+
+Saves a trip through the address bar when you want to cross-check something.
+
+## Clearing the current session
+
+Two levels of clearing:
+
+- `/clear` wipes the visible conversation history for readability. The session itself is preserved server-side.
+- `/new` starts a fresh session with no history at all.
+
+## Sensitive data and redaction
+
+The CLI does not log your prompts or responses anywhere local. Session content is stored in RubixKube Cloud according to your workspace retention policy. To delete a session entirely, run `rubix sessions` to list sessions, then delete through the web console.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Commands reference" icon="list" href="/cli/commands">
+    Every top-level and slash command.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/cli/troubleshooting">
+    Auth, proxy, and Node.js issues.
+  </Card>
+</CardGroup>

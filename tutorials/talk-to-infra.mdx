@@ -1,254 +1,191 @@
 ---
-title: 'Talk to Your Infra: Overview'
-description: 'Master the Chat interface - your conversational gateway to infrastructure intelligence'
+title: "Talk to your infrastructure"
+sidebarTitle: "Talk to your infra"
+description: "Ask your infrastructure questions in plain English. Chat is RubixKube's conversational gateway, backed by the SRI Agent and the whole Agent Mesh."
+keywords: ["talk to infra", "talk to infrastructure", "natural language query", "AI chat", "infrastructure chat", "AI SRE chat", "LLM for DevOps", "conversational AIOps"]
+"og:title": "Talk to your infrastructure with RubixKube"
+"og:description": "Ask your infrastructure questions in plain English, get cited answers."
 ---
 
-# Talk to Your Infra: Overview
+Chat is RubixKube's conversational surface. No `kubectl` memorisation, no grepping logs, no clicking through five dashboards. Ask the question you would ask a senior engineer, get a cited answer backed by the Agent Mesh.
 
-The **Chat interface**  is RubixKube's conversational AI that lets you interact with your infrastructure using natural language. No more memorizing kubectl commands or navigating complex dashboards - just ask questions like you would to a colleague.
+This tutorial set takes you from first query to daily driver. Start at Basics if you are new, skip ahead if you are not.
 
-<Info>
-**Complete chat mastery in 3 tutorials:** We've split this into focused guides so you can learn at your own pace or jump to what you need.
-</Info>
-
----
-
-## Why Use Chat?
+## Why Chat
 
 <CardGroup cols={3}>
-  <Card title="Natural Language" icon="message">
-    Ask questions in plain English instead of kubectl commands
+  <Card title="Natural language" icon="message">
+    Plain English. No query language to learn.
   </Card>
-
-  <Card title="Intelligent Analysis" icon="brain">
-    Get root cause analysis, not just raw data
+  <Card title="Answers with evidence" icon="file-magnifying-glass">
+    Every claim cites the underlying signal. Verify in one click.
   </Card>
-
-  <Card title="Context-Aware" icon="link">
-    Chat remembers the conversation - no repeating yourself
+  <Card title="Context aware" icon="link">
+    The session remembers the thread. Follow-ups do not start from scratch.
   </Card>
-
-  <Card title="Multi-Agent Backend" icon="robot">
-    Powered by Observer, RCA, and Memory agents
+  <Card title="Multi-agent backend" icon="robot">
+    Observer, RCA Pipeline, Memory, and Guardian all feed the answer.
   </Card>
-
-  <Card title="Learning Mode" icon="graduation-cap">
-    Explains Kubernetes concepts with YOUR cluster examples
+  <Card title="Works across environments" icon="server">
+    Same prompts work for Kubernetes, AWS, GCP, and VMs in one workspace.
   </Card>
-
-  <Card title="84% Time Savings" icon="gauge-high">
-    Average time saved vs. traditional debugging
+  <Card title="Runs skills on demand" icon="sparkles">
+    Invoke any enabled skill with a slash command or by intent.
   </Card>
 </CardGroup>
 
----
+## The difference, in two lines
 
-## Quick Example
+The old way on Kubernetes:
 
-**Traditional way:** ```bash
+```bash
 kubectl get pods -n production
 kubectl describe pod api-gateway-xyz
 kubectl logs api-gateway-xyz
 kubectl top pod api-gateway-xyz
-# ... 5 more commands ...
+# five more commands, then stitch it together in your head
 ```
 
-**Chat way:** ```
-"Why is api-gateway slow?"
+The Chat way:
+
+```
+Why is api-gateway slow in production?
 ```
 
-**Result:** Complete RCA in 30 seconds instead of 10+ minutes.
+One cited answer, no context-switching. The same prompt works whether `api-gateway` is a Kubernetes pod, an ECS task, a GCE instance, or a process on a VM.
 
----
-
-## The Complete Chat Tutorial Series
-
-### 1. Chat Basics: Your First Queries
-
-**Perfect for:** First-time Chat users, getting comfortable with the interface
-
-<Card
-  title="Start Here: Chat Basics"
-  icon="comments"
-  href="/tutorials/chat-basics"
->
-  Learn the interface, type your first query, understand agent responses
-
-**Topics:** - Opening the Chat interface
-  - Your first query with screenshots
-  - Understanding agent "Thoughts" and "Function Calls"
-  - Quick action categories
-  - Response feedback
-  - Keyboard shortcuts
-
-**Time: 10 minutes**
-</Card>
-
----
-
-### 2. Troubleshooting with Chat
-
-**Perfect for:** Anyone debugging pod failures, investigating incidents
-
-<Card
-  title="Investigate Real Failures"
-  icon="wrench"
-  href="/tutorials/chat-troubleshooting"
->
-  Troubleshoot OOMKilled, ImagePullBackOff, and CrashLoop with real examples
-
-  **Topics:**
-  - The 5-step troubleshooting workflow
-  - Real OOMKilled investigation (with screenshots)
-  - ImagePullBackOff diagnosis
-  - CrashLoopBackOff analysis
-  - Multi-pod investigation
-  - Time savings: 87% on average
-
-  **Time: 15 minutes**
-</Card>
-
----
-
-### 3. Advanced Chat: Personas & Workflows
-
-**Perfect for:** Power users, team leads, different engineering roles
-
-<Card
-  title="Master Advanced Features"
-  icon="star"
-  href="/tutorials/chat-advanced"
->
-  Learn how SREs, DevOps Engineers, and Platform Engineers use Chat differently
-
-  **Topics:**
-  - 5 persona-based workflows (SRE, DevOps, Platform Eng, Junior Dev)
-  - Time-of-day routines (morning, afternoon, evening, 3 AM)
-  - File upload & YAML validation
-  - Integration with Dashboard, Insights, Memory Engine
-  - Power user tips and shortcuts
-  - Export & share conversations
-
-  **Time: 20 minutes**
-</Card>
-
----
-
-## What You'll Master
-
-After completing all 3 tutorials:
-
-<Steps>
-  <Step title="Chat Basics">
-    - Navigate the interface
-    - Type effective queries
-    - Read and understand responses
-    - Use quick actions
-  </Step>
-
-  <Step title="Troubleshooting">
-    - Investigate pod failures
-    - Analyze OOMKilled, CrashLoop, ImagePullBackOff
-    - Get root cause in seconds
-    - Apply fixes confidently
-  </Step>
-
-  <Step title="Advanced Usage">
-    - Use Chat for your specific role
-    - Build daily workflows
-    - Validate YAMLs before deploying
-    - Integrate with other RubixKube features
-  </Step>
-
-  <Step title="Power User Status">
-    - 84% time savings on average
-    - Confident troubleshooting
-    - Teaching tool for team
-    - Documentation generation
-  </Step>
-</Steps>
-
----
-
-## Real User Testimonials
-
-> **"Chat saves me 10-15 minutes on EVERY incident. That adds up to hours per week."**  > 
-> — SRE Team Lead
-
-> **"I use Chat to learn Kubernetes. It explains concepts with examples from our actual cluster."**  > 
-> — Junior Developer
-
-> **"Pre-deployment YAML validation caught 3 critical issues before they hit production."**  > 
-> — DevOps Engineer
-
----
-
-## Start Your Journey
-
-Choose your path based on experience level:
-
-<Tabs>
-  <Tab title="New to Chat">
-**Start with:** 1. [Chat Basics](/tutorials/chat-basics) - 10 min
-    2. [Troubleshooting](/tutorials/chat-troubleshooting) - 15 min
-    3. [Advanced](/tutorials/chat-advanced) - 20 min
-    
-**Total time: 45 minutes** to complete mastery
-  </Tab>
-
-  <Tab title="Experienced with Chat">
-**Jump to:** - [Troubleshooting](/tutorials/chat-troubleshooting) for real scenarios
-    - [Advanced](/tutorials/chat-advanced) for power user tips
-  </Tab>
-
-  <Tab title="Specific Need">
-**Quick lookup:** - Debugging pod? → [Troubleshooting](/tutorials/chat-troubleshooting)
-    - Daily workflow? → [Advanced](/tutorials/chat-advanced)
-    - First time? → [Basics](/tutorials/chat-basics)
-  </Tab>
-</Tabs>
-
----
-
-## Quick Reference
-
-**Most common queries:** 1. `"What's failing?"` - Daily triage
-2. `"Why is [pod] crashing?"` - Troubleshooting
-3. `"Cluster health?"` - Health check
-4. `"Validate this"` - Pre-deploy (with YAML upload)
-5. `"Explain [concept]"` - Learning
-
-**Fastest way to start:** Press `⌘K`, type "chat", ask away!
-
----
-
-## Need Help?
+## The tutorial series
 
 <CardGroup cols={2}>
-  <Card title="Support" icon="headset">
-    Email: [connect@rubixkube.ai](mailto:connect@rubixkube.ai)
+  <Card title="Chat Basics" icon="comments" href="/tutorials/chat-basics">
+    Open the interface, type your first query, read the response. About ten minutes.
   </Card>
-
-  <Card title="Understand SRI" icon="book">
-    [How the Agent Works](/concepts/agent-mesh)
+  <Card title="Troubleshooting with Chat" icon="wrench" href="/tutorials/chat-troubleshooting">
+    Real debug flows: OOMKilled, ImagePullBackOff, CrashLoopBackOff, latency spikes. About fifteen minutes.
   </Card>
-
-  <Card title="Memory Engine" icon="database">
-    [How Chat Accesses History](/concepts/memory-engine)
+  <Card title="Advanced Chat" icon="star" href="/tutorials/chat-advanced">
+    Role-shaped workflows for SREs, DevOps, and platform engineers. About twenty minutes.
   </Card>
-
-  <Card title="Community" icon="users">
-    Join our Slack community
+  <Card title="Chat for cost analysis" icon="chart-line" href="/tutorials/chat-cost-analysis">
+    Rightsizing, anomaly hunting, weekly budget reviews, all through Chat. About fifteen minutes.
   </Card>
 </CardGroup>
 
----
+## The four prompt shapes that work
 
-### Ready to become a Chat power user? Start with the basics!
-<Card
-  title="Begin Tutorial 1: Chat Basics"
-  icon="play"
-  href="/tutorials/chat-basics"
->
-  Your first queries await - let's get started!
-</Card>
+<AccordionGroup>
+  <Accordion title="Health checks" icon="heart-pulse">
+    Use for the daily read.
+
+    ```
+    What is the health of every production environment?
+    Which workloads are degraded right now?
+    Any hosts above 80% memory in the last hour?
+    ```
+  </Accordion>
+  <Accordion title="Change correlation" icon="timeline">
+    Use when something just broke.
+
+    ```
+    What changed in the checkout service in the last hour?
+    Which deployments rolled back in the last 24 hours?
+    Show me configuration drifts on prod-cluster-us-east this week.
+    ```
+  </Accordion>
+  <Accordion title="Investigation" icon="magnifying-glass">
+    Use to pull a specific slice for a deep dive.
+
+    ```
+    Why is the payments API slow in ap-south-1?
+    Which pods restarted most in the last 24 hours, grouped by namespace?
+    Top five CPU consumers on host-42 in the last hour.
+    ```
+  </Accordion>
+  <Accordion title="Cost and capacity" icon="chart-line">
+    Use for weekly rightsizing.
+
+    ```
+    Which services have the most headroom on CPU limits?
+    RDS instances with the lowest average utilisation this month.
+    GCE instances over-provisioned on memory, sorted by spend.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Slash commands worth knowing
+
+The slash menu shows up when you type `/` in the chat box.
+
+| Command | Purpose |
+| --- | --- |
+| `/environments` | Switch which environment the next question runs against |
+| `/new` | Start a fresh session when the context gets muddy |
+| `/resume` | Pick up an earlier investigation where you left off |
+| `/rename` | Name the session so you can find it later |
+| `/send` | Push the last shell output into chat |
+| `/skills` | Invoke a saved skill (runbook) against the current question |
+
+## Where to start
+
+<Tabs>
+  <Tab title="New to Chat">
+    Work through the series in order:
+    1. [Chat Basics](/tutorials/chat-basics), ten minutes.
+    2. [Troubleshooting with Chat](/tutorials/chat-troubleshooting), fifteen minutes.
+    3. [Advanced Chat](/tutorials/chat-advanced), twenty minutes.
+    4. [Chat for cost analysis](/tutorials/chat-cost-analysis), fifteen minutes.
+
+    About an hour, end to end, with one real cluster.
+  </Tab>
+  <Tab title="Already using Chat">
+    Skip to the guide that matches your current need.
+    - Troubleshooting a live incident: [Troubleshooting with Chat](/tutorials/chat-troubleshooting).
+    - Daily workflow for your role: [Advanced Chat](/tutorials/chat-advanced).
+    - Quarterly cost review: [Chat for cost analysis](/tutorials/chat-cost-analysis).
+  </Tab>
+  <Tab title="Specific question">
+    - Debugging a failing pod: [Troubleshooting with Chat](/tutorials/chat-troubleshooting).
+    - Building a daily health check routine: [Advanced Chat](/tutorials/chat-advanced).
+    - Wasted spend on over-provisioned resources: [Chat for cost analysis](/tutorials/chat-cost-analysis).
+  </Tab>
+</Tabs>
+
+## Quick reference
+
+Five prompts that cover most of daily use:
+
+1. `What is failing?` - morning triage.
+2. `Why is <service> slow?` - focused investigation.
+3. `What changed in <namespace> in the last hour?` - post-deploy check.
+4. `Validate this` (with YAML uploaded) - pre-deploy safety.
+5. `Explain <concept>` - learn a Kubernetes or AWS concept using your own resources as examples.
+
+Fastest way to open Chat: `⌘K` in the console, or `rubix` in your terminal.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Does Chat work across environments?">
+    Yes. The same prompts work for Kubernetes, AWS, GCP, and Linux VMs. Use `/environments` to scope to one, or ask broadly and Chat will include every environment in the workspace.
+  </Accordion>
+  <Accordion title="Where does Chat run?">
+    The SRI Agent that powers Chat runs in RubixKube Cloud. The Observer in your environment provides signals. Raw logs stay with you unless you explicitly enable broader streaming.
+  </Accordion>
+  <Accordion title="Can Chat apply changes to my infrastructure?">
+    Chat can recommend and draft changes. Applying anything requires explicit approval and is bounded by Guardian policies. See [How to Automate Incident Remediation](/tutorials/automate-incident-remediation).
+  </Accordion>
+  <Accordion title="Is there a terminal version?">
+    Yes. Install with `npm install -g @rubixkube/rubix`, launch with `rubix`. Same agent, same skills, terminal-native UX.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="How to add custom agent skills" icon="sparkles" href="/tutorials/add-custom-agent-skills">
+    Turn your best prompts into reusable skills.
+  </Card>
+  <Card title="How to Monitor Infrastructure Health" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
+    Dashboard-first view of the same data.
+  </Card>
+</CardGroup>

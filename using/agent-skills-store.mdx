@@ -1,0 +1,101 @@
+---
+title: "Agent Skills Store"
+sidebarTitle: "Agent Skills Store"
+description: "Browse and enable system skills built by RubixKube, or create your own. Every skill is a reusable runbook the SRI Agent can run."
+keywords: ["agent skills store", "skill catalogue", "kubernetes-cluster-triage", "linear-tickets-to-notion", "runbook automation"]
+"og:title": "Agent Skills Store"
+"og:description": "Browse and enable system skills, or publish your own, inside the RubixKube workspace."
+---
+
+The Agent Skills Store is the catalogue of runbooks your SRI Agent can run. System skills are built and maintained by RubixKube. Custom skills live inside your workspace.
+
+Every skill uses the [open Agent Skills format](/concepts/skills), the same format adopted by Cursor, Claude Code, and GitHub Copilot.
+
+## Browse by category
+
+<CardGroup cols={2}>
+  <Card title="Triage" icon="stethoscope">
+    Systematic health checks across an environment.
+  </Card>
+  <Card title="Investigation" icon="magnifying-glass">
+    Focused deep-dives on a single signal or resource.
+  </Card>
+  <Card title="Automation" icon="gear">
+    Recurring tasks: handoffs, post-deploy checks, cost reviews.
+  </Card>
+  <Card title="Bridge" icon="link">
+    Skills that move information between tools (Linear, Notion, Slack).
+  </Card>
+</CardGroup>
+
+## System skills available today
+
+<AccordionGroup>
+  <Accordion title="kubernetes-cluster-triage" icon="dharmachakra">
+    **Category:** Triage. **Agent:** SRI Agent.
+
+    Systematic health check of a Kubernetes cluster. Analyses infrastructure, identifies unhealthy resources, gathers diagnostics, returns a ranked list of attention points.
+
+    **Allowed tools:** `fetch_infrastructure_snapshot`, `fetch_kubernetes_graph_snapshot`, `analyze_kubernetes_resources`, plus related read-only inspectors.
+  </Accordion>
+  <Accordion title="linear-tickets-to-notion" icon="list-check">
+    **Category:** Bridge. **Agent:** SRI Agent.
+
+    Fetches the current operator's assigned Linear issues and posts them into a new Notion page for a weekly review or handoff.
+
+    **Allowed tools:** Linear and Notion MCP integrations.
+  </Accordion>
+  <Accordion title="research-devops-sre-infra" icon="book">
+    **Category:** Investigation. **Agent:** SRI Agent.
+
+    Web-search-backed research skill for DevOps, SRE, and infrastructure topics. Useful when an incident touches an unfamiliar technology.
+
+    **Allowed tools:** Web search.
+  </Accordion>
+</AccordionGroup>
+
+## Enable a system skill
+
+<Steps titleSize="h3">
+  <Step title="Open the Skills page">
+    In the console, navigate to **Skills**. Filter by **System** to see the catalogue.
+  </Step>
+  <Step title="Review tool access">
+    Click into the skill. The **Allowed tools** list shows exactly what the agent can call when the skill runs. Nothing outside this list is ever invoked.
+  </Step>
+  <Step title="Toggle enabled">
+    Flip the switch. The SRI Agent now picks the skill up on matching prompts, and users can invoke it directly with `/skills skill-name`.
+  </Step>
+</Steps>
+
+## Publish a custom skill
+
+Every RubixKube workspace can publish its own tenant-scoped skills. Two paths:
+
+<CardGroup cols={2}>
+  <Card title="Console editor" icon="pen-to-square">
+    Write YAML and instructions inline, test against live infrastructure, then save.
+  </Card>
+  <Card title="Upload a SKILL.md" icon="file-arrow-up">
+    Bring a skill file written for Cursor, Claude Code, or Copilot. RubixKube validates against the open spec and imports.
+  </Card>
+</CardGroup>
+
+See the full walkthrough in [How to add custom agent skills](/tutorials/add-custom-agent-skills).
+
+## Store rules
+
+- System skills are read-only. Clone one to adapt it for your workspace.
+- Custom skills are scoped to a single workspace by default.
+- Enterprise customers can share custom skills across workspaces in their organisation.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Agent Skills concepts" icon="sparkles" href="/concepts/skills">
+    What a skill is, how it is scored, where it runs.
+  </Card>
+  <Card title="How to add custom agent skills" icon="plus" href="/tutorials/add-custom-agent-skills">
+    Step-by-step guide to writing and shipping your first skill.
+  </Card>
+</CardGroup>

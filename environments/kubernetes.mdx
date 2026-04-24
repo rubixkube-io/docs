@@ -1,0 +1,176 @@
+---
+title: "Kubernetes with RubixKube"
+sidebarTitle: "Kubernetes"
+description: "Install the RubixKube Observer on any Kubernetes cluster. EKS, GKE, AKS, KIND, and bare metal clusters on v1.24 or later are all supported."
+keywords: ["kubernetes monitoring", "AKS monitoring", "EKS monitoring", "GKE monitoring", "kubectl install", "kubernetes AI SRE"]
+"og:title": "Kubernetes with RubixKube"
+"og:description": "Install the Observer on any Kubernetes cluster in about five minutes."
+---
+
+RubixKube runs on every conformant Kubernetes cluster on v1.24 or later. One `kubectl apply` installs the Observer into a dedicated namespace. Everything else runs in RubixKube Cloud.
+
+This page covers the install, what it deploys, common troubleshooting, and how to uninstall cleanly.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="kubectl configured" icon="terminal">
+    `kubectl get nodes` should succeed against the target cluster.
+  </Card>
+  <Card title="Cluster admin permissions" icon="key">
+    Required to create the `rubixkube-system` namespace, service account, and ClusterRole.
+  </Card>
+  <Card title="Outbound HTTPS" icon="network-wired">
+    `api.rubixkube.ai:443` and `nats.rubixkube.ai:443` reachable from the cluster.
+  </Card>
+  <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
+    Sign in at console.rubixkube.ai. Create a new environment for this cluster.
+  </Card>
+</CardGroup>
+
+## Install
+
+Copy the personal install command from the console. Your API key (prefix `rk_`) is already embedded.
+
+```bash
+kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
+```
+
+<Warning>
+  Always copy the command from the console. The embedded API key scopes the Observer to your workspace.
+</Warning>
+
+You should see:
+
+```
+namespace/rubixkube-system created
+serviceaccount/rubixkube-observer created
+clusterrole.rbac.authorization.k8s.io/rubixkube-observer created
+clusterrolebinding.rbac.authorization.k8s.io/rubixkube-observer created
+deployment.apps/rubixkube-observer created
+```
+
+## Verify
+
+<Steps titleSize="h3">
+  <Step title="Check the pod">
+    ```bash
+    kubectl get pods -n rubixkube-system
+    ```
+
+    Wait for **STATUS** to show `Running`:
+
+    ```
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
+    ```
+  </Step>
+  <Step title="Tail the logs">
+    ```bash
+    kubectl logs -n rubixkube-system deployment/rubixkube-observer --tail=20
+    ```
+
+    Expect to see `Connected to api.rubixkube.ai` and topology sweep messages within the first minute.
+  </Step>
+  <Step title="Confirm in the console">
+    Open **Environments** in the console. The environment card should switch from **Connecting** to **Healthy** and the Infrastructure view should populate with nodes, namespaces, and workloads.
+  </Step>
+</Steps>
+
+## What is being monitored
+
+The Observer collects signals for every native Kubernetes object plus the common extensions.
+
+| Signal | Detail |
+| --- | --- |
+| Pods | State, restart count, resource usage, owner references |
+| Deployments, StatefulSets, DaemonSets | Replica health, rollout state, condition history |
+| Services and Ingress | Endpoint health, routing, LoadBalancer status |
+| Nodes | CPU, memory, disk, allocatable and capacity, pressure conditions |
+| Events | Cluster event bus, filtered and streamed structurally |
+| PVs and PVCs | Binding state, storage class, capacity |
+| ConfigMaps and Secrets (metadata only) | Names, keys, revision. No values unless explicitly enabled |
+
+## Footprint
+
+The Observer is deliberately light.
+
+- About **255Mi RAM** combined for Observer and the Kubernetes MCP server.
+- Under **10 millicores of CPU** during normal operation.
+- Scales modestly with cluster size. Expect another 50Mi of RAM per 100 nodes.
+
+Cloud-side agents (RCA Pipeline, Memory, Guardian, Remediation) run in RubixKube Cloud. Your cluster hosts only the Observer.
+
+## KIND and local development
+
+Same install command works on KIND. Useful when you want to evaluate without touching a real cluster.
+
+```bash
+kind create cluster --name rubixkube-test
+kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
+```
+
+KIND is the path most teams use for the [tutorials](/tutorials/monitor-infrastructure-health) before running against real infrastructure.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Pod stuck in ImagePullBackOff">
+    The cluster cannot reach the Observer image registry. Check outbound egress to `api.rubixkube.ai:443`:
+
+    ```bash
+    kubectl run test-curl --image=curlimages/curl -i --rm -- curl -I https://api.rubixkube.ai
+    ```
+
+    If this fails, your cluster is behind a proxy or egress policy. Allowlist the two endpoints or [reach out](mailto:connect@rubixkube.ai) for an air-gapped deployment path.
+  </Accordion>
+  <Accordion title="Pod in CrashLoopBackOff">
+    Almost always an invalid API key. Check the logs:
+
+    ```bash
+    kubectl logs -n rubixkube-system deployment/rubixkube-observer --previous
+    ```
+
+    If you see `401 Unauthorized` or `invalid api key`, reinstall with the command copied fresh from the console.
+  </Accordion>
+  <Accordion title="Environment stuck on Connecting">
+    Three common causes:
+
+    1. Pod is not Running yet. Recheck `kubectl get pods -n rubixkube-system`.
+    2. Outbound HTTPS to `nats.rubixkube.ai:443` is blocked. The control channel runs over HTTPS but the streaming channel uses NATS.
+    3. Clock skew on the node. Ensure NTP is running.
+  </Accordion>
+  <Accordion title="Observer high memory or CPU">
+    Rare, but possible on very large clusters. Edit the deployment to raise limits, or reach out and we will help you size the Observer for your cluster shape.
+
+    ```bash
+    kubectl edit deployment rubixkube-observer -n rubixkube-system
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## AKS and Azure
+
+AKS clusters are supported today on the Kubernetes path. Install exactly as you would on EKS or GKE. Subscription-level Azure observation (App Service, Azure VMs) is on the roadmap, see [Azure](/environments/azure).
+
+## Uninstall
+
+```bash
+kubectl delete -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
+```
+
+This removes the namespace, service account, ClusterRole, binding, and deployment. The environment card in the console can then be deleted.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
+    The full install flow covering every supported environment.
+  </Card>
+  <Card title="Observer Agent concept" icon="eye" href="/concepts/observer-agent">
+    What the Observer does, where it runs, what it sees.
+  </Card>
+  <Card title="First tutorial" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
+    Monitor infrastructure health once the Observer is live.
+  </Card>
+</CardGroup>

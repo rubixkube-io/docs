@@ -1,0 +1,160 @@
+---
+title: "How to automate incident remediation with RubixKube"
+sidebarTitle: "How to Automate Incident Remediation"
+description: "Go from detection to safe resolution. Learn how RubixKube surfaces the right RCA, recommends the fix, and how approvals keep you in control."
+keywords: ["incident remediation", "automated remediation", "RCA", "root cause analysis", "AI SRE", "blast radius"]
+"og:title": "How to automate incident remediation with RubixKube"
+"og:description": "Go from detection to safe resolution with evidence-backed recommendations."
+---
+
+This tutorial covers the remediation flow end to end. Detection, RCA, recommended actions, approvals, and verification. Takes about twenty minutes using a live environment.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="An environment connected" icon="plug" href="/getting-started/connect-your-environment">
+    Kubernetes, AWS, GCP, or a VM. Any of them work for this tutorial.
+  </Card>
+  <Card title="Something worth remediating" icon="triangle-exclamation">
+    A real incident, or a deliberate break (e.g. a misconfigured Deployment on a test cluster).
+  </Card>
+</CardGroup>
+
+## The OPEL loop, applied to remediation
+
+RubixKube follows the same rhythm for every incident.
+
+<Steps titleSize="h3">
+  <Step title="Observe">
+    The Observer spots the anomaly. Common examples: CrashLoopBackOff, OOMKilled, RDS connection saturation, GCE memory pressure, deployment rollback.
+  </Step>
+  <Step title="Plan">
+    The RCA Pipeline Agent gathers logs, metrics, events, and recent changes across the affected resources. Builds a causal chain and produces an RCA report.
+  </Step>
+  <Step title="Execute">
+    The report includes recommended actions, each with expected blast radius. You approve, Rubix applies.
+  </Step>
+  <Step title="Learn">
+    The Memory Engine stores the resolution. Next time a similar pattern surfaces, the system recognises it faster.
+  </Step>
+</Steps>
+
+## Step 1: Catch an incident in Insights
+
+Open **Magic Insights**. Any currently-open anomaly shows as a card. Pick one and click through.
+
+A healthy RubixKube setup surfaces an Insight within one or two minutes of the underlying problem starting. If nothing is live, a deliberate break helps you practice:
+
+<CodeGroup>
+  ```bash Kubernetes
+  kubectl run brokenpod --image=nginx:doesnotexist -n default
+  ```
+
+  ```bash Linux VM
+  stress --vm 1 --vm-bytes 90% --timeout 120s
+  ```
+</CodeGroup>
+
+Wait a minute or two, then refresh **Magic Insights**.
+
+## Step 2: Read the RCA report
+
+When an insight has enough evidence for a full causal chain, the RCA Pipeline Agent produces a report. You will find it in **RCA Reports** (or linked from the insight card).
+
+Every report contains three sections:
+
+<AccordionGroup>
+  <Accordion title="Observed conditions" icon="eye">
+    The exact state of the affected resources when the incident started. Snapshots of metrics, events, and recent changes.
+  </Accordion>
+  <Accordion title="Causal chain" icon="diagram-project">
+    Which signal led to which, ending at the root cause. Each link cites the evidence that justifies it, so you can verify the reasoning rather than trust it blind.
+  </Accordion>
+  <Accordion title="Recommended actions" icon="wand-magic-sparkles">
+    Ranked fixes, each annotated with expected blast radius, estimated recovery time, and a confidence score. High-confidence actions sit at the top.
+  </Accordion>
+</AccordionGroup>
+
+## Step 3: Approve or adapt the action
+
+The recommended action comes with two buttons.
+
+- **Approve.** RubixKube applies the change within the Guardian policy for that environment. You get a verification notification when the change lands.
+- **Adapt.** Open the action in Chat, adjust the parameters, then approve. Useful when the default scope is too wide or too narrow.
+
+<Warning>
+  Nothing changes in your environment without an explicit human approval. Guardian policies make destructive operations (scale-to-zero, delete, force-restart) require a second pair of eyes by default.
+</Warning>
+
+## Step 4: Verify the fix
+
+After the action runs, RubixKube watches the affected resources for a stabilisation window. Three outcomes are possible.
+
+<CardGroup cols={3}>
+  <Card title="Verified" icon="circle-check">
+    Signals return to baseline. Insight closes. RCA report is marked resolved.
+  </Card>
+  <Card title="Partial" icon="triangle-exclamation">
+    The primary signal improved but related resources are still off. A follow-up insight opens automatically.
+  </Card>
+  <Card title="Rollback suggested" icon="rotate-left">
+    Signals worsened. The RCA is re-run with the new state and a revised recommendation appears.
+  </Card>
+</CardGroup>
+
+## Step 5: Feed the outcome back
+
+The Memory Engine learns from every resolution, but a short note from the operator sharpens future runs.
+
+On the closed RCA report, add a comment like:
+
+```
+Scaled the memory limit from 512Mi to 1Gi. Holds through peak traffic.
+```
+
+Future similar incidents will surface this note with their recommendations.
+
+## What good remediation looks like
+
+<CardGroup cols={2}>
+  <Card title="RCAs have evidence" icon="file-magnifying-glass">
+    Every causal link cites the signal it is based on. You can verify a claim in under a minute.
+  </Card>
+  <Card title="Actions stay scoped" icon="shield-halved">
+    Guardian rejects anything beyond the intended blast radius. No surprise cascades.
+  </Card>
+  <Card title="Resolutions compound" icon="database">
+    Repeat incidents surface the original fix as context. MTTU drops with tenure.
+  </Card>
+  <Card title="Rollbacks are one click" icon="rotate-left">
+    Every applied action is reversible. Confidence to approve stays high.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Can RubixKube apply a fix without my approval?">
+    No. Every change in your environment needs an explicit approval. Guardian policies can narrow what is approvable per environment or per team, but nothing is fully autonomous by default.
+  </Accordion>
+  <Accordion title="What if the recommended action is wrong?">
+    Reject it. The RCA is re-scored using your rejection as signal, and a revised recommendation appears. The rejection also feeds the Memory Engine, so the system learns what your team does not want.
+  </Accordion>
+  <Accordion title="How do I see who approved which action?">
+    Every applied action has an audit entry: actor, timestamp, scope, outcome. Find it on the RCA report or in the Action Center.
+  </Accordion>
+  <Accordion title="Can I set different guardrails per environment?">
+    Yes. Guardian policies attach per environment. Production can require two approvals, staging can require one, lab can require none. See [Safety and Guardrails](/concepts/guardrails).
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="How to Monitor Infrastructure Health" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
+    The daily rhythm that feeds this remediation flow.
+  </Card>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    Exactly what RubixKube will and will not do on its own.
+  </Card>
+</CardGroup>

@@ -1,0 +1,76 @@
+---
+title: "Notion integration"
+sidebarTitle: "Notion"
+description: "Connect your Notion workspace so RubixKube agents can read team docs, publish RCAs as pages, and keep post-mortems in the wiki you already use."
+keywords: ["notion integration", "rubixkube notion", "post-mortem", "knowledge base", "wiki"]
+"og:title": "Notion integration"
+"og:description": "Read team docs and publish RCAs to Notion."
+---
+
+Connect Notion so RubixKube agents can pull context from your team docs and publish RCA reports straight into the pages and databases you already use for incident review.
+
+## What it unlocks
+
+<CardGroup cols={2}>
+  <Card title="Read team docs" icon="book-open">
+    Agents can read the Notion pages and databases you share with the integration. Useful for runbooks, service ownership, and incident procedures.
+  </Card>
+  <Card title="Write pages and entries" icon="pen-to-square">
+    Agents can create pages and add rows to databases you share. Good for RCA publishing and post-mortem workflows.
+  </Card>
+  <Card title="Scoped by what you share" icon="shield-halved">
+    Notion's sharing model means the integration can only see what you explicitly share with it. Nothing else.
+  </Card>
+  <Card title="Evidence back to the source" icon="link">
+    Anything published includes links back to the RubixKube console so the evidence trail stays intact.
+  </Card>
+</CardGroup>
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **Notion**.
+  </Step>
+  <Step title="Authenticate">
+    Authorise with Notion. The integration is installed into your Notion workspace.
+  </Step>
+  <Step title="Configure access">
+    In Notion, share the pages and databases you want RubixKube to see by adding the RubixKube connection to them. The integration can only read or write where you have shared it.
+  </Step>
+</Steps>
+
+Once connected, Notion is available tenant-wide. Every agent across every environment can use it.
+
+{/* TODO: screenshot of the Integrations page showing the Notion card */}
+
+## How the agents use it
+
+- Agents can look up runbooks, architecture notes, and incident procedures when investigating or answering questions in chat.
+- RCA reports can be published to a shared page or database so post-mortem reviews happen where the rest of your knowledge lives.
+
+## Build custom workflows with skills
+
+The connection exposes read and write capabilities to agents. Specific workflows (publish every RCA to a specific database, weekly incident digest page, pull runbook content into the agent's context during an incident) are built as [Skills](/concepts/skills). Skills are where you tailor the integration to your team's exact workflow.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Agents cannot find a page">
+    The integration only sees what you have explicitly shared. Open the page or database in Notion and add the RubixKube connection to it.
+  </Accordion>
+  <Accordion title="Writing to a database fails">
+    The database schema needs to match the fields the skill is writing. Check the properties on the target database and adjust the skill or the schema.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Linear" icon="list-check" href="/integrations/linear">
+    Pair with Notion for ticket-to-doc workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Notion capabilities into workflows.
+  </Card>
+</CardGroup>

@@ -1,0 +1,147 @@
+---
+title: "Rubix CLI command reference"
+sidebarTitle: "Commands"
+description: "Every top-level command and every slash command in the Rubix CLI. Generated from the CLI source so it stays accurate."
+keywords: ["rubix cli commands", "rubix slash commands", "CLI reference", "rubixkube CLI commands"]
+"og:title": "Rubix CLI command reference"
+"og:description": "Every top-level command and slash command in the Rubix CLI."
+---
+
+Complete reference for the Rubix CLI. Top-level commands are what you run from the shell. Slash commands are what you run inside the chat UI.
+
+## Top-level commands
+
+<AccordionGroup>
+  <Accordion title="rubix" icon="terminal">
+    Launch the interactive chat UI. Equivalent to `rubix chat` with no options.
+
+    ```bash
+    rubix
+    ```
+  </Accordion>
+  <Accordion title="rubix chat" icon="comments">
+    Start interactive chat, optionally resuming a session or pre-sending a prompt.
+
+    ```bash
+    rubix chat [options]
+    ```
+
+    **Options**
+
+    | Flag | Description |
+    | --- | --- |
+    | `-s, --session-id <id>` | Resume an existing session by id. Find ids with `rubix sessions`. |
+    | `-p, --prompt <text>` | Send a prompt immediately after launch. Non-interactive when combined with a session-id. |
+
+    **Examples**
+
+    ```bash
+    rubix chat --session-id "abc-123"
+    rubix chat --prompt "What is the health of production?"
+    ```
+  </Accordion>
+  <Accordion title="rubix login" icon="right-to-bracket">
+    Authenticate with the device-code flow. Opens a browser URL for you to paste a short code and approve.
+
+    ```bash
+    rubix login
+    ```
+
+    Credentials persist at `~/.rubix/auth.json`.
+  </Accordion>
+  <Accordion title="rubix logout" icon="right-from-bracket">
+    Clear local authentication. The next `rubix` run prompts for device-code login again.
+
+    ```bash
+    rubix logout
+    ```
+  </Accordion>
+  <Accordion title="rubix sessions" icon="list">
+    List your past chat sessions. Shows id, title, associated agent, and last update time.
+
+    ```bash
+    rubix sessions
+    ```
+
+    Use the id with `rubix chat --session-id <id>` to resume.
+  </Accordion>
+  <Accordion title="rubix model" icon="microchip">
+    Manage the AI model used for chat.
+
+    ```bash
+    rubix model [subcommand] [modelId]
+    ```
+
+    **Subcommands**
+
+    | Subcommand | Description |
+    | --- | --- |
+    | `list` | Show available models for your workspace. |
+    | `get` | Print the currently selected model. |
+    | `set <modelId>` | Switch to a specific model for new sessions. |
+  </Accordion>
+</AccordionGroup>
+
+## Slash commands
+
+Available inside the chat UI. Type `/` to open the menu, or type any command directly.
+
+| Command | Purpose |
+| --- | --- |
+| `/login` | Authenticate via device-code flow |
+| `/logout` | Clear local authentication |
+| `/status` | Show authentication, session, and environment status |
+| `/resume` | Resume a previous conversation |
+| `/new` | Start a fresh conversation |
+| `/environments` | Switch the active environment |
+| `/refresh` | Refresh environments and dashboard stats |
+| `/models` | Switch the AI model for this session |
+| `/agents` | Switch the agent (app) binding for new sessions |
+| `/paste` | Insert clipboard content cleanly, bypassing terminal paste truncation |
+| `/send` | Send the last shell output into chat as context |
+| `/clear` | Clear visible conversation history (session is preserved) |
+| `/rename` | Rename the current session |
+| `/console` | Open the web console in your default browser |
+| `/docs` | Open RubixKube docs in your default browser |
+| `/help` | Toggle the keyboard shortcut and help panel |
+| `/exit` | Exit the Rubix CLI |
+| `/quit` | Alias for `/exit` |
+| `/untrust` | Remove the current folder from the trusted list |
+
+## Flags and environment variables
+
+<AccordionGroup>
+  <Accordion title="--version" icon="tag">
+    Print the installed CLI version and exit.
+
+    ```bash
+    rubix --version
+    ```
+  </Accordion>
+  <Accordion title="--help" icon="circle-question">
+    Print help for any command.
+
+    ```bash
+    rubix --help
+    rubix chat --help
+    rubix model --help
+    ```
+  </Accordion>
+  <Accordion title="RUBIX_API_KEY" icon="key">
+    Override the stored token for this invocation. Useful for CI or ephemeral runners. When set, the CLI skips the device-code prompt.
+  </Accordion>
+  <Accordion title="RUBIX_ENV_ID" icon="server">
+    Pin the environment for this invocation. Overrides any session default.
+  </Accordion>
+</AccordionGroup>
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Examples" icon="lightbulb" href="/cli/examples">
+    Concrete flows that combine the commands above.
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/cli/configuration">
+    Where credentials live and how folder trust works.
+  </Card>
+</CardGroup>

@@ -1,0 +1,84 @@
+---
+title: "GitLab integration"
+sidebarTitle: "GitLab"
+description: "Give RubixKube agents read and write access to your GitLab repos so they can correlate CI deployments with incidents, cite MRs in RCAs, and propose soft remediations as merge requests."
+keywords: ["gitlab integration", "rubixkube gitlab", "ci correlation", "merge request", "soft remediation", "gitops"]
+"og:title": "GitLab integration"
+"og:description": "Connect GitLab so agents can correlate CI deployments and propose fixes as merge requests."
+---
+
+Connect GitLab so RubixKube agents can see what shipped through your pipelines, correlate CI deployments with incidents, and propose soft remediations as merge requests instead of direct cluster changes.
+
+## What it unlocks
+
+<CardGroup cols={2}>
+  <Card title="Pipelines and MRs in context" icon="rocket">
+    Agents can read recent deploys, merges, and commit history. RCAs cite pipeline runs that correlate with an incident when the evidence points that way.
+  </Card>
+  <Card title="Merge requests as a remediation surface" icon="code-pull-request">
+    For IaC and GitOps repos, agents can open MRs with the proposed change. Your review, your merge, your pipeline.
+  </Card>
+  <Card title="Issue tracking" icon="list-check">
+    Agents can create, read, and update issues linked to insights and RCA reports.
+  </Card>
+  <Card title="Evidence, not source" icon="shield-halved">
+    The integration reads metadata and diffs. Source code is not ingested or stored.
+  </Card>
+</CardGroup>
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **GitLab**.
+  </Step>
+  <Step title="Authenticate">
+    Authorise with GitLab. Both GitLab.com and self-hosted instances are supported. For self-hosted, provide your GitLab base URL.
+  </Step>
+  <Step title="Configure access">
+    Pick the groups or projects RubixKube can see. Grant write access only to projects where you want agents to open merge requests.
+  </Step>
+</Steps>
+
+Once connected, GitLab is available tenant-wide. Every agent across every environment can use it without additional per-environment setup.
+
+{/* TODO: screenshot of the Integrations page showing the GitLab card */}
+
+## How the agents use it
+
+- During RCA, agents walk recent pipelines and merges to the affected service as candidate causes, citing them as evidence.
+- For IaC and GitOps-managed infrastructure, soft remediations are proposed as merge requests against the relevant project. See [Safety and Guardrails](/concepts/guardrails) for the full approval model.
+- Chat can answer questions like "what changed in payments before this spike" by walking the pipeline and merge history.
+
+## Build custom workflows with skills
+
+Out of the box, the integration exposes read and MR-open capabilities to agents. To program specific workflows (auto-open an MR with a suggested config fix, weekly changelog digest, project-to-service mapping rules), build a [Skill](/concepts/skills) on top of the connection.
+
+## Self-hosted GitLab
+
+Self-hosted instances work the same way. Provide your instance's base URL during setup. For restricted networks, reach out to [connect@rubixkube.ai](mailto:connect@rubixkube.ai) and we will walk you through the right deployment mode.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Agents cannot see a project">
+    Confirm the authorised account has access to the group or project, and that the project is included in the scope you chose during setup.
+  </Accordion>
+  <Accordion title="MR proposals fail">
+    Check that the target project is included in the write scope. Reads work with a narrower scope than writes.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="GitHub" icon="github" href="/integrations/github">
+    Equivalent integration for GitHub-hosted repos.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose GitLab tools into custom workflows.
+  </Card>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    Why MR-based remediation is the preferred path.
+  </Card>
+</CardGroup>

@@ -1,0 +1,77 @@
+---
+title: "New Relic integration"
+sidebarTitle: "New Relic"
+description: "Connect New Relic to RubixKube today via the custom integrations path. Agents can run NRQL, read APM service health, and pull alert state to enrich investigations and RCAs."
+keywords: ["new relic integration", "rubixkube new relic", "NRQL", "APM integration", "observability integration"]
+"og:title": "New Relic integration"
+"og:description": "Connect New Relic to RubixKube via Custom MCP or Custom REST."
+---
+
+New Relic connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) pointing at NerdGraph, and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+
+## What to bring in
+
+The signals that matter most when agents are investigating or writing RCAs:
+
+- **NRQL queries** via NerdGraph for any metric, event, or log New Relic holds.
+- **APM service health** (throughput, error rate, apdex) for the services involved in an incident.
+- **Alerts** (policies, conditions, incidents) to surface firing alerts as insight candidates.
+- **Entity relationships** for service and host topology.
+
+Read-only user keys are enough for all of the above.
+
+## Which path to pick
+
+<CardGroup cols={2}>
+  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
+    Point at the NerdGraph endpoint with an OpenAPI wrapper, or use the REST v2 API directly.
+  </Card>
+  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
+    Wrap NRQL behind named tools (for example `new_relic_service_latency`) so agents never see raw query strings.
+  </Card>
+</CardGroup>
+
+## Quick recipe: REST path
+
+<Steps titleSize="h3">
+  <Step title="Create a New Relic user key">
+    In New Relic, create a read-scoped user key. No admin or license key is required.
+  </Step>
+  <Step title="Register the endpoint">
+    In the RubixKube console, go to **Integrations → Custom REST** and register NerdGraph (`/graphql`) or the REST v2 API.
+  </Step>
+  <Step title="Enable the calls you care about">
+    Start with NRQL execution, alert state, and entity search. Leave everything else disabled.
+  </Step>
+  <Step title="Set auth">
+    Add the user key to the workspace secret vault. Map it to the required header (`API-Key`).
+  </Step>
+  <Step title="Scope to skills">
+    Attach the enabled endpoints to the skills that need New Relic context.
+  </Step>
+</Steps>
+
+Once connected, the integration is tenant-wide.
+
+## Example tools worth having
+
+- `nr_service_health(service, window)` — wraps an NRQL query for throughput, error rate, and apdex.
+- `nr_top_errors(service, window)` — returns the most frequent error fingerprints for the window.
+- `nr_firing_incidents(service)` — returns incidents currently firing on a service.
+- `nr_entity_relationships(service)` — returns upstream and downstream entities for topology context.
+
+Define these as skills (or as MCP tools if you want them to compose multiple NRQL calls).
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    The full REST flow with auth options and approval rules.
+  </Card>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When you want richer tool schemas and multi-call workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose New Relic queries into custom workflows.
+  </Card>
+</CardGroup>

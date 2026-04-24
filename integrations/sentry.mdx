@@ -1,0 +1,77 @@
+---
+title: "Sentry integration"
+sidebarTitle: "Sentry"
+description: "Connect Sentry to RubixKube today via the custom integrations path. Agents can read issues, events, and releases to enrich investigations and RCAs."
+keywords: ["sentry integration", "rubixkube sentry", "error tracking", "observability integration"]
+"og:title": "Sentry integration"
+"og:description": "Connect Sentry to RubixKube via Custom MCP or Custom REST."
+---
+
+Sentry connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+
+## What to bring in
+
+The signals that matter most when agents are investigating or writing RCAs:
+
+- **Issues** (`/api/0/projects/{org}/{project}/issues/`) for error grouping, counts, and recency.
+- **Events** (`/api/0/issues/{issue_id}/events/`) for specific stack traces and breadcrumbs that explain a failure.
+- **Releases** (`/api/0/projects/{org}/{project}/releases/`) to correlate error spikes with deploys.
+- **Performance** (transactions, p95 latency by transaction name) if you have Sentry Performance.
+
+Read-only auth tokens are enough for all of the above.
+
+## Which path to pick
+
+<CardGroup cols={2}>
+  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
+    Sentry publishes a stable REST API. Point the custom REST integration at it with an OpenAPI wrapper.
+  </Card>
+  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
+    Wrap issue lookups and deploy correlation behind named tools (for example `sentry_top_issues_since(release)`).
+  </Card>
+</CardGroup>
+
+## Quick recipe: REST path
+
+<Steps titleSize="h3">
+  <Step title="Create a Sentry auth token">
+    In Sentry, create an internal integration with a read-only auth token covering the projects you want RubixKube to see.
+  </Step>
+  <Step title="Register the endpoint">
+    In the RubixKube console, go to **Integrations → Custom REST** and register the Sentry API.
+  </Step>
+  <Step title="Enable the calls you care about">
+    Start with issues list, single issue events, and releases. Transactions if you use Performance.
+  </Step>
+  <Step title="Set auth">
+    Add the auth token to the workspace secret vault. Map it to the `Authorization: Bearer <token>` header.
+  </Step>
+  <Step title="Scope to skills">
+    Attach the enabled endpoints to the skills that need Sentry context.
+  </Step>
+</Steps>
+
+Once connected, the integration is tenant-wide.
+
+## Example tools worth having
+
+- `sentry_top_issues(project, window)` — returns the most frequent issues in the window with counts.
+- `sentry_issue_detail(issueId)` — returns the latest event, stack trace, and breadcrumbs.
+- `sentry_since_release(project, release)` — returns new issues introduced since a given release, useful after a deploy correlates with an incident.
+- `sentry_transaction_p95(service, window)` — returns p95 latency by transaction name.
+
+Define these as skills (or as MCP tools if you want them to wrap multiple calls).
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    The full REST flow with auth options and approval rules.
+  </Card>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When you want richer tool schemas and multi-call workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Sentry lookups into custom workflows.
+  </Card>
+</CardGroup>

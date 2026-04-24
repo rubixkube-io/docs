@@ -1,0 +1,153 @@
+---
+title: "Glossary"
+sidebarTitle: "Glossary"
+description: "Canonical definitions for every RubixKube term: agents, environments, RCAs, skills, and the rest of the vocabulary."
+keywords: ["rubixkube glossary", "SRI glossary", "AI SRE terms", "OPEL loop", "observer agent", "knowledge graph", "agent mesh"]
+"og:title": "RubixKube Glossary"
+"og:description": "Canonical definitions for every RubixKube term."
+---
+
+Short, canonical definitions for every term that appears across the product and docs. Each entry links to the full guide so you can dig deeper when you need to.
+
+## A
+
+### Action
+A proposed or applied change to your infrastructure, such as a configuration update, a restart, or a pull request. Actions always carry an expected blast radius and follow the approval model set by [Safety and Guardrails](/concepts/guardrails). See [Action Center](/using/action).
+
+### Action Center
+The page where recommended actions are reviewed, approved, applied, and verified. See [Action Center](/using/action).
+
+### Agent
+A specialised AI component inside the [Agent Mesh](/concepts/agent-mesh). Each agent owns one slice of the reliability loop (observing, investigating, remembering, remediating, or enforcing policy).
+
+### Agent Mesh
+The coordinated set of specialised agents that run the [OPEL Loop](/concepts/opel-loop) together. See [Agent Mesh](/concepts/agent-mesh).
+
+### Agent Skill
+See [Skill](#skill).
+
+### Agent Skills Store
+The catalogue of [system skills](#system-skill) built by RubixKube plus the custom skills published inside your workspace. See [Agent Skills Store](/using/agent-skills-store).
+
+## C
+
+### Chat
+See [Rubix Chat](#rubix-chat).
+
+### Confidence score
+A value attached to an insight, RCA link, or recommended action that reflects how much supporting evidence the system has. Higher scores mean less ambiguity and fewer plausible alternatives.
+
+## E
+
+### Environment
+A connected unit of infrastructure. In the current release this is typically a Kubernetes cluster. Environments are the scope for Observers, signals, insights, and guardrails. See [Environments](/using/environments).
+
+### Evidence
+A concrete signal (log excerpt, metric sample, event, state diff) that backs a claim made by an agent. Every RCA link in a RubixKube report cites its evidence.
+
+## G
+
+### Guardian Agent
+The agent responsible for policy enforcement. Nothing that mutates your environment reaches production without passing Guardian checks. See [Safety and Guardrails](/concepts/guardrails).
+
+### Guardrails
+The policies and safeguards that bound what agents are allowed to do, who needs to approve what, and how changes land in your environment. See [Safety and Guardrails](/concepts/guardrails).
+
+## I
+
+### Insight
+An anomaly or deviation that is worth a human's attention. Insights are the top-level unit of work in the Magic Insights feed. Not every insight becomes an RCA. See [Magic Insights](/using/insights).
+
+### Integration
+A connection between RubixKube and an external tool (Slack, GitHub, PagerDuty, Notion, Linear, Atlassian Rovo, Teams, or your own services via MCP or REST). See [Integrations](/using/integrations).
+
+## K
+
+### Knowledge Graph
+The live, queryable model of your infrastructure. Nodes are resources (services, deployments, pods, queues), edges are relationships (runs on, calls, depends on). The [Observer Agent](#observer-agent) keeps it current. See [Knowledge Graph](/concepts/knowledge-graph).
+
+## M
+
+### MCP (Model Context Protocol)
+An open protocol for exposing tools, resources, and capabilities to AI agents. RubixKube uses MCP for its internal agent-to-tool wiring and for [custom integrations](/integrations/custom-mcp-servers).
+
+### Memory Agent
+The agent that stores incident history, resolution patterns, and operator context, then surfaces the relevant prior art when similar situations recur. See [Memory Engine](/concepts/memory-engine).
+
+### Memory Engine
+The underlying store and retrieval system powering the Memory Agent. See [Memory Engine](/concepts/memory-engine).
+
+## O
+
+### Observer Agent
+The only RubixKube component that runs inside your environment. Read-only, outbound-only, and deliberately lightweight. It streams signals to [RubixKube Cloud](#rubixkube-cloud). See [Observer Agent](/concepts/observer-agent).
+
+### OPEL Loop
+The operational rhythm every agent in the mesh follows: **O**bserve, **P**lan, **E**xecute, **L**earn. See [OPEL Loop](/concepts/opel-loop).
+
+## R
+
+### RCA (Root Cause Analysis)
+The process of tracing an incident from symptom to cause using evidence-linked reasoning. See [Root Cause Analysis](/concepts/root-cause-analysis).
+
+### RCA Pipeline Agent
+The agent that runs the RCA process on qualifying insights and produces [RCA Reports](#rca-report). See [Agent Mesh](/concepts/agent-mesh).
+
+### RCA Report
+The evidence-linked output of a completed investigation: observed conditions, causal chain, recommended actions, and verification. See [RCA Reports](/using/rca-reports).
+
+### Remediation Agent
+The agent that applies approved fixes inside their scoped blast radius and watches for the stabilisation window to close. See [Agent Mesh](/concepts/agent-mesh).
+
+### Rubix Chat
+The conversational front door to RubixKube, powered by the [SRI Agent](#sri-agent). Available in the console and through the [Rubix CLI](#rubix-cli). See [Rubix Chat Agent](/using/rubix-chat-agent).
+
+### Rubix CLI
+The terminal client for RubixKube. Install with `npm install -g @rubixkube/rubix`, launch with `rubix`. See the [Rubix CLI docs](/cli/overview).
+
+### RubixKube Cloud
+The hosted control plane. Every agent except the [Observer](#observer-agent) runs here, so your environment footprint stays small and upgrades are handled for you.
+
+## S
+
+### Signal
+A single piece of infrastructure telemetry: a metric sample, an event, a log excerpt, or a state change. Signals are the raw material that feeds the Knowledge Graph, insights, and RCAs.
+
+### Skill
+A reusable runbook the [SRI Agent](#sri-agent) can run. Skills use the [open Agent Skills format](/concepts/skills) and can be enabled from the Agent Skills Store or published by your workspace. See [Agent Skills](/concepts/skills).
+
+### SRI (Site Reliability Intelligence)
+The product category RubixKube defines: AI-native reliability work that combines observation, investigation, and remediation into a continuous loop. See [What is SRI?](/concepts/what-is-sri).
+
+### SRI Agent
+The conversational agent that powers [Rubix Chat](#rubix-chat). Answers questions, runs skills, and drafts actions, always with cited evidence.
+
+### System skill
+A [skill](#skill) built and maintained by RubixKube, available to every workspace. System skills are read-only: clone one to adapt it for your team.
+
+## T
+
+### Tenant
+A logical isolation boundary between customers. Each tenant has its own data, users, integrations, skills, and audit trail.
+
+## W
+
+### Workspace
+The top-level container a tenant operates inside. Environments, users, integrations, and skills all live within a workspace.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="What is SRI?" icon="brain" href="/concepts/what-is-sri">
+    The category this glossary describes, in one page.
+  </Card>
+  <Card title="Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
+    How every agent in the mesh fits together.
+  </Card>
+  <Card title="OPEL Loop" icon="rotate" href="/concepts/opel-loop">
+    The operational rhythm every agent follows.
+  </Card>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    How RubixKube stays safe while acting autonomously.
+  </Card>
+</CardGroup>

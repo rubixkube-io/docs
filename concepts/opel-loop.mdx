@@ -1,0 +1,103 @@
+---
+title: "The OPEL loop"
+sidebarTitle: "The OPEL Loop"
+description: "Observe, Plan, Execute, Learn. The four-phase rhythm that every RubixKube agent follows, policy-driven and memory-backed."
+keywords: ["OPEL loop", "observe plan execute learn", "SRI loop", "site reliability intelligence", "AIOps loop", "autonomous SRE"]
+"og:title": "The OPEL loop"
+"og:description": "Observe, Plan, Execute, Learn. The rhythm every RubixKube agent follows."
+---
+
+The OPEL loop is the rhythm RubixKube runs on. Every agent in the mesh participates. Every incident passes through the same four phases. The loop is policy-driven, memory-backed, and always active.
+
+The shape comes from SRE, translated for the AI era. SRE gave us SLIs, error budgets, and runbooks. Site Reliability Intelligence (SRI) folds that discipline into a continuous loop an AI can run against infrastructure at a speed humans cannot match.
+
+<Info>
+  OPEL is defined in detail in the [Age of Site Reliability Intelligence](https://rubixkube.ai/blog/the-age-of-site-reliability-intelligence-sri) essay on the RubixKube blog. This page is the operational summary.
+</Info>
+
+## The four phases
+
+<Steps titleSize="h3">
+  <Step title="Observe">
+    The Observer Agent walks every connected environment through read-only APIs. It maps topology, collects metrics, events, logs, and state, and keeps the Knowledge Graph current.
+
+    Observation is continuous. Nothing waits on a cron, and nothing is polled less often than its natural rate of change.
+  </Step>
+  <Step title="Plan">
+    When a signal drifts beyond its learned baseline, the RCA Pipeline Agent takes over. It pulls related signals, recent changes, and prior incidents from the Memory Engine, and constructs a causal chain.
+
+    The output of Plan is a ranked set of candidate actions, each with expected blast radius and confidence.
+  </Step>
+  <Step title="Execute">
+    The SRI Agent surfaces the top candidate to a human through Chat or the Action Center. The Guardian Agent validates that the action is inside policy for the target environment. If approved, the Remediation Agent applies it.
+
+    Nothing lands in your environment without an approval step. Policies decide who can approve what.
+  </Step>
+  <Step title="Learn">
+    After execution, the Observer keeps watching. If signals return to baseline, the incident is marked verified. If they do not, the loop rewinds to Plan with new evidence.
+
+    Either way, the Memory Engine stores the outcome, the resolution notes, and the operator context. The next matching incident starts with that prior art in scope.
+  </Step>
+</Steps>
+
+## What makes the loop different
+
+<CardGroup cols={2}>
+  <Card title="Continuous, not reactive" icon="rotate">
+    The loop is always running. It does not wait for an alert to open.
+  </Card>
+  <Card title="Policy-driven" icon="shield-halved">
+    Every mutating step is bounded by Guardian policy. No surprises.
+  </Card>
+  <Card title="Memory-backed" icon="database">
+    Every pass updates long-term memory. The next pass is sharper.
+  </Card>
+  <Card title="Evidence-cited" icon="file-magnifying-glass">
+    Every claim links back to the signal it came from. Trust is verifiable.
+  </Card>
+</CardGroup>
+
+## A concrete example
+
+A payments deployment in production. A rollout causes a subtle memory leak.
+
+<AccordionGroup>
+  <Accordion title="Observe" icon="eye">
+    The Observer notices `payments-api` memory usage ticking up on every pod in the new ReplicaSet. The Knowledge Graph flags the drift.
+  </Accordion>
+  <Accordion title="Plan" icon="lightbulb">
+    The RCA Pipeline pulls the deployment event, the memory curves, and the last three incidents involving `payments-api`. It recognises a shape from a prior RCA resolved three months ago. Recommended action: scale memory limit from 512Mi to 1Gi, rollback if not improved in ten minutes.
+  </Accordion>
+  <Accordion title="Execute" icon="wand-magic-sparkles">
+    The SRI Agent posts the recommendation to `#payments-ops` Slack. On-call approves. Guardian confirms the scope is inside the production policy. Remediation applies the patch. The deployment stabilises.
+  </Accordion>
+  <Accordion title="Learn" icon="graduation-cap">
+    The Memory Engine records the full thread: signal, causal chain, applied fix, verification. The operator adds a note: "Peak traffic pattern from campaign X repeats every Tuesday". Next Tuesday's campaign inherits this context automatically.
+  </Accordion>
+</AccordionGroup>
+
+## Where each concept fits in the loop
+
+| Phase | Primary agent | Key concepts |
+| --- | --- | --- |
+| Observe | [Observer Agent](/concepts/observer-agent) | [Knowledge Graph](/concepts/knowledge-graph), [Environments](/concepts/environments) |
+| Plan | [RCA Pipeline Agent](/concepts/root-cause-analysis) | [Insights](/concepts/insights), [Memory Engine](/concepts/memory-engine) |
+| Execute | SRI Agent and Remediation Agent | [Actions](/concepts/actions), [Skills](/concepts/skills) |
+| Learn | Memory Agent | [Memory Engine](/concepts/memory-engine), [Safety and Guardrails](/concepts/guardrails) |
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="How is OPEL different from OODA or PDCA?">
+    OPEL borrows the spirit of continuous improvement loops but is built for machine speed. OODA (observe, orient, decide, act) targets human decision-making; PDCA (plan, do, check, act) targets process improvement. OPEL runs every few minutes against live infrastructure, with the Knowledge Graph and Memory Engine as durable state between passes.
+  </Accordion>
+  <Accordion title="Can the loop run without human approval?">
+    Not by default. Execute phase always passes through Guardian policies, which are explicit about what is approvable and by whom. You can loosen policies on lab environments and tighten them in production.
+  </Accordion>
+  <Accordion title="How fast is one pass?">
+    Observation is continuous. A Plan pass completes in seconds to a few minutes depending on how wide the causal search is. Execute latency is bounded by human approval time. Learn is instant once the outcome is confirmed.
+  </Accordion>
+  <Accordion title="What happens if two incidents overlap?">
+    Each incident has its own loop instance. The Knowledge Graph is shared, so an RCA in one loop can reference signals another loop is investigating. Guardian serialises mutating actions that would conflict.
+  </Accordion>
+</AccordionGroup>

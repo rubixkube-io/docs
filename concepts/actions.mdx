@@ -1,0 +1,131 @@
+---
+title: "Actions"
+sidebarTitle: "Actions"
+description: "The unit of change in RubixKube. Every recommended fix is an Action with an explicit scope, blast radius, and approval path."
+keywords: ["actions", "remediation actions", "auto-remediation", "approval workflow", "AI SRE actions", "blast radius"]
+"og:title": "Actions"
+"og:description": "The unit of change in RubixKube. Scoped, approved, audited."
+---
+
+An Action is the unit of change RubixKube proposes. Every recommended fix in an RCA, every manual change drafted in Chat, and every skill output that mutates state is expressed as an Action. Actions are how the system stays autonomous without being reckless.
+
+Each Action is scoped, auditable, and reversible. Nothing lands in your environment without an explicit approval step, and Guardian policies bound what is approvable in the first place.
+
+## What an Action carries
+
+<CardGroup cols={2}>
+  <Card title="Scope" icon="box">
+    Exactly which resources the action touches, in which environment, in which namespace or region.
+  </Card>
+  <Card title="Blast radius" icon="explosion">
+    The graph-computed set of downstream resources that could be affected if the action goes wrong.
+  </Card>
+  <Card title="Change payload" icon="code">
+    The literal change: a patch, a scale delta, a config update, a shell command. Readable before approval.
+  </Card>
+  <Card title="Confidence" icon="percent">
+    How sure the system is about the recommendation, based on signal strength and prior art.
+  </Card>
+  <Card title="Recovery estimate" icon="clock">
+    Approximate time from apply to verified stable state, based on similar past incidents.
+  </Card>
+  <Card title="Reversibility" icon="rotate-left">
+    The exact inverse operation, precomputed. One-click rollback for every Action.
+  </Card>
+</CardGroup>
+
+## The lifecycle of an Action
+
+<Steps titleSize="h3">
+  <Step title="Proposed">
+    The RCA Pipeline or a skill drafts the Action. It appears in the Action Center and, optionally, in your notification channels.
+  </Step>
+  <Step title="Reviewed">
+    A human opens the Action, checks the scope, the payload, and the blast radius. Guardian validates the Action against the environment's policy at this moment, not later.
+  </Step>
+  <Step title="Approved or rejected">
+    Approve and the Action advances to Execute. Reject and the system stores the reason, which feeds future recommendations.
+  </Step>
+  <Step title="Executed">
+    The Remediation Agent applies the change inside the scoped blast radius. Observation sampling increases for the affected resources.
+  </Step>
+  <Step title="Verified">
+    After the stabilisation window, the Action is marked Verified, Partial, or Rollback Suggested. Every outcome feeds the Memory Engine.
+  </Step>
+</Steps>
+
+## What can be an Action
+
+Almost anything that changes state. A non-exhaustive list:
+
+<AccordionGroup>
+  <Accordion title="Kubernetes changes" icon="dharmachakra">
+    Scale a deployment, patch a resource, restart a pod, change a ConfigMap, update an Ingress, roll back to a previous revision.
+  </Accordion>
+  <Accordion title="AWS changes" icon="aws">
+    Resize an EC2 instance, change an RDS parameter, update a Lambda configuration, attach or detach an IAM policy (with extra scrutiny).
+  </Accordion>
+  <Accordion title="GCP changes" icon="google">
+    Adjust GCE instance size, modify Cloud SQL settings, update Cloud Run traffic splits.
+  </Accordion>
+  <Accordion title="VM and system changes" icon="server">
+    Restart a systemd service, adjust a sysctl, deploy a configuration bundle, rotate a secret.
+  </Accordion>
+  <Accordion title="Workflow changes" icon="list-check">
+    Create a Linear ticket, post a Slack message, page an on-call engineer, attach a note to an RCA.
+  </Accordion>
+</AccordionGroup>
+
+## Blast radius, in practice
+
+Every Action knows what it touches directly, and the Knowledge Graph tells it what depends on those targets. Three tiers:
+
+- **Direct.** The exact resources the Action modifies.
+- **Adjacent.** The one-hop dependents that might see a brief effect (cache invalidation, connection churn).
+- **Downstream.** Two-hop or further dependents, flagged if the blast could propagate.
+
+Guardian policies can require extra approvals as the radius grows. Production typically needs two approvers when the radius crosses into Downstream. Lab environments can auto-approve Direct-only actions.
+
+## The relationship to Skills
+
+A [Skill](/concepts/skills) can emit Actions. The skill runs, the instructions are followed, and anywhere the skill would mutate state, it produces an Action instead of doing it directly. That keeps the approval boundary uniform: whether a human asked for the change or a skill did, the same approval flow and Guardian policies apply.
+
+## Audit and reversibility
+
+Every Action has a full audit entry:
+
+- Who proposed it (which agent, which skill, or which human).
+- Who approved it, and when.
+- The exact payload that ran.
+- The outcome (verified, partial, rollback suggested).
+- The reverse operation, if you need to roll back.
+
+Audit records are immutable. Retention follows your plan.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Can Actions run without human approval?">
+    By default, no. Guardian policies can be set to auto-approve specific low-risk Actions in specific environments (lab namespaces, non-prod clusters), but this is opt-in, not the default.
+  </Accordion>
+  <Accordion title="What happens if an Action fails mid-apply?">
+    The Remediation Agent records the partial state, stops, and surfaces a new Insight for the partial change. It does not retry automatically. A human reviews the partial state before anything else runs.
+  </Accordion>
+  <Accordion title="Can I batch approve multiple Actions?">
+    Yes, when they share a common parent (an RCA or a skill run). Batch approval still runs each Action through Guardian individually, so a single disallowed step does not break the rest.
+  </Accordion>
+  <Accordion title="How do rollbacks work for Actions that modify state incrementally?">
+    Where possible, the reverse operation is the literal inverse (scale up, scale down). For multi-step Actions, rollback unwinds in reverse order. Actions that cannot be cleanly reversed (for example, deleting data) require a second level of approval and a confirmed backup reference.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
+    The policy layer that decides what is approvable.
+  </Card>
+  <Card title="Action Center in the console" icon="play" href="/using/action">
+    Where Actions live, get reviewed, and get approved.
+  </Card>
+</CardGroup>

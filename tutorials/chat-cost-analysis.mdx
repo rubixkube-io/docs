@@ -1,6 +1,7 @@
 ---
-title: 'Cost Analysis Handbook: Chat-Powered Optimization'
-description: 'Complete guide to analyzing and reducing Kubernetes costs using RubixKube Chat - with real examples and screenshots'
+title: 'Cost analysis with Chat'
+sidebarTitle: 'Chat for cost analysis'
+description: 'Analyse and reduce infrastructure cost using RubixKube Chat. Rightsizing, anomaly hunting, weekly budget reviews.'
 ---
 
 # Cost Analysis Handbook: Chat-Powered Optimization
@@ -256,12 +257,16 @@ This is intelligent cost optimization, not just blanket reductions.
 
 ### Week 1: Discovery
 
-**Day 1: Get Overview** ```
+**Day 1: Get Overview**
+
+```
 "What's my cluster cost estimate?"
 "Show me infrastructure summary"
 ```
 
-**Day 2-3: Identify Expensive Pods** ```
+**Day 2-3: Identify Expensive Pods**
+
+```
 "Which pods use the most resources?"
 "Show me pods with highest memory allocation"
 ```
@@ -272,7 +277,9 @@ This is intelligent cost optimization, not just blanket reductions.
 
 ### Week 2: Analysis
 
-**For each expensive pod:** ```
+**For each expensive pod:**
+
+```
 "Tell me about [pod-name]"
 "What image is [pod-name] running?"
 "Show me resource allocation for [pod-name]"
@@ -461,7 +468,9 @@ Based on the agent's analysis, here's how to implement:
 
 ### For heavy-app-1 (nginx):
 
-**Current YAML:** ```yaml
+**Current YAML:**
+
+```yaml
 resources:
   requests:
     cpu: "500m"
@@ -471,7 +480,9 @@ resources:
     memory: "2Gi"
 ```
 
-**Optimized YAML (Agent's Recommendation):** ```yaml
+**Optimized YAML (Agent's Recommendation):**
+
+```yaml
 resources:
   requests:
     cpu: "100m"      # Reduced from 500m

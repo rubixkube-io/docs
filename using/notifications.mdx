@@ -1,0 +1,93 @@
+---
+title: "Notifications"
+sidebarTitle: "Notifications"
+description: "Route insights, RCA reports, and pending actions to the channels your team already uses. Slack, Microsoft Teams, PagerDuty, email."
+keywords: ["notifications", "alerting", "slack notifications", "teams notifications", "pagerduty", "incident alerts"]
+"og:title": "Notifications"
+"og:description": "Route insights, RCA reports, and pending actions to Slack, Teams, PagerDuty, or email."
+---
+
+Health monitoring only pays off if the right person sees the signal. Notifications route every kind of RubixKube update (insights, RCA reports, pending approvals, action outcomes) to the channels your team already lives in.
+
+## Channels supported
+
+<CardGroup cols={2}>
+  <Card title="Slack" icon="slack" href="/using/integrations">
+    Per-channel delivery for insights, RCAs, and action approvals.
+  </Card>
+  <Card title="Microsoft Teams" icon="microsoft" href="/using/integrations">
+    Per-channel delivery for the same update types.
+  </Card>
+  <Card title="PagerDuty" icon="bell" href="/using/integrations">
+    Promote critical insights to on-call pages. Configurable severity thresholds.
+  </Card>
+  <Card title="Email" icon="envelope">
+    Digest or per-event delivery to a distribution list.
+  </Card>
+  <Card title="Linear" icon="list-check" href="/using/integrations">
+    Turn RCAs into tickets with one click.
+  </Card>
+  <Card title="Webhooks" icon="webhook">
+    POST to any endpoint. For routing into your own internal systems.
+  </Card>
+</CardGroup>
+
+## Events you can route
+
+| Event | Trigger |
+| --- | --- |
+| Insight opened | New anomaly worth a human look |
+| Insight escalated | Severity crossed a threshold |
+| RCA Report ready | Investigation produced a causal chain |
+| Action approval needed | Remediation waiting on human sign-off |
+| Action applied | Fix landed, verification in progress |
+| Action verified or reverted | Stabilisation window closed |
+| Environment degraded | Observer or cloud-side agent unhealthy |
+| Budget or plan alert | Investigation quota or billing event |
+
+## Routing rules
+
+Every rule has four fields: **event type**, **scope** (environment, namespace, tag), **severity threshold**, and **destination**. A few shapes worth knowing.
+
+<AccordionGroup>
+  <Accordion title="Per-service Slack routing" icon="slack">
+    Route payments-related insights to `#payments-ops`, platform insights to `#platform`, everything else to `#rubixkube`.
+  </Accordion>
+  <Accordion title="On-call escalation" icon="bell">
+    Insights at Critical severity in prod environments page PagerDuty. Everything else stays in chat.
+  </Accordion>
+  <Accordion title="RCA-to-ticket" icon="list-check">
+    Every verified RCA in prod opens a Linear ticket in the on-call team's queue. Details and link back to the report auto-populated.
+  </Accordion>
+  <Accordion title="Digest for non-urgent signals" icon="envelope">
+    Low-severity insights roll up into a daily email at 08:00 local. Keeps chat channels clean.
+  </Accordion>
+</AccordionGroup>
+
+## Controls that keep signal-to-noise high
+
+<CardGroup cols={2}>
+  <Card title="Severity thresholds" icon="sliders">
+    Start strict. Loosen if something important slipped through.
+  </Card>
+  <Card title="Quiet hours" icon="moon">
+    Suppress non-critical routes outside business hours.
+  </Card>
+  <Card title="Deduplication windows" icon="layer-group">
+    Similar insights within a window collapse into one notification.
+  </Card>
+  <Card title="Snooze and acknowledge" icon="bell-slash">
+    Silencing an insight in Slack or Teams syncs back to the console.
+  </Card>
+</CardGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Integrations" icon="plug" href="/using/integrations">
+    Connect Slack, Teams, Linear, and PagerDuty.
+  </Card>
+  <Card title="Magic Insights" icon="lightbulb" href="/using/insights">
+    Where the events you route originate.
+  </Card>
+</CardGroup>

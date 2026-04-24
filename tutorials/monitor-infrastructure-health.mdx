@@ -1,0 +1,139 @@
+---
+title: "How to monitor infrastructure health with RubixKube"
+sidebarTitle: "How to Monitor Infrastructure Health"
+description: "Set up continuous health monitoring across Kubernetes, AWS, GCP, and VMs. Learn what each dashboard surface tells you and when to act."
+keywords: ["infrastructure monitoring", "health monitoring", "AIOps", "AI SRE", "observability", "site reliability intelligence"]
+"og:title": "How to monitor infrastructure health with RubixKube"
+"og:description": "Set up continuous health monitoring across Kubernetes, AWS, GCP, and VMs."
+---
+
+This tutorial walks through the monitoring workflow: connect an environment, read the dashboard, spot anomalies early, and set the handful of controls that keep signal-to-noise high. Takes about fifteen minutes from a fresh workspace.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="A RubixKube account" icon="user" href="https://console.rubixkube.ai">
+    Free tier works for this tutorial.
+  </Card>
+  <Card title="At least one environment connected" icon="plug" href="/getting-started/connect-your-environment">
+    Kubernetes, AWS, GCP, or a Linux VM. Mix of any of them is fine.
+  </Card>
+</CardGroup>
+
+## Step 1: Read the Dashboard
+
+The Dashboard is your daily check-in. Four tiles tell you whether the system is worth investigating right now.
+
+| Tile | What it means | When to pay attention |
+| --- | --- | --- |
+| System Health | Blended score across every connected environment | Below 95% or trending down |
+| Active Insights | Count of anomalies RubixKube is watching | Any new insight since your last visit |
+| Intelligent Analysis | RCA reports ready to read | New report since last session |
+| Agents | Health of the observer and cloud-side agents | Anything other than all green |
+
+<Tip>
+  Open the Dashboard once a day even when nothing is on fire. Most anomalies show up as a subtle drift, not an outage.
+</Tip>
+
+## Step 2: Check your topology
+
+Open **Infrastructure Topology**. You should see every resource the Observer has discovered, grouped by environment.
+
+- **Green edges**, dependencies behaving as expected.
+- **Yellow edges**, degraded signals (higher latency, elevated error rate, resource pressure).
+- **Red edges**, active incidents.
+
+Clicking any node shows the last hour of signals for that resource plus any insights currently attached to it. Good starting point for deep dives.
+
+## Step 3: Tune Insights to your team
+
+Open **Magic Insights**. Each insight is an anomaly the system thinks a human should know about.
+
+<Steps titleSize="h3">
+  <Step title="Filter to your services">
+    Use the environment and namespace filters to narrow to what your team owns. Bookmark the view.
+  </Step>
+  <Step title="Set the severity threshold">
+    Start at Medium. Too many low-severity cards train people to ignore the list.
+  </Step>
+  <Step title="Subscribe to the ones that matter">
+    Each insight has a Follow action. Followed insights post to your notification channel when their status changes.
+  </Step>
+</Steps>
+
+## Step 4: Connect a notification channel
+
+Health monitoring is only useful if the right person sees the signal. Connect a channel you already live in.
+
+<CardGroup cols={2}>
+  <Card title="Slack" icon="slack" href="/using/integrations">
+    Channel-level routing for insights and RCAs.
+  </Card>
+  <Card title="Microsoft Teams" icon="microsoft" href="/using/integrations">
+    Team-channel delivery for insights and RCAs.
+  </Card>
+  <Card title="PagerDuty" icon="bell" href="/using/integrations">
+    Promote critical insights into on-call pages.
+  </Card>
+  <Card title="Linear" icon="list-check" href="/using/integrations">
+    Turn RCAs into tickets with one click.
+  </Card>
+</CardGroup>
+
+## Step 5: Ask Chat a monitoring question
+
+Chat is the fastest way to pull a specific view without learning a query language. A few prompts worth bookmarking:
+
+```
+What changed in the payments service in the last hour?
+Which resources have the highest error rate today?
+Any hosts above 80% memory right now?
+Show me deployments that rolled back in the last 24 hours.
+```
+
+Answers come with cited evidence, so you can jump from the reply straight to the underlying events.
+
+## What healthy monitoring looks like after a week
+
+<CardGroup cols={2}>
+  <Card title="System Health is stable" icon="heart-pulse">
+    Sits between 95 and 100% most of the time. Dips correlate to known events.
+  </Card>
+  <Card title="Insights have owners" icon="user-check">
+    Your team either acts, dismisses, or routes every new insight. Few stale cards older than a day.
+  </Card>
+  <Card title="Topology reflects reality" icon="diagram-project">
+    Newly deployed services appear. Decommissioned resources drop out within the hour.
+  </Card>
+  <Card title="Chat answers with evidence" icon="comments">
+    Your team uses Chat instead of grepping logs for quick questions.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="How fast does RubixKube detect a new issue?">
+    Most anomalies surface within one to two minutes of the underlying signal. The OPEL loop runs continuously rather than on a fixed cron schedule.
+  </Accordion>
+  <Accordion title="What is the difference between an Insight and an RCA Report?">
+    An Insight is an anomaly worth attention. An RCA Report is a full causal chain with evidence and recommended fixes. Not every insight becomes an RCA, only the ones that look like they have a single identifiable root cause.
+  </Accordion>
+  <Accordion title="Can I monitor multiple environments at once?">
+    Yes. Every connected environment feeds into the same Dashboard, Insights list, and knowledge graph. Use the environment filter to narrow to a single one when needed.
+  </Accordion>
+  <Accordion title="What if I only want alerts, not a dashboard?">
+    Connect Slack or Teams, filter Insights to the severity you care about, and subscribe. The dashboard becomes optional.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="How to Automate Incident Remediation" icon="wand-magic-sparkles" href="/tutorials/automate-incident-remediation">
+    The next step after monitoring: when an insight becomes an incident.
+  </Card>
+  <Card title="Talk to your infra" icon="comments" href="/tutorials/talk-to-infra">
+    Go deeper with Chat for on-demand investigations.
+  </Card>
+</CardGroup>

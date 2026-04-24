@@ -1,0 +1,162 @@
+---
+title: "Rubix CLI examples"
+sidebarTitle: "Examples"
+description: "Concrete flows for daily on-call, post-deploy verification, cost reviews, and CI automation using the Rubix CLI."
+keywords: ["rubix cli examples", "on-call cli", "post-deploy verification cli", "cost review cli", "CI infrastructure chat"]
+"og:title": "Rubix CLI examples"
+"og:description": "Daily flows for on-call, post-deploy, cost, and CI using the Rubix CLI."
+---
+
+Worked examples that combine the CLI commands into useful everyday flows.
+
+## Morning health check
+
+Start your day with one prompt against production.
+
+```bash
+rubix chat --prompt "Summarise production health: open incidents, pending actions, deployments in the last 12 hours."
+```
+
+Combine with your shell startup if you want it every time you open a terminal:
+
+```bash
+# In ~/.zshrc or ~/.bashrc
+alias morning-health='rubix chat --prompt "Summarise production health: open incidents, pending actions, deployments in the last 12 hours."'
+```
+
+## On-call triage
+
+When a page fires, drop into an interactive session scoped to the right environment.
+
+```bash
+rubix
+```
+
+Then:
+
+```
+/environments
+(pick prod-eks)
+
+What is the state of the payments namespace right now?
+Which services are degraded?
+What changed in the last hour?
+```
+
+Chat keeps the context across follow-ups. No need to repeat the namespace.
+
+## Investigate a specific resource
+
+```bash
+rubix chat --prompt "Why is pod api-gateway-7d4b9c8f6d-abc12 in prod-eks restarting?"
+```
+
+Single-turn, cited answer, back to your shell.
+
+## Post-deploy verification
+
+After a deploy, compare to the last stable window.
+
+```bash
+rubix chat --prompt "Compare payments-api metrics in prod-eks for the last 10 minutes to the previous 30 minutes. Flag any metric more than 20% worse."
+```
+
+Or turn this into a [custom skill](/tutorials/add-custom-agent-skills) named `post-deploy-verification`, then:
+
+```bash
+rubix chat --prompt "/skills post-deploy-verification payments-api"
+```
+
+Same result, less typing, consistent across everyone on the team.
+
+## Weekly cost review
+
+```bash
+rubix chat --prompt "For the last 7 days, which services across all production environments ran more than 15% above their 28-day baseline cost? Top 10 only."
+```
+
+Pipe the output if you want to paste into a doc or Linear ticket:
+
+```bash
+rubix chat --prompt "Weekly cost review..." > /tmp/cost-review.md
+```
+
+## Send shell output into chat
+
+You run a command, the agent reads the output.
+
+```bash
+kubectl get pods -n payments | grep -v Running
+```
+
+Drop into chat:
+
+```bash
+rubix
+```
+
+Then inside chat:
+
+```
+/send
+Why are these pods not Running?
+```
+
+The agent sees both the command output and your question.
+
+## Resume an investigation later
+
+List your recent sessions:
+
+```bash
+rubix sessions
+```
+
+Pick one and resume:
+
+```bash
+rubix chat --session-id "abc-def-123"
+```
+
+Or from inside chat: `/resume` and choose.
+
+## CI usage
+
+Non-interactive checks from GitHub Actions, GitLab CI, Jenkins, or similar.
+
+```yaml
+# .github/workflows/post-deploy.yml
+- name: Verify deploy
+  env:
+    RUBIX_API_KEY: ${{ secrets.RUBIX_API_KEY }}
+    RUBIX_ENV_ID: prod-eks
+  run: |
+    npx @rubixkube/rubix chat --prompt "/skills post-deploy-verification ${{ env.SERVICE_NAME }}"
+```
+
+The `RUBIX_API_KEY` env var skips the device-code prompt. `RUBIX_ENV_ID` pins the environment for that invocation.
+
+## Handoff summary
+
+End your shift with a concise handoff message.
+
+```bash
+rubix chat --prompt "/skills on-call-handoff" > /tmp/handoff.md
+cat /tmp/handoff.md
+```
+
+Or post directly to Slack via a webhook if you have that wired up.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Commands reference" icon="list" href="/cli/commands">
+    Every flag and slash command.
+  </Card>
+  <Card title="Custom skills" icon="sparkles" href="/tutorials/add-custom-agent-skills">
+    Bake your best prompts into reusable skills.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/cli/troubleshooting">
+    If something is not working as expected.
+  </Card>
+</CardGroup>

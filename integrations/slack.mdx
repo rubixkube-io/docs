@@ -1,0 +1,105 @@
+---
+title: "Slack integration"
+sidebarTitle: "Slack"
+description: "Slack is both an interface to RubixKube and a notification channel. Talk to the bot in any channel to ask questions, trigger investigations, and approve actions. Get insights, RCAs, approvals, and digests where your team already lives."
+keywords: ["slack integration", "slack bot", "rubixkube slack", "incident slack", "chatops", "digest"]
+"og:title": "Slack integration"
+"og:description": "A bot you can talk to, and a notification channel for insights, RCAs, approvals, and digests."
+---
+
+Slack is a bit different from the other integrations. It is both an **interface** to RubixKube (talk to the bot, trigger investigations, approve actions) and a **notification channel** (insights, RCA reports, action approvals, and digests).
+
+## Two ways Slack works with RubixKube
+
+<CardGroup cols={2}>
+  <Card title="As an interface" icon="comments">
+    Add the bot to channels or threads. Mention it to ask about infrastructure, kick off an investigation, or approve a pending action, all without leaving Slack.
+  </Card>
+  <Card title="As a notification channel" icon="bell">
+    Insights, RCA reports, and action approvals post into the channels you pick. Daily and weekly digests keep the team aware of what happened and what to look at next.
+  </Card>
+</CardGroup>
+
+## Install the bot
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **Slack**.
+  </Step>
+  <Step title="Authorise with Slack">
+    Install the RubixKube Slack app into your workspace. A Slack admin approves the install.
+  </Step>
+  <Step title="Invite the bot where you want it">
+    In each channel you want the bot to post in or listen in, run `/invite @RubixKube`. The bot only sees channels it has been invited to.
+  </Step>
+</Steps>
+
+Once installed, Slack is available tenant-wide. Every agent across every environment can use it.
+
+{/* TODO: screenshot of the Integrations page showing the Slack card */}
+
+## Using the bot
+
+### Ask anything
+
+Mention the bot with a question. Replies come back in-thread with evidence links.
+
+```
+@RubixKube what is the current health of the payments service?
+```
+
+### Trigger an investigation
+
+Ask the bot to look into something. The agent opens an investigation and posts progress back to the thread as it goes.
+
+```
+@RubixKube investigate the latency spike in checkout from the last hour
+```
+
+### Approve actions
+
+When an action needs approval, the bot posts an interactive card with the scope and evidence. Approvers click Approve or Reject with reason. Clicks map to RubixKube identities and follow the same policies as approvals in the console.
+
+## Notifications and digests
+
+- **Insights, RCAs, and action approvals** post into the channels you pick during setup.
+- **Daily and weekly digests** roll up activity so the team can scan what happened without chasing individual alerts.
+- **Alerts and actionables** show up as cards you can act on in-thread.
+
+For per-service routing, per-team channels, or custom digest schedules, build a [Skill](/concepts/skills) that composes the notification behaviour you want.
+
+## Build custom workflows with skills
+
+The Slack connection gives agents tools for posting, replying, reading messages in invited channels, and responding to card clicks. Specific behaviours (route `#payments` insights to `#payments-ops`, pin the active incident card, send a weekly digest at 09:00 on Mondays) are built as [Skills](/concepts/skills).
+
+## Permissions and data
+
+The bot only posts and reads in channels you explicitly invite it to. It does not ingest channel history beyond what it sees while invited, does not read direct messages, and does not sync private channels it has not been added to.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The bot is not posting">
+    Make sure the bot has been invited to the channel with `/invite @RubixKube`. Slack does not allow bots to post in channels they are not members of.
+  </Accordion>
+  <Accordion title="Approval clicks fail">
+    The Slack user clicking the button must map to a RubixKube user with the right approver role. Check the user mapping in the integration settings.
+  </Accordion>
+  <Accordion title="Duplicate notifications">
+    Two skills are posting for the same event. Open the Skills page and check which skills are subscribing to that event type.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Microsoft Teams" icon="microsoft" href="/integrations/microsoft-teams">
+    Same model for Teams-first organisations.
+  </Card>
+  <Card title="PagerDuty" icon="pager" href="/integrations/pagerduty">
+    Pair with Slack: chat for day-to-day, PagerDuty for on-call paging.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Slack capabilities into custom workflows.
+  </Card>
+</CardGroup>

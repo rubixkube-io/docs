@@ -1,0 +1,137 @@
+---
+title: "Skills"
+sidebarTitle: "Skills"
+description: "Structured runbooks the SRI Agent can invoke. Turn operational know-how into reusable workflows with the open Agent Skills format."
+keywords: ["agent skills", "skills", "runbook automation", "agent skills format", "SRI agent skills", "custom skills"]
+"og:title": "Skills"
+"og:description": "Structured runbooks the SRI Agent can invoke. Powered by the open Agent Skills format."
+---
+
+Skills are short, structured runbooks the SRI Agent can invoke on demand. A skill turns "the way we do post-deploy verification on this team" or "the standard weekly cost review" into something the agent runs consistently, every time, for everyone.
+
+Each skill uses the **open Agent Skills format** initiated by Anthropic and adopted across the industry (Cursor, Claude Code, GitHub Copilot). A skill written for RubixKube is portable to those tools, and vice versa.
+
+## Why skills
+
+<CardGroup cols={2}>
+  <Card title="Consistent execution" icon="repeat">
+    The same runbook, every time, regardless of who is on call.
+  </Card>
+  <Card title="Narrow tool surface" icon="shield-halved">
+    Each skill declares exactly which tools it can use. Anything not listed is blocked.
+  </Card>
+  <Card title="Shared institutional knowledge" icon="users">
+    Tribal knowledge becomes shared capability. New team members inherit it on day one.
+  </Card>
+  <Card title="Portable format" icon="arrows-turn-to-dots">
+    Same file runs in Cursor, Claude Code, Copilot, or RubixKube.
+  </Card>
+</CardGroup>
+
+## Anatomy of a skill
+
+A skill is a YAML block plus plain-English instructions. Minimal shape:
+
+```yaml
+name: post-deploy-verification
+scope: tenant
+agent: sre-agent
+description: Compare error rate, latency, and resource usage for a service against the last stable window.
+allowed_tools:
+  - fetch_infrastructure_snapshot
+  - fetch_deployment_history
+  - analyze_service_health
+instructions: |
+  1. Take a baseline from the last 30 minutes of the previous stable deployment.
+  2. Take the current window (10 minutes after the new rollout).
+  3. Compare error rate, p95 latency, CPU, and memory.
+  4. Flag any metric worse than 20% against baseline.
+  5. Summarise in a short Slack-ready paragraph.
+```
+
+| Field | Purpose |
+| --- | --- |
+| `name` | Unique handle, kebab-case. Used when invoking with `/skills`. |
+| `scope` | `system` (RubixKube-maintained) or `tenant` (your workspace). |
+| `agent` | Which agent can run this. Today only the SRI Agent is supported. |
+| `description` | One sentence. Used in the catalogue and for intent matching. |
+| `allowed_tools` | Explicit tool allowlist. Anything not listed is blocked. |
+| `instructions` | Plain-English runbook. Numbered steps work best. |
+
+## System skills and custom skills
+
+<AccordionGroup>
+  <Accordion title="System skills" icon="star">
+    Shipped and maintained by RubixKube. Available in every workspace.
+
+    Current catalogue includes `kubernetes-cluster-triage`, `linear-tickets-to-notion`, and `research-devops-sre-infra`. See the full list in the [Agent Skills Store](/using/agent-skills-store).
+  </Accordion>
+  <Accordion title="Custom (tenant) skills" icon="pen">
+    Written by your team for your workflows. Scoped to your workspace. Versioned per save. Importable from any tool that speaks the open Agent Skills format.
+
+    Walkthrough: [How to add custom agent skills](/tutorials/add-custom-agent-skills).
+  </Accordion>
+</AccordionGroup>
+
+## How a skill is invoked
+
+<Steps titleSize="h3">
+  <Step title="Intent match">
+    A user asks a question in Chat. The SRI Agent compares the question against enabled skill descriptions. If there is a confident match, the skill runs automatically.
+  </Step>
+  <Step title="Explicit call">
+    A user types `/skills skill-name` in Chat (console or CLI). The skill runs against the current context.
+  </Step>
+  <Step title="Scheduled run">
+    Some skills are attached to schedules (daily handoff, weekly review). They run without manual invocation and post their output to the configured channel.
+  </Step>
+</Steps>
+
+## Safety boundaries
+
+Skills are not a bypass for Guardian policies. Any tool a skill calls that mutates state still requires the normal approval flow. The `allowed_tools` list tightens the safety surface further by preventing the agent from reaching for tools outside the list, even if a user's follow-up would otherwise lead there.
+
+## Design principles for good skills
+
+<CardGroup cols={2}>
+  <Card title="One clear job" icon="crosshairs">
+    Post-deploy verification, on-call handoff, cost review. Not "general ops".
+  </Card>
+  <Card title="Numbered steps" icon="list-ol">
+    Write instructions like a senior engineer's handover note. Imperative, ordered.
+  </Card>
+  <Card title="Specific thresholds" icon="sliders">
+    "20% worse than baseline" beats "significantly worse". The agent executes the number.
+  </Card>
+  <Card title="Narrow tool list" icon="shield-halved">
+    Fewer tools mean safer, more predictable runs.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Which agent runs skills?">
+    The SRI Agent. It is the conversational agent that powers Chat. Support for other agents (Remediation, Memory) is planned.
+  </Accordion>
+  <Accordion title="Do skills count against my investigation quota?">
+    A skill run counts as one investigation on your plan. Scheduled skills (daily handoff, weekly cost review) are usually the best use of the quota because they replace work that would otherwise be ad-hoc.
+  </Accordion>
+  <Accordion title="Can I port a skill from Cursor or Claude Code?">
+    Yes. The format is the same. Upload your `SKILL.md`, map any tool names that differ, and it runs.
+  </Accordion>
+  <Accordion title="How are skills versioned?">
+    Every save creates a revision inside the console. You can roll back a skill from its detail page. Git-based versioning via the RubixKube CLI is on the roadmap.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Agent Skills Store" icon="store" href="/using/agent-skills-store">
+    Browse system skills and manage your custom catalogue.
+  </Card>
+  <Card title="How to add custom agent skills" icon="plus" href="/tutorials/add-custom-agent-skills">
+    Step-by-step guide to writing and shipping your first skill.
+  </Card>
+</CardGroup>

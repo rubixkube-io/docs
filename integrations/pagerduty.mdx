@@ -1,0 +1,76 @@
+---
+title: "PagerDuty integration"
+sidebarTitle: "PagerDuty"
+description: "Connect PagerDuty so RubixKube agents can trigger incidents for critical insights, sync acknowledgement and resolution, and keep the on-call picture in step with RubixKube."
+keywords: ["pagerduty integration", "rubixkube pagerduty", "on-call", "incident alerts"]
+"og:title": "PagerDuty integration"
+"og:description": "Trigger on-call pages for critical insights. Sync ack and resolve state."
+---
+
+Connect PagerDuty so RubixKube agents can page the right on-call when a high-severity insight lands, and so acknowledgement and resolution stay in step between the two systems.
+
+## What it unlocks
+
+<CardGroup cols={2}>
+  <Card title="Trigger incidents" icon="bell">
+    Agents can create PagerDuty incidents for insights that cross the severity bar you set.
+  </Card>
+  <Card title="Acknowledge and resolve" icon="arrows-rotate">
+    State flows both ways. Acking in PagerDuty reflects in RubixKube, and vice versa, so the same incident is not worked twice.
+  </Card>
+  <Card title="RCA attached" icon="file-magnifying-glass">
+    Every incident triggered by RubixKube carries a link to the RCA report (or the insight, if an RCA has not landed yet).
+  </Card>
+  <Card title="Tenant-wide by default" icon="globe">
+    Enable once. Every agent across every environment can use PagerDuty.
+  </Card>
+</CardGroup>
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **PagerDuty**.
+  </Step>
+  <Step title="Authenticate">
+    Authorise with PagerDuty. An admin completes the flow and picks the services RubixKube can reach.
+  </Step>
+  <Step title="Configure access">
+    Choose the PagerDuty services and the default severity threshold. Anything at or above the threshold can trigger a page; anything below stays inside RubixKube and your chat tools.
+  </Step>
+</Steps>
+
+Once connected, PagerDuty is available tenant-wide.
+
+{/* TODO: screenshot of the Integrations page showing the PagerDuty card */}
+
+## How the agents use it
+
+- When an insight crosses the severity bar, agents can trigger the right PagerDuty service and attach the RCA (or the insight, if the RCA is still in flight).
+- Ack and resolve state stays in sync, so the on-call person does not see a ghost incident in RubixKube after they have worked it in PagerDuty.
+
+## Build custom workflows with skills
+
+The connection exposes trigger and update capabilities. Specific workflows (per-team service routing, tighter thresholds for regulated environments, quieter thresholds for lab, auto-follow-up if the page has not been acked within N minutes) are built as [Skills](/concepts/skills). Skills are where you shape paging behaviour to your on-call model.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Pages do not fire">
+    Confirm the service is still connected in **Integrations → PagerDuty** and the severity threshold is set to a level the insight actually crosses.
+  </Accordion>
+  <Accordion title="Ack does not sync back to RubixKube">
+    Reauthorise the integration to refresh webhooks. Webhook delivery from PagerDuty can also be delayed briefly under load.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    Pair PagerDuty with Slack for day-to-day comms.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose paging capabilities into custom workflows.
+  </Card>
+</CardGroup>

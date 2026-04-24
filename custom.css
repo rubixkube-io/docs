@@ -1,0 +1,7 @@
+/* Vertically center the label and chevron in sidebar group toggles.
+   Mintlify's mint theme renders the toggle button with items-start, which
+   leaves the chevron slightly above the label on single-line rows. */
+.sidebar-group button.items-start,
+.sidebar-group a.items-start {
+  align-items: center;
+}

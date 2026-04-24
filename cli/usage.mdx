@@ -1,0 +1,146 @@
+---
+title: "Using the Rubix CLI"
+sidebarTitle: "Usage"
+description: "Launch, log in, start a chat, resume sessions, and drive Rubix from your terminal. Keyboard-first workflows for SREs and platform engineers."
+keywords: ["rubix cli usage", "launch rubix", "rubix login", "rubix chat", "terminal workflows"]
+"og:title": "Using the Rubix CLI"
+"og:description": "Launch, log in, start chat, resume sessions from the terminal."
+---
+
+## First run
+
+After installation, launch with no arguments:
+
+```bash
+rubix
+```
+
+The first run prompts you to sign in via device-code flow. A short code and URL appear; open the URL in any browser, paste the code, approve. Takes about 30 seconds.
+
+Credentials persist at `~/.rubix/auth.json`. You do not re-login every time.
+
+## Starting a chat
+
+The default command launches the interactive chat UI:
+
+```bash
+rubix
+```
+
+You land in a terminal chat with your default environment selected. Type a question and hit enter.
+
+```
+> What is the health of the payments service?
+```
+
+The SRI Agent responds with cited evidence, the same way the web console does. Follow-up questions preserve session context.
+
+<Frame>
+  <img
+    src="/images/cli/chat-session.png"
+    alt="Rubix CLI session showing the user asking 'How is my infra doing?', the agent's thought 'Evaluating Infrastructure Status', an action calling get_observability_stats(), and a response stating the environment has 67 active issues and 68 total insights."
+  />
+  <Caption>A live Rubix CLI session. You see the agent's thinking, the tool calls it runs, and a concise answer, all inline.</Caption>
+</Frame>
+
+## Scripting a single prompt
+
+To send a prompt and exit (useful in CI or for saving shell aliases):
+
+```bash
+rubix chat --prompt "What is the health of every production environment?"
+```
+
+The agent answers, prints the result, and exits. Combine with `--session-id` to append into an existing conversation.
+
+## Resuming a session
+
+List previous sessions:
+
+```bash
+rubix sessions
+```
+
+Resume the one you want:
+
+```bash
+rubix chat --session-id <id>
+```
+
+Or from inside chat, run `/resume` and pick from the list.
+
+## Switching environments
+
+The active environment determines the scope of the next question. Switch on the fly:
+
+```
+/environments
+```
+
+Pick from the menu. Any follow-up question runs against the new scope.
+
+## Switching the AI model
+
+Some accounts have access to multiple model options for chat. Switch inside a session:
+
+```
+/models
+```
+
+Or from the shell:
+
+```bash
+rubix model set <model-id>
+```
+
+## Feeding shell output into chat
+
+When you want the agent to read command output directly, run the command in your shell, then drop into chat and run:
+
+```
+/send
+```
+
+The last command's output gets added as context for your next question. Avoids fragile copy-paste.
+
+## Keystroke shortcuts
+
+<AccordionGroup>
+  <Accordion title="Submit a message" icon="arrow-up">
+    Enter submits. Shift+Enter adds a newline.
+  </Accordion>
+  <Accordion title="Slash commands" icon="slash">
+    Type `/` anywhere to open the slash menu. Arrow keys navigate, enter confirms.
+  </Accordion>
+  <Accordion title="Clipboard paste" icon="paste">
+    `/paste` inserts clipboard content cleanly, bypassing terminal paste truncation that can mangle long inputs.
+  </Accordion>
+  <Accordion title="Exit" icon="right-from-bracket">
+    `/exit` or `/quit`, or `Ctrl+C`.
+  </Accordion>
+</AccordionGroup>
+
+## Logging out
+
+```bash
+rubix logout
+```
+
+Clears local credentials. Next `rubix` run will prompt for the device-code flow again.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="sliders" href="/cli/configuration">
+    Where credentials and settings live, how trust is scoped per directory.
+  </Card>
+  <Card title="Commands" icon="list" href="/cli/commands">
+    Complete reference for top-level commands and slash commands.
+  </Card>
+  <Card title="Examples" icon="lightbulb" href="/cli/examples">
+    Concrete daily flows: on-call triage, post-deploy verification, cost reviews.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/cli/troubleshooting">
+    Login issues, stale auth, proxy problems.
+  </Card>
+</CardGroup>

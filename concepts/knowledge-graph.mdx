@@ -1,0 +1,112 @@
+---
+title: "The Knowledge Graph"
+sidebarTitle: "Knowledge Graph"
+description: "A live model of your infrastructure: every resource, relationship, signal, and incident in one queryable graph."
+keywords: ["knowledge graph", "infrastructure graph", "topology graph", "causal graph", "AI SRE graph"]
+"og:title": "The Knowledge Graph"
+"og:description": "A live model of your infrastructure: resources, relationships, signals, and incidents."
+---
+
+The Knowledge Graph is the shared brain of the Agent Mesh. Every agent reads from it, every agent writes to it. It holds every resource across every environment you connect, the relationships between them, the signals they emit, and the incidents they have been part of.
+
+Because it is a graph (not a set of disconnected tables), you can ask questions that cross boundaries: a Kubernetes pod talking to an RDS instance, a GCE VM behind a load balancer routing to a GKE service. Those questions get answered because the entities are linked.
+
+## What lives in the graph
+
+<CardGroup cols={2}>
+  <Card title="Resources" icon="box">
+    Pods, deployments, services, EC2 instances, RDS databases, GCE VMs, systemd units, and everything in between.
+  </Card>
+  <Card title="Relationships" icon="link">
+    Depends-on, routes-to, owned-by, deployed-by, scales-with. Typed edges with metadata.
+  </Card>
+  <Card title="Signals" icon="satellite-dish">
+    Metrics, events, logs, and state snapshots, indexed against the resource they came from.
+  </Card>
+  <Card title="Changes" icon="timeline">
+    Every deploy, rollback, config change, IAM mutation. Timestamped and attributable.
+  </Card>
+  <Card title="Incidents" icon="triangle-exclamation">
+    Open insights, resolved RCAs, applied actions, and verification outcomes.
+  </Card>
+  <Card title="Operator context" icon="user-pen">
+    Notes, ownership, on-call mapping, and the runbook links that apply to each resource.
+  </Card>
+</CardGroup>
+
+## How the graph stays current
+
+<Steps titleSize="h3">
+  <Step title="Discovery runs continuously">
+    The Observer walks each environment's APIs on a rolling basis. New resources appear in minutes. Decommissioned ones fall out after a grace window.
+  </Step>
+  <Step title="Signals attach to nodes">
+    Every metric, event, and log maps to the resource it came from. The edge stays live as long as the signal is flowing.
+  </Step>
+  <Step title="Changes become edges">
+    A deploy adds a `deployed-by` edge from the new revision to the team or actor who triggered it. A rollback adds one too. Time-sliced queries work out of the box.
+  </Step>
+  <Step title="Memory refreshes references">
+    The Memory Engine touches the graph whenever a prior incident matches a current shape, so relevant history surfaces inline.
+  </Step>
+</Steps>
+
+## Why a graph and not a table
+
+Three shapes of question that tables struggle with, and the graph answers in one hop.
+
+<AccordionGroup>
+  <Accordion title="Blast radius" icon="explosion">
+    "If I restart this pod, what else is affected?" Answered by walking `depends-on` and `routes-to` edges from the node.
+  </Accordion>
+  <Accordion title="Cross-environment correlation" icon="shuffle">
+    "Did the latency spike in the GKE cluster coincide with the RDS connection saturation?" Answered by joining signals across environments with a shared time window.
+  </Accordion>
+  <Accordion title="Change attribution" icon="timeline">
+    "What changed in the payments service around the time this incident started?" Answered by walking change edges in the incident's causal neighbourhood.
+  </Accordion>
+</AccordionGroup>
+
+## What you can do with the graph directly
+
+The graph powers every surface of the product, but you can query it directly too.
+
+- **Chat** asks questions in natural language. The SRI Agent translates to graph queries.
+- **Infrastructure Topology** in the console renders a visual slice of the graph.
+- **Skills** scope their tool calls against graph regions to stay focused.
+- The **RubixKube API and CLI** expose a query interface for custom dashboards and scripts.
+
+## Privacy and scope
+
+The graph is scoped to your workspace. Each environment feeds its resources, signals, and changes into it. No cross-tenant leakage, no shared resource IDs between customers. Retention follows your plan. See [Memory Engine](/concepts/memory-engine) for the retention model that governs incident history.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Is the graph a CMDB?">
+    The discovered-asset layer overlaps with what a traditional CMDB holds, but the graph goes further. It links resources to live signals, incidents, and memory. Think of it as a CMDB that updates itself every minute and knows what has broken before.
+  </Accordion>
+  <Accordion title="Can I bring my own ownership or tagging data?">
+    Yes. Tag data from AWS, labels from Kubernetes, and equivalent metadata from GCP flow in automatically. You can also annotate nodes directly through the console or API (owner, team, runbook link).
+  </Accordion>
+  <Accordion title="How does RubixKube handle multi-region and multi-account setups?">
+    Every environment you connect is a separate region or account. The graph links resources across them through natural relationships (shared DNS names, cross-account VPC peering, Kubernetes services calling cloud APIs).
+  </Accordion>
+  <Accordion title="Is there a public schema?">
+    The core node types and edge types are documented inside the console and via the API. The schema extends when you attach custom integrations that introduce new resource types.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Observer Agent" icon="eye" href="/concepts/observer-agent">
+    The component that keeps the graph current.
+  </Card>
+  <Card title="Memory Engine" icon="database" href="/concepts/memory-engine">
+    The history layer that sits alongside the live graph.
+  </Card>
+  <Card title="Infrastructure Topology" icon="diagram-project" href="/using/infrastructure">
+    The visual view of the graph in the console.
+  </Card>
+</CardGroup>

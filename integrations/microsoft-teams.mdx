@@ -1,0 +1,105 @@
+---
+title: "Microsoft Teams integration"
+sidebarTitle: "Microsoft Teams"
+description: "Teams is both an interface to RubixKube and a notification channel. Talk to the bot in any channel to ask questions, trigger investigations, and approve actions. Get insights, RCAs, approvals, and digests where your team already lives."
+keywords: ["microsoft teams integration", "teams bot", "rubixkube teams", "incident teams", "chatops", "digest"]
+"og:title": "Microsoft Teams integration"
+"og:description": "A bot you can talk to, and a notification channel for insights, RCAs, approvals, and digests."
+---
+
+Microsoft Teams is a bit different from the other integrations. It is both an **interface** to RubixKube (talk to the bot, trigger investigations, approve actions) and a **notification channel** (insights, RCA reports, action approvals, and digests).
+
+## Two ways Teams works with RubixKube
+
+<CardGroup cols={2}>
+  <Card title="As an interface" icon="comments">
+    Add the bot to channels or threads. Mention it to ask about infrastructure, kick off an investigation, or approve a pending action, all without leaving Teams.
+  </Card>
+  <Card title="As a notification channel" icon="bell">
+    Insights, RCA reports, and action approvals post as adaptive cards in the channels you pick. Daily and weekly digests keep the team aware of what happened and what to look at next.
+  </Card>
+</CardGroup>
+
+## Install the bot
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **Microsoft Teams**.
+  </Step>
+  <Step title="Authorise with Microsoft">
+    Install the RubixKube Teams app in your tenant. A Teams admin approves the install.
+  </Step>
+  <Step title="Add the bot to each channel you want it in">
+    Open the channel, go to **Manage channel → Members**, and add the RubixKube bot. Teams only allows bots to post in channels they are a member of.
+  </Step>
+</Steps>
+
+Once installed, Teams is available tenant-wide. Every agent across every environment can use it.
+
+{/* TODO: screenshot of the Integrations page showing the Microsoft Teams card */}
+
+## Using the bot
+
+### Ask anything
+
+Mention the bot with a question. Replies come back in-thread with evidence links.
+
+```
+@RubixKube what is the current health of the payments service?
+```
+
+### Trigger an investigation
+
+Ask the bot to look into something. The agent opens an investigation and posts progress back to the thread as it goes.
+
+```
+@RubixKube investigate the latency spike in checkout from the last hour
+```
+
+### Approve actions
+
+When an action needs approval, the bot posts an adaptive card with scope and evidence. Approvers click Approve or Reject with reason. Clicks map to RubixKube identities and follow the same policies as approvals in the console.
+
+## Notifications and digests
+
+- **Insights, RCAs, and action approvals** post as adaptive cards in the channels you pick during setup.
+- **Daily and weekly digests** roll up activity so the team can scan what happened without chasing individual alerts.
+- **Alerts and actionables** show up as cards you can act on in-thread.
+
+For per-service routing, per-team channels, or custom digest schedules, build a [Skill](/concepts/skills) that composes the notification behaviour you want.
+
+## Build custom workflows with skills
+
+The Teams connection gives agents tools for posting adaptive cards, replying in threads, reading messages in member channels, and responding to card clicks. Specific behaviours are built as [Skills](/concepts/skills).
+
+## Permissions and data
+
+The bot only posts and reads in channels where it has been added as a member. It does not ingest history beyond what it sees while a member, does not read direct messages, and does not access private chats it has not been added to.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The bot is not posting">
+    Add the bot as a member of the channel. Teams does not allow a bot to post in a channel it is not a member of.
+  </Accordion>
+  <Accordion title="Approval clicks fail">
+    The Teams user clicking the button must map to a RubixKube user with the right approver role. Check the user mapping in the integration settings.
+  </Accordion>
+  <Accordion title="Adaptive cards not rendering">
+    Some Teams tenants block adaptive cards from external apps by default. Ask your Teams admin to allow the RubixKube app.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    Same model for Slack-first organisations.
+  </Card>
+  <Card title="PagerDuty" icon="pager" href="/integrations/pagerduty">
+    Pair with Teams: chat for day-to-day, PagerDuty for on-call paging.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Teams capabilities into custom workflows.
+  </Card>
+</CardGroup>

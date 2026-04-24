@@ -1,0 +1,77 @@
+---
+title: "Linear integration"
+sidebarTitle: "Linear"
+description: "Connect Linear so RubixKube agents can read your projects, create tickets from insights and RCAs, and keep incident state in sync with the tool your team already tracks work in."
+keywords: ["linear integration", "rubixkube linear", "incident ticket", "issue tracker"]
+"og:title": "Linear integration"
+"og:description": "Create tickets from insights and RCAs. Keep state in sync with Linear."
+---
+
+Connect Linear so RubixKube agents can see your projects and teams, create tickets from insights and RCAs, and keep incident state in sync with the tool your team already tracks work in.
+
+## What it unlocks
+
+<CardGroup cols={2}>
+  <Card title="Read teams and projects" icon="users">
+    Agents know which team or project owns each service, so tickets land in the right place.
+  </Card>
+  <Card title="Create and update issues" icon="pen-to-square">
+    Open issues from insights or RCA reports with evidence and recommended actions prefilled.
+  </Card>
+  <Card title="Status awareness" icon="arrows-rotate">
+    Agents can read status and assignee on their own tickets to decide whether to escalate, update, or close.
+  </Card>
+  <Card title="Tenant-wide by default" icon="globe">
+    Enable once. Every agent across every environment can use Linear.
+  </Card>
+</CardGroup>
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Open the Integrations page">
+    In the RubixKube console, go to **Integrations** and select **Linear**.
+  </Step>
+  <Step title="Authenticate">
+    Authorise with Linear. An admin completes the OAuth flow.
+  </Step>
+  <Step title="Configure access">
+    Pick the teams and projects RubixKube can work with. Optionally set a default team for tickets that have no explicit mapping.
+  </Step>
+</Steps>
+
+Once connected, Linear is available tenant-wide.
+
+{/* TODO: screenshot of the Integrations page showing the Linear card */}
+
+## How the agents use it
+
+- Agents can create tickets from insights or RCAs with the full context attached.
+- Chat can answer questions about open incident tickets, ownership, and status.
+- Bridge skills can connect Linear to other tools in your stack, for example surfacing weekly ticket summaries into Notion.
+
+## Build custom workflows with skills
+
+The connection exposes Linear capabilities to agents. Specific workflows (auto-create tickets above a severity threshold, route to a team based on service ownership, weekly ticket digest, ticket-to-doc sync) are built as [Skills](/concepts/skills).
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tickets land in the wrong team">
+    Either adjust the default team in the integration settings, or build a skill that maps services to Linear teams based on your ownership model.
+  </Accordion>
+  <Accordion title="Authentication fails after a while">
+    Reauthorise from **Integrations → Linear**. Long-lived OAuth tokens sometimes need a refresh.
+  </Accordion>
+</AccordionGroup>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Notion" icon="book" href="/integrations/notion">
+    Pair with Linear for ticket-to-doc workflows.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose Linear capabilities into workflows.
+  </Card>
+</CardGroup>

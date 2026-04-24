@@ -1,0 +1,77 @@
+---
+title: "Prometheus integration"
+sidebarTitle: "Prometheus"
+description: "Connect Prometheus to RubixKube today via the custom integrations path. Agents can run PromQL and pull Alertmanager state to enrich investigations and RCAs."
+keywords: ["prometheus integration", "rubixkube prometheus", "PromQL", "alertmanager", "observability integration"]
+"og:title": "Prometheus integration"
+"og:description": "Connect Prometheus to RubixKube via Custom MCP or Custom REST."
+---
+
+Prometheus connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) pointing at the Prometheus HTTP API, and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+
+## What to bring in
+
+The signals that matter most when agents are investigating or writing RCAs:
+
+- **Instant and range queries** (`/api/v1/query`, `/api/v1/query_range`) for PromQL.
+- **Series and labels** (`/api/v1/series`, `/api/v1/label/*`) for discovery.
+- **Alertmanager alerts** (`/api/v2/alerts`) to surface firing alerts as insight candidates.
+- **Rules and recording rules** (`/api/v1/rules`) for context on SLIs and baselines.
+
+Works the same way with federated Prometheus, Thanos, Mimir, or any Prometheus-compatible endpoint.
+
+## Which path to pick
+
+<CardGroup cols={2}>
+  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
+    Point at the Prometheus HTTP API with a small OpenAPI wrapper. Fastest path.
+  </Card>
+  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
+    Wrap PromQL behind named tools (for example `http_p99_latency`) so agents never see raw query strings.
+  </Card>
+</CardGroup>
+
+## Quick recipe: REST path
+
+<Steps titleSize="h3">
+  <Step title="Expose Prometheus to the integration">
+    Make sure the Prometheus endpoint is reachable from the RubixKube control plane. For internal-only Prometheus, use the MCP self-hosted path (below) instead.
+  </Step>
+  <Step title="Register the endpoint">
+    In the RubixKube console, go to **Integrations → Custom REST** and register the Prometheus HTTP API (a small OpenAPI wrapper for the three or four endpoints you use).
+  </Step>
+  <Step title="Enable the calls you care about">
+    Start with instant query, range query, and Alertmanager alerts list.
+  </Step>
+  <Step title="Set auth">
+    If your Prometheus is protected by basic auth, bearer token, or mTLS, configure it in the integration. Otherwise no auth is needed.
+  </Step>
+  <Step title="Scope to skills">
+    Attach the enabled endpoints to the skills that need Prometheus context.
+  </Step>
+</Steps>
+
+For internal-only Prometheus behind a VPN or private network, use [Custom MCP](/integrations/custom-mcp-servers) with a self-hosted server instead, so no inbound exposure is needed.
+
+## Example tools worth having
+
+- `promql(query, window)` — runs a PromQL expression and returns a shaped result.
+- `http_p99_latency(service, window)` — wraps a PromQL expression the team already trusts.
+- `firing_alerts(service)` — returns Alertmanager alerts firing for the service.
+- `recording_rule(name)` — returns the definition of a recording rule, useful when RCA wants to explain a metric.
+
+Define these as skills (or as MCP tools if you want richer return shapes).
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
+    The full REST flow with auth options and approval rules.
+  </Card>
+  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
+    When you want richer tool schemas and multi-call workflows, or when Prometheus is internal-only.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/concepts/skills">
+    How to compose PromQL queries into custom workflows.
+  </Card>
+</CardGroup>

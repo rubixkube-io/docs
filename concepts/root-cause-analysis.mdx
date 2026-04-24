@@ -1,0 +1,116 @@
+---
+title: "Root Cause Analysis"
+sidebarTitle: "Root Cause Analysis"
+description: "Evidence-linked causal chains for every investigation. How the RCA Pipeline Agent builds them, what is inside, and how to read one well."
+keywords: ["RCA", "root cause analysis", "causal chain", "incident investigation", "AI RCA", "evidence-linked RCA"]
+"og:title": "Root Cause Analysis"
+"og:description": "Evidence-linked causal chains for every investigation."
+---
+
+Root Cause Analysis (RCA) is the investigation layer of the Agent Mesh. When an [Insight](/concepts/insights) has enough evidence for a single identifiable root cause, the RCA Pipeline Agent takes over and produces a structured report. That report is the artefact your team acts on and references later.
+
+Every RCA is built on cited evidence. There is no "trust me" reasoning. Every causal link points back to the signal, log, metric, or change that justifies it.
+
+## What a report contains
+
+<AccordionGroup>
+  <Accordion title="Observed conditions" icon="eye">
+    The exact state of the affected resources when the incident started. Snapshots of metrics, events, configuration, and recent changes. Every data point links to its source.
+  </Accordion>
+  <Accordion title="Causal chain" icon="diagram-project">
+    Each link reads "A caused B because C". Every link names the specific evidence behind it, so you can verify instead of trust.
+  </Accordion>
+  <Accordion title="Recommended actions" icon="wand-magic-sparkles">
+    Ranked fixes. Each annotated with expected blast radius, estimated recovery time, and confidence score. High-confidence actions sit at the top.
+  </Accordion>
+  <Accordion title="Prior art" icon="clock-rotate-left">
+    If similar shapes have been resolved before in this workspace, the prior RCAs are linked inline. Operator notes from those resolutions come with them.
+  </Accordion>
+  <Accordion title="Verification" icon="circle-check">
+    After an action runs, the stabilisation window is recorded. Verified, partial, or rollback-suggested outcomes are all tracked on the report.
+  </Accordion>
+  <Accordion title="Timeline and audit" icon="timeline">
+    Every status change, approval, applied action, and comment. Actor and timestamp on each entry. Ready for compliance review.
+  </Accordion>
+</AccordionGroup>
+
+## How an RCA is built
+
+<Steps titleSize="h3">
+  <Step title="Scope the incident">
+    Start from the Insight that opened the case. Identify the directly affected resources and their one-hop neighbours in the Knowledge Graph.
+  </Step>
+  <Step title="Gather evidence">
+    Pull signals (metrics, logs, events), recent changes (deploys, IAM, config), and prior art from the Memory Engine over a time window that spans the incident.
+  </Step>
+  <Step title="Build the chain">
+    Correlate signals across the scoped resources. Every inferred relationship must cite the evidence that justifies it.
+  </Step>
+  <Step title="Rank recommendations">
+    For each candidate action, estimate blast radius and recovery time. Reorder by confidence. Top-ranked goes to Execute.
+  </Step>
+  <Step title="Verify the outcome">
+    After an action is approved and applied, watch the affected resources for the stabilisation window. Record the outcome on the report.
+  </Step>
+</Steps>
+
+## What makes an RCA citable by AI
+
+Docs, post-mortems, and AI answer engines can all cite RubixKube RCAs because the evidence chain is structured. Three properties matter.
+
+<CardGroup cols={3}>
+  <Card title="Specific claims" icon="crosshairs">
+    "Memory used at crash: 487Mi (95%)" beats "high memory pressure". The specific number is the claim.
+  </Card>
+  <Card title="Direct citations" icon="link">
+    Every claim links to its underlying signal. No inferential leaps without evidence.
+  </Card>
+  <Card title="Structured sections" icon="list-tree">
+    Observed, Causal, Recommended, Verified. The same shape every time. Predictable.
+  </Card>
+</CardGroup>
+
+## How to read an RCA well
+
+<Steps titleSize="h3">
+  <Step title="Read the title and the top-ranked action first">
+    Ninety per cent of the value is in the top of the report. If the recommendation is clearly right, skip to the action panel.
+  </Step>
+  <Step title="Verify one or two links in the causal chain">
+    Click through on the signals that feel surprising. Confirm the claim matches the underlying data. This builds trust in the report and flags edge cases the model might have missed.
+  </Step>
+  <Step title="Check prior art">
+    If a similar shape was resolved recently, the previous resolution's operator notes often apply. Read them before approving the new action.
+  </Step>
+  <Step title="Act, or route, or reject">
+    Approve, route to a teammate, or reject with a reason. All three feed the Memory Engine.
+  </Step>
+</Steps>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Why did my Insight not become an RCA?">
+    Not every anomaly has a single identifiable root cause. Multi-cause incidents stay as insights, with the causal analysis inline. If you want a deeper dive, escalate from the insight card and the RCA Pipeline will attempt a full report with the added context.
+  </Accordion>
+  <Accordion title="How long does it take to generate an RCA?">
+    Usually thirty seconds to a few minutes, depending on how wide the causal search is. Large blast radius incidents take longer because more evidence has to be correlated.
+  </Accordion>
+  <Accordion title="Can I rerun an RCA with new context?">
+    Yes. On the report detail page, use **Rerun with context** and paste in the new information (a ticket link, a Slack thread, your own hypothesis). The pipeline takes the input into account.
+  </Accordion>
+  <Accordion title="Are RCAs exportable?">
+    Markdown and printable views are available on the report detail page. Public share links are scoped and revocable. Enterprise workspaces can export the raw JSON for archival or custom dashboards.
+  </Accordion>
+</AccordionGroup>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Insights" icon="lightbulb" href="/concepts/insights">
+    Where RCAs originate. Every RCA starts as an insight.
+  </Card>
+  <Card title="Actions" icon="play" href="/concepts/actions">
+    What happens once the RCA produces a recommendation.
+  </Card>
+</CardGroup>

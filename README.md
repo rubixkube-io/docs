@@ -1,225 +1,152 @@
-# 🚀 RubixKube™ Documentation
+# RubixKube Documentation
 
-![RubixKube Logo](https://github.com/rubixkube-io/docs/blob/d11202b7fb45fdcf1551c7c11a25c9a67e2dcbd2/images/hero-dark.png)
+![RubixKube](https://raw.githubusercontent.com/rubixkube-io/docs/main/images/hero-dark.png)
 
-### The Reliability Layer for the AI Era 🤖✨
+> **Beyond observability. Your infrastructure, healing itself.**
 
-**RubixKube™** is an AI-native mesh of intelligent agents that prevents downtime, safeguards revenue, and creates peace of mind at scale.
+This repository holds the public documentation for **RubixKube**, the Site Reliability Intelligence (SRI) platform. An AI-native system that detects anomalies, diagnoses root cause, and resolves failures across Kubernetes, AWS, GCP, Azure and Linux VMs. Most tools see your infrastructure for the first time, every time. RubixKube remembers.
 
-> 💡 Think of it as your second brain for infrastructure — one that never sleeps, never forgets, and always protects your uptime and your bottom line.
-
-[![Beta](https://img.shields.io/badge/Status-Beta-orange?style=for-the-badge&logo=rocket)](https://docs.rubixkube.ai/getting-started/disclaimers)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=github)](LICENSE)
-[![Docs](https://img.shields.io/badge/Docs-Live-green?style=for-the-badge&logo=readthedocs)](https://docs.rubixkube.ai)
-[![Console](https://img.shields.io/badge/Console-Live-purple?style=for-the-badge&logo=internet-computer)](https://console.rubixkube.ai)
+[![Status: GA](https://img.shields.io/badge/status-GA-success)](https://rubixkube.ai/status)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-live-green)](https://docs.rubixkube.ai)
+[![Console](https://img.shields.io/badge/console-live-purple)](https://console.rubixkube.ai)
 
 ---
 
-## 🔥 Why RubixKube?
+## What is Site Reliability Intelligence?
 
-In a world where AI builds your products, **RubixKube keeps them alive**. We're not just another monitoring tool — we're your **Site Reliability Intelligence (SRI)** platform that combines AI agents, deep Kubernetes expertise, and automated remediation to create **self-healing infrastructure**.
+Site Reliability Intelligence goes beyond observability. It closes the full loop: observe, plan, execute, learn. A system that compounds knowledge over time rather than starting from scratch on every incident.
 
-| Problem | RubixKube Solution |
-|:------------|:-----------------------|
-| 🏥 Infrastructure failures cause revenue loss | 🤖 AI agents detect and fix issues before users notice |
-| 🔍 Root cause analysis takes hours/days | 🧠 Dependency graphs show blast radius in seconds |
-| 🚨 Alert fatigue from noisy monitoring | 💬 Natural language queries like "Why is checkout slow?" |
-| 📊 MTTR too high despite observability | ⚡ Automated remediation with safety guardrails |
-| 💰 Downtime costs you real money | 📈 Business impact metrics connect infra to revenue |
+### Key capabilities
 
----
-
-## 🎯 Core Features
-
-### 🧠 AI Agent Mesh
-Specialized AI agents collaborate:
-- **Detective Agent** - Investigates root causes with evidence
-- **Remediation Agent** - Proposes and applies safe fixes
-- **Memory Agent** - Learns from every incident
-- **Guardian Agent** - Enforces safety policies
-
-### 🔍 Evidence-Linked RCA
-Every incident includes:
-- Dependency graphs showing impact radius
-- Timeline of events leading to failure
-- Logs and metrics correlation
-- AI explanations in plain English
-
-### 🔮 Predictive Prevention
-Catch issues before they impact users:
-- Detect risky deployments
-- Identify configuration drift
-- Spot resource exhaustion early
-- Alert on anomalous patterns
-
-### 💬 Conversational Infra
-Manage your cluster using natural language:
-- "Why is my checkout service slow?"
-- "Show me pods with high memory usage"
-- "What changed in the last hour?"
-- "Restart the payment service"
+- **Autonomous remediation.** Detect, diagnose and resolve failures without waking your team.
+- **Compounding memory.** Every signal, session and resolution builds a deeper model of your system.
+- **Human-in-the-loop guardrails.** Approvals and policy checks when you want them.
+- **Zero new tooling.** Plugs into the stack you already run on day one.
 
 ---
 
-## 🚀 Quick Start (3 Minutes)
+## How it works: compounding memory
 
-### 1. Get Beta Access
-Sign up for free at [console.rubixkube.ai](https://console.rubixkube.ai)
+Most tools treat every incident as a fresh start. RubixKube builds a persistent model of your infrastructure that deepens over time.
 
-**Note**: Beta Software - Read our [disclaimers](https://docs.rubixkube.ai/getting-started/disclaimers) first. Production release coming soon!
-
-### 2. Install RubixKube
-
-#### Local (KIND)
-```bash
-# Install KIND if needed
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-chmod +x ./kind && sudo mv ./kind /usr/local/bin/
-
-# Create cluster and install RubixKube
-kind create cluster --name rubixkube-demo
-kubectl apply -f https://console.rubixkube.ai/install/local
-```
-
-#### Cloud (AWS/GKE/AKS)
-```bash
-# Add our Helm repo
-helm repo add rubixkube https://charts.rubixkube.ai
-helm repo update
-
-# Install RubixKube
-helm install rubixkube rubixkube/rubixkube \
-  --create-namespace --namespace rubixkube-system
-```
-
-For detailed installation guides, check our [KIND setup](https://docs.rubixkube.ai/getting-started/installation-kind) and [cloud installation](https://docs.rubixkube.ai/getting-started/installation-cloud) docs.
-
-### 3. Start Talking to Your Infra
-Open your dashboard and try:
-- "Show me all pods in my cluster"
-- "What's the health status of my deployments?"
-- "Check for any failing pods"
-
-[Try Breaking a Pod](https://docs.rubixkube.ai/tutorials/break-pod-image-error) - Learn by watching RubixKube detect and fix issues in real-time.
+| Milestone | What RubixKube learns |
+|:--|:--|
+| **Day 1** | Topology mapped. Every service, node and edge, automatically. |
+| **Week 1** | Dependencies understood. Upstream and downstream relationships known. |
+| **Month 1** | Causality emerging. Failure patterns surface before they fire. |
+| **Always** | Yours, entirely. A model no other tool has, built only by being there. |
 
 ---
 
-## 📚 Documentation Structure
+## The platform in one paragraph
 
-- **[Quickstart](https://docs.rubixkube.ai/quickstart)**: Get running in minutes with step-by-step guides
-- **[Getting Started](https://docs.rubixkube.ai/getting-started/introduction)**: Sign up, installation, and first steps
-- **[Tutorials](https://docs.rubixkube.ai/tutorials/first-steps)**: Hands-on guides: break pods, analyze costs, troubleshoot
-- **[Core Concepts](https://docs.rubixkube.ai/concepts/what-is-sri)**: SRI, Agent Mesh, Memory Engine, Guardrails
-- **[Using RubixKube](https://docs.rubixkube.ai/using/dashboard)**: Dashboard, insights, agents, integrations
----
-
-## 👥 Who Uses RubixKube?
-
-- **🔧 DevOps Engineers**: Automate incident response and reduce toil with AI-powered remediation
-- **👨‍💼 Site Reliability Engineers**: Enhance observability and cut MTTR with intelligent root cause analysis
-- **🏗️ Platform Engineers**: Build self-healing infrastructure at scale with autonomous operations
-- **👶 Junior Developers**: Learn SRE practices with AI guidance and interactive troubleshooting
-- **📊 Engineering Managers**: Reduce on-call burden and improve team velocity with automated fixes
-- **💼 CTOs & VPs**: Protect revenue and improve reliability metrics with business impact insights
+A coordinated **Agent Mesh** observes your environments through a lightweight, read-only **Observer**, plans and investigates through an **SRI Agent**, remembers through the **Memory Engine** and **Knowledge Graph**, produces evidence-linked root cause reports through the **RCA Pipeline**, and proposes fixes through the **Remediation Agent**, all behind a **Guardian Agent** that enforces policy. The whole thing runs a continuous [OPEL loop](https://docs.rubixkube.ai/concepts/opel-loop) so the platform gets sharper with every incident.
 
 ---
 
-## 🛠️ Local Development
+## Quick start
 
-This site is built with [Mintlify](https://mintlify.com) - a blazingly fast documentation platform.
+1. **Create your workspace.** Sign up at [console.rubixkube.ai](https://console.rubixkube.ai). It takes under a minute. Grab your API key from the dashboard (it starts with `rk_`).
+2. **Connect an environment.** Pick your first target and follow the guide.
+3. **Start a conversation.** Open the dashboard and ask a question, or install the [Rubix CLI](https://docs.rubixkube.ai/cli/overview) and ask it from your terminal.
+
+Environment guides:
+
+- [Kubernetes](https://docs.rubixkube.ai/environments/kubernetes)
+- [AWS](https://docs.rubixkube.ai/environments/aws)
+- [GCP](https://docs.rubixkube.ai/environments/gcp)
+- [Azure](https://docs.rubixkube.ai/environments/azure)
+- [Linux VMs and bare metal](https://docs.rubixkube.ai/environments/vm)
+
+Or start with the guided overview at [Connect your environment](https://docs.rubixkube.ai/getting-started/connect-your-environment).
+
+---
+
+## Documentation structure
+
+| Section | What you will find |
+|:--|:--|
+| [Getting Started](https://docs.rubixkube.ai/getting-started/overview) | Welcome, quickstart, connect your environment. |
+| [Core Concepts](https://docs.rubixkube.ai/concepts/how-rubixkube-works) | How RubixKube works, OPEL loop, Observer, Memory Engine, Knowledge Graph, Agent Mesh, Skills, Insights, RCA, Actions, Environments, Guardrails. |
+| [Environments](https://docs.rubixkube.ai/environments/kubernetes) | Kubernetes, AWS, GCP, Azure, Linux VMs. |
+| [Platform Capabilities](https://docs.rubixkube.ai/using/dashboard) | Dashboard, Rubix Chat Agent, Insights, Actions, RCA Reports, Analytics, Infrastructure, Integrations, Skills, Notifications, Workspace, Agent Skills Store. |
+| [Integrations](https://docs.rubixkube.ai/using/integrations) | GitHub, GitLab, Slack, Teams, PagerDuty, Linear, Notion, Datadog, New Relic, Dynatrace, Prometheus, Grafana, Sentry, plus custom MCP and REST. |
+| [Tutorials](https://docs.rubixkube.ai/tutorials/monitor-infrastructure-health) | Monitor health, automate remediation, talk to your infra, add custom skills and integrations. |
+| [Rubix CLI](https://docs.rubixkube.ai/cli/overview) | Install, configure, commands, examples. |
+| [Support](https://docs.rubixkube.ai/support/troubleshooting) | Troubleshooting, FAQ, system status, glossary. |
+
+---
+
+## Local development
+
+This site is built with [Mintlify](https://mintlify.com).
 
 ### Prerequisites
-- Node.js 16+
+
+- Node.js 18 or higher
 - npm or yarn
 
-### Get Started
+### Run it locally
+
 ```bash
-# Install CLI
+# Install the Mintlify CLI
 npm i -g mint
 
-# Run locally (from repo root)
+# From the repo root
 mint dev
 
 # Preview at http://localhost:3000
 ```
 
-### For Contributors
-- Write in **MDX** (Markdown + React components)
-- Follow our [style guide](https://docs.rubixkube.ai/essentials/markdown)
-- Test all links and code examples
-- Preview images in `/images/` before publishing
-- Read our full [Contributing Guide](CONTRIBUTING.md) for detailed steps
-- Use [Issue Templates](https://github.com/rubixkube-io/docs/issues/new/choose) for bug reports or docs suggestions
-- Follow the [PR Template](https://github.com/rubixkube-io/docs/blob/main/.github/PULL_REQUEST_TEMPLATE.md) for pull requests
+### Writing guidelines
+
+- Write in **MDX**. Markdown plus the Mintlify components.
+- Lead with the answer. Use question-shaped headings when it helps AEO and GEO.
+- Short sentences. Plain language. No em dashes.
+- Verify every link and code example before opening a PR.
+- Keep images under `/images/` and use descriptive filenames.
+
+See the full [Contributing Guide](CONTRIBUTING.md) for the workflow.
 
 ---
 
-## 🌐 Resources & Community
+## Contributing
 
-- **[Website](https://rubixkube.ai)**: Learn about our mission and vision
-- **[Documentation](https://docs.rubixkube.ai)**: Complete guides and API references
-- **[Console/Dashboard](https://console.rubixkube.ai)**: Manage your RubixKube deployment
-- **[Blog](https://rubixkube.ai/blog)**: Deep dives, tutorials, and announcements
-- **[X/Twitter](https://x.com/RubixKubeHQ)**: Follow for updates and tips
-- **[LinkedIn](https://linkedin.com/company/rubixkube)**: Company news and industry insights
-- **[GitHub](https://github.com/rubixkube-io)**: Open source components and examples
+Contributions are welcome.
 
----
+- **Typos and small fixes.** Open a PR directly.
+- **Larger changes.** File an issue first using the [issue templates](https://github.com/rubixkube-io/docs/issues/new/choose) so we can align on scope.
+- **Platform bugs.** Report at [rubixkube-io/rubixkube](https://github.com/rubixkube-io/rubixkube/issues) with steps to reproduce and environment details.
+- **Feature requests.** Start a thread in [Discussions](https://github.com/rubixkube-io/rubixkube/discussions).
 
-## 🤝 Contributing
+Community guidelines:
 
-We ❤️ contributions! Here's how to help:
-
-### Documentation
-- Found a typo? [Open an issue](https://github.com/rubixkube-io/docs/issues)
-- Want to improve a guide? [Submit a PR](https://github.com/rubixkube-io/docs/pulls)
-- Follow our [style guide](https://docs.rubixkube.ai/essentials/markdown)
-
-### Bug Reports
-- Found an issue? [Report it](https://github.com/rubixkube-io/rubixkube/issues)
-- Include steps to reproduce and environment details
-- Check existing issues first
-
-### Feature Requests
-- Have an idea? [Start a discussion](https://github.com/rubixkube-io/rubixkube/discussions)
-- Help us prioritize what to build next
-
-### Platform Development
-- Want to contribute code? Check [rubixkube-io/rubixkube](https://github.com/rubixkube-io/rubixkube)
-- Read our [contributing guidelines](CONTRIBUTING.md)
-- Join our developer community calls
-
-### Community Guidelines
-We strive to maintain a welcoming and inclusive community. Please review our:
-- [Code of Conduct](CODE_OF_CONDUCT.md) - Community behavior guidelines
-- [Contributing Guide](CONTRIBUTING.md) - How to contribute to the project
-- [Security Policy](SECURITY.md) - How to report security vulnerabilities
-
-### Issue Reports & Contributions
-Found a problem or want to contribute?
-- **Bug Reports**: Use our [Issue Templates](https://github.com/rubixkube-io/docs/issues/new/choose) for structured problem reports
-- **Pull Requests**: Follow our [PR Template](https://github.com/rubixkube-io/docs/blob/main/.github/PULL_REQUEST_TEMPLATE.md) for contributions
-- **Content Proposals**: Propose new documentation via [Contribution Issues](https://github.com/rubixkube-io/docs/issues/new?template=documentation_contribution.yml)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guide](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
 
 ---
 
-## ⚖️ License & Legal
+## Resources
 
-- **Documentation License**: This documentation is licensed under the [MIT License](LICENSE)
-- **Platform Terms**: RubixKube platform has its own [terms of service](https://rubixkube.ai/legal)
-
----
-
-## 🎯 Join the Movement
-
-RubixKube isn't just another DevOps tool. It's the seatbelt, backup generator, and peace-of-mind layer for modern infrastructure.
-
-If your infra breaks, your revenue breaks. RubixKube exists to make sure that never happens.
-
-🚀 [Get started today](https://console.rubixkube.ai) and experience the future of infrastructure reliability.
+- **Website.** [rubixkube.ai](https://rubixkube.ai)
+- **Documentation.** [docs.rubixkube.ai](https://docs.rubixkube.ai)
+- **Console.** [console.rubixkube.ai](https://console.rubixkube.ai)
+- **System status.** [rubixkube.ai/status](https://rubixkube.ai/status)
+- **Blog.** [rubixkube.ai/blog](https://rubixkube.ai/blog)
+- **GitHub.** [github.com/rubixkube-io](https://github.com/rubixkube-io)
+- **LinkedIn.** [linkedin.com/company/rubixkube](https://linkedin.com/company/rubixkube)
+- **X.** [@RubixKubeHQ](https://x.com/RubixKubeHQ)
 
 ---
 
-Built with ❤️ by the RubixKube team
+## License
 
-[Website](https://rubixkube.ai) • [Docs](https://docs.rubixkube.ai) • [Console](https://console.rubixkube.ai) • [GitHub](https://github.com/rubixkube-io)
+The documentation in this repository is released under the [MIT License](LICENSE). The RubixKube platform has its own [terms of service](https://rubixkube.ai/legal).
+
+---
+
+**RubixKube.** Site Reliability Intelligence.
+
+connect@rubixkube.ai • Bengaluru, India

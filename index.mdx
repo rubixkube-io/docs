@@ -1,143 +1,98 @@
 ---
 title: "RubixKube Documentation"
-description: "Site Reliability Intelligence for modern infrastructure. Detect anomalies, diagnose root cause, and resolve failures across Kubernetes, AWS, GCP, and Linux VMs."
-keywords: ["site reliability intelligence", "SRI", "AI SRE", "incident response", "root cause analysis", "kubernetes monitoring", "AWS monitoring", "GCP monitoring", "VM monitoring", "AIOps"]
+description: "Site Reliability Intelligence that detects anomalies, diagnoses root cause, and resolves failures autonomously."
+keywords: ["rubixkube", "site reliability intelligence", "SRI", "AI SRE platform", "reliability layer", "memory engine", "agent mesh", "root cause analysis", "incident response"]
 "og:title": "RubixKube Documentation"
-"og:description": "Site Reliability Intelligence for modern infrastructure. Detect, diagnose, and resolve failures across Kubernetes, AWS, GCP, and Linux VMs."
-"og:image": "/images/hero-light.png"
+"og:description": "Site Reliability Intelligence that detects anomalies, diagnoses root cause, and resolves failures autonomously."
+"og:image": "/images/talk-to-your-infra.png"
 ---
 
 <Frame>
   <img
     style={{ borderRadius: '0.75rem' }}
     src="/images/talk-to-your-infra.png"
-    alt="RubixKube, Site Reliability Intelligence for modern infrastructure"
+    alt="RubixKube, Tame the chaos, Talk to your infra"
   />
 </Frame>
 
-RubixKube is Site Reliability Intelligence for your infrastructure. It watches your systems continuously, diagnoses root cause when something breaks, and recommends the exact fix, with evidence, in minutes rather than hours.
+**Welcome to the RubixKube Documentation.**
 
-It runs across Kubernetes, AWS, GCP, and plain Linux VMs. You get the same investigative depth whether the failing piece is an EKS pod, an RDS database, a GCE instance, or a bare metal box in a colo. Azure comes in through AKS today, with subscription-level support on the roadmap.
+RubixKube is the Reliability Layer for the AI era. While most tools just tell you that something broke, RubixKube's mesh of AI agents continuously observes your stack, investigates failures, and provides verified root causes with actionable fixes in minutes.
 
-<Info>
-  **Mean Time to Understand: 2.8 minutes.** Across 12 production teams, RubixKube reaches a confirmed root cause about 21× faster than manual investigation. See the [MTTU story on the blog](https://rubixkube.ai/blog/stop-optimizing-for-mttr-the-real-bottleneck-is-mttu-ai-sre-solves-it).
-</Info>
+Explore the documentation below to set up your environment, understand the core concepts, and start talking to your infrastructure.
 
-## Where do I start?
+## Start Building
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
-    Sign in, connect an environment, and see your first investigation in under ten minutes.
+    Connect your first environment and see your first investigation in under 10 minutes.
   </Card>
-  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
-    Pick the right install path for Kubernetes, AWS, GCP, Azure, or a VM.
+  <Card title="How it Works" icon="brain-circuit" href="/getting-started/overview">
+    Understand the OPEL loop, the Agent Mesh, and how the Memory Engine compounds over time.
   </Card>
-  <Card title="Core concepts" icon="brain-circuit" href="/concepts/how-rubixkube-works">
-    Understand Site Reliability Intelligence, the Agent Mesh, and the OPEL loop.
+  <Card title="Platform Capabilities" icon="layer-group" href="/using/dashboard">
+    Explore Magic Insights, RCA Reports, Actions, and the Rubix Chat Agent.
   </Card>
-  <Card title="Automate incident remediation" icon="wand-magic-sparkles" href="/tutorials/automate-incident-remediation">
-    Walk through a real production incident from detection to resolution.
-  </Card>
-</CardGroup>
-
-## What does RubixKube do?
-
-<CardGroup cols={2}>
-  <Card title="Observes your infrastructure" icon="eye">
-    Continuously maps topology, dependencies, and behaviour. Learns the normal shape of your stack so anomalies stand out.
-  </Card>
-  <Card title="Investigates incidents" icon="magnifying-glass">
-    When something breaks, it gathers logs, metrics, events, and changes, correlates them, and produces an evidence-linked root cause.
-  </Card>
-  <Card title="Recommends safe fixes" icon="wand-magic-sparkles">
-    Every investigation ends with ranked actions, each with expected blast radius and the reasoning behind it.
-  </Card>
-  <Card title="Remembers everything" icon="database">
-    Every incident, correction, and conversation feeds the Memory Engine. Your system gets sharper the longer it runs.
+  <Card title="Integrations" icon="plug" href="/integrations/custom-mcp-servers">
+    Connect GitHub, Slack, Datadog, PagerDuty, or build your own custom integrations.
   </Card>
 </CardGroup>
 
-## What you get on day one
-
-<AccordionGroup>
-  <Accordion title="Topology mapped in minutes" icon="diagram-project">
-    The Observer walks your environment and builds a live map of services, nodes, and edges. No manual instrumentation required.
-  </Accordion>
-  <Accordion title="Answers, not alerts" icon="comments">
-    Ask questions like "why are payments slow in ap-south-1" or "what changed before this alert fired" and get a direct, cited answer.
-  </Accordion>
-  <Accordion title="RCA reports with evidence" icon="file-magnifying-glass">
-    Each incident produces a root cause report: observed conditions, causal chain, and recommended actions. You decide what to do next.
-  </Accordion>
-  <Accordion title="Your data stays yours" icon="lock">
-    The knowledge graph and memory RubixKube builds belongs to you. It is not shared across tenants, and it compounds over time.
-  </Accordion>
-</AccordionGroup>
-
-## Core concepts
-
-<CardGroup cols={2}>
-  <Card title="Site Reliability Intelligence" icon="brain" href="/concepts/how-rubixkube-works">
-    The category RubixKube defines. SRE for the AI era.
-  </Card>
-  <Card title="Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
-    Specialised agents, each expert in its domain, collaborating on every incident.
-  </Card>
-  <Card title="Memory Engine" icon="database" href="/concepts/memory-engine">
-    How RubixKube turns every incident into institutional knowledge.
-  </Card>
-  <Card title="Safety & Guardrails" icon="shield-halved" href="/concepts/guardrails">
-    Why RubixKube is autonomous without being reckless.
-  </Card>
-</CardGroup>
-
-## Popular tutorials
+## Discover the Platform
 
 <CardGroup cols={3}>
-  <Card title="Monitor infrastructure health" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
-    Your daily check-in: dashboard, insights, topology.
+  <Card title="Magic Insights" icon="lightbulb" href="/using/insights">
+    Shift from raw alerts to complete investigations with evidence-linked hypotheses.
   </Card>
-  <Card title="Talk to your infra" icon="comments" href="/tutorials/talk-to-infra">
-    Ask questions in plain English, get cited answers.
+  <Card title="Root Cause Analysis" icon="file-magnifying-glass" href="/using/rca-reports">
+    Generate detailed, cited postmortems the moment an incident occurs.
   </Card>
-  <Card title="Automate incident remediation" icon="wand-magic-sparkles" href="/tutorials/automate-incident-remediation">
-    From detection to verified fix, with evidence and approvals.
+  <Card title="Autonomous Action" icon="wand-magic-sparkles" href="/using/action">
+    Execute safe, scoped fixes with built-in blast radius calculations.
   </Card>
 </CardGroup>
 
-## Frequently asked questions
+## Talk to Your Infrastructure
 
-<AccordionGroup>
-  <Accordion title="Does RubixKube change my infrastructure?">
-    No. RubixKube watches, analyses, and recommends. Your team decides what to do, and nothing changes in your environment without explicit approval.
-  </Accordion>
-  <Accordion title="What environments are supported?">
-    Kubernetes (EKS, GKE, AKS, KIND, bare metal), AWS accounts, GCP projects, and generic Linux VMs. You can mix any of these inside a single workspace. Azure workloads are supported today through AKS on the Kubernetes path.
-  </Accordion>
-  <Accordion title="How long does setup take?">
-    About five minutes for Kubernetes or a VM, about ten minutes for a cloud account. The [Quickstart](/getting-started/quickstart) covers all paths.
-  </Accordion>
-  <Accordion title="What is an investigation?">
-    One complete cycle: RubixKube detects something, traces it to a root cause, and tells you exactly what to fix. Each investigation ships with evidence and ranked actions.
-  </Accordion>
-  <Accordion title="Is RubixKube open source?">
-    The docs are open source on [GitHub](https://github.com/rubixkube-io/docs). The platform itself is commercial, with a free tier available on [console.rubixkube.ai](https://console.rubixkube.ai).
-  </Accordion>
-</AccordionGroup>
+<Frame>
+  <img
+    style={{ borderRadius: '0.75rem' }}
+    src="/images/platform/chat.png"
+    alt="RubixKube Chat Agent"
+  />
+</Frame>
 
-## Help and community
+Stop grepping logs. Ask questions like *"Why are payments slow in ap-south-1?"* or *"What changed before this alert fired?"* and get a direct, cited answer from the AI agent that has been continuously watching your stack.
 
 <CardGroup cols={2}>
-  <Card title="Email support" icon="envelope" href="mailto:connect@rubixkube.ai">
-    connect@rubixkube.ai. Include your tenant ID, timestamp, and screenshots where possible.
+  <Card title="Chat Basics" icon="messages" href="/tutorials/chat-basics">
+    Learn how to interact with the Rubix Chat Agent effectively.
   </Card>
-  <Card title="Blog" icon="newspaper" href="https://rubixkube.ai/blog">
-    Field notes on reliability, AI operations, and the future of SRE.
+  <Card title="Advanced Troubleshooting" icon="screwdriver-wrench" href="/tutorials/chat-troubleshooting">
+    Use chat to diagnose complex multi-service incidents.
   </Card>
-  <Card title="GitHub" icon="github" href="https://github.com/rubixkube-io">
-    Open source components, examples, and issue tracking.
+</CardGroup>
+
+## Developer Tools
+
+<CardGroup cols={2}>
+  <Card title="Rubix CLI" icon="terminal" href="/cli/overview">
+    Manage environments, run investigations, and interact with the Agent Mesh directly from your terminal.
   </Card>
-  <Card title="Console" icon="display" href="https://console.rubixkube.ai">
-    Sign in, invite your team, and start an investigation.
+  <Card title="Custom Agent Skills" icon="code" href="/tutorials/add-custom-agent-skills">
+    Extend RubixKube's capabilities by writing custom tools for the agents to use.
+  </Card>
+</CardGroup>
+
+## Get Support
+
+Need help or have questions? We are here to assist.
+
+<CardGroup cols={2}>
+  <Card title="Email Support" icon="envelope" href="mailto:connect@rubixkube.ai">
+    Reach out to our engineering team directly at connect@rubixkube.ai.
+  </Card>
+  <Card title="Join the Community" icon="github" href="https://github.com/rubixkube-io">
+    Check out our open-source projects, report issues, and contribute on GitHub.
   </Card>
 </CardGroup>

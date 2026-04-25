@@ -9,60 +9,74 @@ description: "Quick answers to common RubixKube questions."
 ## General
 
 ### What is RubixKube?
-An AI-assisted Site Reliability Intelligence platform for Kubernetes.
+RubixKube is an AI-native Site Reliability Intelligence (SRI) platform. It goes beyond traditional monitoring by using specialized AI agents to detect anomalies, diagnose root causes, and recommend or execute remediation actions across your infrastructure.
+
+### What environments do you support?
+RubixKube supports Kubernetes (EKS, GKE, AKS, bare metal), AWS, GCP, Azure, and Linux VMs. You can manage multiple clusters and environments from a single tenant workspace.
 
 ### What browsers are supported?
-Latest Chrome, Edge, Safari, and Firefox.
+The RubixKube Console supports the latest versions of Chrome, Edge, Safari, and Firefox.
 
 ---
 
-## Setup
+## Setup & Installation
 
 ### How do I connect my first cluster?
-Open Clusters → Connect Cluster → run the provided kubectl apply command. The observer agent installs in your cluster and connects automatically.
+Navigate to **Clusters → Connect Cluster** in the Console. You will be provided with a `kubectl apply` command to install the Observer agent. Once deployed, it connects automatically to the RubixKube control plane via NATS JetStream.
 
 ### How long until data shows up?
-Within 1–2 minutes after installation, depending on cluster size.
+Data typically appears within 1–2 minutes after the Observer agent is successfully installed, depending on the size of your cluster and the volume of telemetry.
+
+### Can I manage multiple clusters?
+Yes. Multi-cluster support is available on Pro and Enterprise plans. You can switch between clusters using the Cluster Selector in the Console header, and Insights/RCA reports will be scoped to the selected cluster.
 
 ---
 
-## Insights & RCA
+## AI Agents & RCA
 
-### How are incidents detected?
-RubixKube continuously analyzes Kubernetes signals (events, logs, metrics) to detect abnormal patterns.
+### How does the AI detect incidents?
+The Observer agent continuously processes real-time telemetry (events, logs, metrics) within your cluster to identify anomalies. It then sends summarized and anonymized data (Insights and infrastructure snapshots) to the Memory Engine. The Memory Engine uses fingerprinting and state machines to build context, deduplicate issues, and trigger the RCA pipeline without ever receiving a raw dump of your logs or metrics.
 
-### Can I trust the RCA?
-RCA includes confidence levels and evidence so you can validate conclusions.
+### What agents are available?
+RubixKube features multiple specialized agents:
+- **SRE Agent:** The primary agent for troubleshooting, analyzing Kubernetes graphs, logs, and metrics.
+- **Prism (Executive Agent):** Provides high-level, BLUF-style (Bottom Line Up Front) summaries for leadership.
+- **Expert SRE:** Conducts deep, specialized reliability analysis.
+
+### Can I trust the Root Cause Analysis (RCA)?
+Yes. Every RCA report includes a confidence score and direct links to the underlying evidence (logs, metrics, events) so your engineers can validate the AI's conclusions before taking action.
 
 ---
 
-## Agents
+## Integrations & Actions
 
-### Which agents are required?
-Observer, RCA Pipeline, and SRI. Optional: Memory Engine and MCP server.
+### What integrations are supported?
+RubixKube supports native integrations with Slack, PagerDuty, GitHub, GitLab, Linear, Notion, and major observability tools (Datadog, New Relic, Prometheus). We also support Custom MCP (Model Context Protocol) servers for extending agent capabilities.
 
-### What if an agent is inactive?
-Check `rubixkube-system` namespace pods and logs. See the Troubleshooting guide.
+### How do Actions work?
+When an RCA identifies a fix, it can propose an Action. Actions follow a strict state machine (`todo` → `assigned` → `in_progress` → `review` → `completed`). Depending on your Guardrails configuration, actions can be executed automatically or require human approval.
 
 ---
 
 ## Billing & Security
 
 ### Do you store application data?
-No. The observer collects metadata and metrics; not application payloads.
+No. The Observer agent only collects infrastructure metadata, events, and aggregated metrics. It does not inspect or store your application payloads or sensitive customer data.
 
-### What auth methods are supported?
-SSO via Auth0 (Google/GitHub); optional backup password.
+### What authentication methods are supported?
+We use Auth0 for secure authentication, supporting SSO (Google, GitHub) as well as standard email/password login. Enterprise plans include advanced SSO and SAML configurations.
+
+### How is my data isolated?
+RubixKube employs strict multi-tenancy. Every API request, database record, and NATS message is securely scoped by a unique `Tenant ID`.
 
 ---
 
-## Documentation
-
-### Images not appearing in docs?
-Hard refresh (Cmd+Shift+R), ensure images are committed under `/images/using/`, and re-deploy docs.
+## Getting Help
 
 ### Where can I get more help?
-Use the Troubleshooting guide or contact support with Tenant ID, repro steps, and screenshots.
+- Check the [Troubleshooting Guide](/support/troubleshooting) for common issues.
+- Use the **Rubix Chat Agent** in the Console for interactive assistance.
+- Contact support at [connect@rubixkube.ai](mailto:connect@rubixkube.ai) with your Tenant ID, repro steps, and screenshots.
 
 ---
 
@@ -73,5 +87,3 @@ Use the Troubleshooting guide or contact support with Tenant ID, repro steps, an
 - [Infrastructure](/using/infrastructure)
 - [Agents](/using/agents)
 - [Settings](/using/settings)
-
-

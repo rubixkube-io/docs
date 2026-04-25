@@ -10,108 +10,121 @@ This guide helps you quickly diagnose and resolve common issues across the Rubix
 
 ## Quick Checklist
 
-- Verify connectivity: Dashboard refresh succeeds, no global 401/403 errors
-- Confirm agent health: Observer, RCA Pipeline, SRI are Active
-- Check cluster readiness: kube-apiserver reachable, nodes Ready
-- Review Insights errors: open the latest incident and read Evidence
-- Hard refresh docs if images fail: Cmd+Shift+R
+- **Verify connectivity:** Ensure the Console dashboard loads and you are not seeing global 401/403 errors.
+- **Confirm agent health:** Check that the Observer, RCA Pipeline, and SRI agents are Active in the Agents view.
+- **Check cluster readiness:** Ensure your `kube-apiserver` is reachable and nodes are Ready.
+- **Review Insights errors:** Open the latest incident and read the Evidence and RCA report.
+- **Check integrations:** Ensure your MCP servers and OAuth integrations are properly authenticated.
 
 ---
 
 ## Authentication and Access
 
-### 401 Unauthorized in console
-- Cause: Session expired or missing tenant context
-- Fix:
-  1. Click Refresh in the header or re-login
-  2. If persistent, clear cookies for the console domain
-  3. Verify Tenant ID exists in Settings → Organization
+### 401 Unauthorized in Console
+- **Cause:** Your session has expired, or the tenant context is missing.
+- **Fix:**
+  1. Click Refresh in the header or log out and log back in.
+  2. If persistent, clear your browser cookies for the `console.rubixkube.ai` domain.
+  3. Verify your Tenant ID exists in **Settings → Organization**.
 
-### Can't login
-- Cause: SSO blocked or clock skew
-- Fix:
-  - Ensure system time is correct
-  - Try alternate provider (Google/GitHub)
-  - Contact support with timestamp and email
+### Cannot Login
+- **Cause:** SSO blocked, clock skew, or an expired invitation.
+- **Fix:**
+  - Ensure your system time is correct.
+  - Try an alternate provider (Google/GitHub) if your primary SSO fails.
+  - If using an invitation link, verify it hasn't expired.
+  - Contact support with the timestamp and your email address.
 
 ---
 
-## Dashboard/Insights Issues
+## Dashboard & Real-Time Updates
 
-### Images not rendering in docs
-- Cause: Browser cache or missing images
-- Fix:
-  1. Clear Mintlify cache locally (.mintlify) and rebuild
-  2. Hard refresh (Cmd+Shift+R)
-  3. Confirm path: `/images/using/...` and commit pushed
+### Real-Time Updates (SSE) Not Working
+- **Cause:** Network proxy or firewall blocking Server-Sent Events (SSE).
+- **Fix:**
+  - Ensure your network allows long-lived HTTP connections to `console.rubixkube.ai`.
+  - Check the browser console for connection drops. The Console will automatically attempt to reconnect.
 
-### Insights page blank or parsing error
-- Cause: MDX invalid tag usage
-- Fix:
-  - Wrap CLI placeholders in fenced code blocks
-  - Avoid bare `<tag>` text; escape or code block it
+### Multi-Cluster Data Missing
+- **Cause:** The Cluster Selector is set to the wrong cluster, or your plan doesn't support multi-cluster.
+- **Fix:**
+  - Use the Cluster Selector in the header to ensure you're viewing the correct environment.
+  - Verify your subscription tier (Pro/Enterprise) in Settings.
 
 ---
 
 ## Agents & RCA
 
-### Agents show Inactive
-- Cause: Pods not running in `rubixkube-system`
-- Fix:
+### Agents Show "Inactive"
+- **Cause:** The Observer pods are not running in the `rubixkube-system` namespace.
+- **Fix:**
   ```bash
   kubectl get pods -n rubixkube-system
   kubectl logs deploy/rubixkube-observer -n rubixkube-system
   ```
-  - Verify image pull and service account permissions
+  - Verify image pull secrets and service account permissions.
+  - Ensure the cluster has outbound connectivity to `nats.rubixkube.ai:4222`.
 
-### RCA not generated
-- Cause: Missing evidence or low signal
-- Fix:
-  - Ensure logs/metrics sources are reachable
-  - Re-run investigation; increase time range
+### RCA Not Generated
+- **Cause:** Missing evidence, low signal, or the Insight is stuck in `QUEUED_FOR_RCA`.
+- **Fix:**
+  - Ensure logs and metrics sources are reachable by the Observer.
+  - The RCA Reconciler will automatically retry failed tasks. If it persists, check the Insight details for specific errors.
+
+### Chat Agent Unresponsive
+- **Cause:** The AI Agent platform (New Opel) is experiencing high latency or a session timeout.
+- **Fix:**
+  - Refresh the chat window to establish a new session.
+  - Check the **System Status** page for any ongoing incidents with the AI models (Vertex AI/Gemini).
 
 ---
 
 ## Clusters & Infrastructure
 
-### No clusters found
-- Cause: Observer not installed
-- Fix:
+### No Clusters Found
+- **Cause:** The Observer agent has not been installed or registered.
+- **Fix:**
   ```bash
   kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=YOUR_KEY"
   ```
-  - Wait 1–2 minutes; verify nodes and pods are Ready
+  - Wait 1–2 minutes; verify nodes and pods are Ready.
+  - Check the Orchestrator logs if you are self-hosting.
 
-### Graph not rendering
-- Cause: WebGL/canvas blocked
-- Fix:
-  - Try different layout (Force/Hierarchical)
-  - Disable extensions blocking canvas
+### Knowledge Graph Not Rendering
+- **Cause:** WebGL/canvas blocked by the browser, or a large topology graph.
+- **Fix:**
+  - Try a different layout (Force/Hierarchical).
+  - Disable browser extensions that block canvas rendering.
+  - Use the Search or Neighborhood queries to narrow down the scope.
 
 ---
 
 ## Settings & Integrations
 
-### Tenant ID copy button not working
-- Cause: Clipboard permissions
-- Fix: Use manual selection; check browser clipboard settings
+### Slack/PagerDuty Not Receiving Alerts
+- **Cause:** The integration is not configured, or the OAuth token has expired.
+- **Fix:**
+  - Reconnect the integration in **Settings → Integrations**.
+  - Trigger a test event from the Insights dashboard.
 
-### Slack/PagerDuty not receiving alerts
-- Cause: Not configured or wrong keys
-- Fix:
-  - Reconnect integration and re-enter key
-  - Trigger a test event from Insights
+### Custom MCP Server Fails to Connect
+- **Cause:** Invalid configuration, unreachable endpoint, or missing authentication.
+- **Fix:**
+  - Verify the MCP server URL is publicly accessible from the RubixKube control plane.
+  - Check the Integration Registry for any connection errors.
+  - Ensure the correct `auth_header_prefix` and credentials are provided.
 
 ---
 
 ## Collecting Diagnostics
 
 Provide the following when contacting support:
-- Tenant ID (Settings → Organization)
-- Timestamp and timezone
-- Browser and OS
-- Repro steps and screenshots
-- Relevant `kubectl` outputs
+- **Tenant ID** (found in Settings → Organization)
+- **Cluster ID** (if applicable)
+- Timestamp and timezone of the issue
+- Browser version and OS
+- Reproduction steps and screenshots
+- Relevant `kubectl` outputs from the `rubixkube-system` namespace
 
 ---
 
@@ -120,8 +133,6 @@ Provide the following when contacting support:
 - [Insights](/using/insights)
 - [Infrastructure](/using/infrastructure)
 - [Agents](/using/agents)
-- [Clusters](/using/clusters)
-- [Settings](/using/settings)
+- [Clusters](/using/environments)
+- [Settings](/using/workspace)
 - [Integrations](/using/integrations)
-
-

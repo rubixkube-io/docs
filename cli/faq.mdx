@@ -64,10 +64,10 @@ Quick answers to the questions we hear most.
 
 <AccordionGroup>
   <Accordion title="Does the CLI work with all supported environments?">
-    Yes. Kubernetes, AWS, GCP, and Linux VMs are all reachable from the same CLI. Switch scope with `/environments`.
+    Yes. Kubernetes, AWS, GCP, Azure, and Linux VMs are all reachable from the same CLI. You can manage multiple clusters and switch scope with `/environments` or the `--cluster` flag.
   </Accordion>
   <Accordion title="Can I invoke skills from the CLI?">
-    Yes. `/skills skill-name` runs any enabled skill. Same intent-matching behaviour as the console Chat.
+    Yes. `/skills skill-name` runs any enabled skill. Same intent-matching behaviour as the console Chat. You can also interact with Custom MCP servers directly from the CLI.
   </Accordion>
   <Accordion title="Can I see RCA reports in the terminal?">
     Chat can summarise them and link out. Full RCA reports render best in the console because of their evidence tables and graph views. Use `/console` from inside chat to jump over.

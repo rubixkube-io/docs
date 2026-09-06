@@ -9,7 +9,7 @@ keywords: ["kepler", "kepler permissions", "kepler command rules", "always block
 
 Kepler has two controls and a floor. **Posture** decides how much Kepler does on its own in a conversation. **Permissions** decide, per tool, whether Kepler may use it, must ask first, or may not use it at all. The **always-blocked list** is the floor under both: a set of destructive commands that never run, whatever the posture, whatever the rule, whatever you click.
 
-Leave the defaults on to start. Files and Shell are on Allow, which means reads run without a prompt and writes follow the conversation's posture. MCP servers are on Ask, so every call to an external integration shows you what it is about to send. Tighten or loosen one control at a time once you know what a normal session looks like.
+Leave the defaults on to start. Files, Shell and MCP servers all ask by default, so the first time Kepler reaches for your terminal you see exactly what it wants to run. Approve a command prefix for the session and the prompts thin out fast. Loosen one control at a time once you know what a normal session looks like.
 
 The controls only tighten. A posture cannot loosen a permission, a permission cannot loosen the floor, and Kepler cannot change any of them itself.
 
@@ -25,12 +25,12 @@ Open **Settings > Permissions** (`Cmd+,`, or `/settings`). The page has three pa
 
 ### Tools
 
-Each switch is Allow, Ask or Block. Allow never means writes run freely: reads run without a prompt, and writes still follow the conversation's posture.
+Each switch is Allow, Ask or Block. Allow never means writes run freely: it lets reads through without a prompt, and writes still follow the conversation's posture.
 
 | Tool | Covers | Default | What Ask means |
 |---|---|---|---|
-| **Files** | Reading, listing and searching files in your workspace. | Allow | Every file read docks a card before it runs. |
-| **Shell** | Commands Kepler runs in your terminal. | Allow | Every command asks, reads included. Set this if you want to approve even `kubectl get` for a while. |
+| **Files** | Reading, listing and searching files in your workspace. | Ask | Every file read docks a card before it runs. |
+| **Shell** | Commands Kepler runs in your terminal. | Ask | Every command asks, reads included. Set this to Allow once you trust the session and want read-only commands like `kubectl get` to flow without a prompt. |
 | **MCP servers** | Tools from connected MCP integrations such as Grafana, AWS or PagerDuty. | Ask | Every MCP tool call asks. |
 
 The switches sit on top of posture and never loosen it. Shell on Allow in Observe still means no write command runs: Allow lets reads through without a prompt, and Observe keeps writes off the table. Shell on Ask in Yolo means Yolo asks about every command, which is the point of Ask.

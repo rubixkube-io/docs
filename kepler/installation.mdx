@@ -1,0 +1,121 @@
+---
+title: "Install Kepler"
+sidebarTitle: "Installation"
+description: "Download and install Kepler on macOS, Windows, or Linux. System requirements, first launch, automatic updates, and how to uninstall."
+keywords: ["install kepler", "kepler download", "kepler macos", "kepler windows", "kepler linux", "kepler deb", "kepler rpm", "kepler update"]
+"og:title": "Install Kepler"
+"og:description": "Download for macOS, Windows, or Linux. Requirements, updates, uninstall."
+---
+
+Kepler is a desktop app. Download the installer for your operating system from the [releases page](https://github.com/rubixkube-io/kepler-releases/releases/latest), open it, and sign in. The current version is **0.1.1-beta**.
+
+## Download and install
+
+<Tabs>
+  <Tab title="macOS">
+    Requires **macOS 13 Ventura or later** on Apple Silicon.
+
+    1. Download `Kepler-<version>-arm64.dmg` from the [releases page](https://github.com/rubixkube-io/kepler-releases/releases/latest).
+    2. Open the disk image and drag **Kepler** into **Applications**.
+    3. Launch Kepler from Applications or Spotlight.
+  </Tab>
+  <Tab title="Windows">
+    Requires **64-bit Windows**.
+
+    1. Download `Kepler-<version>-setup.exe` from the [releases page](https://github.com/rubixkube-io/kepler-releases/releases/latest).
+    2. Run the installer and follow the prompts.
+    3. Launch Kepler from the Start menu.
+
+    <Warning>
+    Windows support is early. Kepler's terminal on Windows is PowerShell (it falls back to `cmd.exe` on hosts without PowerShell). Running Kepler in the background on Windows and full PowerShell parity are still in progress, and there is no WSL integration yet. If your tools live in WSL, tell us.
+    </Warning>
+  </Tab>
+  <Tab title="Linux">
+    Kepler ships as a **.deb** (Debian, Ubuntu) and an **.rpm** (Fedora, RHEL, openSUSE), 64-bit x86. It needs **WebKitGTK 4.1** and **GTK 3**, which the packages declare as dependencies.
+
+    ```bash
+    # Debian / Ubuntu
+    sudo apt install ./Kepler-<version>-amd64.deb
+
+    # Fedora / RHEL
+    sudo dnf install ./Kepler-<version>-x86_64.rpm
+    ```
+
+    If your package manager does not pull the dependencies in, install them first: `libwebkit2gtk-4.1-0` and `libgtk-3-0` on Debian-based systems, `webkit2gtk4.1` and `gtk3` on RPM-based systems.
+
+    Launch Kepler from your application menu.
+  </Tab>
+</Tabs>
+
+## Verify the first launch
+
+On first launch Kepler shows a sign-in screen. Sign in with Google, GitHub, or email through your browser. After that, Kepler asks three short questions about you (your name, where you sit in the stack, what you look after), then drops you on the chat landing where you connect a model.
+
+If you get as far as the chat landing, the install is good. The [Quickstart](/kepler/quickstart) picks up from there.
+
+To confirm the version at any time, open **Settings > General > About**, or on macOS use **Kepler > About Kepler** in the menu bar.
+
+## Updates
+
+Kepler checks for a new version on its own, every few hours while it is open. Nothing installs without a click.
+
+- **macOS and Windows**: when an update is available, a pill appears in the sidebar and a row in **Settings > General > Updates**. Click it to download. When the download finishes, Kepler offers a restart and installs in place.
+- **Linux**: Kepler tells you a newer version exists and links to the release page. Install it with your package manager the same way you installed the first time.
+
+You can also trigger a check from **Settings > General > Updates**.
+
+<Note>
+Updating Kepler never touches your conversations, memory, or settings. They live outside the app bundle.
+</Note>
+
+## Requirements
+
+<CardGroup cols={2}>
+  <Card title="Operating system" icon="desktop">
+    macOS 13 or later (Apple Silicon). 64-bit Windows. Linux with WebKitGTK 4.1 and GTK 3.
+  </Card>
+  <Card title="Account" icon="user">
+    A Kepler sign-in (Google, GitHub, or email). Free. It unlocks the hosted models and nothing else is required.
+  </Card>
+  <Card title="A model" icon="microchip">
+    Use the hosted Kepler models with your sign-in, or bring your own key for Anthropic, OpenAI, Google, xAI, AWS Bedrock, or any OpenAI-compatible endpoint. Ollama works for fully local models.
+  </Card>
+  <Card title="Your existing tools" icon="wrench">
+    Kepler uses what is already on the machine: `kubectl` and your kubeconfig, cloud CLIs, SSH config. There is nothing to install in your clusters.
+  </Card>
+</CardGroup>
+
+## Uninstall
+
+Removing the app and removing your data are two separate steps. Uninstalling the app leaves your data in place so a reinstall picks up where you left off.
+
+<Tabs>
+  <Tab title="macOS">
+    Quit Kepler, then drag **Kepler** from Applications to the Trash.
+  </Tab>
+  <Tab title="Windows">
+    Quit Kepler, then remove it from **Settings > Apps > Installed apps**, or run the uninstaller from the Start menu.
+  </Tab>
+  <Tab title="Linux">
+    Quit Kepler, then remove the package with the same package manager you installed it with (`apt remove` or `dnf remove`).
+  </Tab>
+</Tabs>
+
+### Where your data lives
+
+Everything Kepler knows about you is in one folder in your home directory: `~/.kepler` on macOS and Linux, `%USERPROFILE%\.kepler` on Windows. It holds your conversations, memory, `kepler.md` and preference files, watchers, workflows, artifacts, and settings. API keys and channel tokens are kept in your operating system's keychain, not in that folder.
+
+To remove Kepler completely, delete that folder after uninstalling the app. This is irreversible: memory, session history, and every rule you taught Kepler go with it. If you only want a fresh start on memory, use **Settings > Memory > Wipe memory** instead and keep the rest.
+
+If you installed the optional `kepler` command-line helper from **Settings > Experiments**, it lives on your `PATH` and is removed separately. Run `kepler help` to see whether it is present.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/kepler/quickstart">
+    Sign in, connect a model, open a workspace, ask your first question.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/kepler/troubleshooting">
+    Kepler will not start, sign-in loops, the model is not responding.
+  </Card>
+</CardGroup>

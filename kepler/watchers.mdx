@@ -1,0 +1,100 @@
+---
+title: "Watchers: ask Kepler to keep an eye on something"
+sidebarTitle: "Watchers"
+description: "A watcher is a read-only check Kepler runs in the background on a schedule. When it fires, Kepler wakes on its own, looks into it, and comes back with a suggestion."
+keywords: ["kepler watchers", "ai monitoring rollout", "keep an eye on deployment", "background check sre", "kepler wake"]
+"og:title": "Watchers"
+"og:description": "Kepler keeps an eye on something and wakes when it changes."
+---
+
+A watcher is a read-only check that Kepler runs in the background on a schedule. It costs nothing while nothing changes. When it fires, Kepler wakes the session that set it, looks into what happened, and comes back with a suggestion. Nothing is changed without you.
+
+## Arm a watcher
+
+Ask in plain words, in any session:
+
+```
+Keep an eye on the checkout rollout and tell me if any pod goes unhealthy.
+```
+
+```
+Watch the error rate on the payments dashboard for the next hour. Wake me if it goes above 1%.
+```
+
+```
+Tell me when the cert-manager job in the infra namespace finishes, and whether it succeeded.
+```
+
+Kepler turns the request into a check it can run without writing anything, confirms what it will watch and how often, and arms it. The watcher is listed under **Watching** in the session's **This thread** panel, opened from the indicator at the top right of the conversation, with a stop control beside it.
+
+{/* TODO(screenshot) kepler/watcher-armed.png : state: a session with one watcher armed, the This thread panel open, showing the watcher's goal under Watching with the stop control
+<Frame>
+  <img src="/images/kepler/watcher-armed.png" alt="A Kepler session with a watcher armed: the This thread panel reads Watching, shows the goal 'checkout rollout, any pod unhealthy', and offers a stop control." />
+  <Caption>Watchers armed in a conversation are listed under Watching. Each one belongs to the session that set it.</Caption>
+</Frame>
+*/}
+
+## When it fires
+
+The session wakes. A card appears in the thread saying what the watcher saw, and Kepler follows it with a short investigation and a suggestion: what changed, what it likely means, what you might do next. If you have a channel connected and you are away from your desk, the alert can reach your phone too. See [Chat from your phone](/kepler/channels).
+
+{/* TODO(screenshot) kepler/watcher-fired.png : state: a thread showing a watcher wake card followed by Kepler's short investigation and suggestion
+<Frame>
+  <img src="/images/kepler/watcher-fired.png" alt="A Kepler thread after a watcher fired: a card reporting that two checkout pods went NotReady, followed by Kepler's investigation and a suggested next step." />
+  <Caption>A fired watcher wakes the thread. Kepler investigates and suggests, and waits for you before acting.</Caption>
+</Frame>
+*/}
+
+Because the watcher woke the session on its own, Kepler stays on the safe side. It reads and reports. Anything it proposes follows the session's posture, so in Observe and Assist nothing changes without your approval.
+
+## Watchers are read-only, always
+
+A watcher can only run commands that read. That holds in every posture, including Yolo. If the check Kepler drafts needs a command it does not recognise, it stops and asks you to trust that command as read-only, the same card you see in a normal session. The **Run once** option is never offered for a watcher, because a watcher would run it again and again.
+
+## See and stop watchers
+
+- **In the session:** open **This thread** from the top right of the conversation. **Watching** lists the watchers armed there. Press the stop control to end one.
+- **Everywhere:** **Settings > Watchers** lists every watcher across every session, with counts for how many are watching, how many checks have run, how many alerts were sent, and how many have ended. Open one for its checks and signals.
+
+You can also just ask:
+
+```
+Stop watching the checkout rollout.
+```
+
+```
+What are you watching right now?
+```
+
+## Example watchers by situation
+
+| Situation | Ask Kepler |
+|---|---|
+| A rollout you do not want to babysit | Keep an eye on the api rollout in prod and tell me when all pods are Ready, or if any restart. |
+| A fix you are not sure took | Watch the 502 rate on checkout for 30 minutes. Wake me if it comes back. |
+| A slow job | Tell me when the nightly export job finishes and whether it succeeded. |
+| Capacity creeping up | Watch disk usage on the Prometheus volume and wake me at 85%. |
+| Something a teammate is changing | Watch the payments namespace for new deployments this afternoon and tell me what changed. |
+
+## Limits worth knowing
+
+- Kepler has to be running for watchers to check. Under **Settings > General > While you are away**, switch off **Kepler stops when you close the window** so watchers keep going with the window closed. On macOS, allow Kepler under **System Settings > General > Login Items > Allow in the Background**.
+- On Windows in this release, Kepler does not run in the background, so watchers pause when the window is closed.
+- A watcher belongs to the session that set it and wakes that session. Open that session to see the card.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Chat from your phone" icon="mobile" href="/kepler/channels">
+    Let a fired watcher reach you when you are away.
+  </Card>
+  <Card title="Postures" icon="shield-halved" href="/kepler/postures">
+    Why a woken session still asks before it acts.
+  </Card>
+  <Card title="Everyday workflows" icon="list-check" href="/kepler/workflows">
+    The investigation that usually comes before a watcher.
+  </Card>
+  <Card title="Settings reference" icon="sliders" href="/kepler/settings#watchers">
+    The Watchers section in Settings.
+  </Card>
+</CardGroup>

@@ -1,0 +1,99 @@
+---
+title: "Kepler FAQ"
+sidebarTitle: "FAQ"
+description: "Answers to common questions about Kepler: getting started, safety and approvals, models and cost, data and privacy, and platform support."
+keywords: ["kepler faq", "kepler questions", "is kepler safe", "kepler privacy", "kepler models", "kepler cost", "kepler windows", "kepler linux"]
+"og:title": "Kepler FAQ"
+"og:description": "Common questions about Kepler, answered."
+---
+
+import ContactSupport from '/snippets/contact-support.mdx';
+
+Short answers to the questions we hear most. If yours is not here, the [Troubleshooting](/kepler/troubleshooting) page covers specific failures, and support is at the bottom.
+
+## Getting started
+
+<AccordionGroup>
+  <Accordion title="Do I need a RubixKube platform account to use Kepler?" icon="user">
+    No. A Kepler sign-in (Google, GitHub, or email) and a model are all you need. The [RubixKube platform](/getting-started/overview) is a separate product that watches your environments continuously. If you use both, Kepler ships with RubixKube skills so you can pull the platform's active issues and RCAs into a chat, but Kepler works fully on its own.
+  </Accordion>
+  <Accordion title="What do I have to give Kepler access to?" icon="key">
+    Two things: a model, and any folders you want it to read or edit (`Cmd+O`). You do not hand over kubeconfigs, cloud credentials, or SSH keys. Kepler uses whatever `kubectl`, `aws`, `gcloud`, and `ssh` already have on your machine, and only looks at what you already have access to.
+  </Accordion>
+  <Accordion title="What should I ask first?" icon="comment">
+    Something you would ask a colleague on shift. `Why is checkout crashlooping in prod?`, `What changed in the payments namespace today?`, or `/triage api-gateway` are all good openers. Start in Observe, the default, so nothing writes while you get a feel for how Kepler works. The [Quickstart](/kepler/quickstart) walks through a full first session.
+  </Accordion>
+  <Accordion title="How is Kepler different from a coding agent?" icon="code">
+    Coding agents work on a repo that holds still and remembers everything for them. Kepler works on live clusters and dashboards that drift and forget, so it builds its own memory of your systems and can watch things in the background. It can read and edit files in folders you grant, but it is built for operating systems, not for shipping features.
+  </Accordion>
+</AccordionGroup>
+
+## Safety and control
+
+<AccordionGroup>
+  <Accordion title="Can Kepler change something in production without asking me?" icon="shield-halved">
+    Not unless you tell it to. Every new conversation starts in Observe, which is read-only. In Assist, Kepler stops before every write and shows you the exact command. Only Yolo runs writes without a per-step approval, and you switch into it deliberately, per conversation, with `Shift+Tab` or `/mode yolo`.
+  </Accordion>
+  <Accordion title="What can it never do, in any mode?" icon="ban">
+    With `kubectl`: delete, scale, drain, cordon, taint, and `rollout restart` or `rollout undo`. With `helm`: delete, uninstall, and rollback. Also `rm -rf`, `terraform destroy`, and delete, terminate, or stop calls on AWS, GCP, and Azure. Windows equivalents such as recursive `Remove-Item` are on the list too. No posture, no permission setting, and no rule you write can unlock these. The full list is in [Permissions](/kepler/permissions).
+  </Accordion>
+  <Accordion title="What happens when Kepler meets a command it does not recognise?" icon="circle-question">
+    It stops and asks. A card shows the command and says plainly that Kepler cannot tell whether it is safe. You can trust it as read-only, which saves a rule that applies everywhere and survives restarts, or say no. In Assist and Yolo you can also run it just once. In Observe, trusting it is the only way through.
+  </Accordion>
+  <Accordion title="Can I make Kepler ask about everything, even reads?" icon="hand">
+    Yes. **Settings > Permissions** has three switches, Files, Shell, and MCP servers, each set to allow, ask, or block. Files and Shell default to allow, which lets reads through and leaves writes to the posture. MCP servers default to ask. Set a switch to ask and Kepler pauses for that kind of tool regardless of posture. These settings only ever tighten what a posture allows. Nothing in the app can loosen them on Kepler's behalf.
+  </Accordion>
+</AccordionGroup>
+
+## Models and cost
+
+<AccordionGroup>
+  <Accordion title="Which models can I use?" icon="microchip">
+    The hosted Kepler models, available with your sign-in and no key. Or bring your own key for Anthropic, OpenAI, Google (Gemini API or Vertex AI), xAI, AWS Bedrock, or any OpenAI-compatible endpoint. Ollama gives you fully local models. Set it up in **Settings > Models** or with `/model`.
+  </Accordion>
+  <Accordion title="Will Kepler switch models on its own to save money or when one fails?" icon="arrows-rotate">
+    No, ever. You choose the model, so you control the spend. When a request fails, Kepler retries the same model or tells you it could not finish. It never silently downgrades to a cheaper or different model.
+  </Accordion>
+  <Accordion title="How much does Kepler cost?" icon="coins">
+    Kepler runs locally and is free, with no seats or cloud limits. Cloud plans add team sync, shared memory, and hosted automations. Model usage is separate: keys you bring are billed by that provider directly. **Settings > Plan & Usage** shows your plan and what this month has cost so far.
+  </Accordion>
+  <Accordion title="Do watchers burn tokens while nothing is happening?" icon="eye">
+    No. A watcher is a plain background check with no model involved. The model only runs when the watcher fires, and then only to look at what changed and suggest something. A quiet watcher costs nothing.
+  </Accordion>
+</AccordionGroup>
+
+## Data and privacy
+
+<AccordionGroup>
+  <Accordion title="Where does my data go?" icon="database">
+    It stays on your machine. Conversation history, memory, watchers, and settings live in a single folder in your home directory. The only outbound traffic is to the model you chose and to your own tools and integrations. There is no RubixKube server in the middle of your chats.
+  </Accordion>
+  <Accordion title="Where are my API keys stored?" icon="lock">
+    In your operating system's keychain, under Kepler's name. They are never written to a plain-text file and never sent anywhere except to the provider they belong to.
+  </Accordion>
+  <Accordion title="Can I use Kepler without anything leaving my laptop?" icon="plug-circle-xmark">
+    Yes. Run a local model with Ollama and pick it in the model picker. With a local model and no channels connected, Kepler makes no outbound calls beyond what your own `kubectl` and cloud CLIs make.
+  </Accordion>
+  <Accordion title="Can I have a conversation Kepler does not remember?" icon="user-secret">
+    Yes. Press the ghost button beside **New session** in the sidebar. An incognito session reads no memory and writes none, so nothing from it shows up later. You must start it as incognito. An ordinary session cannot be made incognito after the fact.
+  </Accordion>
+  <Accordion title="How do I wipe memory, or bring it in from another assistant?" icon="trash">
+    **Settings > Memory** has import, rebuild, and wipe. Wipe asks for confirmation and removes everything Kepler has learned. To move memory in from another assistant such as ChatGPT or Claude, use **Import from another assistant**, which gives you a prompt to run there and a place to paste the result.
+  </Accordion>
+</AccordionGroup>
+
+## Platform
+
+<AccordionGroup>
+  <Accordion title="Which operating systems are supported?" icon="desktop">
+    macOS 13 or later on Apple Silicon, 64-bit Windows, and Linux as .deb or .rpm packages on x86-64. Windows support is early: background running and full PowerShell parity are still in progress, and there is no WSL integration yet. See [Installation](/kepler/installation).
+  </Accordion>
+  <Accordion title="Can I use Kepler from a terminal instead of the app?" icon="terminal">
+    Yes. **Settings > Experiments > CLI helper** installs a `kepler` command that drives the same local agent, the same sessions, and the same approval gate. Run `kepler help` for its commands. It is a client for the desktop agent, not a separate product, so the app still needs to be installed.
+  </Accordion>
+  <Accordion title="Can I talk to Kepler from my phone?" icon="mobile">
+    Yes. Connect WhatsApp, Slack, Telegram, or Discord in **Settings > Gateway**, then type `/otg whatsapp` (or another channel) in a session to drive it from there. Approvals arrive as a message and you reply yes or no. Channels work while Kepler is running on your machine. WhatsApp uses the same linking as WhatsApp Web and is not an official WhatsApp feature, so it can drop and heavy use may put your account at risk. See [Channels](/kepler/channels).
+  </Accordion>
+</AccordionGroup>
+
+<ContactSupport />

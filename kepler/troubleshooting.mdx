@@ -1,0 +1,125 @@
+---
+title: "Troubleshoot Kepler"
+sidebarTitle: "Troubleshooting"
+description: "Fixes for the problems Kepler users hit most: the agent never connects, a model key is rejected, a command is blocked, a folder is not visible, a panel is blank, memory looks stale, a watcher never fires, a channel drops."
+keywords: ["kepler troubleshooting", "kepler not responding", "kepler model error", "kepler always blocked", "kepler logs", "kepler whatsapp disconnected"]
+"og:title": "Troubleshoot Kepler"
+"og:description": "Symptom first, then the fix. Logs and what to send us at the bottom."
+---
+
+import ContactSupport from '/snippets/contact-support.mdx';
+
+Each heading below is the problem as you would describe it. Fixes are in the order to try them. If none of them work, jump to [Logs and data](#logs-and-data) and send us what you find.
+
+## The app opens but the chat says "Connecting to Kepler" and never finishes
+
+1. Wait 20 seconds. On first launch, and after an update, the agent takes a moment to start.
+2. Quit Kepler fully (`Cmd+Q` on macOS, or close it from the tray on Windows) and open it again.
+3. Check that nothing else on your machine is blocking local processes from talking to each other, such as an aggressive endpoint security tool. Kepler only talks to itself on this machine, plus your model and your tools.
+4. Look at `~/.kepler/agent.log`. The last lines usually name the problem.
+
+## My model call fails, or my API key is rejected
+
+1. Open **Settings > Models**. Confirm the provider is enabled and the key is filled in with no leading or trailing spaces.
+2. Check that the model you picked belongs to the provider whose key you added. The picker on the composer shows the provider next to each model.
+3. For a self-hosted or OpenAI-compatible endpoint, confirm the base URL is reachable from this machine and includes the right path.
+4. For hosted Kepler models, use the refresh control on the Kepler provider row to renew your key with the gateway.
+5. Kepler never switches to a different model on its own. If a call fails it retries the same model, then tells you. Pick another model from the composer if a provider is down.
+
+## Kepler says it cannot tell whether a command is safe
+
+This is the unknown-command card. Kepler met a program it does not recognise and stopped rather than guess.
+
+1. If you know the command only reads, choose **Trust as read-only**. Kepler writes a permanent rule and will not ask about that command again.
+2. If you want it to run just this once, choose **Run once**. This option only appears in Assist and Yolo, never in Observe and never for a watcher.
+3. Otherwise choose **Don't run**, and run the command yourself in the terminal panel. Click it in the scrollback afterwards to send the output into the chat.
+
+Rules you have made are listed in **Settings > Permissions**. See [Permissions](/kepler/permissions).
+
+## Kepler refused a command as always blocked
+
+Some actions are blocked in every posture and by every rule: deleting, scaling, draining, restarting rollouts, `rm -rf`, and cloud delete, terminate or stop commands. No setting unlocks them. This is by design.
+
+1. Run the command yourself in the terminal panel (`Cmd+J`). Kepler can still read the result.
+2. If you want Kepler's help up to that point, ask it for the exact command and the checks to run before and after. It will write those out for you.
+
+The full list is in [Permissions](/kepler/permissions#always-blocked).
+
+## Kepler cannot see a folder or file
+
+Kepler only reaches folders you have granted, and each workspace carries its own list.
+
+1. Run `/workspace add <path>` or press `Cmd+O` and pick the folder.
+2. Check you are in the right workspace. The active workspace is highlighted in the sidebar, and the granted folders are listed under it.
+3. Very large files open read-only in the editor. Ask Kepler to search or read a range instead of the whole file.
+
+## The terminal or browser panel is blank
+
+1. Toggle the panel closed and open again with `Cmd+J` (terminal) or `Cmd+B` (browser).
+2. Double-click the panel header to bring it to center stage, then press `Esc`. The panel redraws on the way.
+3. If the browser panel is empty after you enabled **BrowserV2** in **Settings > Experiments**, check that the extension shows as installed and connected there. BrowserV2 uses your own Chrome, so Chrome has to be running.
+4. Relaunch Kepler.
+
+## Memory seems stale or wrong
+
+1. Open the Memory panel (`Cmd+M`) and look at the Pages tab. If the fact is there but not being used, run **Reindex** in **Settings > Memory**.
+2. If the fact is wrong, edit the page. Kepler reads the corrected version on the next turn.
+3. If you told Kepler something in an incognito session, it was not saved. That is what incognito is for. Say it again in a normal session.
+
+See [Memory](/kepler/memory#troubleshoot-memory).
+
+## A watcher never fires
+
+1. Open **Settings > Watchers**. A watcher that is running shows its check count climbing. If the count is zero, the check itself is failing. Open the watcher for the last error.
+2. Watchers can only run read-only commands. If the check Kepler wrote needs something that is not read-only, the watcher will not run it. Ask Kepler to rephrase the check.
+3. A watcher belongs to the session that set it and wakes that session. Open that session to see the wake card.
+4. Kepler must be running for watchers to check. Under **Settings > General > While you are away**, switch off **Kepler stops when you close the window** so watchers keep running with the window closed. On macOS, also allow Kepler under **System Settings > General > Login Items > Allow in the Background**.
+
+## My WhatsApp link dropped
+
+WhatsApp is not an official integration. Kepler links as an extra device, the same way WhatsApp Web does, so it can drop out on its own.
+
+1. Open **Settings > Gateway** and press **Connect** on WhatsApp again. Scan the new code from **Linked devices** on your phone.
+2. Heavy use may put your WhatsApp account at risk. For a channel you rely on, Telegram is the most reliable option and Slack is a close second. See [Chat from your phone](/kepler/channels).
+
+## Nobody answers me on Slack or Discord
+
+1. Slack: the app needs **Socket Mode** on, the Messages tab enabled with messages allowed, and the scopes listed in the setup steps. If you added a scope after installing, reinstall the app to your workspace or the new permission never takes effect.
+2. Discord: turn on **Message Content Intent** on the Bot page. Without it Discord delivers every message blank, which looks exactly like Kepler ignoring you.
+3. Check **Who can message** for the channel in **Settings > Gateway**. Your own account has to be on the list.
+4. Kepler has to be running on this machine for any channel to answer.
+
+## The update did not apply
+
+1. Open **Settings > General > About**. It shows whether you are on the latest version and offers the update if not.
+2. On macOS and Windows, quit and reopen Kepler to finish an update that has downloaded.
+3. On Linux, updates come through your package manager, not the in-app updater. Reinstall the newer package.
+
+## Windows: something that works on macOS is missing
+
+Windows support is early in this release. Kepler does not keep running in the background when the window is closed, PowerShell does not yet match every shell behaviour of the macOS terminal, and there is no WSL integration. These are known limits, not misconfiguration.
+
+## Linux: the app will not start
+
+Kepler needs WebKitGTK 4.1 and GTK 3. The `.deb` and `.rpm` packages declare them as dependencies, so a normal install pulls them in. If your package manager skipped them, install `libwebkit2gtk-4.1-0` and `libgtk-3-0` on Debian-based systems, or `webkit2gtk4.1` and `gtk3` on RPM-based systems, then start Kepler again.
+
+## Logs and data
+
+Everything Kepler keeps lives in `~/.kepler` (on Windows, the equivalent under your user profile).
+
+| Path | What it is |
+|---|---|
+| `agent.log` | The agent's log. Start here for any "Kepler never responds" problem. `agent.log.prev` is the previous run. |
+| `config.json` | Your settings. |
+| `kepler.md`, `pref.md`, `user.md` | The files you own. See [Memory](/kepler/memory). |
+| `sessions/` | Your conversations. |
+| `memory/` | Kepler's memory pages and graph. |
+| `watchers/` | Watcher definitions and their inbox of fired events. |
+| `commands/`, `skills/` | Your custom commands and skills. |
+| `mcp.json` | Your MCP server configuration. Secrets are referenced by name, never stored here. |
+
+### What to include in a report
+
+Send us the Kepler version from **Settings > General > About**, your operating system and version, what you did and what you expected, the last 50 lines of `agent.log`, and a screenshot of the chat if it shows an error card. Take a look at the log excerpt first and remove anything you would not want to share.
+
+<ContactSupport />

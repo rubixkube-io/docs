@@ -1,0 +1,159 @@
+---
+title: "Slash commands and keyboard shortcuts"
+sidebarTitle: "Commands and shortcuts"
+description: "Every built-in Kepler slash command, how to write your own in .kepler/commands, how skills show up in the / menu, and the full keyboard shortcut table for macOS, Windows and Linux."
+keywords: ["kepler", "kepler slash commands", "kepler shortcuts", "kepler keyboard", "custom slash command", "kepler skills", "/investigate", "/mode"]
+"og:title": "Slash commands and keyboard shortcuts"
+"og:description": "Built-in commands, custom commands, skills, and keyboard shortcuts."
+---
+
+Type `/` in the composer and a menu lists every command, with the arguments it expects. Keep typing to filter. Pick one with `Enter`, or type the whole line and press `Enter` to send it.
+
+Commands come in two kinds. Some **expand into a prompt**: `/triage checkout` becomes a full triage request with your argument filled in, and the message you sent still reads `/triage checkout` so you can see what shaped it. Others **do something in the app**: `/mode yolo` changes the posture and sends nothing.
+
+## Built-in commands
+
+| Command | Arguments | What it does |
+|---|---|---|
+| `/investigate` | `<issue>` | Starts a structured incident investigation. |
+| `/triage` | `<service>` | Checks pods, recent events, logs and recent changes for a service, then gives a confidence-scored hypothesis. |
+| `/rca` | `<incident>` | Produces a root-cause analysis: timeline, what changed, the root cause, the remediation. |
+| `/rollback` | `<service> <version>` | Finds the recent change, proposes the exact rollback, and executes it under approval. |
+| `/runbook` | `<topic>` | Finds and summarises the relevant runbook, with the exact steps. |
+| `/handoff` | | Writes an on-call handoff: open issues by severity, recent changes, work in flight, what to watch. |
+| `/plan` | `<task>` | Investigates read-only and writes a reviewable plan. Nothing runs until you approve the plan. |
+| `/init` | | Scans the workspace and drafts a `kepler.md` with conventions worth keeping. |
+| `/command` | `<description>` | Creates a new slash command from a description. See [Custom commands](#custom-commands). |
+| `/agent` | `<description>` | Creates a read-only specialist agent you can delegate to later. |
+| `/mode` | `<observe\|assist\|yolo>` | Switches the posture for this conversation. Bare `/mode` cycles to the next one. |
+| `/model` | | Opens the model picker for this conversation. |
+| `/workspace` | `<add\|remove> <dir>` | Grants Kepler another folder, or takes one away. `/workspace add` with no path opens a folder picker. |
+| `/otg` | `<channel> <sender>` | Drives this session from a phone channel, for example `/otg whatsapp`. `/otg off` unbinds it. See [Channels](/kepler/channels). |
+| `/new` | | Starts a new session. |
+| `/clear` | | Clears the current conversation. |
+| `/compact` | | Compacts the context now to free up space. |
+| `/memory` | | Opens memory settings. |
+| `/settings` | | Opens settings. |
+| `/help` | `<question>` | Opens the catalog of what Kepler can do. Add a question and it jumps to the matching feature. |
+
+A few examples as you would type them:
+
+```
+/triage checkout
+/rollback payments-api v2.14.0
+/plan move the ingress controller to the new node pool
+/mode assist
+```
+
+## Custom commands
+
+A custom command is a Markdown file. The file name is the command name, and the body is the prompt Kepler receives. Put `$ARGUMENTS` where your input should go.
+
+Two places to keep them:
+
+| Location | Scope |
+|---|---|
+| `~/.kepler/commands/<name>.md` | Every workspace. |
+| `<workspace>/.kepler/commands/<name>.md` | This workspace only. Overrides a global command with the same name. |
+
+A file looks like this:
+
+```markdown
+---
+description: Weekly capacity brief for one namespace
+argument-hint: <namespace>
+---
+Write a capacity brief for the $ARGUMENTS namespace: CPU and memory requests
+versus usage over the last 7 days, pods near their limits, and what to resize.
+```
+
+Save it as `capacity-brief.md` and `/capacity-brief checkout` appears in the menu. `description` is what the menu shows, and `argument-hint` is the placeholder next to it. Both are optional. If there is no description, the first line of the body is used.
+
+Positional arguments work too: `$1`, `$2` and so on pick out the first, second and later words, and quoted arguments count as one word. `{{args}}` is accepted as an alias for `$ARGUMENTS`. A command with no placeholder gets your arguments appended to the end.
+
+The quickest way to make one is to ask:
+
+```
+/command write a weekly capacity brief for a namespace
+```
+
+Kepler picks a name, writes the description and body, and saves the file. It defaults to the global folder unless you say "this workspace".
+
+## Skills in the menu
+
+Skills also appear in the `/` menu, marked **Skill**. A skill is not a request, it is an approach: picking one tells Kepler how to handle the message you write yourself. A skill takes no arguments, can sit anywhere in the line, and several can ride one message.
+
+```
+/postmortem-format write up yesterday's checkout outage
+```
+
+Skills live in `~/.kepler/skills/<name>/SKILL.md` for every workspace, or `<workspace>/.kepler/skills/<name>/SKILL.md` for one. Drop a folder there, or manage them under **Settings > Customize**. Claude Code skill folders are read as they are. See [Extend Kepler](/kepler/extend) for writing one.
+
+## Keyboard shortcuts
+
+macOS shortcuts use `Cmd`. On Windows and Linux use `Ctrl` in its place, except where the table says otherwise.
+
+### Window and panels
+
+| Shortcut | Action |
+|---|---|
+| `Cmd+N` | New session |
+| `Cmd+O` | Open a workspace folder |
+| `Cmd+K` | Search sessions, messages, workspaces and settings |
+| `Cmd+\` | Show or hide the sidebar |
+| `Cmd+J` | Show or hide the Terminal |
+| `Cmd+B` | Show or hide the Browser |
+| `Cmd+E` | Show or hide the Editor |
+| `Cmd+M` | Show or hide Memory |
+| `Cmd+,` | Open Settings |
+| `Esc` | Return a center-staged panel to the side |
+| `Cmd+=` / `Cmd+-` | Zoom the interface in or out |
+| `Cmd+0` | Reset zoom |
+
+### Composer
+
+| Shortcut | Action |
+|---|---|
+| `Enter` | Send |
+| `Shift+Enter` | New line |
+| `Shift+Tab` | Cycle posture: Observe, Assist, Yolo |
+| `/` | Open the command menu |
+| `@` | Attach context: a file or folder, another chat, a browser tab, a terminal, or a service, incident, runbook or watcher Kepler knows |
+| `!` at the start of an empty line | Operator shell mode. Run a command yourself and Kepler reads the output. |
+| `Tab` on an empty composer | Accept the suggested prompt |
+| `Esc` | Stop the running turn, cancel an edit, or leave shell mode |
+| Any letter, anywhere in the window | Focuses the composer and starts typing |
+
+### Approvals
+
+| Shortcut | Action |
+|---|---|
+| `Cmd+Enter` | Run the pending command once |
+| `Cmd+Shift+Enter` | Allow the command's prefix for this session, or trust an unrecognised command as read-only |
+| `Esc` | Reject |
+
+### Terminal panel
+
+| macOS | Windows and Linux | Action |
+|---|---|---|
+| `Cmd+C` | `Ctrl+Shift+C` | Copy the selection |
+| `Cmd+V` | `Ctrl+Shift+V` | Paste |
+
+Plain `Ctrl+C` in the terminal goes to the running program, as it does in any shell.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Extend Kepler" icon="puzzle-piece" href="/kepler/extend">
+    Skills, specialist agents and MCP servers.
+  </Card>
+  <Card title="Postures" icon="sliders" href="/kepler/postures">
+    What /mode changes and what each posture asks you about.
+  </Card>
+  <Card title="The workspace" icon="window" href="/kepler/workspace">
+    The panels these shortcuts open.
+  </Card>
+  <Card title="Workflows" icon="diagram-project" href="/kepler/workflows">
+    Prompt recipes built on /triage, /rca and /runbook.
+  </Card>
+</CardGroup>

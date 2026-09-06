@@ -1,0 +1,158 @@
+---
+title: "The Kepler workspace"
+sidebarTitle: "The workspace"
+description: "A tour of the Kepler window: the sidebar, the chat, and the Terminal, Browser, Editor, Memory, Feed and Topology panels. Learn the shortcuts and how workspaces and sessions fit together."
+keywords: ["kepler", "kepler workspace", "kepler panels", "kepler terminal", "kepler browser", "kepler sessions", "kepler shortcuts"]
+"og:title": "The Kepler workspace"
+"og:description": "The sidebar, the chat, the panels, and how workspaces and sessions work."
+---
+
+Kepler is one window with three parts: a sidebar on the left, the chat in the middle, and panels you open beside it. The panels are shared. What you see in the Terminal, Browser and Editor is what Kepler sees, and Kepler can act in them too.
+
+Shortcuts on this page are written for macOS. On Windows and Linux, use `Ctrl` where you see `Cmd`.
+
+{/* SCREENSHOT: kepler/workspace-overview.png : state: sidebar open with a workspace and a few sessions, a chat mid-investigation with tool cards, Terminal panel open on the right */}
+<Frame>
+  <img src="/images/kepler/workspace-overview.png" alt="The Kepler window with the sidebar on the left, a chat in the middle showing tool cards, and the Terminal panel open on the right." />
+  <Caption>Sidebar, chat, and one panel open. Every panel can be toggled with a shortcut.</Caption>
+</Frame>
+
+## The sidebar
+
+Toggle the sidebar with `Cmd+\`. From top to bottom it holds:
+
+| Item | What it does |
+|---|---|
+| **Workspaces** | The folders Kepler can read. Open one with `Cmd+O`. |
+| **Sessions** | Your conversations, grouped by workspace, flat, or by time (Today, Yesterday, Previous 7 days, Older). Sort by recent or alphabetical. |
+| **New session** | Starts a fresh conversation (`Cmd+N`). |
+| **New incognito session** | A session that reads and writes no memory. See [Sessions](#sessions-and-incognito-sessions). |
+| **New war room** | Opens an incident room where Kepler leads a team of agents. See [War room](/kepler/war-room). |
+| **Search** | Searches sessions, messages, workspaces and settings (`Cmd+K`). |
+| **Feed** | Everything Kepler produced while you were elsewhere: briefs, finished documents, and the workflows behind them. A **Waiting** tab holds items that need you. |
+| **Memory** | What Kepler remembers about your systems (`Cmd+M`). |
+| **Topology** | The map of clusters, hosts and accounts Kepler has found on your machine. |
+
+Right-click a session to pin, rename, export or delete it. Double-click its title to rename it in place.
+
+## The chat
+
+The chat is where you talk to Kepler. Type anywhere in the window and the text goes to the composer. `Enter` sends, `Shift+Enter` adds a line. Type `/` for commands and `@` to attach context.
+
+While Kepler works you see its thinking, a card for each tool it runs, and the exact command it ran. Type while a run is in progress and the message is queued and sent as its own turn when the run ends. Press `Esc` to stop a run.
+
+A few things dock above the composer when they need you:
+
+- **Posture chip**: the autonomy dial. Click it or press `Shift+Tab` to cycle Observe, Assist and Yolo. See [Postures](/kepler/postures).
+- **Model picker**: which model this conversation uses. Open it from the composer or with `/model`. Kepler never switches models on its own.
+- **Approval dock**: the command Kepler wants to run, with Run, Reject, and an option to allow that command prefix for the rest of the session. `Cmd+Enter` runs, `Esc` rejects.
+- **Clarification card**: when Kepler hits a real fork it asks instead of guessing.
+- **Todo tracker**: the steps of a longer task, ticked off as Kepler goes.
+
+The small indicator at the top right of the conversation opens **This thread**: the task list for the current job, the watchers armed in this session, and the folders Kepler can reach here.
+
+### Operator shell mode
+
+Type `!` at the start of an empty composer and it turns into a shell prompt. The command you type runs in your terminal, and Kepler reads the output on your next message. This works in every posture, Observe included, because you are the one running the command. The [always-blocked list](/kepler/permissions#always-blocked) still applies. Press `Esc` to leave shell mode.
+
+```
+! kubectl get pods -n checkout
+```
+
+## Panels
+
+Each panel opens beside the chat with a shortcut. Press the shortcut again to close it.
+
+| Panel | Shortcut | What it is for |
+|---|---|---|
+| Terminal | `Cmd+J` | A real shell. Kepler runs its commands in an **Agent** tab so you watch exactly what ran. |
+| Browser | `Cmd+B` | A browser Kepler can read and drive. Dashboards, consoles, docs. |
+| Editor | `Cmd+E` | A file tree and code editor over the folders you granted. |
+| Memory | `Cmd+M` | Graph, Pages and Artifacts tabs over what Kepler remembers. |
+| Settings | `Cmd+,` | Every setting. See [Settings](/kepler/settings). |
+
+Feed and Topology open from the sidebar.
+
+### Terminal
+
+The Terminal is your shell, not an emulation. Open more shells with **New shell** in the tab strip. Copy with `Cmd+C` and paste with `Cmd+V` (`Ctrl+Shift+C` and `Ctrl+Shift+V` on Windows and Linux).
+
+Every command you run gets a dot in the gutter: hollow while it runs, green when it exits 0, red otherwise. Click a command in the scrollback (its dot, or right-click anywhere in its output) and pick **Add to chat** to send the command and its output into the conversation. That is the fastest way to hand Kepler something you already ran.
+
+{/* TODO(screenshot) kepler/terminal-add-to-chat.png : state: Terminal panel with a kubectl command in the scrollback, its gutter dot clicked, the menu showing Add to chat / Copy command / Copy output
+<Frame>
+  <img src="/images/kepler/terminal-add-to-chat.png" alt="The Terminal panel with the command menu open on a kubectl get pods command, showing Add to chat, Copy command and Copy output." />
+  <Caption>Click a command's dot to send it, with its output, into the chat.</Caption>
+</Frame>
+*/}
+
+### Browser
+
+The Browser panel has tabs and an address bar. Paste a dashboard URL into the chat, or ask Kepler to open one, and it navigates, reads the page, clicks and scrolls. A banner above the page says **Kepler is browsing** while it drives. Click **Take control** to use the page yourself, then **Give back to Kepler** when you are done.
+
+Log into a dashboard once in the panel and Kepler can read that dashboard from then on. A Grafana board or a cloud console you are signed into stays readable across sessions.
+
+```
+Open the checkout latency dashboard in Grafana and tell me what p99 did in the last hour.
+```
+
+### Editor and file explorer
+
+`Cmd+E`, or the Explorer button in the top bar, opens a file tree and an editor. The tree only shows folders in the current workspace. Pick a file to open it. Files too large to load whole open read-only. Ask Kepler to change a file and it shows the diff and asks before writing, in any posture that allows writes.
+
+### Memory, Feed and Topology
+
+The Memory panel (`Cmd+M`) shows what Kepler has learned, in three tabs: **Graph**, **Pages** and **Artifacts**. The Feed lists activity and, under **Waiting**, anything that needs an answer from you. Topology shows the clusters, hosts and accounts Kepler found from your local config, with drafts you approve or reject before they join the map. See [Memory](/kepler/memory) for how to edit what Kepler remembers.
+
+### Center stage
+
+Double-click a panel's header to move it to the middle of the window, where the chat usually sits. Use it when you want a full-width terminal or browser. Press `Esc`, or click **Back to the side**, to return the chat to the center.
+
+{/* SCREENSHOT: kepler/terminal-center-stage.png : state: Terminal panel promoted to center stage, chat pushed to the side, the Back to the side button visible */}
+<Frame>
+  <img src="/images/kepler/terminal-center-stage.png" alt="The Terminal and Memory panels filling the center of the window, stacked, with the chat moved to the right." />
+  <Caption>Terminal and Memory at center stage, with the chat moved to the side. Esc gives the center back.</Caption>
+</Frame>
+
+## Workspaces
+
+A workspace is the set of folders Kepler is allowed to read and edit. Nothing outside it is visible to Kepler, not in the Editor, not through file tools, and not through a shell command that names a path outside it. That fence is the reason Kepler can be trusted with a terminal: it can only reach what you handed it.
+
+To add a folder:
+
+<Steps>
+  <Step title="Open a workspace">
+    Press `Cmd+O`, or click **Open workspace** in the sidebar, and pick a folder. That folder becomes a workspace.
+  </Step>
+  <Step title="Grant more folders">
+    Click the workspace in the sidebar to open its settings and use **Add folder**, or type `/workspace add <dir>` in the chat. `/workspace remove <dir>` takes one away.
+  </Step>
+  <Step title="Answer the fence prompt when it appears">
+    If Kepler needs a path you have not granted, it stops and asks, in every posture. The card offers to grant the enclosing folder for the session.
+  </Step>
+</Steps>
+
+Each workspace can carry its own `kepler.md` with conventions for that project. Run `/init` to draft one. See [Memory](/kepler/memory).
+
+## Sessions and incognito sessions
+
+A session is one conversation. It keeps its own posture, model, and history, and it belongs to a workspace. Start a new one with `Cmd+N` or `/new`. Come back to an older one and a short recap of where the work stands waits at the tail of the thread. Everything Kepler learns in a session, such as a service name, an incident, or a preference, goes into memory for later.
+
+An incognito session is the exception. Start one from the ghost button next to **New session**. It reads no memory, writes no memory, and nothing said in it is learned. Use it for a one-off question you do not want to shape future answers, or for anything you would rather Kepler forget. You can turn incognito off for a session from its right-click menu, but you cannot turn it on after the fact.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Postures" icon="sliders" href="/kepler/postures">
+    Observe, Assist and Yolo, and what each one asks you about.
+  </Card>
+  <Card title="Commands and shortcuts" icon="keyboard" href="/kepler/commands">
+    Every slash command and keyboard shortcut.
+  </Card>
+  <Card title="Memory" icon="brain" href="/kepler/memory">
+    What Kepler remembers and how to edit it.
+  </Card>
+  <Card title="War room" icon="siren" href="/kepler/war-room">
+    Run an incident with a team of agents.
+  </Card>
+</CardGroup>

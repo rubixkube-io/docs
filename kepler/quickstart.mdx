@@ -1,0 +1,170 @@
+---
+title: "Kepler quickstart"
+sidebarTitle: "Quickstart"
+description: "Go from a fresh install to your first approved change in ten minutes. Sign in, connect a model, open a workspace, ask a read-only question, then make one small change in Assist."
+keywords: ["kepler quickstart", "kepler getting started", "kepler first run", "kepler sign in", "kepler connect model", "kepler observe assist"]
+"og:title": "Kepler quickstart"
+"og:description": "From install to your first approved change in ten minutes."
+---
+
+This walkthrough takes a fresh Kepler from sign-in to a small, reviewed change against a real cluster. Every step is safe to do against production: nothing writes until step 6, and even then you approve each command. If you have not installed Kepler yet, start with [Installation](/kepler/installation).
+
+Shortcuts below use `Cmd`. On Windows and Linux, use `Ctrl`.
+
+<Steps>
+  <Step title="Sign in">
+    Launch Kepler and click **Sign in to Kepler**. Your browser opens. Continue with Google, GitHub, or email, then return to the app. It picks up the session on its own.
+
+    {/* TODO(screenshot) kepler/signin.png : USER-PROVIDED. State: the first-launch sign-in screen with the "Find calm in the chaos" headline on the left and the "Sign in to Kepler" button on the right.
+    <Frame>
+      <img src="/images/kepler/signin.png" alt="Kepler sign-in screen. The left side reads Find calm in the chaos. The right side has a Sign in to Kepler button and a note that you can continue with Google, GitHub, or email." />
+      <Caption>One step through your browser. Kepler remembers the sign-in from then on.</Caption>
+    </Frame>
+    */}
+
+    Signing in is what unlocks the hosted Kepler models. Your conversations and memory never go to the sign-in service. To sign out later, use **Settings > General > Account**.
+  </Step>
+
+  <Step title="Answer three questions">
+    Kepler asks what to call you, where you live in the stack, and what is under your watch. Pick from the chips or type your own. The answers seed your profile so Kepler talks to you like someone who runs Kubernetes, not someone who is asking what a pod is.
+
+    {/* TODO(screenshot) kepler/onboarding-name.png : USER-PROVIDED. State: the starfield onboarding scene on the first question, "Hi. I'm Kepler. What should I call you?", with the name field partly typed.
+    <Frame>
+      <img src="/images/kepler/onboarding-name.png" alt="Kepler onboarding scene on a dark starfield. It reads Hi, I'm Kepler, What should I call you, with a name being typed in." />
+      <Caption>The first of three questions. You can change any of them later in your profile file.</Caption>
+    </Frame>
+    */}
+
+    If you quit partway through, Kepler resumes at the same question next launch.
+  </Step>
+
+  <Step title="Connect a model">
+    You land on the chat screen. The pill above the composer reads **Connect a model**. Click it, or type `/model`.
+
+    You have two choices:
+
+    - **Hosted Kepler models.** Available right away with your sign-in, no key needed. Pick `kepler-expert` and go.
+    - **Your own key.** Open **Settings > Models > Providers** and add a key for Anthropic, OpenAI, Google (Gemini API or Vertex AI), xAI, AWS Bedrock, or an OpenAI-compatible endpoint. Ollama shows up under **Found on this machine** if it is running.
+
+    {/* SCREENSHOT: kepler/model-picker.png : state: the model picker open over the composer, hosted Kepler models first, a BYO provider group below, an Ollama group, and the Max mode toggle */}
+    <Frame>
+      <img src="/images/kepler/model-picker.png" alt="The Kepler model picker open over the composer. Hosted Kepler models are listed first, then a Google Vertex AI group, then an Ollama group, with a Max mode toggle at the bottom." />
+      <Caption>Pick a model once. Kepler never switches models on its own after that.</Caption>
+    </Frame>
+
+    <Note>
+    Keys you add stay on this machine, in your operating system's keychain. Kepler never uploads them. Whichever model you pick, Kepler keeps using it until you change it. It does not fall back to a different model when one fails. It retries the same one or tells you.
+    </Note>
+  </Step>
+
+  <Step title="Open a workspace">
+    Press `Cmd+O` and pick a folder, or type `/workspace add <path>` in the composer. Your infra repo or a folder with your manifests is a good first workspace.
+
+    Kepler can only read and edit files inside folders you have granted. It starts with your home folder as a default workspace. When a command reaches outside the granted folders, Kepler stops and asks, and you can allow it once, for this session, or add the folder to the workspace.
+
+    You do not need to hand over kubeconfigs or cloud credentials. Kepler uses whatever `kubectl`, `aws`, `gcloud`, and `ssh` already have on your machine.
+  </Step>
+
+  <Step title="Ask a read-only question">
+    New conversations start in **Observe**, the read-only posture. The chip on the composer shows it. Kepler will run reads (`kubectl get`, `kubectl logs`, `describe`, log greps) without asking, and will not run anything that writes.
+
+    Type something you would ask a colleague:
+
+    ```
+    Why is checkout crashlooping in prod?
+    ```
+
+    What you will see, in order:
+
+    1. **The thinking orbit** while Kepler works out what to check.
+    2. **Tool cards**, one per command. Each shows the exact command and its output. Expand any of them to read the raw text yourself.
+    3. **A diagnosis with evidence.** Kepler quotes the lines it is relying on (an OOMKilled event, a missing secret, a bad image tag) so you can check its reasoning against what actually ran.
+    4. **A suggested fix.** In Observe this is a proposal, not an action. Nothing changes until you say so.
+
+    {/* SCREENSHOT: kepler/observe-answer.png : state: an Observe reply with the command rows, one expanded, then Finding, Evidence and Fix. Posture chip reads Observe. */}
+    <Frame>
+      <img src="/images/kepler/observe-answer.png" alt="Kepler's reply in Observe. Rows for kubectl get pods, kubectl get events, kind get clusters and docker ps, one expanded to show the raw output, then a Finding that the cluster is unreachable, the Evidence it observed, and a Fix." />
+      <Caption>Observe is read-only. Every claim points at a command you can expand. Here the cluster was unreachable, so Kepler said so and stopped rather than guessing.</Caption>
+    </Frame>
+
+    Try a few more while you are here:
+
+    ```
+    What changed in the payments namespace in the last two hours?
+    ```
+
+    ```
+    /triage api-gateway
+    ```
+
+    ```
+    /plan bump the checkout memory limit to 1Gi and roll it out safely
+    ```
+
+    `/plan` makes Kepler investigate and then write a reviewable plan with steps, blast radius, and rollback, and stop there.
+  </Step>
+
+  <Step title="Make one small change in Assist">
+    Press `Shift+Tab` to move the posture chip from **Observe** to **Assist**, or type `/mode assist`. Assist lets Kepler act, but it asks before every change.
+
+    Ask for something small and reversible:
+
+    ```
+    Add the label owner=payments to the checkout deployment in staging.
+    ```
+
+    Kepler runs the reads it needs, then stops. An **approval dock** slides in above the composer showing the exact `kubectl` command it wants to run, and a preview where one is available. You have three choices:
+
+    - **Run**: run this one command and continue. `Cmd+Enter` does the same.
+    - **Allow `kubectl label *`**: allow that command prefix for the rest of this session so Kepler does not ask again for the same kind of write.
+    - **Reject**: stop. Type a note first if you want to steer what Kepler tries next.
+
+    {/* TODO(screenshot) kepler/approval-dock.png : state: the approval dock over the composer in Assist, showing a pending "kubectl label deployment checkout owner=payments -n staging" with Run, Allow "kubectl label *", and Reject buttons. Posture chip reads Assist.
+    <Frame>
+      <img src="/images/kepler/approval-dock.png" alt="The approval dock above the Kepler composer. It shows a pending kubectl label command with buttons to Run, Allow kubectl label for this session, and Reject. The posture chip reads Assist." />
+      <Caption>In Assist, every write pauses here. You see the exact command before it runs.</Caption>
+    </Frame>
+    */}
+
+    Click **Run**. Kepler applies the label, verifies it with a read, and reports back.
+
+    Approvals come in three lifetimes: this once, for the rest of the session, or from now on. Which ones the dock offers depends on what is pending. A command outside your workspace folders can be added to the workspace for good, and a command Kepler has never seen gets its own card with **Trust as read-only**, which saves a rule that applies everywhere. Rules live in **Settings > Permissions**. Delete, scale, restart, and `rm -rf` are never offered in any posture.
+  </Step>
+</Steps>
+
+## Essential shortcuts and commands
+
+| Action | Shortcut or command |
+|---|---|
+| Cycle posture (Observe, Assist, Yolo) | `Shift+Tab` or `/mode <observe\|assist\|yolo>` |
+| Open a workspace folder | `Cmd+O` or `/workspace add <dir>` |
+| Terminal panel | `Cmd+J` |
+| Browser panel | `Cmd+B` |
+| Editor and file tree | `Cmd+E` |
+| Memory panel | `Cmd+M` |
+| Search sessions and more | `Cmd+K` |
+| Toggle the sidebar | `Cmd+\` |
+| Settings | `Cmd+,` or `/settings` |
+| Switch model | `/model <name>` |
+| New session | `/new` |
+| Run a shell command yourself, from the composer | Start the line with `!` |
+| Approve the pending command | `Cmd+Enter` |
+| Reject the pending command | `Esc` |
+| See everything Kepler can do | `/help` |
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Postures" icon="shield-halved" href="/kepler/postures">
+    Observe, Assist, and Yolo in detail, and when to use each.
+  </Card>
+  <Card title="The workspace" icon="table-columns" href="/kepler/workspace">
+    Panels, center stage, and how you and Kepler share the terminal and browser.
+  </Card>
+  <Card title="Permissions" icon="lock" href="/kepler/permissions">
+    Per-tool switches, command rules, and the always-blocked list.
+  </Card>
+  <Card title="Commands" icon="slash" href="/kepler/commands">
+    Every slash command, from `/investigate` to `/handoff`.
+  </Card>
+</CardGroup>

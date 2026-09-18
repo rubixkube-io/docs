@@ -41,22 +41,24 @@ Posture is per conversation. Changing it in one session does not touch another, 
 
 When Kepler wants to do something the posture does not let it do silently, a card docks above the composer. It shows the exact command, character for character, with a `$` prompt. For a file edit it shows the diff. For a tool with no command it shows the tool name and its arguments. If the command is a write to a file, some approvals also show a preview of the change.
 
-You have three answers:
+You have four answers, in order of how long they last:
 
 | Answer | What happens | What Kepler remembers |
 |---|---|---|
 | **Run** (`Cmd+Enter`) | Runs this command, once. | Nothing. The next command asks again. |
-| **Allow `<prefix> *`** (`Cmd+Shift+Enter`) | Runs it and allows every command starting with the same verb, such as `kubectl apply`, for the rest of this session. | The prefix, until the session ends. Not offered for shells and interpreters like `bash` or `python`, because approving those would approve anything. |
+| **This session** (`Cmd+Shift+Enter`) | Runs it and allows every command starting with the same verb, such as `kubectl apply`, until this conversation ends. | The prefix, until the session ends. Not offered for shells and interpreters like `bash` or `python`, because approving those would approve anything. |
+| **Always** | Runs it and allows that same verb prefix from now on, in every conversation. | A rule, permanently. It shows up in **Settings > Permissions** and you can delete it there. |
 | **Reject** (`Esc`) | Does not run it. You can type a short note first, and Kepler takes the note as direction. | Your note, for this turn. |
 
-The "from now on" answer is a rule. For a command Kepler does not recognise, the [unknown-command card](#the-unknown-command-card) offers **Trust as read-only**, which saves one. For everything else, add a rule or set a tool to Allow in [Settings > Permissions](/kepler/permissions). Either way the permanent answer sits in a list you can read and change later.
+**Always** is the one to read twice: it is the only button here that outlives the conversation, and it applies in watchers and workflows too. **This session** is the safer habit when you just want Kepler to stop asking about the same verb for the next ten minutes.
 
-{/* TODO(screenshot) kepler/approval-dock.png : state: Assist posture, approval dock showing a kubectl apply command with Run, Allow kubectl apply *, and Reject buttons
+For a command Kepler does not recognise, the [unknown-command card](#the-unknown-command-card) offers **Trust as read-only**, which saves a rule of its own. Rules from either route sit in [Settings > Permissions](/kepler/permissions), in a list you can read and change later.
+
+{/* SCREENSHOT: kepler/approval-dock.png : state: Assist posture, approval dock showing a kubectl label command with a server dry-run preview and the four buttons Reject, Always, This session, Run */}
 <Frame>
-  <img src="/images/kepler/approval-dock.png" alt="The approval dock above the composer showing a kubectl apply command and three buttons: Reject, Allow kubectl apply *, and Run." />
-  <Caption>The dock shows the exact command. Run it once, allow the prefix for the session, or reject with a note.</Caption>
+  <img src="/images/kepler/approval-dock.png" alt="The approval dock above the composer showing a kubectl label command, a server dry-run preview reading deployment.apps/checkout not labeled, and four buttons: Reject, Always, This session, and Run." />
+  <Caption>The dock shows the exact command, and a dry run of what it would do. Run it once, allow the verb for this session, allow it for good, or reject with a note.</Caption>
 </Frame>
-*/}
 
 ## The unknown-command card
 

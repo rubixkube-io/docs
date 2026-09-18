@@ -129,18 +129,18 @@ Shortcuts below use `Cmd`. On Windows and Linux, use `Ctrl`.
     Add the label owner=payments to the checkout deployment in staging.
     ```
 
-    Kepler runs the reads it needs, then stops. An **approval dock** slides in above the composer showing the exact `kubectl` command it wants to run, and a preview where one is available. You have three choices:
+    Kepler runs the reads it needs, then stops. An **approval dock** slides in above the composer showing the exact `kubectl` command it wants to run, and a preview where one is available. You have four choices:
 
     - **Run**: run this one command and continue. `Cmd+Enter` does the same.
-    - **Allow `kubectl label *`**: allow that command prefix for the rest of this session so Kepler does not ask again for the same kind of write.
+    - **This session**: run it, and stop asking about `kubectl label` for the rest of this conversation. `Cmd+Shift+Enter` does the same.
+    - **Always**: run it, and allow `kubectl label` from now on in every conversation. This one saves a permanent rule, so use it only for verbs you are happy for Kepler to run unattended.
     - **Reject**: stop. Type a note first if you want to steer what Kepler tries next.
 
-    {/* TODO(screenshot) kepler/approval-dock.png : state: the approval dock over the composer in Assist, showing a pending "kubectl label deployment checkout owner=payments -n staging" with Run, Allow "kubectl label *", and Reject buttons. Posture chip reads Assist.
+    {/* SCREENSHOT: kepler/approval-dock.png : state: the approval dock over the composer in Assist, showing a pending "kubectl label deployment checkout owner=payments" with a server dry-run preview and the four buttons Reject, Always, This session, Run. Posture chip reads Assist. */}
     <Frame>
-      <img src="/images/kepler/approval-dock.png" alt="The approval dock above the Kepler composer. It shows a pending kubectl label command with buttons to Run, Allow kubectl label for this session, and Reject. The posture chip reads Assist." />
-      <Caption>In Assist, every write pauses here. You see the exact command before it runs.</Caption>
+      <img src="/images/kepler/approval-dock.png" alt="The approval dock above the Kepler composer. It shows a pending kubectl label command, a server dry-run preview of its effect, and four buttons: Reject, Always, This session, and Run. The posture chip reads Assist." />
+      <Caption>In Assist, every write pauses here. You see the exact command, and a dry run of what it would do, before it runs.</Caption>
     </Frame>
-    */}
 
     Click **Run**. Kepler applies the label, verifies it with a read, and reports back.
 

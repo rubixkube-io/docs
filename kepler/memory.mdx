@@ -1,0 +1,142 @@
+---
+title: "Memory and kepler.md"
+sidebarTitle: "Memory"
+description: "How Kepler remembers your services, incidents, conventions and runbooks, the three files you own (kepler.md, pref.md, user.md), the Memory panel, and incognito sessions."
+keywords: ["kepler memory", "kepler.md", "pref.md", "sre agent memory", "runbook memory", "incognito session", "local ai memory"]
+"og:title": "Memory and kepler.md"
+"og:description": "What Kepler carries from one day to the next, and how you control it."
+---
+
+Kepler keeps a local record of your services, incidents, conventions and runbooks. It reads that record on every turn, so on day 30 it already knows what it had to ask on day 1. Everything lives on your machine and every part of it is yours to edit by hand.
+
+Open the Memory panel with `Cmd+M` (`Ctrl+M` on Windows and Linux). `/memory` in the chat opens the Memory settings.
+
+{/* SCREENSHOT: kepler/memory-graph.png : state: Memory panel open on the Graph tab with a few services and incidents visible */}
+<Frame>
+  <img src="/images/kepler/memory-graph.png" alt="The Kepler Memory panel on the Graph tab, showing services, incidents and runbooks connected by edges." />
+  <Caption>The Memory panel. Graph, Pages and Artifacts are the three tabs.</Caption>
+</Frame>
+
+## What Kepler remembers
+
+Memory grows quietly as you work. After an investigation, Kepler records what broke, what the cause turned out to be and what fixed it. When you tell it how you like to work, it writes that down too. You can also ask for something to be saved on purpose:
+
+```
+Save this as a runbook: how we drain a node in the payments cluster.
+```
+
+```
+Remember that api-prod-2 and api-prod-3 sit behind the same load balancer.
+```
+
+Later, you ask in plain words and Kepler pulls the right thing back:
+
+```
+What did we do the last time checkout started crashlooping?
+```
+
+```
+Is there a runbook for rotating the Redis password?
+```
+
+## The three files you own
+
+Kepler's standing knowledge about you and your projects lives in three Markdown files. Open and edit them from the Memory panel, or with any editor.
+
+| File | What it holds | Where it lives |
+|---|---|---|
+| `kepler.md` | Conventions and rules for a project (one per workspace) or for everything you do (one global file). | Global: `~/.kepler/kepler.md`. Workspace: `.kepler/kepler.md` inside the workspace folder. |
+| `pref.md` | How you like Kepler to work. | `~/.kepler/pref.md` |
+| `user.md` | Who you are: your role, your stack, what you look after. Kepler fills this in from what you tell it. | `~/.kepler/user.md` |
+
+### kepler.md: global or per workspace?
+
+| | Global `kepler.md` | Workspace `kepler.md` |
+|---|---|---|
+| Use it for | Rules that follow you everywhere: naming conventions, the cluster you mean by "prod", how you want write-ups formatted. | One project's conventions: where its manifests live, how it deploys, what to check first when it misbehaves. |
+| Created by | Kepler, the first time it has something to record. | `/init`, run in a new workspace. Kepler reads the folder and drafts a briefing. |
+| Read when | Every run. | Every run inside that workspace. |
+
+Start a new workspace with:
+
+```
+/init
+```
+
+Kepler looks at the folder, writes a first draft of the briefing and shows it to you. Edit anything you like.
+
+### The managed block
+
+Kepler only ever edits its own clearly marked block inside `kepler.md`. Anything you write above or below that block stays exactly as you left it. You can rewrite the whole rest of the file and Kepler will keep working from it the next turn.
+
+### pref.md: say it once and it sticks
+
+Tell Kepler how you like to work, in chat, and it records the preference:
+
+```
+Always show me the kubectl command before you run it, even in Yolo.
+```
+
+```
+Keep RCA write-ups under one page.
+```
+
+```
+When I say "the cluster" I mean gke-prod-eu.
+```
+
+Each of these lands as a line in `pref.md`. Open the file from the Memory panel to review or remove any of them.
+
+## The Memory panel
+
+| Tab | What you see |
+|---|---|
+| Graph | Your services, hosts, incidents and runbooks, and how they connect. Click a node to see what Kepler knows about it. |
+| Pages | The written record: incident notes, conventions, runbooks, and the three files above. |
+| Artifacts | Documents Kepler produced, such as an RCA or a designed report, kept under a stable name and versioned each time it publishes again. |
+
+<Tip>
+Paste a long block of logs or a postmortem into the chat and Kepler will offer to keep the useful part in memory rather than just answer once.
+</Tip>
+
+## Incognito sessions
+
+Some conversations should not teach Kepler anything. An incognito session is sealed: memory stays outside it, and nothing that happens inside it is written to memory, `user.md` or `pref.md`.
+
+Start one with the ghost button beside **New session** in the sidebar. Incognito has to be chosen before the first message. A chat that has already run cannot be made incognito after the fact.
+
+## Settings > Memory
+
+| Action | What it does |
+|---|---|
+| Import memories | Bring memories across from another assistant you have been using. Preferences go to `pref.md`, identity goes to `user.md`, the rest becomes pages. |
+| Export memories | Write everything Kepler remembers to a file you can read or back up. |
+| Reindex | Rebuild the search index over your pages. Use it if recall seems to miss things you know are there. |
+| Rebuild graph | Rebuild the graph from your pages and sessions. |
+| Wipe memory | Delete everything Kepler remembers. Kepler asks you to confirm first. |
+| Shadow briefs | Kepler follows the work you do in your own terminal and turns what it learns into memory and short briefs. Read the recent ones here. |
+
+## Troubleshoot memory
+
+**Kepler does not remember something I told it.** Check that the session was not incognito, then look in the Pages tab for the note. If it is missing, say it again and ask Kepler to save it. If it is there but Kepler does not use it, run **Reindex** in **Settings > Memory**.
+
+**A remembered fact is wrong.** Open the page in the Memory panel and edit it. Kepler reads the corrected page on the next turn. For a wrong preference, edit `pref.md` directly.
+
+**I want to start clean.** Use **Wipe memory** in **Settings > Memory**. Export first if you might want it back.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Everyday workflows" icon="list-check" href="/kepler/workflows">
+    Prompts that put memory to work: triage, RCA, handoff.
+  </Card>
+  <Card title="Extend Kepler" icon="puzzle-piece" href="/kepler/extend">
+    Skills, custom commands and integrations.
+  </Card>
+  <Card title="Settings reference" icon="sliders" href="/kepler/settings">
+    Every Memory setting, in context.
+  </Card>
+  <Card title="Postures" icon="shield-halved" href="/kepler/postures">
+    How much Kepler does on its own.
+  </Card>
+</CardGroup>

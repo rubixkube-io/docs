@@ -166,6 +166,47 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Kepler",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "kepler/overview",
+              "kepler/installation",
+              "kepler/quickstart"
+            ]
+          },
+          {
+            "group": "Using Kepler",
+            "pages": [
+              "kepler/workspace",
+              "kepler/postures",
+              "kepler/permissions",
+              "kepler/memory",
+              "kepler/extend"
+            ]
+          },
+          {
+            "group": "Workflows",
+            "pages": [
+              "kepler/workflows",
+              "kepler/war-room",
+              "kepler/watchers",
+              "kepler/channels"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "kepler/commands",
+              "kepler/settings",
+              "kepler/troubleshooting",
+              "kepler/faq"
+            ]
+          }
+        ]
       }
     ],
     "global": {

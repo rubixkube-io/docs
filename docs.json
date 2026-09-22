@@ -87,6 +87,7 @@
                   "using/integrations",
                   "using/skills",
                   "using/notifications",
+                  "using/on-call",
                   "using/workspace",
                   "using/agent-skills-store"
                 ]
@@ -101,6 +102,8 @@
                   "integrations/atlassian-rovo",
                   "integrations/linear",
                   "integrations/pagerduty",
+                  "integrations/alertmanager",
+                  "integrations/generic-webhook",
                   "integrations/slack",
                   "integrations/microsoft-teams",
                   "integrations/new-relic",

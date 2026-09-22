@@ -1,0 +1,40 @@
+---
+title: "Alertmanager to On-Call"
+sidebarTitle: "Alertmanager"
+description: "Send Prometheus Alertmanager alerts to a RubixKube On-Call service."
+keywords: ["alertmanager", "prometheus", "on-call", "webhook", "incident"]
+---
+
+An Alertmanager integration accepts firing and resolved alerts for one On-Call service. Repeated firing alerts with the same deduplication identity update the existing alert; a resolved notification closes it. The service's grouping and escalation rules determine the incident and pages.
+
+## Create the receiver
+
+1. In **On-Call → Services**, open the destination service and select **Integrations → Add integration**.
+2. Choose **Alertmanager**, give the integration a name, and create it.
+3. Copy the receiver snippet and ingest URL from the one-time key dialog. Store the key in your secret manager. If you close the dialog without saving it, rotate the key and update Alertmanager.
+4. Add the generated receiver to your Alertmanager configuration and route the desired alerts to it. Reload Alertmanager, then use the integration's **Test** action.
+
+The receiver URL includes a secret integration key. Treat the complete URL as a credential, limit who can read your Alertmanager configuration, and avoid pasting it into tickets or logs. For senders that support custom headers, Pager also accepts `X-Integration-Key` at the keyless `/ingest/v1/alertmanager` endpoint.
+
+```yaml
+route:
+  receiver: rubixkube-oncall
+
+receivers:
+  - name: rubixkube-oncall
+    webhook_configs:
+      - url: 'https://INGEST_HOST/ingest/v1/alertmanager/INTEGRATION_KEY'
+        send_resolved: true
+```
+
+Replace both placeholders with the values from the integration dialog. Use the generated snippet if your service has additional options.
+
+{/* TODO: screenshot of the Alertmanager integration key dialog */}
+
+## Verify delivery
+
+Send a test from the integration page and follow the linked incident. The incident detail shows the source alert, grouping, timeline, escalation and delivery ledger. A later resolved Alertmanager event closes the source alert and can resolve the incident according to the service settings.
+
+If Alertmanager receives `429`, honor its `Retry-After` header. If Pager cannot store the event, it answers `503` with `Retry-After: 5`; Alertmanager should retry. Unknown or revoked keys receive the same `404` response.
+
+See [On-Call setup](/using/on-call) for schedules, policies and responder notifications.

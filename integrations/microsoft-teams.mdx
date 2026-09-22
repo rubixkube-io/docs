@@ -68,6 +68,12 @@ When an action needs approval, the bot posts an adaptive card with scope and evi
 
 For per-service routing, per-team channels, or custom digest schedules, build a [Skill](/concepts/skills) that composes the notification behaviour you want.
 
+## On-Call delivery
+
+Teams paging requires your organization's On-Call Teams bot registration and a linked Teams identity for each responder. Once that connection is available, incident cards and handoff DMs can carry the same incident and schedule links used in the [On-Call console](/using/on-call). Until an admin completes bot registration, choose another configured notification rule on **On-Call → My On-Call → Manage notification settings** and check the delivery ledger after a test page.
+
+{/* TODO: screenshot of an On-Call Teams card after bot registration */}
+
 ## Build custom workflows with skills
 
 The Teams connection gives agents tools for posting adaptive cards, replying in threads, reading messages in member channels, and responding to card clicks. Specific behaviours are built as [Skills](/concepts/skills).

@@ -42,6 +42,14 @@ Connect PagerDuty so RubixKube agents can page the right on-call when a high-sev
 
 Once connected, PagerDuty is available tenant-wide.
 
+## Migrate configuration into RubixKube On-Call
+
+If you are moving your schedule and service ownership into RubixKube, use the **On-Call → Settings → Import** flow when it is available for your organization. Start with a dry run: review matched and unmatched users, schedules, policy targets, services and unsupported rules before applying anything. Confirm invited users and new integration keys in the report. Re-running an import should update matched external references rather than create another copy.
+
+The import copies configuration; it does not move historical PagerDuty incidents or export PagerDuty integration keys. New RubixKube integrations need their own keys and alert-source routing. Keep the existing PagerDuty connection above during the transition if you still use it to page teams, and switch alert senders one service at a time after a RubixKube test page succeeds.
+
+See [On-Call setup](/using/on-call) and [Alertmanager routing](/integrations/alertmanager) for the destination workflow.
+
 {/* TODO: screenshot of the Integrations page showing the PagerDuty card */}
 
 ## How the agents use it

@@ -1,13 +1,15 @@
 ---
 title: "Notifications"
 sidebarTitle: "Notifications"
-description: "Route insights, RCA reports, and pending actions to the channels your team already uses. Slack, Microsoft Teams, PagerDuty, email."
+description: "Route insights and action updates to connected channels, and configure separate On-Call incident paging."
 keywords: ["notifications", "alerting", "slack notifications", "teams notifications", "pagerduty", "incident alerts"]
 "og:title": "Notifications"
 "og:description": "Route insights, RCA reports, and pending actions to Slack, Teams, PagerDuty, or email."
 ---
 
 Health monitoring only pays off if the right person sees the signal. Notifications route every kind of RubixKube update (insights, RCA reports, pending approvals, action outcomes) to the channels your team already lives in.
+
+For incident paging with schedules, escalation and a delivery ledger, use [On-Call](/using/on-call). An On-Call notification rule belongs to a responder and an urgency level; the general routes on this page distribute platform updates.
 
 ## Channels supported
 
@@ -44,6 +46,12 @@ Health monitoring only pays off if the right person sees the signal. Notificatio
 | Action verified or reverted | Stabilisation window closed |
 | Environment degraded | Observer or cloud-side agent unhealthy |
 | Budget or plan alert | Investigation quota or billing event |
+
+## On-Call paging channels
+
+On-Call can page through in-app notifications, email, linked Slack or Teams accounts, SMS and voice. Each channel only becomes selectable when the organization has its provider configured and the responder has the necessary verified contact method or linked chat identity. A personal test page and delivery ledger in **On-Call → My On-Call → Manage notification settings** show which routes are ready and what was sent or skipped.
+
+See [On-Call setup](/using/on-call) before configuring alert senders.
 
 ## Routing rules
 

@@ -68,6 +68,23 @@ When an action needs approval, the bot posts an interactive card with the scope 
 
 For per-service routing, per-team channels, or custom digest schedules, build a [Skill](/concepts/skills) that composes the notification behaviour you want.
 
+## On-Call commands and incident cards
+
+When your organization enables [On-Call](/using/on-call), link your Slack identity with `/oncall connect`. The `/oncall` command supports:
+
+| Command | Result |
+| --- | --- |
+| `/oncall who [service]` | Show who covers a service now |
+| `/oncall incidents [mine\|open]` | List current incidents |
+| `/oncall ack #42` | Acknowledge an incident from the current result set |
+| `/oncall override "Payments Primary" 2h` | Cover a schedule for a limited period |
+| `/oncall swap "Payments Primary"` | Request a swap for your next shift |
+| `/oncall link payments-api` | Bind this channel to a service (manager/admin) |
+
+Use `/oncall help` in Slack for the current grammar. Incident cards show the service, urgency, assignees and available actions. Interactive actions use the clicking person's mapped RubixKube identity. Linked responders can also receive handoff prompts and summaries by DM, and acknowledge a delivered handoff from its card. A Slack workspace admin may need to approve the On-Call app scopes and command before these features appear.
+
+{/* TODO: screenshot of an On-Call incident card and handoff DM */}
+
 ## Build custom workflows with skills
 
 The Slack connection gives agents tools for posting, replying, reading messages in invited channels, and responding to card clicks. Specific behaviours (route `#payments` insights to `#payments-ops`, pin the active incident card, send a weekly digest at 09:00 on Mondays) are built as [Skills](/concepts/skills).

@@ -1,0 +1,48 @@
+---
+title: "On-Call"
+sidebarTitle: "On-Call"
+description: "Set up services, escalation policies, schedules, responder notifications, and incident response in RubixKube."
+keywords: ["on-call", "incident response", "escalation policy", "schedule", "alerting"]
+---
+
+On-Call connects incoming alerts to the people responsible for a service. A service owns an escalation policy; the policy can target responders directly or resolve a schedule when a page is due. Incidents, pages, and handoffs stay visible in the console.
+
+An organization admin must enable On-Call before its pages appear. Availability of SMS, voice, Slack, and Teams depends on the channels configured for your organization. Check **On-Call → Settings** for setup progress and integration status.
+
+## Set up a service
+
+1. Open **On-Call → Teams** and create the team that owns the service. Add responders and choose their roles.
+2. Open **On-Call → Schedules** and create a rotation. Add participants, choose its timezone and handoff time, and inspect the coverage preview. Use overrides for planned absences.
+3. Open **On-Call → Policies** and create ordered escalation steps. Each step can target a person or schedule and has a delay before the next step. Save the policy and use its resolve preview to check who would be paged now.
+4. Open **On-Call → Services**, create the service, and select its team and escalation policy. Configure routing, urgency and maintenance rules on the service page.
+5. In the service's **Integrations** tab, add Alertmanager or a generic webhook. Save the integration key when it is shown: it cannot be retrieved later. Use **Test** to send a sample alert through the ingest path and verify the resulting incident.
+
+{/* TODO: screenshot of service setup with team, policy and integration */}
+
+For sender examples, see [Alertmanager](/integrations/alertmanager) and [generic webhooks](/integrations/generic-webhook).
+
+## Prepare your own notifications
+
+Open **On-Call → My On-Call → Manage notification settings**. Add a reachable contact method, choose your timezone, set reminders and channel rules, then send a personal test page. Only configured channels can be selected. If your organization has not configured a provider, its channel may be unavailable even when your profile contains a contact method.
+
+The first-run guide offers these steps and an explicit Skip option. Phone verification is required before ordinary SMS or voice paging. The delivery ledger on the same page shows what Pager attempted and why a channel was skipped.
+
+## Work an incident
+
+The **Incidents** list filters by status, urgency, service, team and ownership. Open an incident to see its alerts, timeline, assigned responders, escalation steps and notification ledger. Acknowledge to take responsibility, add an operational note, reassign or escalate when another responder is needed, and resolve when the issue is addressed. Resolving also resolves the incident's open alerts.
+
+**My On-Call** shows your current and next coverage, assigned incidents and a test-page entry point. **Now** shows current level-zero coverage for active services; `?kiosk=1` gives the board a full-screen view.
+
+{/* TODO: screenshot of incident detail and the on-call board */}
+
+## Swaps and handoffs
+
+Request a swap from a future shift on its schedule page. The proposed recipient can accept or decline before the shift begins. A schedule handoff asks the outgoing responder for an optional note shortly before the boundary, then shows a summary to the incoming responder. Review and acknowledge a delivered handoff from the schedule or **My On-Call**.
+
+## Operational checks
+
+- If an alert creates no incident, inspect the service integration, routing rules, maintenance windows and event rules. The generic webhook mapping preview can identify a missing title or dedup key before sending.
+- If a page is skipped, inspect the incident's **Notifications** panel and the responder's notification settings. A verified phone or linked chat identity may be required.
+- If coverage is empty, inspect the schedule preview, overrides and escalation policy targets. The **Now** board shows the resulting coverage.
+
+On-Call pages are separate from [general RubixKube notifications](/using/notifications), which distribute insights, reports and action updates.

@@ -1,0 +1,58 @@
+---
+title: "Generic webhook to On-Call"
+sidebarTitle: "Generic webhook"
+description: "Map JSON events from your alert source into RubixKube On-Call incidents."
+keywords: ["webhook", "on-call", "alert mapping", "JMESPath", "incident"]
+---
+
+Use a generic webhook integration when your alert source can POST JSON but has no dedicated On-Call integration. RubixKube provides presets for Grafana, Datadog, CloudWatch SNS, Sentry and New Relic, plus a native generic schema.
+
+## Create and test the mapping
+
+1. Open **On-Call → Services → your service → Integrations → Add integration** and choose **Generic webhook**.
+2. Choose a mapping preset. The editor shows its mapping and sample payload. Adjust field paths for your sender, then select **Test mapping** to preview the events that would be created. Preview does not send an alert.
+3. Create the integration and save the key and ingest URL shown once. Configure your sender to POST JSON to that URL.
+4. Use the integration's **Test** action to send a sample through the real ingest path and inspect the linked incident.
+
+{/* TODO: screenshot of mapping preview and the one-time key dialog */}
+
+## Native JSON schema
+
+The generic preset reads this shape. `action`, `dedup_key`, `title` and `severity` are the useful core fields; the remaining fields add context. Use the same `dedup_key` with `action: "resolve"` to close an alert.
+
+```json
+{
+  "action": "trigger",
+  "dedup_key": "db-primary-disk",
+  "title": "Disk 91% on db-primary",
+  "severity": "critical",
+  "component": "db-primary",
+  "group": "database",
+  "class": "disk",
+  "details": {"used_percent": 91},
+  "occurred_at": "2026-09-15T10:00:00Z"
+}
+```
+
+Valid severities are `critical`, `high`, `medium`, `low` and `info`. If your sender omits a dedup key, Pager derives a stable key from the title, component, group and class. A missing title makes the element invalid.
+
+## Mapping fields
+
+Each mapping field can use a JMESPath `path`, a value `map`, and a `default`. An optional `each` expression selects an array and maps each item as a separate event, up to 1,000 events per request. For example:
+
+```json
+{
+  "fields": {
+    "action": {"path": "state", "map": {"open": "trigger", "closed": "resolve"}, "default": "trigger"},
+    "dedup_key": {"path": "alert.id"},
+    "title": {"path": "alert.message"},
+    "severity": {"path": "alert.level", "map": {"sev1": "critical", "sev2": "high"}, "default": "high"}
+  }
+}
+```
+
+The preview reports field and element errors. Correct those before creating the integration. A request can contain at most 256 KB of JSON; a body that maps to no valid event returns an error rather than silently succeeding.
+
+The complete ingest URL contains a secret key. Store it as a credential and rotate it if exposed. Senders that can set headers may instead use `X-Integration-Key` with the keyless `/ingest/v1/webhook` endpoint.
+
+See [On-Call setup](/using/on-call) for service routing and escalation.

@@ -20,10 +20,10 @@ This page covers the situations you will use Kepler for most, each with a starti
 - [Ask what happened last time](#ask-what-happened-last-time)
 - [Get a plan before anything runs](#get-a-plan-before-anything-runs)
 
-{/* SCREENSHOT: kepler/observe-answer.png : state: an Observe session with the tool rows (Thought, Ran kubectl get pods, Ran kubectl get events, kind get clusters, docker ps) and one expanded, followed by Finding, Evidence and Fix */}
+{/* SCREENSHOT: kepler/observe-answer.png : state: an Observe reply to "Why is checkout crashlooping in prod?": a row per kubectl command, a "Not run" row for the refused patch, then Finding, Evidence and the start of the remediation */}
 <Frame>
-  <img src="/images/kepler/observe-answer.png" alt="A Kepler answer in Observe: rows for each command it ran, one expanded to show the raw kubectl output, then a Finding, an Evidence list quoting what it observed, and a Fix with a confidence level." />
-  <Caption>Every command Kepler runs is a row you can expand. The answer quotes what it observed and says how sure it is.</Caption>
+  <img src="/images/kepler/observe-answer.png" alt="A Kepler answer in Observe: a row for each kubectl command it ran, a Not run row for a patch Observe refused, then a Finding about a misnamed ConfigMap key, an Evidence list quoting the pod log and the deployment's change cause, and a safe remediation." />
+  <Caption>Every command Kepler runs is a row you can expand. Each claim in Evidence names the command it came from.</Caption>
 </Frame>
 
 ## Triage an alert

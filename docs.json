@@ -182,6 +182,7 @@
             "group": "Using Kepler",
             "pages": [
               "kepler/workspace",
+              "kepler/remote-access",
               "kepler/postures",
               "kepler/permissions",
               "kepler/memory",

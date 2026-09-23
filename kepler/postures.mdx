@@ -33,8 +33,8 @@ Posture is per conversation. Changing it in one session does not touch another, 
 
 {/* SCREENSHOT: kepler/posture-chip.png : state: composer with the posture chip hovered, tooltip showing the posture label, hint and "(shift+tab to cycle)" */}
 <Frame>
-  <img src="/images/kepler/posture-chip.png" alt="The composer toolbar with the posture chip reading Observe, read-only, between the attach controls and the send button." />
-  <Caption>The posture chip on the composer, here in Observe. Click it or press Shift+Tab to cycle.</Caption>
+  <img src="/images/kepler/posture-chip.png" alt="The composer with /mode typed and its argument hint, and the posture chip reading Observe, read-only, hovered. Its tooltip says Observe: Read-only. Investigate and advise; ask for a plan and it writes one. Shift+Tab to cycle." />
+  <Caption>The posture chip on the composer, here in Observe. Click it, press Shift+Tab, or type /mode.</Caption>
 </Frame>
 
 ## The approval dock
@@ -56,7 +56,7 @@ For a command Kepler does not recognise, the [unknown-command card](#the-unknown
 
 {/* SCREENSHOT: kepler/approval-dock.png : state: Assist posture, approval dock showing a kubectl label command with a server dry-run preview and the four buttons Reject, Always, This session, Run */}
 <Frame>
-  <img src="/images/kepler/approval-dock.png" alt="The approval dock above the composer showing a kubectl label command, a server dry-run preview reading deployment.apps/checkout not labeled, and four buttons: Reject, Always, This session, and Run." />
+  <img src="/images/kepler/approval-dock.png" alt="The approval dock above the composer showing a kubectl label command against the staging namespace, a server dry-run preview reading deployment.apps/checkout labeled (server dry run), and four buttons: Reject, Always, This session, and Run. The posture chip reads Assist." />
   <Caption>The dock shows the exact command, and a dry run of what it would do. Run it once, allow the verb for this session, allow it for good, or reject with a note.</Caption>
 </Frame>
 
@@ -72,12 +72,11 @@ Kepler knows what most commands do. When it meets a binary it does not recognise
 
 **Run once** is only offered in Assist and Yolo. In Observe the card offers trust or nothing, because Observe promises that no write runs, and Kepler cannot make that promise for a command it does not understand. Watchers never get **Run once** either: a watcher only runs commands Kepler can vouch for.
 
-{/* TODO(screenshot) kepler/unknown-command-card.png : state: Assist posture, the unrecognised-command card for a command like `argocd app list`, showing Don't run, Trust as read-only, Run once
+{/* SCREENSHOT: kepler/unknown-command-card.png : state: Observe posture on a remote machine, the unrecognised-command card for a chained command containing `snap list`, with Don't run and Trust as read-only only (no Run once, because Observe) */}
 <Frame>
-  <img src="/images/kepler/unknown-command-card.png" alt="The unrecognised-command card for argocd app list, explaining Kepler cannot tell if it is read-only, with buttons Don't run, Trust as read-only, and Run once." />
-  <Caption>Trusting a command saves a rule you can edit later. Run once saves nothing.</Caption>
+  <img src="/images/kepler/unknown-command-card.png" alt="The unrecognised-command card above the composer, in Observe, for a shell command on a remote machine. It names snap list as the part Kepler does not recognise, explains that trusting it saves a rule that applies everywhere, offers a note field, and two buttons: Don't run and Trust as read-only." />
+  <Caption>Kepler names the exact part it does not know. In Observe there is no Run once: trust it, or it does not run. Trusting saves a rule you can edit later under Settings > Permissions.</Caption>
 </Frame>
-*/}
 
 ## A worked example
 

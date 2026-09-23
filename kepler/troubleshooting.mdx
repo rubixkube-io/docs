@@ -75,6 +75,16 @@ See [Memory](/kepler/memory#troubleshoot-memory).
 3. A watcher belongs to the session that set it and wakes that session. Open that session to see the wake card.
 4. Kepler must be running for watchers to check. Under **Settings > General > While you are away**, switch off **Kepler stops when you close the window** so watchers keep running with the window closed. On macOS, also allow Kepler under **System Settings > General > Login Items > Allow in the Background**.
 
+## Kepler cannot connect to a machine
+
+1. Open the machine control beside Send. A failed connection is noted at the top of the list with the reason, and a **Sign in** shortcut when a cloud or Teleport session has expired.
+2. If the host asks for a password, a passphrase or a code, the login is waiting in a terminal tab. Finish it there and the thread moves across on its own.
+3. Try the same login in the Terminal panel yourself. Kepler runs the command you would run, with your config and keys, so if `ssh host` does not work for you it will not work for Kepler.
+4. A stopped cloud VM is started from its cloud console, not from Kepler. A stopped sandbox has a **Start** button in its row.
+5. If the machine is missing from the list, check **Settings > Topology** for the source it should come from, or add it with **Save a machine**.
+
+See [Remote access](/kepler/remote-access).
+
 ## My WhatsApp link dropped
 
 WhatsApp is not an official integration. Kepler links as an extra device, the same way WhatsApp Web does, so it can drop out on its own.

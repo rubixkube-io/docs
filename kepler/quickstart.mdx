@@ -62,9 +62,9 @@ Shortcuts below use `Cmd`. On Windows and Linux, use `Ctrl`.
     - **Hosted Kepler models.** Available right away with your sign-in, no key needed. Pick `kepler-expert` and go.
     - **Your own key.** Open **Settings > Models > Providers** and add a key for Anthropic, OpenAI, Google (Gemini API or Vertex AI), xAI, AWS Bedrock, or an OpenAI-compatible endpoint. Ollama shows up under **Found on this machine** if it is running.
 
-    {/* SCREENSHOT: kepler/model-picker.png : state: the model picker open over the composer, hosted Kepler models first, a BYO provider group below, an Ollama group, and the Max mode toggle */}
+    {/* SCREENSHOT: kepler/model-picker.png : state: the model picker open over the composer, hosted Kepler models first, a BYO provider group below, the Reasoning slider and the Max mode toggle at the bottom */}
     <Frame>
-      <img src="/images/kepler/model-picker.png" alt="The Kepler model picker open over the composer. Hosted Kepler models are listed first, then a Google Vertex AI group, then an Ollama group, with a Max mode toggle at the bottom." />
+      <img src="/images/kepler/model-picker.png" alt="The Kepler model picker open over the composer. Hosted Kepler models are listed first under your Kepler plan, then a provider group from your own plan, then Google Vertex AI under your API key. Below the list sit a Reasoning slider and a Max mode toggle for this session." />
       <Caption>Pick a model once. Kepler never switches models on its own after that.</Caption>
     </Frame>
 
@@ -97,10 +97,10 @@ Shortcuts below use `Cmd`. On Windows and Linux, use `Ctrl`.
     3. **A diagnosis with evidence.** Kepler quotes the lines it is relying on (an OOMKilled event, a missing secret, a bad image tag) so you can check its reasoning against what actually ran.
     4. **A suggested fix.** In Observe this is a proposal, not an action. Nothing changes until you say so.
 
-    {/* SCREENSHOT: kepler/observe-answer.png : state: an Observe reply with the command rows, one expanded, then Finding, Evidence and Fix. Posture chip reads Observe. */}
+    {/* SCREENSHOT: kepler/observe-answer.png : state: an Observe reply to "Why is checkout crashlooping in prod?": a row per kubectl command, a "Not run" row for the patch Observe refused, then Finding, Evidence and the start of the remediation. Posture chip reads Observe. */}
     <Frame>
-      <img src="/images/kepler/observe-answer.png" alt="Kepler's reply in Observe. Rows for kubectl get pods, kubectl get events, kind get clusters and docker ps, one expanded to show the raw output, then a Finding that the cluster is unreachable, the Evidence it observed, and a Fix." />
-      <Caption>Observe is read-only. Every claim points at a command you can expand. Here the cluster was unreachable, so Kepler said so and stopped rather than guessing.</Caption>
+      <img src="/images/kepler/observe-answer.png" alt="Kepler's reply in Observe to why checkout is crashlooping in prod. A row for each kubectl command it ran, a Not run row for a configmap patch it was not allowed to run, then a Finding that the ConfigMap provides DATABASE_URI while checkout needs DATABASE_URL, an Evidence list quoting the pod log, and a safe remediation." />
+      <Caption>Observe is read-only. Every claim points at a command you can expand, and the one write Kepler wanted shows as Not run. The fix is proposed, not applied.</Caption>
     </Frame>
 
     Try a few more while you are here:

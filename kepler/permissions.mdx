@@ -15,12 +15,12 @@ The controls only tighten. A posture cannot loosen a permission, a permission ca
 
 ## Settings > Permissions
 
-Open **Settings > Permissions** (`Cmd+,`, or `/settings`). The page has three parts: your command rules, the always-blocked list, and the tool switches.
+Open **Settings > Permissions** (`Cmd+,`, or `/settings`). The page has four parts, top to bottom: what you have allowed for good, your command rules, the always-blocked list, and the tool switches.
 
 {/* SCREENSHOT: kepler/permissions-settings.png : state: Settings > Permissions with the three tool switches on Ask, two or three rules in Your rules, and the Always blocked list expanded */}
 <Frame>
   <img src="/images/kepler/permissions-settings.png" alt="The Permissions settings page showing Files, Shell and MCP servers set to Ask, a Your rules table with a few command rules, and the Always blocked list expanded." />
-  <Caption>Your rules at the top, the floor in the middle, the tool switches at the bottom.</Caption>
+  <Caption>Always allowed and your rules at the top, the floor in the middle, the tool switches at the bottom.</Caption>
 </Frame>
 
 ### Tools
@@ -40,6 +40,19 @@ The switches sit on top of posture and never loosen it. Shell on Allow in Observ
 <Note>
 Browser and memory tools are allowed by default. They are Kepler's own surfaces, and the browser drives only what is on screen in the Browser panel.
 </Note>
+
+## Always allowed
+
+Press **Always** on an approval card and the thing you approved stops asking, in every conversation, across restarts. This section lists what you have said that about. Two kinds of entry land here:
+
+| Entry | Example | What it allows |
+|---|---|---|
+| Command prefix | `kubectl label *` | Every command starting with that verb. Saved from the **Always** button on a command approval. |
+| Folder | `/srv/manifests` | Kepler may reach that folder from any workspace. Saved from **Always** on the card that appears when a command reaches outside your workspace. |
+
+An entry here only removes the prompt. It never loosens the posture or the floor: Observe still runs no write, and the always-blocked list still wins. Remove an entry from its row when you no longer want it.
+
+**Always** is not offered for shells and interpreters such as `bash` or `python`, for the same reason [This session](/kepler/postures#the-approval-dock) is not: approving those would approve anything they run.
 
 ## Your rules
 

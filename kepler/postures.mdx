@@ -47,7 +47,7 @@ You have four answers, in order of how long they last:
 |---|---|---|
 | **Run** (`Cmd+Enter`) | Runs this command, once. | Nothing. The next command asks again. |
 | **This session** (`Cmd+Shift+Enter`) | Runs it and allows every command starting with the same verb, such as `kubectl apply`, until this conversation ends. | The prefix, until the session ends. Not offered for shells and interpreters like `bash` or `python`, because approving those would approve anything. |
-| **Always** | Runs it and allows that same verb prefix from now on, in every conversation. | A rule, permanently. It shows up in **Settings > Permissions** and you can delete it there. |
+| **Always** | Runs it and allows that same verb prefix from now on, in every conversation. | A rule, permanently. It shows up under **Always allowed** in **Settings > Permissions** and you can delete it there. |
 | **Reject** (`Esc`) | Does not run it. You can type a short note first, and Kepler takes the note as direction. | Your note, for this turn. |
 
 **Always** is the one to read twice: it is the only button here that outlives the conversation, and it applies in watchers and workflows too. **This session** is the safer habit when you just want Kepler to stop asking about the same verb for the next ten minutes.

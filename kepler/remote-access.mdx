@@ -1,0 +1,170 @@
+---
+title: "Remote access: work on other machines"
+sidebarTitle: "Remote access"
+description: "Point a Kepler thread at a server, a cloud VM or a sandbox instead of your laptop. Kepler uses your own logins, asks before it uses a machine, shows which machine every command ran on, and lets you cap what it may do on each one."
+keywords: ["kepler remote access", "kepler ssh", "ai agent remote server", "kepler cloud vm", "kepler sandbox", "kepler teleport", "work on other machines"]
+"og:title": "Remote access"
+"og:description": "Point a thread at a server, a VM or a sandbox. Your logins, your limits."
+---
+
+Kepler works on your own machine until you tell it otherwise. Turn on **Remote access** and any thread can work on a server, a cloud VM or a sandbox instead: the commands run there, the files it reads are there, and every tool row says so. Kepler never holds a password or a key. It connects the way you would, with the logins already on your machine, and opens a terminal for you when a host asks for something it cannot answer.
+
+<video
+  controls
+  muted
+  playsInline
+  className="w-full aspect-video rounded-xl"
+  src="/images/kepler/remote-access.mp4"
+  poster="/images/kepler/remote-access-poster.png"
+></video>
+
+Turn it on in Settings, pick a machine beside Send, ask a question. The tool row says where it ran.
+
+## Turn it on
+
+Open **Settings > Remote access** and switch on **Work on other machines**. It is off on a fresh install, and while it is off nothing on this page exists in the app: no machine control, no machine list.
+
+Three things hold once it is on:
+
+- **Your logins, not Kepler's.** Kepler runs the same `ssh`, `gcloud`, `aws` or `tsh` command you would, with the config and keys already on your machine. It never sees or keeps a password or a key. If a host asks for a password, a passphrase or a code, a terminal tab opens and you type it there.
+- **It asks before using a machine in a thread, in every mode.** A connected machine is not fair game for every conversation. The first time Kepler wants to run something on a machine a thread has not used, a card asks you, Observe included.
+- **Every command says where it ran.** A tool row that ran elsewhere carries the machine's name. Anything that ran on your own machine carries none.
+
+## Pick where a thread works
+
+A machine control sits beside **Send** in the composer. It reads **This Mac** (or **This PC**) until you choose otherwise, and takes colour when the work is remote. Click it, or type `/connect <name>`, and pick from the list:
+
+- **Ready now** at the top: your own machine, and anything already connected.
+- **Everything Kepler knows** below: hosts from your SSH config, cloud VMs, Teleport nodes and sandboxes. Type to search. Press `Enter` on one that is not connected and Kepler connects it and moves the thread there in one step.
+- **A host it has never heard of**: type `user@host` and press `Enter`. Kepler connects to it as a new host.
+
+```
+/connect pi5
+```
+
+```
+/connect ops@10.0.1.4
+```
+
+While it connects the control reads **Connecting to pi5.local**. Login happens quietly first. If the host wants something from you, a terminal tab opens with the login already typed, and the thread moves across once you are through. If it fails, the control says so and the reason is a click away, with a **Sign in** shortcut when a cloud session has expired.
+
+The thread's machine is per conversation. Pick one in a thread and other threads stay where they were. **New threads start on** in **Settings > Remote access** sets the starting point for new ones.
+
+<Note>
+The choice covers the shell and the files. Memory, the browser panel and your integrations stay where they are: they are Kepler's own surfaces, not the machine's.
+</Note>
+
+## What you see once it is there
+
+Ask anything you would ask about your own machine:
+
+```
+What machine is this?
+```
+
+```
+Is nginx running here, and what did it log in the last ten minutes?
+```
+
+```
+Disk is filling on this box. What is taking the space?
+```
+
+Each tool row carries **on pi5.local** at its edge. The **This thread** panel, from the indicator at the top right of the conversation, lists the machines this thread may reach under **Can reach**. Expand any row to read the raw output, as always.
+
+Operator shell mode follows the thread too. Type `!` at the start of the composer and the command runs on the thread's machine, with the machine named in the prompt. The machine control stays available in shell mode, so you can switch hosts without leaving it.
+
+From the picker, a connected host has two more actions: **open a terminal there**, which gives you a shell on the host in the Terminal panel, and **Disconnect**.
+
+## The cards that ask you
+
+Three approval cards belong to remote work. They dock above the composer like every other approval.
+
+| Card | When | What the answer means |
+|---|---|---|
+| **Wants to connect** | Kepler needs a machine that is not connected yet, for example because you asked about a host by name. | **Connect** runs your own login. If the host asks for a password or a code, a terminal opens for you to type it. |
+| **Wants to use another machine** | The machine is connected, but this thread has never used it. The card names both machines and Kepler's reason. | **Allow in this thread** lasts for this thread only. Another thread asks again. |
+| **Reads credentials** | Kepler wants to read a key, a token, a kubeconfig or a `.env` file, wherever it is. | Governed by the **Reading credentials** limit on the machine and the Secrets switch in Permissions. |
+
+Posture still applies on the other machine. Observe runs no write there, Assist asks before each change, and the [always-blocked list](/kepler/permissions#always-blocked) never runs anywhere.
+
+## Limits on a machine
+
+Open **Settings > Remote access** and expand a machine's row with the chevron. Limits here only make Kepler more careful on that machine than it is everywhere else, and they apply in every thread.
+
+| Limit | Choices | What it does |
+|---|---|---|
+| How far Kepler may go | No extra limit, Ask before each change, Look only, never change | The most Kepler can do on this machine, whatever posture the thread is in. Look only pins the machine to Observe. |
+| Running commands | As everywhere else, Always ask first, Never | Anything Kepler runs in a shell there. |
+| Reading and editing files | As everywhere else, Always ask first, Never | Files on that machine. |
+| Reading credentials | As everywhere else, Always ask first, Never | Keys, tokens, kubeconfigs, `.env` files. |
+| Using connected tools | As everywhere else, Always ask first, Never | Your integrations, while the thread works there. |
+| Log in as | A user name | SSH hosts only. A read-only account on the host is the strongest limit there is, because the host enforces it. |
+
+A machine with any limit set shows a **Limited** badge in the list. None of these can loosen a posture or a permission. **Never** removes the ability on that machine; Kepler is told so and works around it or tells you it cannot continue.
+
+<Tip>
+For a production host, set **How far Kepler may go** to **Look only, never change** and **Log in as** to a read-only account. That gives you a host Kepler can investigate on and cannot touch, enforced twice.
+</Tip>
+
+## Save a machine
+
+Kepler already lists what it can find on your machine. To add one it cannot find, click **Save a machine** in **Settings > Remote access** or at the bottom of the picker, and type one of:
+
+```
+ops@10.0.1.4
+```
+
+```
+ssh -J bastion ops@10.0.9.2
+```
+
+Kepler shows the `Host` block it will add to `~/.ssh/config`, exactly as it will be written, before you press **Save**. That file is yours and stays readable by every other tool on your machine. If the host is already there, the preview says so.
+
+## Where machines come from
+
+The list is the same one the [Topology](/kepler/workspace#memory-feed-and-topology) map uses. Kepler reads:
+
+- your SSH config
+- cloud VMs from the accounts your `gcloud` and `aws` are signed into
+- Teleport nodes, once you are logged in with `tsh`
+- Docker sandboxes on this machine
+- Ansible inventories it finds
+- the list you keep yourself, at `~/.kepler/topology/kepler-list.jsonl`
+
+**Settings > Topology** controls the scan and shows each source and its last status. **Where machines come from** in Remote access takes you there.
+
+### A machine that needs more than ssh
+
+A host behind a VPN, or one you open with a wrapper script, can carry its own connect command in that list file. Kepler runs it as written and never guesses at what it does:
+
+```json
+{"host": "acme-prod", "connect": "acme-vpn up && ssh -M -S {socket} -i ~/.ssh/acme.pem ops@10.0.9.2"}
+```
+
+`{socket}` is the one thing Kepler fills in. It is the control socket every later command rides on, so a command without it gives you a terminal on the host and gives Kepler nothing to run through.
+
+## Commands running in the background
+
+A port-forward or a tunnel that you or Kepler started, and that has to stay up, is listed under **Running in the background** in **Settings > Remote access** and at the bottom of the picker. Each row says where it runs, who started it and how long it has left. Each ends on its own, or **Stop** it early.
+
+## Sandboxes
+
+A Docker sandbox is a machine like any other in this list, with two differences: a stopped one is started from here with **Start** rather than connected, and it has no login to disconnect from. Use one when you want Kepler to try something with nothing at stake.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Permissions" icon="lock" href="/kepler/permissions">
+    The global switches a machine's limits sit on top of.
+  </Card>
+  <Card title="Postures" icon="shield-halved" href="/kepler/postures">
+    Observe, Assist and Yolo, on this machine and any other.
+  </Card>
+  <Card title="The workspace" icon="table-columns" href="/kepler/workspace">
+    The composer, the Terminal panel and the This thread panel.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/kepler/troubleshooting#kepler-cannot-connect-to-a-machine">
+    When a machine will not connect.
+  </Card>
+</CardGroup>

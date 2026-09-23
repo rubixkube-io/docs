@@ -9,10 +9,10 @@ keywords: ["kepler", "sre ide", "desktop ai agent", "sre agent", "on-call assist
 
 **Kepler** is a desktop app for the people who keep systems alive: SREs, platform engineers, on-call operators. It looks like a chat window. It behaves like a careful colleague with a terminal, a browser, an editor, and a long memory of your infrastructure. Ask it what is wrong with a live system and it runs read-only commands, reads the dashboards you already have open, recalls what happened last time, and comes back with a diagnosis and a suggested fix. By default it suggests. You decide what runs.
 
-{/* SCREENSHOT: kepler/hero-investigation.png : state: an Observe session answering "Why is checkout crashlooping in prod?", with the kubectl get pods and kubectl describe pod cards expanded to show their output, and the Terminal panel open on the right */}
+{/* SCREENSHOT: kepler/hero-investigation.png : state: the Kepler home screen, light theme, sidebar with workspaces, the greeting, the composer in Observe with a suggested prompt that picks up yesterday's checkout investigation */}
 <Frame>
-  <img src="/images/kepler/hero-investigation.png" alt="Kepler answering the question why checkout is crashlooping in prod. Cards for kubectl get pods and kubectl describe pod are expanded to show their raw output, followed by a Finding that the image tag does not exist, the Evidence it observed, and a Fix. The Terminal panel is open on the right." />
-  <Caption>A typical Kepler session: a plain question, the commands it ran, and an answer with evidence.</Caption>
+  <img src="/images/kepler/hero-investigation.png" alt="The Kepler home screen. The sidebar lists New session, New war room, Search, Feed, Automations, Memory and Topology, then the workspaces. In the middle, a greeting by name, the question What should we look into, and the composer in Observe with a suggested prompt: apply the checkout-config remediation patch in prod." />
+  <Caption>Where every day starts. The suggested prompt is Kepler picking up where yesterday's investigation left off.</Caption>
 </Frame>
 
 ## What can Kepler do?

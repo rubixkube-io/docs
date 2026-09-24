@@ -26,6 +26,26 @@ Each heading below is the problem as you would describe it. Fixes are in the ord
 4. For hosted Kepler models, use the refresh control on the Kepler provider row to renew your key with the gateway.
 5. Kepler never switches to a different model on its own. If a call fails it retries the same model, then tells you. Pick another model from the composer if a provider is down.
 
+## OpenRouter fails with "requires more credits, or fewer max_tokens"
+
+The error looks like this, often with a positive balance on the key:
+
+```
+This request requires more credits, or fewer max_tokens. You requested up to 65535 tokens, but can only afford 3684.
+```
+
+Before OpenRouter runs a request, it checks the key's remaining credit against the input plus the most output the request may produce. Kepler does not set a limit on output length for OpenRouter requests, so OpenRouter assumes its per-request maximum (65,535 tokens in the message above). A small balance cannot cover that worst case, even for a short answer. Free and low-credit keys hit this most.
+
+1. Add credits to the key at [openrouter.ai/settings/credits](https://openrouter.ai/settings/credits), or raise the key's limit at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
+2. Check what the key has left:
+   ```bash
+   curl -s https://openrouter.ai/api/v1/key -H "Authorization: Bearer $OPENROUTER_API_KEY"
+   ```
+   The `limit_remaining` field is the credit left on the key.
+3. Until the key has enough credit, pick a model from another provider in the composer.
+
+This affects most tools that call OpenRouter, not only Kepler. See OpenRouter's [limits documentation](https://openrouter.ai/docs/api_reference/limits).
+
 ## Kepler says it cannot tell whether a command is safe
 
 This is the unknown-command card. Kepler met a program it does not recognise and stopped rather than guess.

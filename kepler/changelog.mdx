@@ -1,0 +1,61 @@
+---
+title: "Kepler changelog"
+sidebarTitle: "Changelog"
+description: "What is new in each Kepler release: hooks, plugins, the Customize hub, channel plugins and chat-triggered automations in 0.1.9-beta, and the decision model in 0.1.8-beta."
+keywords: ["kepler changelog", "kepler release notes", "kepler 0.1.9", "kepler 0.1.8", "whats new kepler"]
+"og:title": "Kepler changelog"
+"og:description": "What is new in each Kepler release."
+---
+
+Download the latest version from the [releases page](https://github.com/rubixkube-io/kepler-releases/releases/latest). See [Installation](/kepler/installation) for updates.
+
+<Update label="0.1.9-beta" description="Hooks, plugins, channels and chat automations">
+
+**Extend Kepler**
+
+- **Hooks.** Run your own check at moments in Kepler's work: before a tool runs, when a message arrives, when a run ends, when a watcher fires. Hooks can block or ask, never approve. Hooks written for Claude Code run unchanged. Describe one with `/hook` and Kepler drafts it for you to confirm. See [Hooks](/kepler/hooks).
+- **Plugins and marketplaces.** Install bundles of skills, commands, agents, hooks, MCP servers and chat channels from a marketplace, GitHub, a git URL or a folder. You see everything a plugin runs before it runs. Plugins can ask for settings, and secrets go to the keychain. Plugins in the Claude Code and Cursor formats install too. Ask with `/plugins`. See [Plugins](/kepler/plugins).
+- **Customize.** **Settings > Customize** is now one place for plugins, skills, hooks, commands and agents, with one search and a workspace filter. Commands get an editor. Agents moved here from their own settings page, and Signature moved to **Settings > General**. See [Customize](/kepler/customize).
+- **AGENTS.md.** Kepler reads a workspace's `AGENTS.md` alongside its `kepler.md`. See [Memory](/kepler/memory#agentsmd).
+
+**Channels**
+
+- **Channel plugins.** A plugin can bring a new chat channel. **Add channel** on the Gateway page installs one, wraps a channel server you already have, or has Kepler build one with `/channels`. See [Add a channel](/kepler/channels#add-a-channel).
+- **Warm and cold sessions.** A chat keeps its session while you keep talking. After six quiet hours the next message starts a fresh one, and `/sessions` and `/switch` take you back. Each thread is its own session. See [Which session a message goes to](/kepler/channels#which-session-a-message-goes-to).
+- **Kepler can post first.** In Assist and Yolo, Kepler can send a message to a channel. Anything other than your own chat or a conversation you approved waits for your OK.
+- **Approvals on plugin channels.** A channel with its own approval buttons shows them, and Kepler accepts the answer only for a request it asked on that channel.
+- **One account, one channel.** Connecting a second channel with a bot token already in use is refused.
+- A message that cannot be delivered lands in the Feed instead of being lost. A channel that keeps failing stops and shows why.
+
+**Automations**
+
+- **Chat trigger.** Give an automation a `/command` and anyone you allowed can run it from a connected chat, or you from the desktop `/` menu. See [Run one from a chat](/kepler/automations#run-one-from-a-chat).
+- **Post step.** Answer in the chat that started the run, send the result to you on a channel, or post to a named conversation, which asks your OK at Go live. See [Post in a chat](/kepler/automations#post-in-a-chat).
+- **Decide item by item.** A decision step can judge each item in a list, up to 200, in one step.
+
+**Also**
+
+- Background lanes over the limit wait in a queue and start in order, instead of being refused. See [Specialist agents](/kepler/extend#specialist-agents).
+- The hook log is on the **Hooks** tab of Activity, under **Settings > Plan & Usage**.
+- Kepler's own tools can no longer read or use the key Kepler signs in with.
+
+</Update>
+
+<Update label="0.1.8-beta" description="The decision model">
+
+- **Decision model.** An optional second model, picked under **Settings > Models**, that answers typed questions in about a second. See [Decision model](/kepler/decision-model).
+  - It double-checks shell commands and MCP calls. It can only make a decision stricter: a confident "write" on a command the rules would have let through asks you instead. Its verdict shows as a pill on the tool row.
+  - On the unknown-command card it suggests whether the command reads or writes. You still decide.
+  - In chat and war rooms Kepler can use it to classify, score and pick across many items in one call.
+  - Automations get a **Decide with a decision model** step.
+  - A watcher that checks for a condition in plain words uses it when one is picked.
+- **Run once everywhere.** The unknown-command card offers **Run once** in every posture, Observe included. Watchers and automations still never run a command Kepler cannot vouch for. See [The unknown-command card](/kepler/postures#the-unknown-command-card).
+- **Reasoning effort** is a slider in the model picker. **Auto** lets the model decide on OpenAI and OpenRouter too.
+- An MCP tool call shows its server's icon, and its label names the action.
+- A System One endpoint lists the models it serves.
+- A model that can draw images does so without an image model set up.
+- A topology source that fails to scan offers **Try again**, **Ignore** and **Ask Kepler**.
+- A run you cancel still counts the tokens it spent in **Plan & Usage**.
+- **Settings > General > About** shows the product version.
+
+</Update>

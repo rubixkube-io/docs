@@ -65,6 +65,12 @@ Start a new workspace with:
 
 Kepler looks at the folder, writes a first draft of the briefing and shows it to you. Edit anything you like.
 
+### AGENTS.md
+
+If a workspace has an `AGENTS.md` at its root, the file many coding agents share for project instructions, Kepler reads it too, after the workspace `kepler.md`. Where the two disagree, `kepler.md` wins. If `AGENTS.md` is a link to `kepler.md`, or has the same content, it is read once.
+
+`AGENTS.md` files deeper in the folder tree are not loaded up front. Kepler reads the nearest one when it works on files in that part of the tree.
+
 ### The managed block
 
 Kepler only ever edits its own clearly marked block inside `kepler.md`. Anything you write above or below that block stays exactly as you left it. You can rewrite the whole rest of the file and Kepler will keep working from it the next turn.

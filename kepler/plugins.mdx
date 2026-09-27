@@ -1,0 +1,109 @@
+---
+title: "Plugins and marketplaces"
+sidebarTitle: "Plugins"
+description: "Install bundles of skills, slash commands, agents, hooks, MCP servers and chat channels in one step, from a marketplace, GitHub, a git URL or a folder. See everything a plugin runs before it runs."
+keywords: ["kepler plugins", "kepler marketplace", "plugin.json", ".kepler-plugin", "install plugin", "kepler extensions", "/plugins"]
+"og:title": "Plugins and marketplaces"
+"og:description": "Add a whole toolkit in one step, after you see everything it runs."
+---
+
+A plugin bundles skills, slash commands, specialist agents, hooks, MCP servers and chat channels into one thing you install, update or remove together. Install one from a marketplace, a GitHub repository, a git URL or a folder on your machine. Nothing in it runs until you have seen what it contains.
+
+## Ask Kepler for one
+
+Say what you need after `/plugins`:
+
+```
+/plugins something for terraform reviews
+```
+
+Kepler lists what you already have, searches the marketplaces you added, and proposes an install. `/plugins` on its own tells you what is installed and what is worth adding.
+
+Kepler can look at plugins in any posture. It can propose installing, updating, switching, removing a plugin or adding a marketplace only in Assist and Yolo, and each of those waits for you to confirm a card, Yolo included. The install card lists the plugin's hooks and MCP servers with the exact commands they run, then its skills, commands and agents.
+
+## Install from Settings
+
+Open **Settings > Customize**, pick the **Plugins** chip, and choose **Add plugin**. The browser has two ways in:
+
+- **Marketplaces.** Add a marketplace once, as `owner/repo`, a git URL or a folder, and browse it any time with search and its categories. Kepler keeps a local copy. **Refresh** fetches it again. Removing a marketplace keeps the plugins you installed from it.
+- **From a link.** Install one plugin from a GitHub `owner/repo`, a git URL or a folder.
+
+Before anything is installed you see what the plugin contains: its hooks and MCP servers with the exact commands they run, then its skills, commands and agents. Parts Kepler does not run yet are listed too.
+
+Each installed plugin has a switch and a menu with **Settings** (when the plugin asks for any), **Check for update** and **Remove**.
+
+## What a plugin adds
+
+| Part | Where it shows | Its name |
+|---|---|---|
+| Skills | **Customize > Skills**, under the plugin | `plugin:skill` |
+| Commands | The `/` menu, and **Customize > Commands** | `/plugin:command` |
+| Agents | **Customize > Agents**. Kepler can delegate to them. | `plugin:agent` |
+| Hooks | **Customize > Hooks** | As written |
+| MCP servers | **Settings > Tools & MCP**, tagged with the plugin's name | As written. A server of yours with the same name wins. |
+| Channels | **Settings > Gateway**, tagged with the plugin's name | See [Channels](/kepler/channels#add-a-channel) |
+
+Plugin items are read-only. Switch a skill or hook off, or update the plugin, to change it.
+
+A plugin's agents keep to the chat's posture. An agent that asks for shell or file tools can still change nothing in Observe.
+
+## Plugin settings
+
+A plugin can ask for settings, such as a region, a URL or a token. Those plugins get a **Settings** action. Values marked sensitive go to your operating system keychain and are never shown again, only "Saved". A channel's own settings, such as its bot token, are asked for when you connect it on the Gateway page.
+
+## Trust
+
+- Nothing changes without you. Kepler can only propose, and every change waits for your card.
+- Kepler keeps its own copy of each plugin and records a fingerprint of its files. If those files change on disk afterwards, the plugin stops loading and shows **Changed on disk** until you review it again. Kepler's own file tools cannot write there.
+- **Check for update** fetches the source again. A change comes back as a review, and nothing changes until you approve it.
+- Plugin hooks follow the same rules as yours: they can block or ask, never approve, and commands on the [always-blocked list](/kepler/permissions#always-blocked) are refused.
+
+## Make a plugin
+
+A plugin is a folder:
+
+```
+my-plugin/
+  .kepler-plugin/plugin.json      name, description, version, settings, channels
+  skills/
+  commands/
+  agents/
+  hooks/hooks.json
+  .mcp.json
+```
+
+`plugin.json` is optional. Without it, Kepler reads the folders above by name. A marketplace is a repository with `.kepler-plugin/marketplace.json` listing its plugins.
+
+Inside the plugin, `${KEPLER_PLUGIN_ROOT}` is the plugin's folder and `${KEPLER_PLUGIN_DATA}` is a folder for its own state, deleted with the plugin. Hook commands and MCP servers also get both as environment variables. A setting the plugin asks for is filled into its MCP servers as `${user_config.KEY}` and reaches its hooks as `KEPLER_PLUGIN_OPTION_<KEY>`.
+
+To give a plugin an icon, add `logo` or `icon` to its manifest, or put `assets/logo.svg` (or `.png`) in the plugin folder. SVG, PNG, JPEG and WebP up to 256 KB work.
+
+### Plugins made for other agents
+
+Kepler also installs plugins and marketplaces in the Claude Code and Cursor formats. When a plugin has no `.kepler-plugin/` folder, Kepler reads `.claude-plugin/`, then `.cursor-plugin/`. The contents are the same format. Plugins you already installed for Claude Code on this machine are listed under **From Claude Code** with an **Import** button.
+
+## Where things live
+
+| Path | What |
+|---|---|
+| `~/.kepler/plugins/<name>/` | The installed copy. |
+| `~/.kepler/plugin-data/<name>/` | The plugin's own state. Deleted with the plugin. |
+| `~/.kepler/plugins.json` | What is installed, from where, on or off, and your marketplaces. |
+| `~/.kepler/plugin-marketplaces/<name>/` | The local copy of each marketplace you added. |
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Customize" icon="sliders" href="/kepler/customize">
+    Where plugins and everything they bring are managed.
+  </Card>
+  <Card title="Hooks" icon="bolt" href="/kepler/hooks">
+    What a plugin's hooks can and cannot do.
+  </Card>
+  <Card title="Channels" icon="mobile" href="/kepler/channels">
+    Plugins that bring a new chat channel.
+  </Card>
+  <Card title="Extend Kepler" icon="puzzle-piece" href="/kepler/extend">
+    Integrations, skills, commands and specialists.
+  </Card>
+</CardGroup>

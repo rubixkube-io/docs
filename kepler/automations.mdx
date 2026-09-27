@@ -1,0 +1,145 @@
+---
+title: "Automations: checks and briefs that run without you"
+sidebarTitle: "Automations"
+description: "Build an automation from a plain description: a trigger (a schedule, a webhook, a check that changes, or a /command in chat) and a list of steps. Kepler runs it without you in the room and only changes things you said it may."
+keywords: ["kepler automations", "scheduled checks", "morning brief", "webhook triage", "chat command automation", "sre automation", "kepler workflows"]
+"og:title": "Automations: checks and briefs that run without you"
+"og:description": "A trigger, a few steps, and a result that reaches you."
+---
+
+An automation is a job Kepler runs without you in the room: a morning brief of what broke overnight, a triage of every alert that arrives by webhook, a check that tells you when a rollout stalls, or a `/triage` command anyone you allowed can send from a chat. You describe it in plain words, check the steps Kepler drafts, and press **Go live**.
+
+Automations are different from [watchers](/kepler/watchers). A watcher belongs to one conversation and wakes it. An automation belongs to the whole app and starts a conversation only when it needs you.
+
+## Build one
+
+<Steps>
+  <Step title="Open Automations">
+    Click **Automations** in the sidebar.
+  </Step>
+  <Step title="Describe it, or pick a template">
+    Write what you want in the box, for example "Every weekday at 09:00, list pods that are not running in prod and send me a short summary". Or pick a template card. Each template shows the services it touches.
+  </Step>
+  <Step title="Check the flow">
+    Kepler drafts the automation as a flow of steps on a canvas. Open any step to change it, and press **Try it** to see what it returns. Reads run for real. Nothing is sent or changed.
+  </Step>
+  <Step title="Go live">
+    Every edit, yours or Kepler's, lands in a draft. What runs changes only when you press **Go live**.
+  </Step>
+</Steps>
+
+Each automation has its own chat beside the canvas. Ask it to add a step, explain a failed run, or change the schedule. It starts in Assist and changes only the draft, never what is live.
+
+An automation opens on **Flow**. **Runs** is its history, with totals for the last day, week and month. **Settings** says what it is for, when it runs, the services it reaches, and the folder its commands run in. Where a service is not connected yet, Settings offers to connect it.
+
+## Triggers
+
+| Trigger | When it runs |
+|---|---|
+| A schedule | "Runs every weekday at 09:00 UTC". Edit the sentence in place. If Kepler was closed at that time, it runs once when Kepler starts again. |
+| When a webhook arrives | Your alert source (Alertmanager, PagerDuty, Grafana) posts to the automation's address. Go live to get the address and its token. The address is on your machine, so a sender elsewhere needs a tunnel. |
+| When a check changes | A read-only command or integration read runs on its own every few minutes (one minute at least). The automation runs when the output changes, or starts or stops showing some text. |
+| When a message arrives in a chat | Someone sends the automation's `/command` in Kepler or a connected chat. See [Run one from a chat](#run-one-from-a-chat). |
+| Run now | Start it by hand from its page or from chat. |
+
+What a webhook or a chat message carries is treated as data, never as instructions.
+
+## Steps
+
+| Step | What it does |
+|---|---|
+| Run a command | Runs a shell command in the automation's folder. |
+| Use an integration | Reads from a connected service, or posts, creates or updates with your OK. |
+| Ask the model to decide | The model judges what earlier steps found, and can answer in named fields. |
+| Decide with a decision model | Typed questions (yes or no, pick one, score) answered in about a second. Needs a [decision model](/kepler/decision-model). |
+| Ask a specialist to look it up | A specialist with its own read-only tools. |
+| Wait | Pause for a while, or until a read-only check shows what you expect. |
+| Ask me first | Pause until you approve. It always has a time limit. |
+| Notify me | A notification, from quiet to loud. |
+| Post in the chat | Answer in the chat that started the run, send to you on a channel, or post to a conversation. See [Post in a chat](#post-in-a-chat). |
+| Publish to the Feed | A page that keeps a version for every run. |
+| Design a report | Kepler's designer lays out a page from what earlier steps found. |
+
+Any step can run only when a condition holds, such as "only if the verdict is not healthy". A step whose condition is false is shown as skipped, not failed. If a step fails, you choose whether the run stops, keeps going, or jumps ahead.
+
+A decision step can judge a list **item by item**: every pod, every log line, up to 200 items in one step. Later steps can then check whether any item was flagged.
+
+## Run one from a chat
+
+Add the trigger **When a message arrives in a chat** and give it a command, such as `/triage`. Then anyone on a channel's allowed list can run it from that chat:
+
+```
+/triage checkout is throwing 502s
+```
+
+The rest of the message is what the automation gets. The run is tied to that chat, so a **Post in the chat** step answers there, threaded onto the message. The conversation you were having in that chat carries on untouched. Send `/help` in a chat to see the automations it can run.
+
+The same command works on the desktop. Type `/` in the composer and chat-triggered automations are listed under **Automations**. Sending one runs the automation, and its answer lands in the session you sent it from.
+
+A chat trigger hears commands only. Chat apps deliver Kepler direct messages and @mentions from people you allowed, not every message in a room, so alerts posted in a room by a bot never reach it. Feed alerts in through the alert source's webhook instead.
+
+<Note>
+A command cannot use one of the chat's own names, such as `/new`, `/help`, `/sessions` or `/approve`. See [Channels](/kepler/channels#commands-in-a-chat).
+</Note>
+
+## Post in a chat
+
+A **Post in the chat** step sends a message. Leave the text empty to send the result of the step before it. It can go to one of three places:
+
+| Send it to | Where it lands | Needs |
+|---|---|---|
+| The chat that started the run | Threaded onto the message that started it. | A chat trigger. A run nothing started from a chat fails the step and says so. |
+| Me, on a channel | Your own chat on that channel, like a notification. | Nothing extra. |
+| A conversation | A named room or chat on that channel, such as `#incidents`. | Your OK at Go live, because other people read it. Rewording the text does not ask again. Changing where it goes does. |
+
+A post that cannot be delivered fails the step, and the message lands in the Feed so nothing is lost. **Try it** on a post step shows the message and sends nothing.
+
+## What an automation may change
+
+Automations run with nobody watching, so the limits are tighter than in a chat:
+
+- An automation runs in Observe or Assist, never Yolo.
+- A step that changes something, such as a command that is not a read, an integration call that creates or updates, or a post to a conversation, runs only with the permission you give at **Go live**: **Every run**, or **Ask me each time**. Ask me each time pauses the run and asks you in the Feed and on your phone, for up to an hour. If nobody answers, the step is skipped and the run finishes, or the run stops, as you chose.
+- The permission is tied to exactly what that step does. Edit the step and Go live asks again. Kepler cannot give or widen it.
+- Commands on the [always-blocked list](/kepler/permissions#always-blocked) are refused when you save, and again when the step would run.
+- Each run has a budget for model tokens and run time. A run that hits either ends and says so. Kepler never switches to a cheaper model to finish.
+
+A good pattern for a fix is to have the automation press a button your team already built: pause with **Ask me first**, trigger your existing rollback pipeline, then wait until a check confirms the fix.
+
+## Where they are kept
+
+Each automation is a YAML file in `~/.kepler/workflows/`, named after the automation. You can read, diff and edit it, and Kepler shows problems before anything goes live. A small one looks like this:
+
+```yaml
+title: Service triage
+on:
+  chat: {command: triage}
+binding:
+  posture: observe
+  budget: {tokens: 30000, runtime: 5m}
+steps:
+  - id: look
+    agent:
+      use: investigator
+      prompt: Investigate what the message describes. Read only. Answer in five lines or fewer.
+      input: ${trigger.payload.text}
+  - id: answer
+    post: "${steps.look.output}"
+```
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Channels" icon="mobile" href="/kepler/channels">
+    Connect the chats an automation can answer in.
+  </Card>
+  <Card title="Watchers" icon="eye" href="/kepler/watchers">
+    A check tied to one conversation.
+  </Card>
+  <Card title="Decision model" icon="scale-balanced" href="/kepler/decision-model">
+    Fast typed answers for decision steps.
+  </Card>
+  <Card title="Hooks" icon="bolt" href="/kepler/hooks">
+    Run your own check before and after each step.
+  </Card>
+</CardGroup>

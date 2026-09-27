@@ -113,14 +113,19 @@ A single `kubectl` command passes through all three before it runs:
     If the command matches the always-blocked list, it stops here. Kepler is told it will never run.
   </Step>
   <Step title="Posture">
-    Kepler works out whether the command is a read or a write, using the built-in table with your rules on top. A read runs in any posture. A write is unavailable in Observe, asks in Assist, and runs in Yolo. A command Kepler does not recognise asks in Assist and Yolo and is unavailable in Observe.
+    Kepler works out whether the command is a read or a write, using the built-in table with your rules on top. A read runs in any posture. A write is unavailable in Observe, asks in Assist, and runs in Yolo. A command Kepler does not recognise stops on the [unknown-command card](/kepler/postures#the-unknown-command-card) in every posture.
   </Step>
   <Step title="Permissions">
     The Shell switch is applied last and can only make things stricter. Ask adds a prompt even for a read. Block removes the shell entirely.
   </Step>
 </Steps>
 
-Paths outside your workspace ask in every posture, on top of all three. See [Workspaces](/kepler/workspace#workspaces).
+Paths outside your workspace ask in every posture, on top of all three.
+
+Two optional pieces can make a decision stricter, never looser:
+
+- **Hooks.** A [hook](/kepler/hooks) you wrote can block a call or put it in front of you. A hook's ask is not cleared by an allow rule. A hook that answers "allow" counts as no opinion.
+- **The decision model.** If you picked a [decision model](/kepler/decision-model) and it is confident a command writes, a command the rules would have let through asks you instead. A "read" answer from it never skips a card. See [Workspaces](/kepler/workspace#workspaces).
 
 ## Where to go next
 

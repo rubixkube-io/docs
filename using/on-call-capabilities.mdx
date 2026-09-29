@@ -38,6 +38,7 @@ On-Call accepts alerts from webhooks without a RubixKube cluster. Connecting Rub
 
 These features are gated by the tenant's detection and feature settings. With no connected cluster, their prompts and reads stay quiet, and paging continues from webhook data.
 
+- If `PAGER_KUBERNETES_EXPANSION_ENABLED` is enabled and the tenant has connected detection, admins may see a dismissible prompt on an uncovered Kubernetes-origin incident or in Analytics when uncovered incidents lack detection context or root cause. Prompts are limited to one per cluster every seven days and stay dismissed for 30 days. The setting defaults off; standalone tenants and tenants without connected detection stay quiet. The prompt is optional and never required for webhook intake or paging.
 - Link webhook alerts to related RubixKube insights and reuse an insight's RCA.
 - Add knowledge-graph context to an incident.
 - Group related alerts by topology. If graph data is unavailable, ordinary service grouping remains in use.

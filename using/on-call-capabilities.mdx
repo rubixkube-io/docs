@@ -1,0 +1,52 @@
+---
+title: "On-Call capabilities and availability"
+sidebarTitle: "Capabilities and availability"
+description: "What RubixKube On-Call supports today, and which capabilities need provider setup or connected RubixKube detection."
+keywords: ["on-call", "availability", "features", "incident response", "webhooks"]
+---
+
+On-Call accepts alerts from webhooks without a RubixKube cluster. Connecting RubixKube detection adds investigation and graph context. Tenant enablement, provider credentials, and feature settings can affect what appears in your workspace.
+
+## Alert intake
+
+- Connect Prometheus Alertmanager or send JSON through a generic webhook. The [alert source setup guide](/integrations/on-call-alert-sources) has sender instructions and supported presets.
+- Integration pages show up to 50 recent redacted payloads per integration (seven-day retention), normalization results, mapping errors, delivery counters, and health. A test alert exercises the real ingest path; mapping preview has no side effects.
+- Alerts deduplicate by their source identity, apply service event rules and maintenance windows, then join or open incidents according to the service's grouping setting.
+- When a webhook does not include a deduplication key, On-Call derives one from the title, component, group, and class. Send an explicit stable key when your source provides one.
+
+## Schedules and paging
+
+- Escalation policies target people or schedules. Personal notification rules and organization guardrails report missing or late wake-up channels; readiness views show contact and test-page status.
+- Schedules support rotation layers, timezone-aware handoffs, effective-dated versions, preview and restore, overrides, cover requests, claimable shifts, shadow participants, holiday calendars, and absence overlays from iCalendar feeds.
+- Coverage checks find upcoming gaps. A configured fallback can receive a page when a schedule has no active responder; otherwise the policy advances to its next step.
+- On-Call includes a responder contact card. Until sender numbers are configured, it contains only the RubixKube On-Call name and cannot provide a number for Do Not Disturb bypass.
+
+## Incidents and administration
+
+- Responders can acknowledge, resolve, reassign, escalate, snooze, add notes, and merge incidents. The timeline and notification ledger show actions and channel outcomes.
+- Admins can create tenant-scoped API keys with read, write, or admin access. A key is shown once; validation cache expiry can delay revocation by up to 60 seconds.
+- Admins can run route simulations without changing incident state, generate pay reports as JSON, CSV, or XLSX, and send broadcasts to a team, schedule, or responder audience. Broadcast recipients are fixed when the broadcast is created. A channel without an adapter is recorded as skipped.
+
+## AI and provider context
+
+- With the On-Call AI entitlement and Opel service available, webhook incidents can receive alert-only triage without a connected cluster. Triage summarizes supplied alert context and available incident history; it does not create a RubixKube insight. When a matching connected cluster is available, investigation can use RubixKube RCA instead.
+- Responders can save a short resolution note and fix tags. Later triage can show matching past incidents and their recorded fixes.
+- Triage helpfulness feedback is available. Verdict grading and verdict history depend on the separate verdict contract, which is not available yet.
+- Provider status evidence can be attached to relevant incidents. Status-feed matches are context only; they do not page responders by themselves.
+
+## Requires connected RubixKube detection
+
+These features are gated by the tenant's detection and feature settings. With no connected cluster, their prompts and reads stay quiet, and paging continues from webhook data.
+
+- Link webhook alerts to related RubixKube insights and reuse an insight's RCA.
+- Add knowledge-graph context to an incident.
+- Group related alerts by topology. If graph data is unavailable, ordinary service grouping remains in use.
+
+## Unavailable capabilities
+
+- **SMS, voice, native push, and mobile app:** unavailable until their provider and release setup is completed. A saved phone number alone does not make SMS or voice delivery available.
+- **PagerDuty Events API compatibility, direct PagerDuty or Opsgenie webhook sources, schedule mirroring, and migration cutover:** unavailable. Use Alertmanager, a supported preset, or a generic webhook to ingest alerts.
+- **Preset contracts:** Splunk Observability, UptimeRobot, and StatusCake presets are unavailable while their webhook payload and recovery contracts remain unverified.
+- **Evidence-graded RCA verdicts:** unavailable while the shared verdict contract is pending. Existing alert-only triage remains separate from that work.
+
+See [On-Call setup](/using/on-call) to configure a service and responder, and [Alert source setup](/integrations/on-call-alert-sources) to connect a sender.

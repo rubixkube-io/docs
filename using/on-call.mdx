@@ -7,7 +7,7 @@ keywords: ["on-call", "incident response", "escalation policy", "schedule", "ale
 
 On-Call connects incoming alerts to the people responsible for a service. A service owns an escalation policy; the policy can target responders directly or resolve a schedule when a page is due. Incidents, pages, and handoffs stay visible in the console.
 
-An organization admin must enable On-Call before its pages appear. Availability of SMS, voice, Slack, and Teams depends on the channels configured for your organization. Check **On-Call → Settings** for setup progress and integration status.
+On-Call must be enabled for your tenant before its pages appear. A tenant admin may need a RubixKube superadmin to enable it. A cluster is not required for webhook alerting, although current first-run onboarding may still direct new workspaces to environment setup. SMS, voice, native push, and the mobile app are unavailable. Email delivery depends on relay setup; in-app delivery uses the Console event stream. See [capabilities and availability](/using/on-call-capabilities) for current limits.
 
 ## Set up a service
 
@@ -19,13 +19,13 @@ An organization admin must enable On-Call before its pages appear. Availability 
 
 {/* TODO: screenshot of service setup with team, policy and integration */}
 
-For sender examples, see [Alertmanager](/integrations/alertmanager) and [generic webhooks](/integrations/generic-webhook).
+For sender instructions, see [Alertmanager](/integrations/alertmanager), [generic webhooks](/integrations/generic-webhook), and the [On-Call alert source guide](/integrations/on-call-alert-sources).
 
 ## Prepare your own notifications
 
 Open **On-Call → My On-Call → Manage notification settings**. Add a reachable contact method, choose your timezone, set reminders and channel rules, then send a personal test page. Only configured channels can be selected. If your organization has not configured a provider, its channel may be unavailable even when your profile contains a contact method.
 
-The first-run guide offers these steps and an explicit Skip option. Phone verification is required before ordinary SMS or voice paging. The delivery ledger on the same page shows what Pager attempted and why a channel was skipped.
+SMS and voice providers are not currently available, so adding or verifying a phone does not enable those delivery channels. The delivery ledger shows what Pager attempted and why a channel was skipped.
 
 ## Work an incident
 

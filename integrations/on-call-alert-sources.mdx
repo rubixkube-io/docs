@@ -1,0 +1,128 @@
+---
+title: "Connect alert sources to On-Call"
+sidebarTitle: "On-Call alert sources"
+description: "Configure Alertmanager and supported JSON webhook presets to send incidents to RubixKube On-Call."
+keywords: ["on-call", "Alertmanager", "webhook", "Grafana", "Datadog", "CloudWatch"]
+---
+
+Create an On-Call service before connecting a sender. In **On-Call → Services → your service → Integrations**, add an Alertmanager integration or a generic webhook integration. The integration dialog supplies the ingest URL and key. The key is shown once; store the complete URL as a credential.
+
+Use **Test mapping** to preview a payload without paging. Use **Test** on the integration page to send its sample through the real ingest path. Integration diagnostics show recent redacted requests, parsed events, errors, and accepted or dropped counts.
+
+## Prometheus Alertmanager
+
+Add the generated receiver and route the alerts you want On-Call to receive. The URL includes the integration key. `send_resolved: true` is required if Alertmanager should close alerts on recovery.
+
+```yaml
+route:
+  receiver: rubixkube-oncall
+
+receivers:
+  - name: rubixkube-oncall
+    webhook_configs:
+      - url: 'https://INGEST_HOST/ingest/v1/alertmanager/INTEGRATION_KEY'
+        send_resolved: true
+```
+
+Replace the placeholders with the values from the integration dialog, then reload Alertmanager. On-Call creates one event per alert in the notification. Repeated fingerprints update the same alert; resolved events close it. The service controls grouping and escalation.
+
+If your Alertmanager setup is already configured for PagerDuty, it can use this receiver URL directly. PagerDuty-compatible Events API URLs are not currently available.
+
+## Grafana Alerting
+
+1. In Grafana, add a **Webhook** contact point and paste the generic webhook URL from On-Call.
+2. Choose the **grafana** mapping preset when creating the On-Call integration. It reads the unified alerting `alerts` array and maps `firing` and `resolved` states.
+3. Add the contact point to a notification policy, save, then send a test notification.
+
+Grafana includes alert fingerprints, labels, annotations, and dashboard links in its unified alerting payload. Preserve those fields in any custom notification template so deduplication and incident links work.
+
+## Datadog
+
+1. Add the On-Call generic webhook URL as a Datadog webhook.
+2. Set the request body to the following JSON template. Datadog substitutes the variables when it sends an event.
+3. Choose the **datadog** preset in On-Call, then test a triggered alert and a recovered alert.
+
+```json
+{
+  "id": "$ID",
+  "title": "$EVENT_TITLE",
+  "body": "$EVENT_MSG",
+  "date": "$DATE",
+  "event_type": "$EVENT_TYPE",
+  "alert_id": "$ALERT_ID",
+  "alert_transition": "$ALERT_TRANSITION",
+  "alert_priority": "$ALERT_PRIORITY",
+  "alert_type": "$ALERT_TYPE",
+  "aggreg_key": "$AGGREG_KEY",
+  "hostname": "$HOSTNAME",
+  "link": "$LINK",
+  "tags": "$TAGS"
+}
+```
+
+The preset uses the aggregation key when present, maps P1–P5 to On-Call severity, and treats `Recovered` as a resolve event.
+
+## Amazon CloudWatch through SNS
+
+1. Create an SNS topic and add the On-Call generic webhook URL as an HTTPS subscription.
+2. Select the **cloudwatch_sns** preset. SNS subscription confirmations are handled automatically; CloudWatch alarm messages inside SNS `Message` are mapped to alerts.
+3. Add the SNS topic as an action for both alarm and OK states, then trigger a test alarm.
+
+On-Call only accepts SNS subscription requests at an HTTPS `sns.<region>.amazonaws.com` host on port 443. CloudWatch alarm state `ALARM` opens or updates an alert; `OK` resolves it. `INSUFFICIENT_DATA` is treated as a trigger.
+
+## New Relic
+
+1. Create a webhook destination in a New Relic workflow and paste the On-Call generic webhook URL.
+2. Choose the **newrelic** preset. It maps the default issue payload's id, title, priority, impacted entity, and state.
+3. Attach the destination to the workflow and send a test notification. `ACTIVATED` opens or updates the alert; `CLOSED` resolves it.
+
+## Sentry
+
+1. Create a Sentry **WebHooks** integration or webhook notification destination and set its target URL to the On-Call generic webhook URL.
+2. Choose the **sentry** preset, then send a test issue alert.
+
+The preset maps issue id, title, level, project, culprit, and issue link. Sentry's supported webhook does not send a recovery event through this preset, so resolve the On-Call alert or incident from the incident page when the issue is fixed.
+
+## Other supported webhook presets
+
+Choose the preset matching the payload in the generic webhook editor. These presets expect the sender's documented payload shape unless the note says to customize it.
+
+| Sender | Preset | Setup note |
+| --- | --- | --- |
+| Google Cloud Monitoring | `google_cloud_monitoring` | Configure a webhook notification channel using the Google Cloud incident payload. Open incidents trigger; closed incidents resolve. |
+| Azure Monitor | `azure_monitor` | Enable the common alert schema on the action group, then use the Azure Monitor common alert payload. |
+| Dynatrace | `dynatrace` | Send problem notifications with problem id, title, state, severity, and impacted entities. |
+| Honeycomb | `honeycomb` | Configure a webhook template to emit the sample field names shown by the preset, including `deduplication_key`, `title`, `status`, and `metadata`. |
+| Chronosphere | `chronosphere` | Send an Alertmanager-style notification with an `alerts` array, fingerprint, labels, annotations, and firing or resolved status. |
+| Checkly | `checkly` | Send alert notifications with `CHECK_ID`, `ALERT_TITLE`, and `ALERT_TYPE`; recovery event types resolve the alert. |
+| Pingdom | `pingdom` | Send webhook events with `check_id`, `current_state`, and `importance_level`; `UP` resolves the alert. |
+| Uptime Kuma | `uptime_kuma` | Use a generic webhook notification with the standard `heartbeat`, `monitor`, and `msg` fields. Status 0 triggers, status 1 resolves, and status 2 is treated as a trigger. |
+| Zabbix | `zabbix` | Configure an action webhook to send event id/value, event name/severity, host, trigger id, and occurrence time. Recovery value resolves the alert. |
+
+The **splunk_observability**, **uptimerobot**, and **statuscake** presets are not available. Their outbound payload or recovery contracts have not been verified.
+
+## Native JSON webhook
+
+For a sender without a preset, post the native schema to the generic webhook URL:
+
+```json
+{
+  "action": "trigger",
+  "dedup_key": "db-primary-disk",
+  "title": "Disk 91% on db-primary",
+  "severity": "critical",
+  "component": "db-primary",
+  "group": "database",
+  "class": "disk",
+  "details": {"used_percent": 91},
+  "occurred_at": "2026-09-15T10:00:00Z"
+}
+```
+
+Set `action` to `resolve` and reuse the same `dedup_key` to close the alert. If the sender cannot add a key to its URL, send the keyless endpoint and set the `X-Integration-Key` header. Payloads are limited to 256 KB; one request can produce at most 1,000 events.
+
+## Diagnose a sender
+
+Open the service's integration page to inspect the recent payload and normalization result. Correct mapping errors in the editor, then send another test. A successful ingest returns `202`. If rate limited, honor `Retry-After`; a `503` response means the event could not be durably queued and should be retried. Disabled services accept the request but count the event as dropped.
+
+See [On-Call setup](/using/on-call) and [On-Call capabilities and availability](/using/on-call-capabilities) for routing, responder setup, and provider availability.

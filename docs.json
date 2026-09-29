@@ -88,6 +88,7 @@
                   "using/skills",
                   "using/notifications",
                   "using/on-call",
+                  "using/on-call-capabilities",
                   "using/workspace",
                   "using/agent-skills-store"
                 ]
@@ -104,6 +105,7 @@
                   "integrations/pagerduty",
                   "integrations/alertmanager",
                   "integrations/generic-webhook",
+                  "integrations/on-call-alert-sources",
                   "integrations/slack",
                   "integrations/microsoft-teams",
                   "integrations/new-relic",

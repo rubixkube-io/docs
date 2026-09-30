@@ -1,19 +1,21 @@
 ---
 title: "Chat with Kepler from your phone"
 sidebarTitle: "Chat from your phone"
-description: "Connect WhatsApp, Slack, Telegram or Discord to Kepler and carry on the same session from your phone: ask questions, answer approvals, get woken by watchers while you are away."
-keywords: ["kepler whatsapp", "kepler slack", "kepler telegram", "kepler discord", "sre agent phone", "approve from phone", "kepler gateway"]
+description: "Connect WhatsApp, Slack, Telegram, Discord or a channel from a plugin, and carry on the same session from your phone: ask questions, answer approvals, run automations, get woken by watchers while you are away."
+keywords: ["kepler whatsapp", "kepler slack", "kepler telegram", "kepler discord", "sre agent phone", "approve from phone", "kepler gateway", "kepler channel plugin", "/channels"]
 "og:title": "Chat with Kepler from your phone"
 "og:description": "Carry on the investigation from WhatsApp, Slack, Telegram or Discord."
 ---
 
-Kepler runs on your desk. The Gateway lets you reach it from your phone through WhatsApp, Slack, Telegram or Discord, in the same session you were working in. Ask a question on the train, approve a command from the sofa, get woken by a watcher when you have stepped away. Kepler answers as long as it is running on your machine.
+Kepler runs on your desk. The Gateway lets you reach it from your phone through WhatsApp, Slack, Telegram, Discord, or any chat a [plugin](/kepler/plugins) brings, in the same session you were working in. Ask a question on the train, approve a command from the sofa, get woken by a watcher when you have stepped away. Kepler answers as long as it is running on your machine.
 
 The reliable choices first: **Telegram** is the most dependable option and takes three steps. **Slack** and **Discord** are official bot integrations and work well. **WhatsApp** is the most convenient but is not an official integration, so read the warning below before relying on it.
 
 ## Connect a channel
 
-Open **Settings > Gateway** and choose **Connect a channel**. Each channel walks you through its own steps.
+Open **Settings > Gateway** and choose **Connect a channel**. Each channel walks you through its own steps. Tokens go to your operating system keychain, never to a file.
+
+One bot account runs in one channel. If you try to connect a second channel with a token that is already in use, Kepler refuses and names the channel using it.
 
 <Tabs>
   <Tab title="Telegram">
@@ -101,6 +103,28 @@ Open **Settings > Gateway** and choose **Connect a channel**. Each channel walks
   <Caption>A connected channel and its options. Connecting is only half of it: until you add yourself under **Who can message**, nobody can reach Kepler through the channel.</Caption>
 </Frame>
 
+## Add a channel
+
+Kepler can talk on more than the four built-in chats. A channel for another platform comes as part of a plugin. Press **Add channel** on the Gateway page and pick one of three ways in:
+
+| Option | What it does |
+|---|---|
+| **Install one** | Opens the plugin browser, showing only plugins that bring a channel. |
+| **Run a channel server** | For a server you already have that speaks Kepler's channel format. Give its name, command, arguments, and the settings it needs, and mark which are secret. Kepler wraps it in a small plugin for you to review. |
+| **Build one with Kepler** | Opens `/channels`. Describe the platform. Kepler looks for an existing channel plugin first. If there is none, it writes the channel in your workspace, checks that it works, and proposes it. |
+
+Each way ends in the same plugin review, so a channel you make yourself keeps its secrets in the keychain and gets the same row on the Gateway page as a built-in one, tagged with its plugin's name. Kepler never asks for a token in chat. You enter it when you connect the channel.
+
+You can also start from any session:
+
+```
+/channels add a channel for our in-house chat server
+```
+
+`/channels` on its own lists your channels and what each one is doing.
+
+A channel runs on your machine, so it has to reach out to its platform, by polling an API or holding a connection open. A platform that can only push webhooks to a public address needs a tunnel.
+
 ## Bind a session to your phone
 
 By default a message from your phone starts or continues a chat in the channel's default workspace. To drive a specific session you already have open, run this in that session:
@@ -118,8 +142,51 @@ Kepler binds the session to that channel. Messages from your phone arrive in the
 ## What you can do from the channel
 
 - Ask anything you would ask at your desk. The session keeps its context, so "and the logs?" means what it would mean in the app.
-- Answer approvals. When Kepler is waiting on a command in Assist, the approval reaches the channel. Reply `yes` or `no`, or `/approve` or `/deny`, and it counts the same as pressing the button in the app.
+- Answer approvals. When Kepler is waiting on a command in Assist, the approval reaches the chat the run came from. Reply `yes` or `no`, or `/approve` or `/deny`, and it counts the same as pressing the button in the app. A plugin channel that has its own approval buttons shows those instead, and Kepler accepts the answer only for a request it asked, on that same channel.
+- Run an automation. An [automation](/kepler/automations#run-one-from-a-chat) with a chat trigger is a command in every connected chat: `/triage checkout is throwing 502s` runs it with that text, and its answer comes back in the same chat. Your conversation carries on untouched.
 - Be woken by a watcher. With **Reach me when I'm away** on under **Settings > General > When you're away**, alerts that need action go to a connected channel once your screen is locked or idle. Routine notifications never do.
+
+## Which session a message goes to
+
+Each chat talks to one session. Where the platform has threads, such as a Slack thread under an @mention, each thread gets its own session.
+
+- While you keep talking, the session stays warm and Kepler remembers what you were doing.
+- After six quiet hours, the next message starts a fresh session, so the next morning's question does not carry yesterday's incident. Kepler tells you when this happens. `/sessions` and `/switch` take you back.
+- A thread never goes cold. A new thread is a new session, and a reply in it continues that one.
+- `/new` always starts fresh.
+
+Kepler never moves a chat to another session on its own. Only a command does, and Kepler names the session when it changes.
+
+## Commands in a chat
+
+Send these as a message in any connected chat. They answer at once and never start a model run.
+
+| Command | What it does |
+|---|---|
+| `/sessions` | List your recent sessions. |
+| `/switch <n>` | Move this chat to session number `n` from the list. |
+| `/new [title]` | Start a fresh session here. |
+| `/status` | What is running right now. |
+| `/model` | Show this session's model. `/model <n or name>` switches it, `/model default` resets it. |
+| `/info` | Posture, model, context and stats for this session. |
+| `/pending` | What Kepler is waiting on you for. |
+| `/approve [why]` | Let the waiting step run. |
+| `/deny [why]` | Refuse it. Anything after the command is passed on as a note, such as "wrong namespace". |
+| `/cancel` | Stop the run in this session. |
+| `/otg off` | Stop driving the session pushed from the desktop. |
+| `/help` | This list, plus the automations this chat can run. |
+
+## Who can reach Kepler
+
+Every message is checked against the channel's **Who can message** list before anything else happens. A message from anyone else is dropped with no reply, no read receipt and no typing indicator. A message in a group never adds anyone new to the list.
+
+Kepler also tells the model where each message came from and to treat the text as outside input. A message from a chat cannot change the posture, approve anything, or give instructions on your behalf.
+
+## When Kepler posts first
+
+In Assist and Yolo, Kepler can send a message to a channel on its own, for example to post a summary to `#incidents` when you ask it to. A message to your own chat, or to a conversation you already approved, goes out at once. Anything else waits for your OK on a card, Yolo included.
+
+If a message cannot be delivered, Kepler tries once more. If it still fails, it lands in the Feed as "Could not deliver", so it is never lost. A channel whose connection keeps dropping is restarted with a growing wait. After five failures in ten minutes it stops and shows the last error on its row.
 
 ## Channel options
 
@@ -138,11 +205,39 @@ Each connected channel has its own settings in **Settings > Gateway**.
 
 ## How Kepler signs its replies
 
-Kepler stamps a name and emoji on the replies it sends, so a message from Kepler never reads as one from you. Set them in **Settings > Customize > Signature**. On WhatsApp self-chat every reply is signed. On Telegram, Slack and Discord the bot already has its own name, so **Sign replies everywhere** stays off unless you want it.
+Kepler stamps a name and emoji on the replies it sends, so a message from Kepler never reads as one from you. Set them under **Signature** in **Settings > General**. On WhatsApp self-chat every reply is signed. On Telegram, Slack and Discord the bot already has its own name, so **Sign replies everywhere** stays off unless you want it.
+
+## Build your own channel
+
+A channel is an MCP server that a plugin names under `channels` in its `.kepler-plugin/plugin.json`. The server declares the `kepler/channel` capability, sends each incoming message as a `notifications/kepler/channel` notification, and offers a `reply` tool that takes `chat_id` and `text`. It can also relay approvals and show a typing indicator. Kepler never offers a channel's server to the model as tools.
+
+```json
+{
+  "mcpServers": {
+    "mychat": {
+      "command": "node",
+      "args": ["${KEPLER_PLUGIN_ROOT}/server.js"],
+      "env": { "BOT_TOKEN": "${user_config.bot_token}" }
+    }
+  },
+  "channels": [{
+    "server": "mychat",
+    "displayName": "My Chat",
+    "userConfig": {
+      "bot_token": { "type": "string", "title": "Bot token", "sensitive": true }
+    }
+  }]
+}
+```
+
+The easiest start is `/channels` with a description of the platform. Kepler writes the server against this format and checks it before proposing it. Channel servers written for Claude Code use the same format under `claude/` names, and run in Kepler as they are.
 
 ## Where to go next
 
 <CardGroup cols={2}>
+  <Card title="Automations" icon="clock" href="/kepler/automations">
+    Run an automation from a chat, and post its answer back.
+  </Card>
   <Card title="Watchers" icon="eye" href="/kepler/watchers">
     The thing most worth being woken for.
   </Card>

@@ -1,0 +1,80 @@
+---
+title: "The decision model"
+sidebarTitle: "Decision model"
+description: "An optional second model that answers typed questions in about a second. Kepler uses it to double-check commands and MCP calls before they run, and you can use it in chat, war rooms and automation steps to classify, score and pick."
+keywords: ["kepler decision model", "command judge", "classify with ai", "automation decide step", "kepler safety", "typed questions"]
+"og:title": "The decision model"
+"og:description": "Fast typed answers, and a second check on every command."
+---
+
+A decision model is an optional second model beside your chat model. It writes no text. Give it a piece of material and a typed question, such as "is this a real outage, yes or no?", and it answers in about a second with how sure it is.
+
+Kepler uses it in two ways. It double-checks commands and MCP tool calls before they run, and it gives you fast yes-or-no, pick and score answers in chat, in war rooms and in [automation](/kepler/automations) steps.
+
+## Turn it on
+
+It is off by default, and nothing is sent anywhere until you pick one.
+
+<Steps>
+  <Step title="Connect a provider that serves one">
+    In **Settings > Models**, under Providers, connect a provider that serves decision models. Those providers show a **Decision models** line on their card.
+  </Step>
+  <Step title="Pick it">
+    Under **Models**, set **Decision model**, the same way you pick the image model.
+  </Step>
+  <Step title="Test it">
+    **Test** sends one fixed command and shows the answer, how long it took, and which model answered.
+  </Step>
+</Steps>
+
+| Provider | What you need |
+|---|---|
+| TypeSafe | Its own API key. It has no chat models, so it never shows in the chat model picker. |
+| OpenRouter | The OpenRouter key you already connected. |
+| A System One endpoint | Its URL, added under Providers like an OpenAI-compatible endpoint, and the model ids it serves. |
+
+## A second check on commands
+
+Kepler's rules and the [always-blocked list](/kepler/permissions) still decide what runs. The decision model can only make a decision stricter:
+
+- It answers a few questions about a shell command or MCP call: does it write, which environment does it touch (prod, staging, local), and can it be undone.
+- If it is confident a command writes, and the rules would have let it run without asking, Kepler asks you instead. The card says the decision model raised it.
+- A "read" answer never skips a card, never clears a block, and never touches the always-blocked list.
+- On the [unknown-command card](/kepler/postures#the-unknown-command-card) it adds a suggestion, such as "The decision model reads it as read-only (96% sure)". You still decide. It never writes a rule on its own.
+
+Its verdict shows as a small pill on the tool row in the chat.
+
+To keep it fast and cheap, Kepler asks only where the answer adds something. A command shape like `kubectl get` is checked once and remembered for seven days. SQL clients such as `psql` are checked on every call, because the statement decides. An MCP tool is checked once from its name and description, unless its arguments decide what it does.
+
+### What leaves your machine
+
+The command with secrets masked, the name of the environment it targets, and what Kepler's own rules said. Not the output and not the conversation. If the decision model times out or fails, Kepler carries on with its rules alone.
+
+## Use it yourself
+
+With a decision model picked, Kepler can answer typed questions about material in chat and war rooms, in every posture, with no approval card. They read nothing and change nothing. Batches are where it pays off:
+
+```
+Classify these 200 log lines as noise, warning or outage, and show me the outages.
+```
+
+That is one call, not 200. Kepler can ask yes-or-no questions, pick a label (or none, or several), and score against levels you describe.
+
+In an automation, add the step **Decide with a decision model**. Write the questions, choose whether it judges the material as a whole or **item by item**, and set where "unsure" starts. Later steps can branch on any answer, or send a doubtful call to you with **Ask me first**. Without a decision model the step fails and says why. It never falls back to a chat model.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Permissions" icon="lock" href="/kepler/permissions">
+    The rules the decision model sits on top of.
+  </Card>
+  <Card title="Automations" icon="clock" href="/kepler/automations">
+    Decision steps in a flow.
+  </Card>
+  <Card title="Settings reference" icon="gear" href="/kepler/settings#models">
+    The Models page.
+  </Card>
+  <Card title="Postures" icon="shield-halved" href="/kepler/postures">
+    The unknown-command card and the approval dock.
+  </Card>
+</CardGroup>

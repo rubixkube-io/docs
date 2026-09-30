@@ -89,10 +89,10 @@ Not every signal is equal. The Observer uses three filters to keep the signal st
 
 ## Outbound network requirements
 
-The Observer needs two outbound endpoints over HTTPS.
+The Observer needs two outbound endpoints.
 
-- `api.rubixkube.ai:443` for control and structured events.
-- `nats.rubixkube.ai:443` for streaming signals.
+- `api.rubixkube.ai:443` (HTTPS) for control and structured events.
+- `nats.rubixkube.ai:4222` (TCP) for streaming signals.
 
 No inbound connections are required. If neither endpoint is reachable, the Observer queues locally and resumes when connectivity returns.
 

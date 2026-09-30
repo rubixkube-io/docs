@@ -20,8 +20,8 @@ This page covers the install, what it deploys, common troubleshooting, and how t
   <Card title="Cluster admin permissions" icon="key">
     Required to create the `rubixkube-system` namespace, service account, and ClusterRole.
   </Card>
-  <Card title="Outbound HTTPS" icon="network-wired">
-    `api.rubixkube.ai:443` and `nats.rubixkube.ai:443` reachable from the cluster.
+  <Card title="Outbound access" icon="network-wired">
+    HTTPS to `api.rubixkube.ai:443` and TCP to `nats.rubixkube.ai:4222`, reachable from the cluster.
   </Card>
   <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
     Sign in at console.rubixkube.ai. Create a new environment for this cluster.
@@ -137,7 +137,7 @@ KIND is the path most teams use for the [tutorials](/tutorials/monitor-infrastru
     Three common causes:
 
     1. Pod is not Running yet. Recheck `kubectl get pods -n rubixkube-system`.
-    2. Outbound HTTPS to `nats.rubixkube.ai:443` is blocked. The control channel runs over HTTPS but the streaming channel uses NATS.
+    2. Outbound TCP to `nats.rubixkube.ai:4222` is blocked. The control channel runs over HTTPS but the streaming channel uses NATS.
     3. Clock skew on the node. Ensure NTP is running.
   </Accordion>
   <Accordion title="Observer high memory or CPU">

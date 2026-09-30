@@ -69,13 +69,13 @@ cd rubixkube
 ### 2. Explore the Project
 
 - **Documentation**: Browse [docs.rubixkube.ai](https://docs.rubixkube.ai) to understand the structure
-- **Platform**: Review the [README](https://github.com/rubixkube-io/rubixkube) and architecture docs
-- **Issues**: Check [open issues](https://github.com/rubixkube-io/rubixkube/issues) for contribution opportunities
+- **Platform**: Review the [community README](https://github.com/rubixkube-io/community) and architecture docs
+- **Issues**: Check [open issues](https://github.com/rubixkube-io/community/issues) for contribution opportunities
 
 ### 3. Join the Community
 
 - **Slack**: Join our [Community Slack](https://rubixkube-community.slack.com) for discussions
-- **GitHub Discussions**: Participate in [feature discussions](https://github.com/rubixkube-io/rubixkube/discussions)
+- **GitHub Discussions**: Participate in [feature discussions](https://github.com/rubixkube-io/community/discussions/categories/ideas)
 - **Office Hours**: Join our weekly community calls (announced on Slack)
 
 ## 📝 Documentation Contributions
@@ -315,7 +315,7 @@ We love recognizing our contributors! Contributors may be:
 
 ### Community Resources
 - **Slack**: [#contributors](https://rubixkube-community.slack.com) channel
-- **GitHub Discussions**: [Q&A category](https://github.com/rubixkube-io/rubixkube/discussions/categories/q-a)
+- **GitHub Discussions**: [Q&A category](https://github.com/rubixkube-io/community/discussions/categories/q-a)
 - **Office Hours**: Weekly community calls (announced on Slack)
 
 ### Asking Questions

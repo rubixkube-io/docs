@@ -95,7 +95,7 @@ For answers to common questions about this code of conduct, see the FAQ at [http
 If you need to report a Code of Conduct violation or have questions about this policy, please contact:
 
 - **Email**: [conduct@rubixkube.ai](mailto:conduct@rubixkube.ai)
-- **GitHub Issues**: [Create a confidential issue](https://github.com/rubixkube-io/rubixkube/issues/new?template=conduct.md)
+- **Email**: [conduct@rubixkube.ai](mailto:conduct@rubixkube.ai). Please don't use public GitHub issues for conduct reports.
 - **Community Slack**: DM any admin in the #general channel
 
 Reports will be kept confidential and investigated promptly by the RubixKube community leadership team.

@@ -117,8 +117,8 @@ Contributions are welcome.
 
 - **Typos and small fixes.** Open a PR directly.
 - **Larger changes.** File an issue first using the [issue templates](https://github.com/rubixkube-io/docs/issues/new/choose) so we can align on scope.
-- **Platform bugs.** Report at [rubixkube-io/rubixkube](https://github.com/rubixkube-io/rubixkube/issues) with steps to reproduce and environment details.
-- **Feature requests.** Start a thread in [Discussions](https://github.com/rubixkube-io/rubixkube/discussions).
+- **Platform bugs.** Report at [rubixkube-io/community](https://github.com/rubixkube-io/community/issues/new/choose) with steps to reproduce and environment details.
+- **Feature requests.** Start a thread in [Discussions](https://github.com/rubixkube-io/community/discussions/categories/ideas).
 
 Community guidelines:
 

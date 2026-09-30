@@ -11,7 +11,7 @@ body:
 
         Have a question about the RubixKube documentation? Need help understanding a concept or finding specific information? We're here to help!
 
-        **Note**: For technical issues with the RubixKube platform itself, please use the [main repository](https://github.com/rubixkube-io/rubixkube/issues).
+        **Note**: For technical issues with the RubixKube platform itself, please use the [community repository](https://github.com/rubixkube-io/community/issues/new/choose).
 
   - type: checkboxes
     attributes:

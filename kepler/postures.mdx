@@ -70,12 +70,14 @@ Kepler knows what most commands do. When it meets a binary it does not recognise
 | **Run once** | Runs the command with no rule saved. | Nothing. |
 | **Don't run** | Skips it. | Your note, if you left one. |
 
-**Run once** is only offered in Assist and Yolo. In Observe the card offers trust or nothing, because Observe promises that no write runs, and Kepler cannot make that promise for a command it does not understand. Watchers never get **Run once** either: a watcher only runs commands Kepler can vouch for.
+**Run once** is offered in every posture, Observe included, whenever you are at the card. Pressing it is you running the command, not Kepler loosening its own limits, and nothing is saved. Watchers and automations never get **Run once**: nobody is at the card, so they only run commands Kepler can vouch for.
 
-{/* SCREENSHOT: kepler/unknown-command-card.png : state: Observe posture on a remote machine, the unrecognised-command card for a chained command containing `snap list`, with Don't run and Trust as read-only only (no Run once, because Observe) */}
+With a [decision model](/kepler/decision-model) picked, the card also shows its suggestion, such as "The decision model reads it as read-only (96% sure)". You still decide.
+
+{/* SCREENSHOT: kepler/unknown-command-card.png : state: the unrecognised-command card for vm_stat, with the note field and Don't run, Trust as read-only and Run once */}
 <Frame>
-  <img src="/images/kepler/unknown-command-card.png" alt="The unrecognised-command card above the composer, in Observe, for a shell command on a remote machine. It names snap list as the part Kepler does not recognise, explains that trusting it saves a rule that applies everywhere, offers a note field, and two buttons: Don't run and Trust as read-only." />
-  <Caption>Kepler names the exact part it does not know. In Observe there is no Run once: trust it, or it does not run. Trusting saves a rule you can edit later under Settings > Permissions.</Caption>
+  <img src="/images/kepler/unknown-command-card.png" alt="The Unrecognised command card for the shell command vm_stat. It says Kepler doesn't recognise vm_stat, so it can't tell if it's read-only, and that trusting it saves a rule that applies everywhere. Below a field for an optional note are three buttons: Don't run, Trust as read-only and Run once." />
+  <Caption>Kepler names the exact part it does not know. Run once runs it with nothing saved. Trust as read-only saves a rule you can edit later under Settings > Permissions.</Caption>
 </Frame>
 
 ## A worked example

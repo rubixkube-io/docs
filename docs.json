@@ -186,13 +186,19 @@
               "kepler/postures",
               "kepler/permissions",
               "kepler/memory",
-              "kepler/extend"
+              "kepler/topology",
+              "kepler/extend",
+              "kepler/customize",
+              "kepler/hooks",
+              "kepler/plugins",
+              "kepler/decision-model"
             ]
           },
           {
             "group": "Workflows",
             "pages": [
               "kepler/workflows",
+              "kepler/automations",
               "kepler/war-room",
               "kepler/watchers",
               "kepler/channels"
@@ -204,7 +210,8 @@
               "kepler/commands",
               "kepler/settings",
               "kepler/troubleshooting",
-              "kepler/faq"
+              "kepler/faq",
+              "kepler/changelog"
             ]
           }
         ]

@@ -1,13 +1,13 @@
 ---
-title: "Extend Kepler: integrations, skills, and specialists"
+title: "Extend Kepler: integrations, skills, plugins and specialists"
 sidebarTitle: "Extend Kepler"
-description: "Connect Kepler to your stack with MCP integrations, keep credentials in the system keychain, add skills and custom slash commands, and save specialist agents for questions you ask often."
-keywords: ["kepler integrations", "kepler mcp", "kepler skills", "custom slash command", "specialist agent", "grafana mcp", "pagerduty mcp", "aws mcp"]
+description: "Connect Kepler to your stack with MCP integrations, keep credentials in the system keychain, add skills, custom slash commands, hooks and plugins, and save specialist agents for questions you ask often."
+keywords: ["kepler integrations", "kepler mcp", "kepler skills", "custom slash command", "specialist agent", "kepler plugins", "kepler hooks", "grafana mcp", "pagerduty mcp", "aws mcp"]
 "og:title": "Extend Kepler"
-"og:description": "Integrations, skills, custom commands and specialist agents."
+"og:description": "Integrations, skills, custom commands, hooks, plugins and specialist agents."
 ---
 
-Kepler works with what is already on your machine: kubectl, cloud CLIs, ssh, the files in your workspaces. When you need more, you connect an integration, drop in a skill, or teach it a command. This page covers all four ways to extend it.
+Kepler works with what is already on your machine: kubectl, cloud CLIs, ssh, the files in your workspaces. When you need more, you connect an integration, drop in a skill, teach it a command, add a hook, or install a plugin that bundles several of these. Everything except integrations and secrets is managed in one place, **Settings > Customize**. See [Customize](/kepler/customize).
 
 ## Integrations (MCP servers)
 
@@ -50,6 +50,30 @@ Add the Grafana MCP server. The URL is https://grafana.internal and the token is
 ```
 
 Anything not in the catalog can be added as a custom MCP server on the same page. The page also lists the command-line tools it detected on your machine, such as kubectl, helm and your cloud CLIs, which Kepler can use directly without any setup.
+
+### Signing in
+
+Integrations that sign in through your browser, such as Spike, show a **Connect** button. So does a remote MCP server you add yourself that needs a sign-in, even when it does not say so. Kepler asks the server, without opening a browser, and the server's row shows **Sign in** until you connect.
+
+{/* SCREENSHOT: kepler/mcp-sign-in.png : state: Settings > Tools & MCP, the custom remote server slack-demo marked Custom with Sign in, its row expanded to show Remote · HTTP, Edit, Connect, delete and its switch */}
+<Frame>
+  <img src="/images/kepler/mcp-sign-in.png" alt="Settings > Tools & MCP in Kepler. Under Configured, Kubernetes is Enabled, and slack-demo, a remote server added by hand at https://mcp.slack.com/mcp, is marked Custom with a Sign in badge. Its expanded row reads Remote · HTTP, with Edit, Connect, a delete button and its switch." />
+  <Caption>Kepler found that this server needs a sign-in. Press Connect to finish it in your browser.</Caption>
+</Frame>
+
+When you add a remote server under **Add server**, pick **OAuth (browser)** if you know it signs in through a browser, then press **Connect** on its row after saving. Leave it on **Token / header** with no headers and Kepler checks with the server for you.
+
+Once you are signed in:
+
+- Kepler renews the sign-in in the background, the way the MCP standard describes, so you are not asked to reconnect an hour later.
+- A brief network problem does not show **Reconnect**. If a server turns down a sign-in in the middle of a run, Kepler renews it and tries once more.
+- RubixKube still asks you to reconnect about once a day, because its server does not yet issue the token Kepler needs to renew the sign-in.
+
+Some integrations take a URL and a key instead. For **Oodle**, paste the MCP URL from Oodle's integration card and an API key. The key decides what Kepler can do there: a Viewer key only reads.
+
+Kepler asks before an integration call that changes something, such as Spike resolving, escalating or muting an incident, or Oodle saving a dashboard.
+
+A server whose sign-in settings Kepler cannot use shows **Config error** on its row, with what to fix, and does not start until it is fixed. See [Troubleshooting](/kepler/troubleshooting#an-mcp-server-shows-config-error).
 
 ### What integrations look like in practice
 
@@ -94,7 +118,7 @@ The Secrets page shows which integrations use each credential, so you know what 
 
 A skill is a capability written in Markdown: a `SKILL.md` file, and optionally scripts beside it, in its own folder. Kepler loads a skill the moment it is needed, or when you trigger it as a slash command.
 
-Skills live in `~/.kepler/skills` for everything you do, or in `.kepler/skills` inside a workspace for one project. Claude Code skill folders work as they are: drop them in, or import them from **Settings > Customize**, which lists any Claude Code skills it finds on your machine.
+Skills live in `~/.kepler/skills` for everything you do, or in `.kepler/skills` inside a workspace for one project. Skill folders made for other agents work as they are. If you have skills in Claude Code's folders, **Settings > Customize** lists them under **From Claude Code** so you can import them.
 
 A skill worth writing is one you would otherwise explain every time:
 
@@ -110,7 +134,7 @@ When a pod is crashlooping:
 
 Save that as `~/.kepler/skills/pod-crashloop-triage/SKILL.md`. It appears in the `/` menu as `/pod-crashloop-triage`, and Kepler also reaches for it on its own when the situation fits.
 
-Manage skills in **Settings > Customize**: create one from a template, import from Claude Code, edit the file, add a script.
+Manage skills in **Settings > Customize**, under the **Skills** chip: create one from a template, import one, edit the file, add a script.
 
 ## Custom slash commands
 
@@ -143,18 +167,40 @@ A specialist is a read-only agent with its own persona and tools. Kepler builds 
 /agent a cost analyst who reads our AWS bill by tag and cluster and explains week-over-week changes
 ```
 
-Saved specialists appear in **Settings > Agents**. Ask for parallel work and Kepler hands side questions to specialists that run in the background while the main conversation keeps moving:
+Saved specialists appear in **Settings > Customize**, under the **Agents** chip, where you can also write one by hand with **New agent**. Ask for parallel work and Kepler hands side questions to specialists that run in the background while the main conversation keeps moving:
 
 ```
 Check three things in parallel: the checkout pods, the last deploy diff, and the Grafana error-rate panel. Bring me one summary.
 ```
 
+Up to six background lanes run at once in one conversation, and eight across the app. Ask for more and the rest wait in a queue and start in order as others finish. A queued lane shows a clock and "queued" on its card, and you can cancel it like a running one.
+
+## Hooks
+
+A hook runs your own check at a moment in Kepler's work: before a tool runs, when a message arrives, when a run ends. It can block, ask you first, or add context. It can never approve anything. Describe one and Kepler drafts it:
+
+```
+/hook ask me before any kubectl command on a prod context
+```
+
+See [Hooks](/kepler/hooks).
+
+## Plugins
+
+A plugin bundles skills, commands, agents, hooks, MCP servers and chat channels, so a whole toolkit installs in one step. You see everything it runs before anything runs.
+
+```
+/plugins something for terraform reviews
+```
+
+See [Plugins](/kepler/plugins).
+
 ## Identity on your channels
 
-When Kepler reaches you on WhatsApp, Slack, Telegram or Discord, it signs its replies with a name and emoji you choose in **Settings > Customize**, so its messages never read as yours. See [Chat from your phone](/kepler/channels).
+When Kepler reaches you on WhatsApp, Slack, Telegram, Discord or a plugin's channel, it signs its replies with a name and emoji you choose under **Signature** in **Settings > General**, so its messages never read as yours. See [Chat from your phone](/kepler/channels).
 
 <Note>
-Standing rules and lifecycle hooks (run a command before a tool, after a run, or on approval) are listed under **Settings > Customize** as coming soon. They are not available in this release.
+Standing rules are listed under **Settings > Customize** as coming soon. They are not available in this release.
 </Note>
 
 ## Where to go next
@@ -169,7 +215,7 @@ Standing rules and lifecycle hooks (run a command before a tool, after a run, or
   <Card title="Everyday workflows" icon="list-check" href="/kepler/workflows">
     Prompts that use your integrations.
   </Card>
-  <Card title="Settings reference" icon="sliders" href="/kepler/settings">
-    Tools & MCP, Secrets, Agents and Customize, in detail.
+  <Card title="Customize" icon="sliders" href="/kepler/customize">
+    Plugins, skills, hooks, commands and agents in one place.
   </Card>
 </CardGroup>

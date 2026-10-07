@@ -1,8 +1,8 @@
 ---
 title: "The Kepler workspace"
 sidebarTitle: "The workspace"
-description: "A tour of the Kepler window: the sidebar, the chat, and the Terminal, Browser, Editor, Memory, Feed and Topology panels. Learn the shortcuts and how workspaces and sessions fit together."
-keywords: ["kepler", "kepler workspace", "kepler panels", "kepler terminal", "kepler browser", "kepler sessions", "kepler shortcuts"]
+description: "A tour of the Kepler window: the sidebar, the chat, tabs and split panes, and the Terminal, Browser, Editor, Memory, Feed and Topology panels. Learn the shortcuts and how workspaces and sessions fit together."
+keywords: ["kepler", "kepler workspace", "kepler panels", "kepler terminal", "kepler browser", "kepler sessions", "kepler shortcuts", "kepler tabs", "kepler split panes", "kepler feed"]
 "og:title": "The Kepler workspace"
 "og:description": "The sidebar, the chat, the panels, and how workspaces and sessions work."
 ---
@@ -29,17 +29,20 @@ Toggle the sidebar with `Cmd+\`. From top to bottom it holds:
 | **New incognito session** | A session that reads and writes no memory. See [Sessions](#sessions-and-incognito-sessions). |
 | **New war room** | Opens an incident room where Kepler leads a team of agents. See [War room](/kepler/war-room). |
 | **Search** | Searches sessions, messages, workspaces and settings (`Cmd+K`). |
-| **Feed** | Everything Kepler produced while you were elsewhere: briefs, finished documents, and the workflows behind them. A **Waiting** tab holds items that need you. |
+| **Feed** | Everything Kepler produced while you were elsewhere: briefs, reports, and approvals waiting on you. See [The Feed](#the-feed). |
+| **Automations** | Checks and briefs that run without you. See [Automations](/kepler/automations). |
 | **Memory** | What Kepler remembers about your systems (`Cmd+M`). |
-| **Topology** | The map of clusters, hosts and accounts Kepler has found on your machine. |
+| **Topology** | The map of clusters, hosts, accounts and databases Kepler has found on your machine. See [Topology](/kepler/topology). |
 
-Right-click a session to pin, rename, export or delete it. Double-click its title to rename it in place.
+Right-click a session to pin, rename, export or delete it, or to open it with **Open in new tab**. Double-click its title to rename it in place. `Cmd`-click the session, or double-click its row beside the title, to open it in a tab of its own. See [Tabs and split panes](#tabs-and-split-panes).
 
 ## The chat
 
 The chat is where you talk to Kepler. Type anywhere in the window and the text goes to the composer. `Enter` sends, `Shift+Enter` adds a line. Type `/` for commands and `@` to attach context.
 
 While Kepler works you see its thinking, a card for each tool it runs, and the exact command it ran. Type while a run is in progress and the message is queued and sent as its own turn when the run ends. Press `Esc` to stop a run.
+
+When Kepler searches the web, its sources show as small chips with each site's icon and name, right where they are cited. Several sources at one spot stack into one chip. Hover or click it to list them all. Links open in your own browser, and **Copy** on a reply gives you the source links rather than citation codes.
 
 A few things dock above the composer when they need you:
 
@@ -50,7 +53,7 @@ A few things dock above the composer when they need you:
 - **Todo tracker**: the steps of a longer task, ticked off as Kepler goes.
 - **Machine control**: beside Send, once Remote access is on. It names the machine this thread's commands and files run on, **This Mac** until you pick another. See [Remote access](/kepler/remote-access).
 
-The small indicator at the top right of the conversation opens **This thread**: the task list for the current job, the watchers armed in this session, and the folders Kepler can reach here.
+The small indicator at the top right of the conversation opens **This thread**: the task list for the current job, background work that is **Running**, the watchers armed here under **Watching**, the documents and files this conversation produced or changed, and under **Can reach**, the folders and machines Kepler can use here.
 
 ### Operator shell mode
 
@@ -59,6 +62,49 @@ Type `!` at the start of an empty composer and it turns into a shell prompt. The
 ```
 ! kubectl get pods -n checkout
 ```
+
+End the line with `&` to keep a command running in the background, such as a port-forward or a log tail. It is listed under **Running** in **This thread** with a **Stop** button, and it ends on its own after an hour.
+
+```
+! kubectl port-forward svc/api 8080 &
+```
+
+## Tabs and split panes
+
+Keep several conversations open at once. Ask something new in one while a long run streams in another.
+
+{/* SCREENSHOT: kepler/tabs-and-panes.png : state: three tabs in the title bar, the active tab split in two: a finished investigation on the left, a fresh pane on the right with a question typed in its composer */}
+<Frame>
+  <img src="/images/kepler/tabs-and-panes.png" alt="The Kepler window with three tabs in the title bar. The active tab is split into two panes: on the left, a finished investigation into why checkout is not ready, with its finding, evidence, timeline and fix; on the right, a fresh conversation with a question typed in its composer." />
+  <Caption>Two panes in one tab, each its own conversation. The pane you are typing in is in focus, and the other keeps working beside it.</Caption>
+</Frame>
+
+### Tabs
+
+Press `Cmd+T`, or choose **File > New Tab**, and the title bar becomes a tab strip. Until you open a second tab nothing changes: one conversation, titled as usual.
+
+- Open a session from the sidebar in its own tab: `Cmd`-click it, double-click its row beside the title, or right-click it and choose **Open in new tab**.
+- Click a tab in the strip to bring it to the front.
+- `Cmd+1` to `Cmd+9` pick a tab. `Cmd+Shift+[` and `Cmd+Shift+]` step through them.
+- `Cmd+W` closes the focused pane, or the tab when it has only one. It never closes the window.
+- Closing the last tab leaves you with a fresh session, never an empty window.
+
+### Split panes
+
+Any tab splits into panes, side by side or stacked, as many times as the window has room for. Each pane is a conversation with its own composer.
+
+- `Cmd+D` splits the pane you are in to the right, and `Cmd+Shift+D` splits it below. The same two are under **View > Split Right** and **View > Split Below** in the menu bar.
+- To open a session from the sidebar beside the one you are in, right-click it and choose **Open in split right** or **Open in split below**.
+- A new pane starts as a fresh session. Under its composer it offers the other ways in: make it incognito, open a session into it from the sidebar or `Cmd+K`, or close it.
+- Drag a session from the sidebar, a tab, or a pane's own grip onto another pane to place it there. Drop zones show where it will land.
+- `Cmd+[` and `Cmd+]` step between panes. `Cmd+Option` with an arrow key moves to the pane in that direction.
+- `Cmd+Option+Enter` zooms the focused pane and tucks the others into the edges. Press it again to go back. `Cmd+Option+=` evens out the sizes.
+
+The pane you are typing in is the focused one. The others keep streaming, slightly faded, and their notifications still reach you.
+
+Each pane needs room for its text to stay readable. When there is not enough, Kepler says **Not enough room for another pane** and does not split. Close a side panel, such as the Feed, Topology or the Terminal, or widen the window, then split again. A war room fills its tab and cannot be split.
+
+Tabs and splits come back after Kepler restarts. On Windows and Linux, use `Ctrl` for `Cmd` and `Alt` for `Option`. Press `Cmd+/` for every shortcut, or see [Commands and shortcuts](/kepler/commands#tabs-and-panes).
 
 ## Panels
 
@@ -101,9 +147,32 @@ Open the checkout latency dashboard in Grafana and tell me what p99 did in the l
 
 `Cmd+E`, or the Explorer button in the top bar, opens a file tree and an editor. The tree only shows folders in the current workspace. Pick a file to open it. Files too large to load whole open read-only. Ask Kepler to change a file and it shows the diff and asks before writing, in any posture that allows writes.
 
-### Memory, Feed and Topology
+### Memory and Topology
 
-The Memory panel (`Cmd+M`) shows what Kepler has learned, in three tabs: **Graph**, **Pages** and **Artifacts**. The Feed lists activity and, under **Waiting**, anything that needs an answer from you. Topology shows the clusters, hosts and accounts Kepler found from your local config, with drafts you approve or reject before they join the map. See [Memory](/kepler/memory) for how to edit what Kepler remembers.
+The Memory panel (`Cmd+M`) shows what Kepler has learned, in three tabs: **Graph**, **Pages** and **Artifacts**. See [Memory](/kepler/memory) for how to edit what Kepler remembers.
+
+Topology, from the sidebar, is the map of clusters, hosts, accounts and databases Kepler found on your machine. What Kepler proposes to add to it waits for your answer. See [Topology](/kepler/topology).
+
+### The Feed
+
+The Feed, from the sidebar, is where Kepler leaves what it finished while you were elsewhere: automation reports, briefs, designed pages and alerts. It has two tabs.
+
+| Tab | What it holds |
+|---|---|
+| **Feed** | Everything, newest first. A report that is published again keeps one post with its versions, and **Previous version** and **Next version** step through them. |
+| **Waiting** | Only what needs you: approvals, and alerts that need an answer until you have seen them. The tab appears while anything is waiting, with a count. |
+
+{/* SCREENSHOT: kepler/feed-waiting.png : state: the Feed on the Waiting tab with a count of 1, an automation approval card with the time left, the note field, Deny and Approve, Start session and Dismiss */}
+<Frame>
+  <img src="/images/kepler/feed-waiting.png" alt="The Kepler Feed on the Waiting tab, with a count of one. An automation's approval card asks: Checkout is still not ready. Open an investigation? It says the run stops if nobody decides in 3 hours 58 minutes, has a field for an optional note, and offers Deny and Approve, with Start session and Dismiss below." />
+  <Caption>Waiting holds only what needs you. Answer an automation's approval here, from the desk or after your phone sends you here.</Caption>
+</Frame>
+
+**Waiting** is the one place to answer an automation's approval. The bell, the notification, your phone and the automation's own row all open it. Press **Approve** or **Deny**, with an optional note that is kept with the decision. The card says how long you have to decide. **Start session** opens a conversation about it first.
+
+On any post, **Ask Kepler** or **Reply to Kepler** starts a conversation about it, with the post's report and run as context. **Mark handled** takes an alert out of **Waiting** and the bell. An alert also clears itself when a later run finds the problem gone.
+
+Not every report rings the bell. An automation can publish a routine report quietly, so it lands in the Feed and waits for you to read it. See [Automations](/kepler/automations#where-results-land).
 
 ### Center stage
 
@@ -133,7 +202,7 @@ To add a folder:
   </Step>
 </Steps>
 
-Each workspace can carry its own `kepler.md` with conventions for that project. Run `/init` to draft one. See [Memory](/kepler/memory).
+Each workspace can carry its own `kepler.md` with conventions for that project. Run `/init` to draft one. If the folder has an `AGENTS.md`, Kepler reads that too. See [Memory](/kepler/memory#agentsmd).
 
 ## Sessions and incognito sessions
 

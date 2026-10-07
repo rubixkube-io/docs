@@ -46,7 +46,7 @@ A machine control sits beside **Send** in the composer. It reads **This Mac** (o
 /connect ops@10.0.1.4
 ```
 
-While it connects the control reads **Connecting to pi5.local**. Login happens quietly first. If the host wants something from you, a terminal tab opens with the login already typed, and the thread moves across once you are through. If it fails, the control says so and the reason is a click away, with a **Sign in** shortcut when a cloud session has expired.
+While it connects the control reads **Connecting to pi5.local**. A machine's state reads the same everywhere it appears: **Connected**, **Connecting**, **Not connected**, **Disconnected**, **Connection lost**, or **Session expired** for Teleport. Login happens quietly first. If the host wants something from you, a terminal tab opens with the login already typed, and the thread moves across once you are through. If it fails, the control says so and the reason is a click away, with a **Sign in** shortcut when a cloud session has expired.
 
 The thread's machine is per conversation. Pick one in a thread and other threads stay where they were. **New threads start on** in **Settings > Remote access** sets the starting point for new ones.
 
@@ -74,7 +74,7 @@ Each tool row carries **on pi5.local** at its edge. The **This thread** panel, f
 
 Operator shell mode follows the thread too. Type `!` at the start of the composer and the command runs on the thread's machine, with the machine named in the prompt. The machine control stays available in shell mode, so you can switch hosts without leaving it.
 
-From the picker, a connected host has two more actions: **open a terminal there**, which gives you a shell on the host in the Terminal panel, and **Disconnect**.
+From the picker, a connected host has two more actions: **open a terminal there**, which gives you a shell on the host in the Terminal panel, and **Disconnect**. Disconnect works for any machine, a sandbox included, and brings the thread back to your own machine.
 
 ## The cards that ask you
 
@@ -123,14 +123,19 @@ Kepler shows the `Host` block it will add to `~/.ssh/config`, exactly as it will
 
 ## Where machines come from
 
-The list is the same one the [Topology](/kepler/workspace#memory-feed-and-topology) map uses. Kepler reads:
+The list is the same one the [Topology](/kepler/topology) map uses. Kepler reads:
 
-- your SSH config
+- your SSH config, Windows hosts included
 - cloud VMs from the accounts your `gcloud` and `aws` are signed into
 - Teleport nodes, once you are logged in with `tsh`
-- Docker sandboxes on this machine
+- Kubernetes pods and their containers, reached with `kubectl exec` and your kube context's own credentials, with no login step
+- Docker containers, reached with `docker exec`, and Docker sandboxes on this machine
 - Ansible inventories it finds
 - the list you keep yourself, at `~/.kepler/topology/kepler-list.jsonl`
+
+### Groups
+
+A `Host web-*` pattern in your SSH config, or a group in an Ansible inventory, shows as a group: several hosts as one machine in the list. Point a thread at a group and Kepler's reads run on every member at once and come back as one table. A command you type yourself in shell mode needs one member, so pick that host instead.
 
 **Settings > Topology** controls the scan and shows each source and its last status. **Where machines come from** in Remote access takes you there.
 
@@ -146,7 +151,13 @@ A host behind a VPN, or one you open with a wrapper script, can carry its own co
 
 ## Commands running in the background
 
-A port-forward or a tunnel that you or Kepler started, and that has to stay up, is listed under **Running in the background** in **Settings > Remote access** and at the bottom of the picker. Each row says where it runs, who started it and how long it has left. Each ends on its own, or **Stop** it early.
+Some commands have to stay up, such as a port-forward, a tunnel or a log tail. Kepler can keep one running for up to twelve hours, and its approval card says for how long. You can do the same: end a shell-mode line with `&` and it keeps running for an hour.
+
+```
+! kubectl port-forward svc/api 8080 &
+```
+
+Each one is listed under **Running** in the conversation's **This thread** panel, under **Running in the background** in **Settings > Remote access**, and at the bottom of the picker. Each row says where it runs, who started it and how long it has left. Each ends on its own, or **Stop** it early.
 
 ## Sandboxes
 

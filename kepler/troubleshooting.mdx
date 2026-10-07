@@ -1,7 +1,7 @@
 ---
 title: "Troubleshoot Kepler"
 sidebarTitle: "Troubleshooting"
-description: "Fixes for the problems Kepler users hit most: the agent never connects, a model key is rejected, a command is blocked, a folder is not visible, a panel is blank, memory looks stale, a watcher never fires, a channel drops."
+description: "Fixes for the problems Kepler users hit most: the agent never connects, a model key is rejected, an integration will not sign in, a command is blocked, a folder is not visible, a panel is blank, memory looks stale, a watcher never fires, a channel drops."
 keywords: ["kepler troubleshooting", "kepler not responding", "kepler model error", "kepler always blocked", "kepler logs", "kepler whatsapp disconnected"]
 "og:title": "Troubleshoot Kepler"
 "og:description": "Symptom first, then the fix. Logs and what to send us at the bottom."
@@ -46,6 +46,46 @@ Before OpenRouter runs a request, it checks the key's remaining credit against t
 
 This affects most tools that call OpenRouter, not only Kepler. See OpenRouter's [limits documentation](https://openrouter.ai/docs/api_reference/limits).
 
+## An integration fails with 401 Unauthorized
+
+The server needs a sign-in that Kepler has not been given.
+
+1. Update Kepler. From 0.1.10, a remote MCP server that needs a sign-in shows **Sign in** in **Settings > Tools & MCP**, even when it does not say up front that it needs one. That includes servers that come with a plugin.
+2. Expand the server's row, press **Connect**, and finish signing in in your browser.
+3. If the server takes a key instead, check the secret it references in **Settings > Secrets**. See [Secrets](/kepler/extend#secrets).
+
+## An MCP server shows Config error
+
+Kepler cannot use the server's sign-in settings: they are malformed, they conflict, such as an `Authorization` header and an `oauth` block on the same server, or they ask for something Kepler does not support. The server does not start until they are fixed.
+
+1. Expand the server's row in **Settings > Tools & MCP**. The error says what to change.
+2. For a server you added, press **Edit**, or fix its entry in `~/.kepler/mcp.json`.
+3. For a server that came with a plugin, switch the plugin off and tell its author. Plugin files are read-only.
+
+## Sign-in says the server needs a client registered with its vendor
+
+Some servers do not let apps register themselves, and Kepler has no app of its own for them. Ask the vendor for an OAuth client ID, then add it to the server's entry in `~/.kepler/mcp.json`:
+
+```json
+"oauth": { "clientId": "your-client-id", "callbackPort": 3119 }
+```
+
+Press **Connect** again. For GitHub's MCP server, configure a GitHub OAuth App's client ID and secret first.
+
+## An integration keeps asking me to reconnect
+
+Kepler renews sign-ins in the background, so most integrations stay connected, and a brief network problem does not ask you to reconnect. RubixKube is the exception: it asks about once a day, because its server does not yet issue the token Kepler needs to renew the sign-in. Press **Connect** again when it asks.
+
+## Topology says a source could not be scanned
+
+Open **Topology** from the sidebar and go to the **Activity** tab. The failed source is under **Needs you** with the reason it gave.
+
+1. If a cloud or Teleport login expired, sign in again in your terminal, then press **Try again**.
+2. Press **Ask Kepler** to have Kepler work out the cause from the error and tell you what to run.
+3. If you do not want that source on the map, press **Ignore** and skip it in **Settings > Topology**.
+
+See [Topology](/kepler/topology#when-a-source-fails).
+
 ## Kepler says it cannot tell whether a command is safe
 
 This is the unknown-command card. Kepler met a program it does not recognise and stopped rather than guess.
@@ -72,6 +112,17 @@ Kepler only reaches folders you have granted, and each workspace carries its own
 1. Run `/workspace add <path>` or press `Cmd+O` and pick the folder.
 2. Check you are in the right workspace. The active workspace is highlighted in the sidebar, and the granted folders are listed under it.
 3. Very large files open read-only in the editor. Ask Kepler to search or read a range instead of the whole file.
+
+## Split does nothing, or says there is not enough room
+
+Each pane needs room for its text to stay readable, so Kepler refuses a split that would make panes too narrow. It shows **Not enough room for another pane** for a moment.
+
+1. Close any side panel, such as the Feed, Topology, the Terminal or the Browser, with the **×** in its header.
+2. Make the window wider, or full screen.
+3. Split again with `Cmd+D`, or **View > Split Right** in the menu bar.
+4. A war room cannot be split. Open a regular session in its own tab and split that one.
+
+`Cmd+1` to `Cmd+9` only pick tabs that exist. Open a second tab first, with `Cmd+T` or by right-clicking a session and choosing **Open in new tab**.
 
 ## The terminal or browser panel is blank
 

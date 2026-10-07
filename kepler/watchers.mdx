@@ -51,6 +51,15 @@ Because the watcher woke the session on its own, Kepler stays on the safe side. 
 
 A watcher can only run commands that read. That holds in every posture, including Yolo. If the check Kepler drafts needs a command it does not recognise, it stops and asks you to trust that command as read-only, the same card you see in a normal session. The **Run once** option is never offered for a watcher, because a watcher would run it again and again.
 
+## Watchers that judge in plain words
+
+Most watchers compare plain output: a pod is not Ready, a number crosses a line, a job exits. Some conditions need judgement, such as "wake me if the logs show anything like a connection storm". For those, each new output is read by a model that answers one question: does this match?
+
+- **With a [decision model](/kepler/decision-model) picked**, the watcher asks it. Each check takes about a second and spends no tokens, so the watcher can check as often as it runs. It wakes you only on a yes the model is sure of.
+- **Without one**, the watcher uses your worker model, with a token budget for each watcher and a minimum time between checks.
+
+Either way, output that has not changed since the last check is not judged again, and long output is read in full, page by page. A check that fails is skipped and tried again on the next tick. Kepler never switches to another model.
+
 ## See and stop watchers
 
 - **In the session:** open **This thread** from the top right of the conversation. **Watching** lists the watchers armed there. Press the stop control to end one.

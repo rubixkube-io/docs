@@ -186,6 +186,7 @@
               "kepler/postures",
               "kepler/permissions",
               "kepler/memory",
+              "kepler/topology",
               "kepler/extend",
               "kepler/customize",
               "kepler/hooks",

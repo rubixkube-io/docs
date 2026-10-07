@@ -55,14 +55,18 @@ Two optional picks sit beside them. The **image model** draws images when your c
 | Kepler | Hosted models, available once you sign in. No key to manage. |
 | Anthropic | Your own API key. |
 | OpenAI | Your own API key. |
+| OpenAI Codex | Sign in with your ChatGPT plan, and your account's own models appear. |
+| OpenRouter | Your own API key. Its full model list is searchable here. |
 | Google Gemini API | Your own API key. |
 | Google Vertex AI | Your Google Cloud project credentials. |
 | xAI | Your own API key. |
 | AWS Bedrock | Your AWS credentials. |
 | Ollama | Local models on your machine. No key. |
-| OpenAI-compatible | Any endpoint that speaks the OpenAI API. Set the base URL. |
+| OpenAI-compatible | Any endpoint that speaks the OpenAI API. Set the base URL. Add as many as you like, each with its own key and models. |
 | TypeSafe | Decision models only. Your own API key. |
 | System One endpoint | Decision models only. Set the URL and add the model ids it serves. |
+
+The picker shows how each model is billed. Background work, such as watchers and memory, never runs on a subscription plan like ChatGPT's.
 
 **Context window.**
 
@@ -116,9 +120,13 @@ Every watcher across every session, with counts for watching, checks, alerts sen
 | Setting | What it does |
 |---|---|
 | Scanning | On or paused. Kepler reads your clusters, hosts, cloud accounts and repositories on a schedule to keep its map current. Nothing leaves your machine, and it only looks at what you already have access to. |
-| Frequency | How often Kepler checks for changes. |
+| Frequency | How often Kepler checks for changes, from every 5 minutes to every 6 hours. |
+| Enrich from chat sessions | How often Kepler reads your recent chats to learn what you call things. |
 | Sources | Each source it reads and its last status. |
+| Add your own list | A file of machines the scan misses. |
 | Clear the map | Start the map over. |
+
+See [Topology](/kepler/topology).
 
 ## Labs
 

@@ -18,7 +18,7 @@ Automations are different from [watchers](/kepler/watchers). A watcher belongs t
     Click **Automations** in the sidebar.
   </Step>
   <Step title="Describe it, or pick a template">
-    Write what you want in the box, for example "Every weekday at 09:00, list pods that are not running in prod and send me a short summary". Or pick a template card. Each template shows the services it touches.
+    Write what you want in the box, for example "Every weekday at 09:00, list pods that are not running in prod and send me a short summary". Or start from one of 15 templates, such as **Incident first responder**, **Deploy guard** or **Certificate expiry check**. Each template card shows the services it touches, and picking one puts its full brief in the box for you to change.
   </Step>
   <Step title="Check the flow">
     Kepler drafts the automation as a flow of steps on a canvas. Open any step to change it, and press **Try it** to see what it returns. Reads run for real. Nothing is sent or changed.
@@ -28,21 +28,51 @@ Automations are different from [watchers](/kepler/watchers). A watcher belongs t
   </Step>
 </Steps>
 
-Each automation has its own chat beside the canvas. Ask it to add a step, explain a failed run, or change the schedule. It starts in Assist and changes only the draft, never what is live.
-
 An automation opens on **Flow**. **Runs** is its history, with totals for the last day, week and month. **Settings** says what it is for, when it runs, the services it reaches, and the folder its commands run in. Where a service is not connected yet, Settings offers to connect it.
+
+### The automation builder
+
+Each automation has its own chat beside the canvas, answered by the **automation builder**, an agent of its own. Ask it to add a step, explain a failed run, or change the schedule. It starts in Assist and changes only the draft, never what is live.
+
+The builder tries each step before it adds it. Reads run for real, and anything that would change something is only previewed. It can look up an integration's tools and their inputs, read what each step returned on the last run, and see which of your chats are connected, so it can catch a post that would never arrive. For a chat-triggered automation, it can try a step with a sample message.
+
+It cannot run, delete or take an automation live, approve a step, or grant a permission. Those stay with you. Pick its model in **Settings > Customize**, under **Agents**. By default it uses your chat model.
+
+### Your automations
+
+{/* SCREENSHOT: kepler/automations-home.png : state: the Automations home with four automations, Checkout health check first and Waiting on you, a draft marked Not live yet, two scheduled automations, the pointer on Weekday pod check showing Run now and the menu, template cards below */}
+<Frame>
+  <img src="/images/kepler/automations-home.png" alt="The Kepler Automations home. Under the title, a box to describe a new automation. Below it, the list: Checkout health check comes first and is marked Waiting on you, then a draft marked Not live yet that needs a fix before it can run, then Warning events digest and Weekday pod check with when each runs next. The pointer is on Weekday pod check, which shows Run now and a menu. Template cards follow under Start from a template." />
+  <Caption>The Automations home. Automations waiting on you come first.</Caption>
+</Frame>
+
+The Automations home lists every automation with the services it reaches, when it runs, and what comes next: the next run, **Waiting on you**, or why the last run failed. The ones waiting on you come first. A draft that has never gone live is marked **Not live yet**, and says so when it needs a fix before it can run.
+
+- **Waiting on you** opens the approval in the Feed.
+- Point at a row for its actions. **Latest** opens its latest report in the Feed, and **Run now** runs the live version.
+- The menu beside them has **Open latest on canvas**, and **Pause** or **Resume**.
 
 ## Triggers
 
 | Trigger | When it runs |
 |---|---|
 | A schedule | "Runs every weekday at 09:00 UTC". Edit the sentence in place. If Kepler was closed at that time, it runs once when Kepler starts again. |
-| When a webhook arrives | Your alert source (Alertmanager, PagerDuty, Grafana) posts to the automation's address. Go live to get the address and its token. The address is on your machine, so a sender elsewhere needs a tunnel. |
-| When a check changes | A read-only command or integration read runs on its own every few minutes (one minute at least). The automation runs when the output changes, or starts or stops showing some text. |
+| When a webhook arrives | Your alert source (Alertmanager, PagerDuty, Grafana) posts to the automation's address. See [Webhooks](#webhooks). |
+| When a check changes | A read-only command or integration read runs on its own every few minutes (one minute at least). The automation runs when the output changes, or starts or stops showing some text. It remembers what it last saw, so a restart never starts the same run twice. |
 | When a message arrives in a chat | Someone sends the automation's `/command` in Kepler or a connected chat. See [Run one from a chat](#run-one-from-a-chat). |
 | Run now | Start it by hand from its page or from chat. |
 
 What a webhook or a chat message carries is treated as data, never as instructions.
+
+### Webhooks
+
+Go live to get the webhook's address and token. The sender posts JSON to the address, with the token in a header. Both have a copy button on the trigger, and **Copy a curl command** gives you a request to try from a terminal.
+
+- **Send a test** sends a test event and starts a real run, marked as a test. It shows under **Runs**.
+- **New token** replaces the token. The old one stops working at once, so update your alert source after you press it.
+- Only this machine can reach the address, so a sender elsewhere needs a tunnel or a relay.
+
+Fields from the payload can be used in any step as `${trigger.payload.<field>}`, for example `${trigger.payload.status}`. A step can also run only for some events, such as "only if the payload's `status` is `firing`".
 
 ## Steps
 
@@ -60,7 +90,7 @@ What a webhook or a chat message carries is treated as data, never as instructio
 | Publish to the Feed | A page that keeps a version for every run. |
 | Design a report | Kepler's designer lays out a page from what earlier steps found. |
 
-Any step can run only when a condition holds, such as "only if the verdict is not healthy". A step whose condition is false is shown as skipped, not failed. If a step fails, you choose whether the run stops, keeps going, or jumps ahead.
+Any step can run only when a condition holds, such as "only if the verdict is not healthy". A step whose condition is false is shown as skipped, not failed, and a step that depends on a skipped step is skipped too. If a step fails, you choose whether the run stops, keeps going, or jumps ahead. A run that stops unexpectedly, or that a restart left open, is marked failed.
 
 A decision step can judge a list **item by item**: every pod, every log line, up to 200 items in one step. Later steps can then check whether any item was flagged.
 
@@ -100,11 +130,17 @@ Automations run with nobody watching, so the limits are tighter than in a chat:
 
 - An automation runs in Observe or Assist, never Yolo.
 - A step that changes something, such as a command that is not a read, an integration call that creates or updates, or a post to a conversation, runs only with the permission you give at **Go live**: **Every run**, or **Ask me each time**. Ask me each time pauses the run and asks you in the Feed and on your phone, for up to an hour. If nobody answers, the step is skipped and the run finishes, or the run stops, as you chose.
-- The permission is tied to exactly what that step does. Edit the step and Go live asks again. Kepler cannot give or widen it.
+- The permission is tied to exactly what that step does. Edit the step and Go live asks again. Kepler cannot give or widen it. To take a permission back, press **Take back this permission** on the step.
 - Commands on the [always-blocked list](/kepler/permissions#always-blocked) are refused when you save, and again when the step would run.
 - Each run has a budget for model tokens and run time. A run that hits either ends and says so. Kepler never switches to a cheaper model to finish.
 
 A good pattern for a fix is to have the automation press a button your team already built: pause with **Ask me first**, trigger your existing rollback pipeline, then wait until a check confirms the fix.
+
+## Where results land
+
+- **Notify me** sends you a notification. It shows in Kepler, as a system notification, and on your phone only when you are away and the step is urgent or needs an answer. An alert from this step clears itself when a later run finds the problem gone, because the step's condition no longer holds.
+- **Publish to the Feed** and **Design a report** post a page to the [Feed](/kepler/workspace#the-feed) that keeps a version for every run. By default the post notifies you with its headline. For a routine report, switch off **Tell me when it's published** and it lands in the Feed without ringing the bell.
+- **Ask me first** and every **Ask me each time** permission wait under **Waiting** in the Feed, and reach your phone when you are away.
 
 ## Where they are kept
 

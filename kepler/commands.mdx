@@ -7,7 +7,7 @@ keywords: ["kepler", "kepler slash commands", "kepler shortcuts", "kepler keyboa
 "og:description": "Built-in commands, custom commands, skills, and keyboard shortcuts."
 ---
 
-Type `/` in the composer and a menu lists every command, with the arguments it expects. Keep typing to filter. Pick one with `Enter`, or type the whole line and press `Enter` to send it.
+Type `/` in the composer and a menu lists every command, with the arguments it expects. Keep typing to filter. `Tab` completes the highlighted command and `Enter` runs it. A command that takes an argument, such as `/connect`, is put in the composer and waits for you to type the argument.
 
 Commands come in two kinds. Some **expand into a prompt**: `/triage checkout` becomes a full triage request with your argument filled in, and the message you sent still reads `/triage checkout` so you can see what shaped it. Others **do something in the app**: `/mode yolo` changes the posture and sends nothing.
 
@@ -38,7 +38,7 @@ Commands come in two kinds. Some **expand into a prompt**: `/triage checkout` be
 | `/memory` | | Opens memory settings. |
 | `/settings` | | Opens settings. |
 | `/help` | `<question>` | Opens the catalog of what Kepler can do. Add a question and it jumps to the matching feature. |
-| `/shortcuts` | | Opens the keyboard shortcuts sheet. |
+| `/shortcuts` | | Opens the keyboard shortcuts sheet. `Cmd+/` does the same. |
 | `/effort` | `<auto\|low\|medium\|high>` | Sets how hard the model reasons for this session. Higher levels are offered where the model supports them. `auto` hands the choice back to Settings. Bare `/effort` opens the picker. |
 | `/connect` | `<host \| user@host>` | Connects to a machine so Kepler can work there: a machine it already knows, by name or prefix (`/connect pi5`), or a new `user@host`. A terminal tab opens only if the host asks you for something. See [Remote access](/kepler/remote-access). |
 
@@ -126,9 +126,27 @@ macOS shortcuts use `Cmd`. On Windows and Linux use `Ctrl` in its place, except 
 | `Cmd+E` | Show or hide the Editor |
 | `Cmd+M` | Show or hide Memory |
 | `Cmd+,` | Open Settings |
+| `Cmd+/` | Show every keyboard shortcut |
 | `Esc` | Return a center-staged panel to the side |
 | `Cmd+=` / `Cmd+-` | Zoom the interface in or out |
 | `Cmd+0` | Reset zoom |
+
+### Tabs and panes
+
+| Shortcut | Action |
+|---|---|
+| `Cmd+T` | New tab |
+| `Cmd+1` to `Cmd+9` | Pick a tab |
+| `Cmd+Shift+[` / `Cmd+Shift+]` | Previous or next tab |
+| `Cmd+W` | Close the focused pane, or the tab when it has one pane |
+| `Cmd+D` | Split the pane to the right |
+| `Cmd+Shift+D` | Split the pane below |
+| `Cmd+[` / `Cmd+]` | Previous or next pane |
+| `Cmd+Option` + arrow key | Move to the pane in that direction |
+| `Cmd+Option+Enter` | Zoom the focused pane, and back |
+| `Cmd+Option+=` | Even out the panes |
+
+On Windows and Linux, use `Ctrl` for `Cmd` and `Alt` for `Option`. See [Tabs and split panes](/kepler/workspace#tabs-and-split-panes).
 
 ### Composer
 

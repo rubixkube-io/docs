@@ -50,12 +50,13 @@ Checkout is returning 502s in prod since about 09:40. The api service deployed a
 
 Kepler answers first as the lead, then spawns members as the investigation branches. Each member gets its own pane beside the conversation, with a name, a colour and its own transcript. Members persist: they keep their context and are re-entered as the room needs them, rather than answering once and disappearing.
 
-{/* TODO(screenshot) kepler/war-room-split.png : state: a war room in progress with the lead conversation plus two or three member panes visible and the Waiting on you queue showing one pending approval
+The lead keeps the left column. Members stack in the column beside it, in the order they joined, up to four panes. Drag the dividers to give one member more room. A fifth member, and any after it, keeps working without a pane: what it pins still reaches the room, its approvals still land in **Waiting on you**, and the lead relays what it finds.
+
+{/* SCREENSHOT: kepler/war-room-split.png : state: a war room with five members: the lead and Waiting on you in the left column, four member panes stacked on the right, the fifth member working without a pane */}
 <Frame>
-  <img src="/images/kepler/war-room-split.png" alt="A Kepler war room in progress: the lead conversation on the left, three member panes named for the angle each is working, and a Waiting on you queue with one pending approval." />
-  <Caption>Each member works its own angle in its own pane. Approvals from every member collect in one queue.</Caption>
+  <img src="/images/kepler/war-room-split.png" alt="A Kepler war room in progress. In the left column, the lead reports what the pods and events members found and notes that the fifth member, workloads, is already working. Below it, Waiting on you holds three approvals, one open with Reject, Always, This session and Run. In the right column, four member panes are stacked: pods and events are idle, image and changes are waiting for approval. The fifth member has no pane." />
+  <Caption>Each member works its own angle in its own pane, up to four at once. The fifth, workloads, has no pane, but its approval waits in the same queue.</Caption>
 </Frame>
-*/}
 
 {/* SCREENSHOT: kepler/war-room-lead.png : state: the lead thread of a finished war room, showing the goal, the members it briefed, and their reports coming back */}
 <Frame>

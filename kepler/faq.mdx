@@ -38,10 +38,10 @@ Short answers to the questions we hear most. If yours is not here, the [Troubles
     With `kubectl`: delete, scale, drain, cordon, taint, and `rollout restart` or `rollout undo`. With `helm`: delete, uninstall, and rollback. Also `rm -rf`, `terraform destroy`, and delete, terminate, or stop calls on AWS, GCP, and Azure. Windows equivalents such as recursive `Remove-Item` are on the list too. No posture, no permission setting, and no rule you write can unlock these. The full list is in [Permissions](/kepler/permissions).
   </Accordion>
   <Accordion title="What happens when Kepler meets a command it does not recognise?" icon="circle-question">
-    It stops and asks. A card shows the command and says plainly that Kepler cannot tell whether it is safe. You can trust it as read-only, which saves a rule that applies everywhere and survives restarts, or say no. In Assist and Yolo you can also run it just once. In Observe, trusting it is the only way through.
+    It stops and asks. A card shows the command and says plainly that Kepler cannot tell whether it is safe. You can trust it as read-only, which saves a rule that applies everywhere and survives restarts, run it just once with nothing saved, or say no. **Run once** is offered in every posture, Observe included, because pressing it is you running the command. Watchers and automations never get it: nobody is at the card. With a [decision model](/kepler/decision-model) picked, the card also shows its suggestion.
   </Accordion>
   <Accordion title="Can I make Kepler ask about everything, even reads?" icon="hand">
-    Yes. **Settings > Permissions** has three switches, Files, Shell, and MCP servers, each set to allow, ask, or block. Ask is the default for all three. Set a switch to ask and Kepler pauses for that kind of tool regardless of posture. These settings only ever tighten what a posture allows. Nothing in the app can loosen them on Kepler's behalf.
+    Yes. **Settings > Permissions** has four switches, Files, Shell, MCP servers and Secrets, each set to allow, ask, or block. Ask is the default for all four. Set a switch to ask and Kepler pauses for that kind of tool regardless of posture. These settings only ever tighten what a posture allows. Nothing in the app can loosen them on Kepler's behalf. For a rule of your own, such as "ask before any `kubectl` on a prod context", write a [hook](/kepler/hooks).
   </Accordion>
 </AccordionGroup>
 
@@ -49,7 +49,7 @@ Short answers to the questions we hear most. If yours is not here, the [Troubles
 
 <AccordionGroup>
   <Accordion title="Which models can I use?" icon="microchip">
-    The hosted Kepler models, available with your sign-in and no key. Or bring your own key for Anthropic, OpenAI, Google (Gemini API or Vertex AI), xAI, AWS Bedrock, or any OpenAI-compatible endpoint. Ollama gives you fully local models. Set it up in **Settings > Models** or with `/model`.
+    The hosted Kepler models, available with your sign-in and no key. Or bring your own key for Anthropic, OpenAI, Google (Gemini API or Vertex AI), xAI, AWS Bedrock, OpenRouter, or any OpenAI-compatible endpoint, as many as you like. If you pay for ChatGPT, sign in with that plan under **OpenAI Codex**. Ollama gives you fully local models. Set it up in **Settings > Models** or with `/model`. An optional [decision model](/kepler/decision-model) can sit beside your chat model for fast yes-or-no checks.
   </Accordion>
   <Accordion title="Will Kepler switch models on its own to save money or when one fails?" icon="arrows-rotate">
     No, ever. You choose the model, so you control the spend. When a request fails, Kepler retries the same model or tells you it could not finish. It never silently downgrades to a cheaper or different model.
@@ -58,7 +58,7 @@ Short answers to the questions we hear most. If yours is not here, the [Troubles
     Kepler runs locally and is free, with no seats or cloud limits. Cloud plans add team sync, shared memory, and hosted automations. Model usage is separate: keys you bring are billed by that provider directly. **Settings > Plan & Usage** shows your plan and what this month has cost so far.
   </Accordion>
   <Accordion title="Do watchers burn tokens while nothing is happening?" icon="eye">
-    No. A watcher is a plain background check with no model involved. The model only runs when the watcher fires, and then only to look at what changed and suggest something. A quiet watcher costs nothing.
+    Most do not. A watcher is usually a plain background check with no model involved, and the model only runs when it fires. A watcher whose condition is in plain words needs a model to judge new output. With a [decision model](/kepler/decision-model) picked, that costs no tokens. Without one, it uses your worker model within a token budget for each watcher. Output that has not changed is never judged twice. See [Watchers](/kepler/watchers#watchers-that-judge-in-plain-words).
   </Accordion>
 </AccordionGroup>
 
@@ -88,11 +88,14 @@ Short answers to the questions we hear most. If yours is not here, the [Troubles
   <Accordion title="Which operating systems are supported?" icon="desktop">
     macOS 13 or later on Apple Silicon, 64-bit Windows, and Linux as .deb or .rpm packages on x86-64. Windows support is early: background running and full PowerShell parity are still in progress, and there is no WSL integration yet. See [Installation](/kepler/installation).
   </Accordion>
+  <Accordion title="Can I work in more than one conversation at once?" icon="table-columns">
+    Yes. Press `Cmd+T` for a new tab, or `Cmd+D` to split the pane you are in. Each pane is its own conversation with its own composer, and the ones you are not typing in keep streaming. Tabs and splits come back after a restart. See [Tabs and split panes](/kepler/workspace#tabs-and-split-panes).
+  </Accordion>
   <Accordion title="Can I use Kepler from a terminal instead of the app?" icon="terminal">
     Yes. **Settings > Experiments > CLI helper** installs a `kepler` command that drives the same local agent, the same sessions, and the same approval gate. Run `kepler help` for its commands. It is a client for the desktop agent, not a separate product, so the app still needs to be installed.
   </Accordion>
   <Accordion title="Can I talk to Kepler from my phone?" icon="mobile">
-    Yes. Connect WhatsApp, Slack, Telegram, or Discord in **Settings > Gateway**, then type `/otg whatsapp` (or another channel) in a session to drive it from there. Approvals arrive as a message and you reply yes or no. Channels work while Kepler is running on your machine. WhatsApp uses the same linking as WhatsApp Web and is not an official WhatsApp feature, so it can drop and heavy use may put your account at risk. See [Channels](/kepler/channels).
+    Yes. Connect WhatsApp, Slack, Telegram, Discord, or a channel from a [plugin](/kepler/plugins) in **Settings > Gateway**, then type `/otg whatsapp` (or another channel) in a session to drive it from there. Approvals arrive as a message and you reply yes or no. Automations with a chat trigger run from there too. Channels work while Kepler is running on your machine. WhatsApp uses the same linking as WhatsApp Web and is not an official WhatsApp feature, so it can drop and heavy use may put your account at risk. See [Channels](/kepler/channels).
   </Accordion>
 </AccordionGroup>
 

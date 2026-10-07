@@ -51,6 +51,30 @@ A plugin's agents keep to the chat's posture. An agent that asks for shell or fi
 
 A plugin can ask for settings, such as a region, a URL or a token. Those plugins get a **Settings** action. Values marked sensitive go to your operating system keychain and are never shown again, only "Saved". A channel's own settings, such as its bot token, are asked for when you connect it on the Gateway page.
 
+### Servers that need a sign-in
+
+A plugin's MCP server that signs in through your browser is listed in **Settings > Tools & MCP**, tagged with the plugin's name, and shows **Sign in** until you press **Connect** on its row. The install card, an update, and `/plugins` say which of a plugin's servers still need a sign-in.
+
+A plugin can declare the sign-in in its `.mcp.json` the way Claude Code reads it, with an `oauth` block:
+
+```json
+{
+  "mcpServers": {
+    "tracker": {
+      "type": "http",
+      "url": "https://mcp.tracker.example.com/mcp",
+      "oauth": { "clientId": "abc123", "callbackPort": 3119, "scopes": "read write" }
+    }
+  }
+}
+```
+
+- `clientId` is an app the vendor registered. With one, Kepler skips registering an app of its own.
+- `callbackPort` is the local port the sign-in returns to. `scopes` is one space-separated string.
+- A server that declares nothing is asked whether it needs a sign-in, the same as one you add yourself.
+- Where Kepler has its own registered app for a server, such as Slack's, it signs in with that one instead, so the consent page names Kepler. A client you declare in your own `~/.kepler/mcp.json` still wins.
+- A malformed or unsupported `oauth` block shows **Config error**, and that server does not start.
+
 ## Trust
 
 - Nothing changes without you. Kepler can only propose, and every change waits for your card.

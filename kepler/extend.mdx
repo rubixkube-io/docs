@@ -51,6 +51,30 @@ Add the Grafana MCP server. The URL is https://grafana.internal and the token is
 
 Anything not in the catalog can be added as a custom MCP server on the same page. The page also lists the command-line tools it detected on your machine, such as kubectl, helm and your cloud CLIs, which Kepler can use directly without any setup.
 
+### Signing in
+
+Integrations that sign in through your browser, such as Spike, show a **Connect** button. So does a remote MCP server you add yourself that needs a sign-in, even when it does not say so. Kepler asks the server, without opening a browser, and the server's row shows **Sign in** until you connect.
+
+{/* SCREENSHOT: kepler/mcp-sign-in.png : state: Settings > Tools & MCP, the custom remote server slack-demo marked Custom with Sign in, its row expanded to show Remote · HTTP, Edit, Connect, delete and its switch */}
+<Frame>
+  <img src="/images/kepler/mcp-sign-in.png" alt="Settings > Tools & MCP in Kepler. Under Configured, Kubernetes is Enabled, and slack-demo, a remote server added by hand at https://mcp.slack.com/mcp, is marked Custom with a Sign in badge. Its expanded row reads Remote · HTTP, with Edit, Connect, a delete button and its switch." />
+  <Caption>Kepler found that this server needs a sign-in. Press Connect to finish it in your browser.</Caption>
+</Frame>
+
+When you add a remote server under **Add server**, pick **OAuth (browser)** if you know it signs in through a browser, then press **Connect** on its row after saving. Leave it on **Token / header** with no headers and Kepler checks with the server for you.
+
+Once you are signed in:
+
+- Kepler renews the sign-in in the background, the way the MCP standard describes, so you are not asked to reconnect an hour later.
+- A brief network problem does not show **Reconnect**. If a server turns down a sign-in in the middle of a run, Kepler renews it and tries once more.
+- RubixKube still asks you to reconnect about once a day, because its server does not yet issue the token Kepler needs to renew the sign-in.
+
+Some integrations take a URL and a key instead. For **Oodle**, paste the MCP URL from Oodle's integration card and an API key. The key decides what Kepler can do there: a Viewer key only reads.
+
+Kepler asks before an integration call that changes something, such as Spike resolving, escalating or muting an incident, or Oodle saving a dashboard.
+
+A server whose sign-in settings Kepler cannot use shows **Config error** on its row, with what to fix, and does not start until it is fixed. See [Troubleshooting](/kepler/troubleshooting#an-mcp-server-shows-config-error).
+
 ### What integrations look like in practice
 
 ```

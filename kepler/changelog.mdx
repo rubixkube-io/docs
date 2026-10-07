@@ -1,13 +1,23 @@
 ---
 title: "Kepler changelog"
 sidebarTitle: "Changelog"
-description: "What is new in each Kepler release: hooks, plugins, the Customize hub, channel plugins and chat-triggered automations in 0.1.9-beta, and the decision model in 0.1.8-beta."
-keywords: ["kepler changelog", "kepler release notes", "kepler 0.1.9", "kepler 0.1.8", "whats new kepler"]
+description: "What is new in each Kepler release: MCP sign-in and war room fixes in 0.1.10-beta, hooks, plugins and chat-triggered automations in 0.1.9-beta, the decision model in 0.1.8-beta, remote access and a richer topology map in 0.1.7-beta, tabs and split panes in 0.1.6-beta, and automations in 0.1.5-beta."
+keywords: ["kepler changelog", "kepler release notes", "kepler 0.1.10", "kepler 0.1.9", "kepler 0.1.8", "kepler 0.1.7", "kepler 0.1.6", "kepler 0.1.5", "whats new kepler"]
 "og:title": "Kepler changelog"
 "og:description": "What is new in each Kepler release."
 ---
 
 Download the latest version from the [releases page](https://github.com/rubixkube-io/kepler-releases/releases/latest). See [Installation](/kepler/installation) for updates.
+
+<Update label="0.1.10-beta" description="MCP sign-ins and larger war rooms">
+
+- **MCP servers that need a sign-in get Connect.** Kepler now asks a remote MCP server that does not say how it signs in whether it needs one. If it does, its row in **Settings > Tools & MCP** shows **Sign in** and a **Connect** button. Before, Kepler treated these servers as open, and every request failed with 401 Unauthorized. See [Signing in](/kepler/extend#signing-in).
+- **Plugin servers that declare a sign-in work.** A plugin's MCP server that declares its sign-in the Claude Code way, with an `oauth` block, gets a working **Connect**. Installing or updating a plugin, and `/plugins`, say which of its servers still need a sign-in. See [Servers that need a sign-in](/kepler/plugins#servers-that-need-a-sign-in).
+- A server whose sign-in settings are wrong or unsupported shows **Config error** and says what to fix, instead of sending requests with no token.
+- Slack's MCP server signs in through Kepler's own Slack app, so the consent page names Kepler.
+- **War rooms with more than four members.** The room shows the lead and the first four members, and the rest keep working without a pane. Before, a fifth member took over the room: the lead, its composer and the other members disappeared. See [What you see](/kepler/war-room#what-you-see).
+
+</Update>
 
 <Update label="0.1.9-beta" description="Hooks, plugins, channels and chat automations">
 
@@ -57,5 +67,56 @@ Download the latest version from the [releases page](https://github.com/rubixkub
 - A topology source that fails to scan offers **Try again**, **Ignore** and **Ask Kepler**.
 - A run you cancel still counts the tokens it spent in **Plan & Usage**.
 - **Settings > General > About** shows the product version.
+
+</Update>
+
+<Update label="0.1.7-beta" description="Remote access and a map that knows more">
+
+**Work on other machines**
+
+- **Remote access.** Turn on **Work on other machines** in **Settings > Remote access**, then pick a host, a cloud VM, a container or a sandbox from the control beside **Send**, or type `/connect <host>`. Kepler connects with your own logins and never asks for or stores a password. See [Remote access](/kepler/remote-access).
+- Machines come from your SSH config, Google Cloud and AWS, Teleport, Docker, Kubernetes pods, Ansible inventories, and groups made from SSH config patterns. Windows hosts work over SSH.
+- Connected is not the same as allowed. A thread uses a machine only after you pick it or approve it there, and each machine can carry its own limits.
+- **Save a machine** appends a `Host` block to your own `~/.ssh/config`, after showing it to you.
+- **Commands that keep running.** Kepler can keep a port-forward or a log tail running for up to twelve hours, with a **Stop** button. End a shell-mode line with `&` to do the same yourself. See [Commands running in the background](/kepler/remote-access#commands-running-in-the-background).
+
+**Topology**
+
+- **How things got there.** CI workflows from GitHub Actions, GitLab CI, CircleCI and Jenkins, Helm releases, and Argo CD and Flux applications are on the map. See [Topology](/kepler/topology#how-things-got-there).
+- **Where the data lives.** Databases, caches, queues and buckets on AWS and Google Cloud, with their addresses. Azure joins the scan, one source per subscription.
+- **Where to look.** Prometheus, Grafana, Alertmanager, Loki, Jaeger and similar tools found in your clusters, with their addresses.
+- **Things no scan can see.** Add them to Kepler's own list, or accept what Kepler proposes from your conversations under **Activity > Needs you**. See [Add what no scan can see](/kepler/topology#add-what-no-scan-can-see).
+
+**Also**
+
+- The composer fits a narrow panel, and the conversation's card stays beside it in narrower windows.
+- Choosing a command that takes an argument puts it in the composer and waits. `Tab` completes any command and `Enter` runs it.
+- Rows from a connected Grafana, Datadog, Prometheus or OpenTelemetry integration reach the map.
+- One integration tool with an unusual schema can no longer make every turn fail.
+
+</Update>
+
+<Update label="0.1.6-beta" description="Tabs and split panes">
+
+- **Tabs.** `Cmd+T` opens a tab, `Cmd+1` to `Cmd+9` pick one, and `Cmd+W` closes one. `Cmd`-click a session in the sidebar, or choose **Open in new tab**, to open it in a tab. See [Tabs and split panes](/kepler/workspace#tabs-and-split-panes).
+- **Split panes.** `Cmd+D` splits right and `Cmd+Shift+D` splits below. Drag a session onto a pane to place it. Panes you are not typing in keep streaming.
+- Tabs and splits come back after a relaunch.
+- **Every shortcut in one place.** Press `Cmd+/` or type `/shortcuts`. On Windows and Linux, keys are written as `Ctrl`, `Shift` and `Alt` everywhere in the app. See [Commands and shortcuts](/kepler/commands#keyboard-shortcuts).
+- Your own messages sit on the right, and code blocks use the editor's colours.
+- **What Kepler can do** (`/help`) has walkthroughs for Automations and for tabs and panes.
+- `Ctrl+D` splits on Windows and Linux. `Cmd+W` closes the pane or tab, never the window.
+
+</Update>
+
+<Update label="0.1.5-beta" description="Automations">
+
+- **Automations have their own place.** Describe one, or start from one of 15 templates. The list puts the ones waiting on you first. See [Automations](/kepler/automations).
+- **The automation builder.** The chat on an automation's page tries each step before adding it, and cannot run, delete or take an automation live. See [The automation builder](/kepler/automations#the-automation-builder).
+- **Automations can change things, with your permission.** **Go live** lists every step that changes something and asks how each may run: **Every run** or **Ask me each time**. See [What an automation may change](/kepler/automations#what-an-automation-may-change).
+- **Event triggers.** An automation can start when a check's result changes, or when a webhook arrives. Webhooks have **Send a test** and **New token**. See [Webhooks](/kepler/automations#webhooks).
+- **Approvals and reports in the Feed.** **Waiting** is the one place to answer an approval. Reports can land quietly, and an alert clears itself when a later run finds the problem gone. See [The Feed](/kepler/workspace#the-feed).
+- **Integrations stay signed in.** Sign-ins renew in the background. See [Signing in](/kepler/extend#signing-in).
+- **Spike and Oodle** join the integrations catalog.
+- **Sources in web answers** show as chips with each site's icon and name.
 
 </Update>

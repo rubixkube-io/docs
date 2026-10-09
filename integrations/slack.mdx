@@ -1,105 +1,129 @@
 ---
-title: "Slack integration"
+title: "Rubix in Slack"
 sidebarTitle: "Slack"
-description: "Slack is both an interface to RubixKube and a notification channel. Talk to the bot in any channel to ask questions, trigger investigations, and approve actions. Get insights, RCAs, approvals, and digests where your team already lives."
-keywords: ["slack integration", "slack bot", "rubixkube slack", "incident slack", "chatops", "digest"]
-"og:title": "Slack integration"
-"og:description": "A bot you can talk to, and a notification channel for insights, RCAs, approvals, and digests."
+description: "Rubix, the RubixKube agent, in your Slack threads: mention it in a channel or message it directly, approve its changes with buttons, and see incidents as cards."
+keywords: ["slack", "slack bot", "rubix slack", "rubixkube slack", "incident slack", "chatops"]
+"og:title": "Rubix in Slack"
+"og:description": "Rubix answers in the thread, asks before it changes anything, and shows incidents as cards."
 ---
 
-Slack is a bit different from the other integrations. It is both an **interface** to RubixKube (talk to the bot, trigger investigations, approve actions) and a **notification channel** (insights, RCA reports, action approvals, and digests).
+Rubix is the RubixKube agent. In Slack it answers in the thread with what it sees in your
+environments: open incidents, their root causes, and the fix. It reads first and asks before it
+changes anything.
 
-## Two ways Slack works with RubixKube
-
-<CardGroup cols={2}>
-  <Card title="As an interface" icon="comments">
-    Add the bot to channels or threads. Mention it to ask about infrastructure, kick off an investigation, or approve a pending action, all without leaving Slack.
-  </Card>
-  <Card title="As a notification channel" icon="bell">
-    Insights, RCA reports, and action approvals post into the channels you pick. Daily and weekly digests keep the team aware of what happened and what to look at next.
-  </Card>
-</CardGroup>
-
-## Install the bot
+## Install
 
 <Steps titleSize="h3">
   <Step title="Open the Integrations page">
-    In the RubixKube console, go to **Integrations** and select **Slack**.
+    In the RubixKube console, go to **Integrations** and select **Slack**, then **Connect**.
   </Step>
-  <Step title="Authorise with Slack">
-    Install the RubixKube Slack app into your workspace. A Slack admin approves the install.
+  <Step title="Allow Rubix in your workspace">
+    Slack shows what Rubix asks for. A Slack admin may need to approve the install.
   </Step>
-  <Step title="Invite the bot where you want it">
-    In each channel you want the bot to post in or listen in, run `/invite @RubixKube`. The bot only sees channels it has been invited to.
+  <Step title="Invite Rubix where you want it">
+    In each channel where you want to mention it, run `/invite @Rubix`. Rubix only sees channels it was invited to. Direct messages need no invite.
   </Step>
 </Steps>
 
-Once installed, Slack is available tenant-wide. Every agent across every environment can use it.
+The agent experience (the Messages tab, sessions and the Stop button) needs a paid Slack plan.
+Mentions in channels and incident cards work on every Slack plan.
 
-{/* TODO: screenshot of the Integrations page showing the Slack card */}
+## Talk to Rubix
 
-## Using the bot
+### In a channel
 
-### Ask anything
-
-Mention the bot with a question. Replies come back in-thread with evidence links.
-
-```
-@RubixKube what is the current health of the payments service?
-```
-
-### Trigger an investigation
-
-Ask the bot to look into something. The agent opens an investigation and posts progress back to the thread as it goes.
+Mention Rubix with a question. It answers in the thread, and the thread is one conversation:
+later mentions continue it, and Rubix reads what the thread said in between.
 
 ```
-@RubixKube investigate the latency spike in checkout from the last hour
+@Rubix what needs attention right now?
+@Rubix why is checkout slow since the last deploy?
 ```
 
-### Approve actions
+### In the Messages tab
 
-When an action needs approval, the bot posts an interactive card with the scope and evidence. Approvers click Approve or Reject with reason. Clicks map to RubixKube identities and follow the same policies as approvals in the console.
+Open Rubix from the apps list and ask there. Suggested prompts sit at the top, Rubix shows a
+working state with a Stop button while it thinks, and the channel you are looking at is passed
+along as context, so "what is going on in this channel?" works.
 
-## Notifications and digests
+### Approvals
 
-- **Insights, RCAs, and action approvals** post into the channels you pick during setup.
-- **Daily and weekly digests** roll up activity so the team can scan what happened without chasing individual alerts.
-- **Alerts and actionables** show up as cards you can act on in-thread.
+When Rubix proposes a change (closing an incident, moving a Task, running a command), the
+thread gets a card with the exact command and three buttons: **Approve**, **Approve for this
+chat** and **Deny**. Nothing runs until someone approves. The card then shows who decided, and
+the decision is recorded in your organization's activity log with that person's name.
 
-For per-service routing, per-team channels, or custom digest schedules, build a [Skill](/concepts/skills) that composes the notification behaviour you want.
+### Questions
 
-## Build custom workflows with skills
+When Rubix needs a choice, the thread gets the options as buttons, with **Let Rubix decide** as
+a way out. In a direct message, a plain reply answers; in a channel, mention Rubix with the
+answer.
 
-The Slack connection gives agents tools for posting, replying, reading messages in invited channels, and responding to card clicks. Specific behaviours (route `#payments` insights to `#payments-ops`, pin the active incident card, send a weekly digest at 09:00 on Mondays) are built as [Skills](/concepts/skills).
+### Incident cards
+
+Paste a RubixKube incident link in Slack and it unfurls as a card with the incident's status,
+severity and service, an **Ask Rubix** button that starts a conversation about it in that
+thread, and a side pane with the details.
+
+### In a thread
+
+| Say | Rubix |
+|---|---|
+| `stop` | stops what it is doing in this thread |
+| `status` | says what it is waiting on (an approval, a question) |
+| `settings` | lets you pick the model and the source for this thread |
+| `help` | explains what it can do |
+
+`/rubixkube help`, `/rubixkube stop` and `/rubixkube settings` work from anywhere.
+
+## Modes
+
+A new conversation takes your organization's default mode, set by an admin in the console
+under Settings: **Observe** (reads and explains, asks before any change), **Assist** (asks
+before each change) or **Act** (changes without asking, up to the organization's ceiling). The
+first reply in a thread says which mode the conversation is in.
 
 ## Permissions and data
 
-The bot only posts and reads in channels you explicitly invite it to. It does not ingest channel history beyond what it sees while invited, does not read direct messages, and does not sync private channels it has not been added to.
+Rubix asks only for what it uses: to hear mentions and direct messages, to post and stream
+replies, to read the thread it was mentioned in at that moment (at most fifteen messages), to
+show incident cards for RubixKube links, to add a reaction that acknowledges a mention, and to
+show the name of the person who asked. It does not join channels on its own and does not read
+channels it was not invited to.
+
+Rubix stores no Slack messages. What you say to it, and the thread messages sent along as
+context, become part of that conversation in RubixKube, kept as long as your organization
+keeps the conversation. Rubix writes one thing into Slack: a conversation identifier in the
+metadata of its own replies. No Slack data is used to train models. See the
+[privacy policy](https://rubixkube.ai/privacy).
+
+Rubix uses a large language model. Its answers can be wrong: check before you act, and use
+the Approve step as the check for any change.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="The bot is not posting">
-    Make sure the bot has been invited to the channel with `/invite @RubixKube`. Slack does not allow bots to post in channels they are not members of.
+  <Accordion title="Rubix does not answer a mention">
+    Check that the workspace is connected in the console under Integrations, Slack, and that Rubix was invited to the channel with `/invite @Rubix`.
   </Accordion>
-  <Accordion title="Approval clicks fail">
-    The Slack user clicking the button must map to a RubixKube user with the right approver role. Check the user mapping in the integration settings.
+  <Accordion title="This Slack workspace is not connected to RubixKube">
+    An admin connects it in the console under Integrations, Slack.
   </Accordion>
-  <Accordion title="Duplicate notifications">
-    Two skills are posting for the same event. Open the Skills page and check which skills are subscribing to that event type.
+  <Accordion title="Rubix is still answering in this thread">
+    Say `stop` in the thread, or press Stop.
+  </Accordion>
+  <Accordion title="Remove Rubix">
+    Disconnect Slack in the console under Integrations, or remove the app in Slack. Either stops it at once.
   </Accordion>
 </AccordionGroup>
 
 ## Related guides
 
 <CardGroup cols={2}>
-  <Card title="Microsoft Teams" icon="microsoft" href="/integrations/microsoft-teams">
-    Same model for Teams-first organisations.
-  </Card>
   <Card title="PagerDuty" icon="pager" href="/integrations/pagerduty">
     Pair with Slack: chat for day-to-day, PagerDuty for on-call paging.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose Slack capabilities into custom workflows.
+  <Card title="Microsoft Teams" icon="microsoft" href="/integrations/microsoft-teams">
+    The same model for Teams-first organisations.
   </Card>
 </CardGroup>

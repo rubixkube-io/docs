@@ -95,11 +95,52 @@ The Observer collects signals for every native Kubernetes object plus the common
 
 The Observer is deliberately light.
 
-- About **255Mi RAM** combined for Observer and the Kubernetes MCP server.
+- One pod. The Observer serves its own read-only Kubernetes tools, so no separate MCP server runs.
+- About 20Mi of RAM on a one-node test cluster with 25 workloads. The pod requests 128Mi and is limited to 512Mi.
 - Under **10 millicores of CPU** during normal operation.
 - Scales modestly with cluster size. Expect another 50Mi of RAM per 100 nodes.
 
 Cloud-side agents (RCA Pipeline, Memory, Guardian, Remediation) run in RubixKube Cloud. Your cluster hosts only the Observer.
+
+## Upgrade
+
+Run the install command again, copied from the console. It updates the Observer in place and keeps the environment, its history and its settings.
+
+```bash
+kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
+```
+
+Installs from before Observer 1.1.0 also ran a Kubernetes MCP server next to the Observer. It is no longer needed. Remove it after the upgrade:
+
+```bash
+kubectl -n rubixkube-system delete deploy/kubernetes-mcp-server svc/kubernetes-mcp-server sa/kubernetes-mcp-server
+kubectl delete clusterrole,clusterrolebinding kubernetes-mcp-server-readonly
+```
+
+Then remove the `kubernetes` entry from the `mcp-config` ConfigMap, or delete the ConfigMap if that was its only entry:
+
+```bash
+kubectl -n rubixkube-system edit configmap mcp-config
+```
+
+## Add your own MCP servers
+
+The Observer reads extra MCP servers from the optional ConfigMap `mcp-config` (key `mcp.json`) in `rubixkube-system`. The install command never overwrites it.
+
+```bash
+kubectl -n rubixkube-system create configmap mcp-config --from-file=mcp.json=./mcp.json
+kubectl -n rubixkube-system rollout restart deploy/rubixkube-observer
+```
+
+```json
+{
+  "mcpServers": {
+    "grafana": { "url": "http://mcp-grafana.monitoring.svc.cluster.local:8000/mcp" }
+  }
+}
+```
+
+Each server's state (connected or failing, with the error) shows on the environment's page in the console.
 
 ## KIND and local development
 

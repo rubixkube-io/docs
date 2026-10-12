@@ -1,0 +1,48 @@
+name: Sync Kepler version
+
+# Keeps the version printed on kepler/installation.mdx in step with the latest
+# release in rubixkube-io/kepler-releases.
+on:
+  schedule:
+    # Hourly. GitHub may delay scheduled runs under load; releases are rare enough
+    # that a late run costs nothing.
+    - cron: "17 * * * *"
+  workflow_dispatch:
+  # Lets kepler-releases push the update the moment it publishes. See the README
+  # note in scripts/update_kepler_version.py for the dispatch payload.
+  repository_dispatch:
+    types: [kepler-release]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-kepler-version
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Write the latest version into the docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/update_kepler_version.py
+
+      - name: Commit if the version moved
+        run: |
+          if git diff --quiet -- kepler/installation.mdx; then
+            echo "Docs already current, nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kepler/installation.mdx
+          git commit -m "docs: sync Kepler version with the latest release"
+          git push

@@ -28,8 +28,8 @@ You can run the Observer on an existing Linux VM inside your VPC, or let the ins
   <Card title="A Linux host" icon="server">
     An existing EC2 instance or any Linux VM with outbound HTTPS. The installer can also spin up a fresh EC2 instance for you.
   </Card>
-  <Card title="Outbound HTTPS" icon="network-wired">
-    `api.rubixkube.ai:443` and `nats.rubixkube.ai:443` plus the AWS service endpoints you want to observe.
+  <Card title="Outbound access" icon="network-wired">
+    HTTPS to `api.rubixkube.ai:443`, TCP to `nats.rubixkube.ai:4222`, plus the AWS service endpoints you want to observe.
   </Card>
   <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
     Create a new AWS environment in the console to get your personal install command.

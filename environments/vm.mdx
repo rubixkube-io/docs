@@ -20,8 +20,8 @@ Useful for boxes that live outside your cloud accounts: bare metal in a colo, on
   <Card title="Basic tools" icon="terminal">
     `curl` (or `wget`), `bash`, `systemd`, and sudo or root access.
   </Card>
-  <Card title="Outbound HTTPS" icon="network-wired">
-    `api.rubixkube.ai:443` and `nats.rubixkube.ai:443` reachable from the host.
+  <Card title="Outbound access" icon="network-wired">
+    HTTPS to `api.rubixkube.ai:443` and TCP to `nats.rubixkube.ai:4222`, reachable from the host.
   </Card>
   <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
     Create a new VM environment in the console to get your personal install command.
@@ -127,21 +127,21 @@ sudo systemctl restart rubixkube-observer
   <Accordion title="Metrics not appearing in console">
     1. Confirm the service is running: `sudo systemctl status rubixkube-observer`.
     2. Check connectivity: `curl -I https://api.rubixkube.ai`.
-    3. Check NATS reachability: `curl -I https://nats.rubixkube.ai`.
+    3. Check NATS reachability: `nc -zv nats.rubixkube.ai 4222`.
     4. Wait two or three minutes for the first poll cycle.
   </Accordion>
   <Accordion title="High CPU or memory on a constrained host">
     Lengthen the poll interval with `SYSTEM_POLL_INTERVAL=60s` (or `120s`) and restart. The Observer batches signals between polls, so longer intervals cost memory only linearly in the batch buffer.
   </Accordion>
   <Accordion title="Firewall blocking outbound traffic">
-    Ensure outbound TCP 443 is allowed to both:
+    Ensure these outbound connections are allowed:
 
     ```
-    api.rubixkube.ai
-    nats.rubixkube.ai
+    api.rubixkube.ai   TCP 443
+    nats.rubixkube.ai  TCP 4222
     ```
 
-    Test connectivity: `curl -I https://api.rubixkube.ai && curl -I https://nats.rubixkube.ai`.
+    Test connectivity: `curl -I https://api.rubixkube.ai && nc -zv nats.rubixkube.ai 4222`.
   </Accordion>
 </AccordionGroup>
 

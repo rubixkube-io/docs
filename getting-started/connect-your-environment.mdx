@@ -130,10 +130,10 @@ The Observer is deliberately light: it collects signals, maintains a local cache
 
 | Environment | Install surface | Outbound network | Typical footprint |
 | --- | --- | --- | --- |
-| Kubernetes | `kubectl apply` manifest | `api.rubixkube.ai:443`, `nats.rubixkube.ai:443` | ~255Mi RAM, under 10 mCPU |
+| Kubernetes | `kubectl apply` manifest | `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222` | ~255Mi RAM, under 10 mCPU |
 | AWS | Shell installer on a VM, or new EC2 | Above, plus AWS APIs | ~200Mi RAM |
 | GCP | Shell installer on a VM, or new GCE | Above, plus GCP APIs | ~200Mi RAM |
-| Linux VM | Shell installer on the host | `api.rubixkube.ai:443`, `nats.rubixkube.ai:443` | ~150Mi RAM |
+| Linux VM | Shell installer on the host | `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222` | ~150Mi RAM |
 
 ## After you connect
 
@@ -165,7 +165,7 @@ The Observer is deliberately light: it collects signals, maintains a local cache
     Structured events, metrics, and state snapshots stream to RubixKube Cloud for correlation. Raw payloads stay in your environment unless you explicitly enable them.
   </Accordion>
   <Accordion title="What if my cluster is air-gapped or behind strict egress?">
-    The Observer only needs outbound HTTPS to `api.rubixkube.ai:443` and `nats.rubixkube.ai:443`. If that is not possible, [reach out](mailto:connect@rubixkube.ai) and we can talk through a deployment mode that fits your controls.
+    The Observer only needs outbound HTTPS to `api.rubixkube.ai:443` and outbound TCP to `nats.rubixkube.ai:4222`. If that is not possible, [reach out](mailto:connect@rubixkube.ai) and we can talk through a deployment mode that fits your controls.
   </Accordion>
   <Accordion title="How do I remove an environment?">
     Delete it from **Environments** in the console, then run the appropriate uninstall. For Kubernetes: `kubectl delete -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"`. For shell installs: rerun the installer and pick **Uninstall Observer**.

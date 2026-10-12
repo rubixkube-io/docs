@@ -9,7 +9,7 @@ contact_links:
     about: Join our community Slack for discussions and support
 
   - name: 🐛 Platform Bug Reports
-    url: https://github.com/rubixkube-io/rubixkube/issues
+    url: https://github.com/rubixkube-io/community/issues/new/choose
     about: Report issues with the RubixKube platform (not documentation)
 
   - name: 📧 Email Support
@@ -21,5 +21,5 @@ contact_links:
     about: Report security vulnerabilities (see SECURITY.md for details)
 
   - name: 💼 Feature Requests (Platform)
-    url: https://github.com/rubixkube-io/rubixkube/discussions
+    url: https://github.com/rubixkube-io/community/discussions/categories/ideas
     about: Request features for the RubixKube platform

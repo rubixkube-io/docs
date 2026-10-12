@@ -14,7 +14,7 @@ Instead, please report security vulnerabilities directly to our security team us
 - **Response Time**: We aim to acknowledge security reports within 24 hours
 
 ### Alternative Contacts
-- **GitHub Security Advisory**: Use GitHub's [private vulnerability reporting](https://github.com/rubixkube-io/rubixkube/security/advisories/new)
+- **GitHub Security Advisory**: Use GitHub's [private vulnerability reporting](https://github.com/rubixkube-io/community/security/advisories/new)
 - **HackerOne**: We may establish a bug bounty program in the future
 
 ## 📋 What to Include in Your Report

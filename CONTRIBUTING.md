@@ -8,7 +8,6 @@ Thank you for your interest in contributing to RubixKube! We welcome contributio
 - [Getting Started](#getting-started)
 - [Development Workflow](#development-workflow)
 - [Documentation Contributions](#documentation-contributions)
-- [Code Contributions](#code-contributions)
 - [Reporting Issues](#reporting-issues)
 - [Pull Request Process](#pull-request-process)
 - [Community Guidelines](#community-guidelines)
@@ -29,12 +28,6 @@ There are many ways to contribute to RubixKube:
 - Suggest enhancements and new features
 - Ask questions and get help
 
-### 💻 Code Contributions
-- Fix bugs and implement features
-- Improve performance and reliability
-- Add tests and documentation
-- Refactor and optimize code
-
 ### 🎨 Design & UX
 - Improve UI/UX in the dashboard
 - Create icons and illustrations
@@ -44,38 +37,32 @@ There are many ways to contribute to RubixKube:
 
 ### 1. Set Up Your Environment
 
-**For Documentation:**
+You need Node.js 18 or higher and npm or yarn.
+
 ```bash
 # Clone the docs repository
 git clone https://github.com/rubixkube-io/docs.git
 cd docs
 
-# Install dependencies
-npm install -g mintlify
+# Install the Mintlify CLI
+npm i -g mint
 
-# Start development server
+# Start the local preview (http://localhost:3000)
 mint dev
 ```
 
-**For Platform Development:**
-```bash
-# Clone the main repository
-git clone https://github.com/rubixkube-io/rubixkube.git
-cd rubixkube
-
-# Follow setup instructions in the repository
-```
+This repository holds the public documentation only. The RubixKube platform source is not public, so contributions here are to the docs.
 
 ### 2. Explore the Project
 
 - **Documentation**: Browse [docs.rubixkube.ai](https://docs.rubixkube.ai) to understand the structure
-- **Platform**: Review the [README](https://github.com/rubixkube-io/rubixkube) and architecture docs
-- **Issues**: Check [open issues](https://github.com/rubixkube-io/rubixkube/issues) for contribution opportunities
+- **Platform**: Review the [community README](https://github.com/rubixkube-io/community) and architecture docs
+- **Issues**: Check [open issues](https://github.com/rubixkube-io/community/issues) for contribution opportunities
 
 ### 3. Join the Community
 
 - **Slack**: Join our [Community Slack](https://rubixkube-community.slack.com) for discussions
-- **GitHub Discussions**: Participate in [feature discussions](https://github.com/rubixkube-io/rubixkube/discussions)
+- **GitHub Discussions**: Participate in [feature discussions](https://github.com/rubixkube-io/community/discussions/categories/ideas)
 - **Office Hours**: Join our weekly community calls (announced on Slack)
 
 ## 📝 Documentation Contributions
@@ -118,59 +105,6 @@ docs/
 2. **Create or edit** content in the appropriate folder
 3. **Preview locally** with `mint dev`
 4. **Submit a pull request** with clear description
-
-## 💻 Code Contributions
-
-### Development Setup
-
-**Prerequisites:**
-- Go 1.19+ for backend services
-- Node.js 16+ for frontend components
-- Kubernetes cluster for testing
-- Docker for containerized development
-
-**Local Development:**
-```bash
-# Clone and setup
-git clone https://github.com/rubixkube-io/rubixkube.git
-cd rubixkube
-make setup
-
-# Run tests
-make test
-
-# Start development environment
-make dev
-```
-
-### Code Standards
-
-**General Guidelines:**
-- Follow Go best practices for backend code
-- Use TypeScript/React for frontend components
-- Write clear, self-documenting code
-- Include unit and integration tests
-- Update documentation for API changes
-
-**Pull Request Requirements:**
-- Tests pass and coverage doesn't decrease
-- Code follows project style guidelines
-- Documentation updated if needed
-- Changes backward compatible or migration guide provided
-
-### Testing
-
-```bash
-# Run all tests
-make test
-
-# Run specific test suite
-make test-unit
-make test-integration
-
-# Check test coverage
-make coverage
-```
 
 ## 🐛 Reporting Issues
 
@@ -226,30 +160,21 @@ make coverage
 ```bash
 # Fork the repository
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/rubixkube.git
-cd rubixkube
+git clone https://github.com/YOUR_USERNAME/docs.git
+cd docs
 
-# Create a feature branch
-git checkout -b feature/amazing-feature
-# or for docs
+# Create a branch
 git checkout -b docs/improve-installation-guide
 ```
 
 ### 2. Make Changes
 
 - Make focused, atomic changes
-- Follow existing code style and patterns
-- Add tests for new functionality
-- Update documentation as needed
+- Follow the existing page style and structure
 
 ### 3. Test Thoroughly
 
 ```bash
-# For code changes
-make test
-make lint
-
-# For docs changes
 mint dev  # Preview changes locally
 ```
 
@@ -267,7 +192,7 @@ git commit -m "Add: comprehensive installation guide for KIND
 - Add verification commands"
 
 # Push to your fork
-git push origin feature/amazing-feature
+git push origin docs/improve-installation-guide
 ```
 
 ### 5. Create Pull Request
@@ -315,7 +240,7 @@ We love recognizing our contributors! Contributors may be:
 
 ### Community Resources
 - **Slack**: [#contributors](https://rubixkube-community.slack.com) channel
-- **GitHub Discussions**: [Q&A category](https://github.com/rubixkube-io/rubixkube/discussions/categories/q-a)
+- **GitHub Discussions**: [Q&A category](https://github.com/rubixkube-io/community/discussions/categories/q-a)
 - **Office Hours**: Weekly community calls (announced on Slack)
 
 ### Asking Questions

@@ -83,16 +83,16 @@ Then reinstall the CLI.
 
 ## Proxy, VPN, or strict egress
 
-The CLI needs outbound HTTPS to:
+The CLI needs outbound access to:
 
 - `api.rubixkube.ai:443`
-- `nats.rubixkube.ai:4222` (or `443` depending on your network configuration)
+- `nats.rubixkube.ai:4222` (TCP)
 
 Test from the shell:
 
 ```bash
 curl -I https://api.rubixkube.ai
-curl -I https://nats.rubixkube.ai:4222
+nc -zv nats.rubixkube.ai 4222
 ```
 
 If behind a proxy:

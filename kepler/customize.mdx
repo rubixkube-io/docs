@@ -1,0 +1,85 @@
+---
+title: "Customize: skills, commands, agents, hooks and plugins in one place"
+sidebarTitle: "Customize"
+description: "Settings > Customize is where you manage everything that changes how Kepler works: plugins, skills, hooks, slash commands and specialist agents. One search, one list per kind, and a workspace filter."
+keywords: ["kepler customize", "kepler settings customize", "manage skills", "manage hooks", "custom commands editor", "specialist agents settings", "kepler plugins settings"]
+"og:title": "Customize"
+"og:description": "Plugins, skills, hooks, commands and agents, behind one search."
+---
+
+**Settings > Customize** is where you manage everything that changes how Kepler works: the plugins you installed, your skills, your hooks, your slash commands and your specialist agents. Open it with `Cmd+,` (`Ctrl+,` on Windows and Linux) and pick **Customize** in the sidebar.
+
+## How the page works
+
+A row of chips across the top picks what you are looking at: **Plugins**, **Skills**, **Hooks**, **Commands** and **Agents**. **Rules** is marked Soon and is not available yet.
+
+One search box covers every chip. Type in it and the page moves to a chip with matches, with a count on each chip that has any.
+
+Every chip draws the same kind of list. Items are grouped by where they come from, each row has a switch and a menu, and long groups show five rows before **Show more**.
+
+| Group | What is in it |
+|---|---|
+| Installed | Plugins you installed. |
+| All workspaces | Yours, saved in `~/.kepler`. Used everywhere. |
+| The workspace's name | Saved in that workspace's `.kepler` folder. Used only there. |
+| From plugins | Brought by a [plugin](/kepler/plugins), grouped per plugin. Read-only. |
+| Built-in | What ships with Kepler. |
+| From integrations | Skills that come with a connected integration. |
+| From runbooks | Runbooks saved in memory, offered as slash commands. |
+| From Claude Code | Found on this machine in Claude Code's folders. Not used until you import them. |
+
+### The workspace filter
+
+Settings belongs to the whole app, so Customize starts on global items only. The menu inside the search box adds one workspace's own items to the list, or goes back to global only. When you create something, **Save for** picks where it is written: **All workspaces (global)** or one workspace.
+
+## Plugins
+
+Install, view, update, switch and remove [plugins](/kepler/plugins). **Add plugin** opens the plugin browser. Plugins you already installed for Claude Code are listed with an **Import** button.
+
+## Skills
+
+Create a skill from a template, import one, edit its `SKILL.md`, add a script beside it, or switch it off. Skills you have in Claude Code's folders show under **From Claude Code** until you import them. See [Extend Kepler](/kepler/extend#skills).
+
+## Hooks
+
+Create a hook with **New hook**, edit or delete your own, and switch each one on or off. **Hooks on** switches all of them at once. Two banners can appear here:
+
+- A workspace has hooks waiting for review. Workspace hooks do not run until you trust them. Press **Review** to see each one and trust it.
+- Kepler skipped a broken entry. **Show** lists the file and the error. Every other hook keeps running.
+
+The log of hook runs is on the **Hooks** tab of Activity, under **Settings > Plan & Usage**. See [Hooks](/kepler/hooks).
+
+## Commands
+
+Your slash commands, with an editor: name, description, argument hint and the prompt itself. Built-in commands are listed too, so search finds them. See [Commands](/kepler/commands#custom-commands).
+
+## Agents
+
+Specialists Kepler can delegate to, each with its own tools and instructions. Create one with **New agent**, or edit and delete your own and a workspace's. A built-in specialist opens to show its tools and lets you pick its model.
+
+Below the list, **Kepler's own agents** set the model for each part of Kepler:
+
+| Agent | What it does |
+|---|---|
+| Kepler | The agent you chat with. Toggle thinking and set its default effort. |
+| Automation builder | The chat on an automation's page. Uses the chat model unless you pick another. |
+| Memory | The background worker that turns your conversations into lasting knowledge. A small, fast model is enough. |
+| Topology | The worker that keeps your infrastructure map current. |
+| Shadow | A read-only watcher that pre-investigates incidents before you ask. |
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Plugins" icon="puzzle-piece" href="/kepler/plugins">
+    Install a bundle of skills, commands, agents and hooks.
+  </Card>
+  <Card title="Hooks" icon="bolt" href="/kepler/hooks">
+    Your own checks at moments in Kepler's work.
+  </Card>
+  <Card title="Extend Kepler" icon="wand-magic-sparkles" href="/kepler/extend">
+    Integrations, skills, commands and specialists.
+  </Card>
+  <Card title="Settings reference" icon="gear" href="/kepler/settings">
+    Every other settings page.
+  </Card>
+</CardGroup>

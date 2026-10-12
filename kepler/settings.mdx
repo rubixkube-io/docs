@@ -1,0 +1,159 @@
+---
+title: "Kepler settings reference"
+sidebarTitle: "Settings"
+description: "Every Kepler setting, section by section: General, Appearance, Plan & Usage, Models, Tools & MCP, Customize, Permissions, Secrets, Gateway, Remote access, Memory, Watchers, Topology and Experiments."
+keywords: ["kepler settings", "kepler models", "bring your own model", "ollama kepler", "kepler context window", "kepler permissions settings", "decision model", "kepler customize"]
+"og:title": "Kepler settings reference"
+"og:description": "Every dial in one window."
+---
+
+Open Settings with `Cmd+,` (`Ctrl+,` on Windows and Linux) or run `/settings` in the chat. The sidebar groups the sections into four clusters: the app itself, what Kepler uses and may touch, what it knows, and labs. This page walks the sections in the order they appear in the sidebar. Where a topic has its own page, this page stays short and links to it.
+
+## App
+
+### General
+
+| Setting | What it does |
+|---|---|
+| Account | Who you are signed in as, and **Log out**. Signing out leaves your history, memory and settings on this device. |
+| About | The installed version and update status. |
+| Privacy | A statement of what leaves your machine: only calls to the model you chose and to your own tools. Conversation history and memory stay local. |
+| Dictation | Speak into the composer and Kepler types it out, using the operating system's own recognizer on your machine. macOS only. |
+| While you are away | Whether Kepler keeps running when you close the window, so watchers and scheduled work can still reach you. On macOS this needs **Allow in the Background** under **System Settings > General > Login Items**. Also: let watchers reach you on a channel, and run scheduled work on time. |
+| Signature | The name and emoji Kepler stamps on replies it sends on your channels, so its messages never read as yours. **Sign replies everywhere** is off by default because Telegram, Slack and Discord already show Kepler's own name. |
+
+### Appearance
+
+| Setting | What it does | Default |
+|---|---|---|
+| Appearance | Light, Dark, or System. System follows your OS. Applies to the app and the terminal. | System |
+| Theme | Pick a colour theme for the resolved mode, from Apple, Catppuccin, Dracula, Nord, Tokyo Night and more. | |
+| Accent | Optionally override the theme's highlight colour. | The theme's own accent |
+| Interface scale | Zoom the whole UI. | |
+| Tool-call density | How much detail each tool card shows in the chat. | |
+
+### Plan & Usage
+
+Kepler runs locally and is free: no seats, no cloud, no limits. This section shows your plan and what this month has cost so far in model spend, updated as you work. Cloud plans add team sync, shared memory and hosted automations.
+
+Below it, **Activity** lists recent work on three tabs: **Runs**, **Tool calls**, and **Hooks** (every hook run over the last 30 days). A run you cancel still counts the tokens it spent.
+
+## Models and access
+
+### Models
+
+Kepler runs on two models: a capable **main model** for reasoning and chat, and a fast **worker model** for the background lanes it spins up. Pick either from the composer's model picker or with `/model`. Whichever model you pick is the one that runs, every turn. Kepler never switches models on its own: if a call fails, it retries the same model or tells you.
+
+Reasoning effort is a slider in the same picker, or `/effort`. **Auto** lets the model decide.
+
+Two optional picks sit beside them. The **image model** draws images when your chat model cannot. The **decision model** answers typed questions in about a second, and Kepler uses it to double-check commands before they run. It is off by default. See [Decision model](/kepler/decision-model).
+
+**Providers.** Enable a provider, add its key, and its models appear in the picker. Keys stay on this machine.
+
+| Provider | Notes |
+|---|---|
+| Kepler | Hosted models, available once you sign in. No key to manage. |
+| Anthropic | Your own API key. |
+| OpenAI | Your own API key. |
+| OpenAI Codex | Sign in with your ChatGPT plan, and your account's own models appear. |
+| OpenRouter | Your own API key. Its full model list is searchable here. |
+| Google Gemini API | Your own API key. |
+| Google Vertex AI | Your Google Cloud project credentials. |
+| xAI | Your own API key. |
+| AWS Bedrock | Your AWS credentials. |
+| Ollama | Local models on your machine. No key. |
+| OpenAI-compatible | Any endpoint that speaks the OpenAI API. Set the base URL. Add as many as you like, each with its own key and models. |
+| TypeSafe | Decision models only. Your own API key. |
+| System One endpoint | Decision models only. Set the URL and add the model ids it serves. |
+
+The picker shows how each model is billed. Background work, such as watchers and memory, never runs on a subscription plan like ChatGPT's.
+
+**Context window.**
+
+| Setting | What it does | Options |
+|---|---|---|
+| Working window cap | How much of the model's window Kepler uses before compacting. Keeps cost and latency in check on large-window models. Flip **Max mode** in the composer to use the full window for one conversation. | 128K, 250K, 500K, 1M |
+| Auto-compact | Summarize older turns when the working window fills, so long sessions keep going. | On or off |
+| Compact at | How full the working window gets before compaction runs. | 75, 80, 82, 90 percent |
+
+You can also compact by hand at any time with `/compact`.
+
+### Tools & MCP
+
+| Setting | What it does |
+|---|---|
+| Progressive tool discovery | Load MCP tools on demand instead of sending them all each turn. Keeps large integrations fast. |
+| Integrations | The catalog of integrations, their status, and custom MCP servers you add yourself. See [Extend Kepler](/kepler/extend#integrations-mcp-servers). |
+
+### Customize
+
+One place for plugins, skills, hooks, slash commands and specialist agents, with one search, a chip per kind, and a workspace filter. The **Agents** chip also sets the model for each of Kepler's own agents: Kepler itself, the automation builder, Memory, Topology and Shadow. See [Customize](/kepler/customize).
+
+### Permissions
+
+What you have allowed for good, your command rules, the always-blocked list, and the Files, Shell and MCP servers switches, each set to allow, ask or block. See [Permissions](/kepler/permissions).
+
+### Secrets
+
+Named credentials for MCP servers, stored in your operating system keychain and referenced as `${NAME}`. Each row shows which integrations use it. See [Extend Kepler](/kepler/extend#secrets).
+
+### Gateway
+
+Connect WhatsApp, Slack, Telegram, Discord or a channel from a plugin so you can carry on a session from your phone. Per channel: what it can do (Observe, Ask before changes, Act within bounds), default workspace, reply in channels on @mention, show typing, read receipts, and who can message. **Add channel** installs a channel plugin, wraps a channel server you already have, or has Kepler build one. **Disconnect everything** turns off every channel and keeps the people you allowed. Reachable only while Kepler is running. See [Chat from your phone](/kepler/channels).
+
+### Remote access
+
+Switch **Work on other machines** on to let a thread work on a server, a cloud VM or a sandbox. Below it: the machines Kepler knows, each with Connect, Disconnect or Start and a per-machine set of limits; commands running in the background; and **New threads start on**. See [Remote access](/kepler/remote-access).
+
+## What Kepler knows
+
+### Memory
+
+Import, export, reindex, rebuild the graph, wipe, and read shadow briefs. See [Memory](/kepler/memory#settings-memory).
+
+### Watchers
+
+Every watcher across every session, with counts for watching, checks, alerts sent and ended, and the detail of each one. See [Watchers](/kepler/watchers).
+
+### Topology
+
+| Setting | What it does |
+|---|---|
+| Scanning | On or paused. Kepler reads your clusters, hosts, cloud accounts and repositories on a schedule to keep its map current. Nothing leaves your machine, and it only looks at what you already have access to. |
+| Frequency | How often Kepler checks for changes, from every 5 minutes to every 6 hours. |
+| Enrich from chat sessions | How often Kepler reads your recent chats to learn what you call things. |
+| Sources | Each source it reads and its last status. |
+| Add your own list | A file of machines the scan misses. |
+| Clear the map | Start the map over. |
+
+See [Topology](/kepler/topology).
+
+## Labs
+
+### Experiments
+
+| Experiment | What it does |
+|---|---|
+| BrowserV2 | Kepler drives your own Chrome instead of the embedded browser panel: real cookies, real extensions, real logged-in sessions. Install the extension, connect, then enable. |
+| Command line | Install or update the `kepler` command, which drives the running app from any terminal with the same agent and the same sessions. |
+
+<Note>
+Settings that talk to the agent show "Can't reach Kepler" if the app is still starting. Wait a moment and reopen the page.
+</Note>
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Permissions" icon="lock" href="/kepler/permissions">
+    The rules layer under the posture.
+  </Card>
+  <Card title="Memory" icon="brain" href="/kepler/memory">
+    What Kepler remembers and how to edit it.
+  </Card>
+  <Card title="Chat from your phone" icon="mobile" href="/kepler/channels">
+    Gateway setup for each channel.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/kepler/troubleshooting">
+    When a setting does not take.
+  </Card>
+</CardGroup>

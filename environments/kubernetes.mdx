@@ -96,7 +96,7 @@ The Observer collects signals for every native Kubernetes object plus the common
 The Observer is deliberately light.
 
 - One pod. The Observer serves its own read-only Kubernetes tools, so no separate MCP server runs.
-- About 20Mi of RAM on a one-node test cluster with 25 workloads. The pod requests 128Mi and is limited to 512Mi.
+- About 20Mi of RAM and 10 millicores on a one-node test cluster with 32 workloads. The pod requests 128Mi and is limited to 512Mi.
 - Under **10 millicores of CPU** during normal operation.
 - Scales modestly with cluster size. Expect another 50Mi of RAM per 100 nodes.
 

@@ -98,6 +98,8 @@ When your organization enables [On-Call](/using/on-call), link your Slack identi
 
 Use `/oncall help` in Slack for the current grammar. Incident cards show the service, urgency, assignees and available actions. Interactive actions use the clicking person's mapped RubixKube identity. Linked responders can also receive handoff prompts and summaries by DM, and acknowledge a delivered handoff from its card. A Slack workspace admin may need to approve the On-Call app scopes and command before these features appear.
 
+For Slack-first paging, responders choose Slack at delay zero in **On-Call → My On-Call → Notifications**, then add a later fallback such as email if it is configured. This preference is per responder; it is not enabled automatically by connecting the workspace. Send a test page and check its delivery ledger before relying on the route. On-Call notification delivery and actions work with AI off.
+
 {/* TODO: screenshot of an On-Call incident card and handoff DM */}
 
 ## Permissions and data

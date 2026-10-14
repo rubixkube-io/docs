@@ -5,7 +5,7 @@ description: "What RubixKube On-Call supports today, and which capabilities need
 keywords: ["on-call", "availability", "features", "incident response", "webhooks"]
 ---
 
-On-Call accepts alerts from webhooks without a RubixKube cluster. Connecting RubixKube detection adds investigation and graph context. Tenant enablement, provider credentials, and feature settings can affect what appears in your workspace.
+On-Call is a standalone product area in the current RubixKube Console. It accepts alerts from webhooks without a RubixKube cluster, Observer, or AI entitlement. Connecting RubixKube detection can add investigation and graph context. On-Call access, AI, provider credentials, and mobile delivery are separate settings; turning on On-Call does not enable AI.
 
 ## Alert intake
 
@@ -20,6 +20,8 @@ On-Call accepts alerts from webhooks without a RubixKube cluster. Connecting Rub
 - Schedules support rotation layers, timezone-aware handoffs, effective-dated versions, preview and restore, overrides, cover requests, claimable shifts, shadow participants, holiday calendars, and absence overlays from iCalendar feeds.
 - Coverage checks find upcoming gaps. A configured fallback can receive a page when a schedule has no active responder; otherwise the policy advances to its next step.
 - On-Call includes a responder contact card. Until sender numbers are configured, it contains only the RubixKube On-Call name and cannot provide a number for Do Not Disturb bypass.
+- Responders can connect Slack with `/oncall connect` and choose Slack as their first notification rule, followed by a delayed configured fallback such as email. Rules are per responder; verify a test page in the delivery ledger.
+- The RubixKube On-Call mobile app pairs with a short-lived, single-use code generated from **Apps → On-Call mobile**. Paired sessions can be revoked there. Pairing does not itself enable push delivery.
 
 ## Incidents and administration
 
@@ -45,7 +47,8 @@ These features are gated by the tenant's detection and feature settings. With no
 
 ## Unavailable capabilities
 
-- **SMS, voice, native push, and mobile app:** unavailable until their provider and release setup is completed. A saved phone number alone does not make SMS or voice delivery available.
+- **SMS and voice:** not active in this release. Telnyx provider configuration and delivery acceptance are still outstanding; a saved phone number alone does not make either channel available.
+- **APNs and critical iOS push:** not accepted for release. Mobile app pairing is supported, but push availability depends on platform provider setup and device permission; this page does not claim APNs delivery.
 - **PagerDuty Events API compatibility, direct PagerDuty or Opsgenie webhook sources, schedule mirroring, and migration cutover:** unavailable. Use Alertmanager, a supported preset, or a generic webhook to ingest alerts.
 - **Preset contracts:** Splunk Observability, UptimeRobot, and StatusCake presets are unavailable while their webhook payload and recovery contracts remain unverified.
 - **Evidence-graded RCA verdicts:** unavailable while the shared verdict contract is pending. Existing alert-only triage remains separate from that work.

@@ -7,6 +7,8 @@ keywords: ["on-call", "Alertmanager", "webhook", "Grafana", "Datadog", "CloudWat
 
 Create an On-Call service before connecting a sender. In **On-Call → Services → your service → Integrations**, add an Alertmanager integration or a generic webhook integration. The integration dialog supplies the ingest URL and key. The key is shown once; store the complete URL as a credential.
 
+This alert path feeds standalone On-Call. It does not require a connected Kubernetes cluster or enable AI triage. Set up a team, coverage schedule, escalation policy and responder channel rules in the Console before routing production alerts.
+
 Use **Test mapping** to preview a payload without paging. Use **Test** on the integration page to send its sample through the real ingest path. Integration diagnostics show recent redacted requests, parsed events, errors, and accepted or dropped counts.
 
 ## Prometheus Alertmanager

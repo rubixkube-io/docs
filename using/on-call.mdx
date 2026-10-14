@@ -5,15 +5,15 @@ description: "Set up services, escalation policies, schedules, responder notific
 keywords: ["on-call", "incident response", "escalation policy", "schedule", "alerting"]
 ---
 
-On-Call connects incoming alerts to the people responsible for a service. A service owns an escalation policy; the policy can target responders directly or resolve a schedule when a page is due. Incidents, pages, and handoffs stay visible in the console.
+On-Call is a standalone RubixKube product for receiving alerts, organizing coverage, and coordinating human response. Use it from the **On-Call** area in the current RubixKube Console. A service owns an escalation policy; the policy can target responders directly or resolve a schedule when a page is due. Incidents, pages, and handoffs stay visible alongside the shared Incidents area.
 
-On-Call must be enabled for your tenant before its pages appear. A tenant admin may need a RubixKube superadmin to enable it. A cluster is not required for webhook alerting, although current first-run onboarding may still direct new workspaces to environment setup. SMS, voice, native push, and the mobile app are unavailable. Email delivery depends on relay setup; in-app delivery uses the Console event stream. See [capabilities and availability](/using/on-call-capabilities) for current limits.
+On-Call is enabled separately for each organization; a RubixKube superadmin may need to enable access if it is missing from the product navigation. No Kubernetes cluster, Observer, or AI entitlement is required to receive alerts or page responders. On-Call AI is a separate, default-off entitlement; enabling On-Call does not turn on AI investigation or triage. See [capabilities and availability](/using/on-call-capabilities) for provider limits.
 
 ## Set up a service
 
 1. Open **On-Call → Teams** and create the team that owns the service. Add responders and choose their roles.
-2. Open **On-Call → Schedules** and create a rotation. Add participants, choose its timezone and handoff time, and inspect the coverage preview. Use overrides for planned absences.
-3. Open **On-Call → Policies** and create ordered escalation steps. Each step can target a person or schedule and has a delay before the next step. Save the policy and use its resolve preview to check who would be paged now.
+2. Open **On-Call → Schedules** and create a staffed rotation. Choose its timezone and handoff time, review the coverage preview, and add overrides for planned absences.
+3. Open **On-Call → Policies** and create ordered escalation steps. Each step can target a person or schedule and has a delay before the next step. Save the policy and use its preview to check who would be paged now.
 4. Open **On-Call → Services**, create the service, and select its team and escalation policy. Configure routing, urgency and maintenance rules on the service page.
 5. In the service's **Integrations** tab, add Alertmanager or a generic webhook. Save the integration key when it is shown: it cannot be retrieved later. Use **Test** to send a sample alert through the ingest path and verify the resulting incident.
 
@@ -21,15 +21,21 @@ On-Call must be enabled for your tenant before its pages appear. A tenant admin 
 
 For sender instructions, see [Alertmanager](/integrations/alertmanager), [generic webhooks](/integrations/generic-webhook), and the [On-Call alert source guide](/integrations/on-call-alert-sources).
 
-## Prepare your own notifications
+## Start with Slack notifications
 
-Open **On-Call → My On-Call → Manage notification settings**. Add a reachable contact method, choose your timezone, set reminders and channel rules, then send a personal test page. Only configured channels can be selected. If your organization has not configured a provider, its channel may be unavailable even when your profile contains a contact method.
+Connect the organization Slack integration and link your responder identity with `/oncall connect`. Then open **On-Call → My On-Call → Notifications** and put Slack first for the urgency levels you cover. Add a later email rule as a fallback where email relay is configured. Rules and delays are per responder, so confirm your test page in the delivery ledger before relying on a route. See [Slack setup and commands](/integrations/slack).
 
-SMS and voice providers are not currently available, so adding or verifying a phone does not enable those delivery channels. The delivery ledger shows what Pager attempted and why a channel was skipped.
+Only channels configured for your organization and account are available. Email depends on relay setup. SMS and voice are not active in this release; provider configuration and acceptance remain open. The delivery ledger shows what Pager attempted and why a channel was skipped.
+
+## Pair the mobile app
+
+In **Apps → On-Call mobile**, generate a short-lived pairing code. Enter it in the RubixKube On-Call app while signed in as the same person. The code can be used once and expires; generate a new one if it expires. The Apps page lists paired sessions and lets you revoke one if a phone is lost or replaced.
+
+The app provides a compact view of your pages and the current roster, plus incident acknowledgement, resolution, escalation, manual paging, and timed coverage overrides. Push delivery depends on platform provider setup and device permission; pairing alone does not guarantee a push notification. APNs and critical iOS alert delivery have not passed acceptance. SMS and voice through Telnyx are not available yet.
 
 ## Work an incident
 
-The **Incidents** list filters by status, urgency, service, team and ownership. Open an incident to see its alerts, timeline, assigned responders, escalation steps and notification ledger. Acknowledge to take responsibility, add an operational note, reassign or escalate when another responder is needed, and resolve when the issue is addressed. Resolving also resolves the incident's open alerts.
+The shared **Incidents** list filters by status, urgency, service, team and ownership. Open an incident to see its alerts, timeline, assigned responders, escalation steps and notification ledger. Acknowledge to take responsibility, add an operational note, reassign or escalate when another responder is needed, and resolve when the issue is addressed. Resolving also resolves the incident's open alerts.
 
 **My On-Call** shows your current and next coverage, assigned incidents and a test-page entry point. **Now** shows current level-zero coverage for active services; `?kiosk=1` gives the board a full-screen view.
 

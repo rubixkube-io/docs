@@ -1,0 +1,73 @@
+---
+title: "Jira"
+description: "Turn the Jira issues your team marks as incidents into RubixKube incidents."
+tag: "New"
+---
+
+Connect Jira so an issue your team marks as an incident opens one in RubixKube, and moving it to Done resolves it. Every other issue is left alone, so a busy project doesn't fill your incident list.
+
+## When you'd use this
+
+- **People report incidents in Jira.** Support or another team files an issue, and Rubix starts looking.
+- **You run incidents from Jira.** Mark an issue as an incident, and it gets an RCA and Tasks here.
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **Jira**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
+  </Step>
+  <Step title="Add the webhook in Jira">
+    In Jira, go to **Settings > System > Webhooks** and create a webhook. Paste the URL.
+  </Step>
+  <Step title="Pick the events">
+    Tick **Issue created**, **Issue updated** and **Issue deleted**. To cover one project, add a JQL filter such as `project = OPS`.
+  </Step>
+</Steps>
+
+## What opens an incident and what resolves it
+
+An issue counts when it has the label `incident`, or when its issue type is `Incident`.
+
+| Jira event | What happens |
+|---|---|
+| A counted issue is created | Opens the incident |
+| A counted issue moves to a status that isn't done | Opens or updates the incident |
+| A counted issue moves to a done status | Resolves the incident |
+| An issue is deleted | Resolves its incident, if it has one |
+| Anything else | Ignored |
+
+**Severity** comes from the issue's priority: Highest is critical, High is high, Low and Lowest are low, and anything else is medium.
+
+<Note>
+Editing an issue without changing its status does nothing. If you add the `incident` label to an existing issue, the incident opens at its next status change.
+</Note>
+
+## What you'll see
+
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what Jira really sent.
+
+The automation **Jira issues become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
+
+Each incident carries the alert's details and a link back to Jira. Triage, the RCA and Tasks then work as they do for any other incident.
+
+## What Rubix can read too
+
+Jira is read through Atlassian Rovo, which also covers Confluence. See [Atlassian Rovo](/integrations/atlassian-rovo).
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Atlassian Rovo" icon="atlassian" href="/integrations/atlassian-rovo">
+    Let Rubix read Jira and Confluence.
+  </Card>
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
+  </Card>
+  <Card title="Linear" icon="list-check" href="/integrations/linear">
+    The same idea for Linear.
+  </Card>
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What happens after an incident opens.
+  </Card>
+</CardGroup>

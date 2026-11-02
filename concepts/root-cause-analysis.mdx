@@ -1,116 +1,136 @@
 ---
-title: "Root Cause Analysis"
-sidebarTitle: "Root Cause Analysis"
-description: "Evidence-linked causal chains for every investigation. How the RCA Pipeline Agent builds them, what is inside, and how to read one well."
-keywords: ["RCA", "root cause analysis", "causal chain", "incident investigation", "AI RCA", "evidence-linked RCA"]
-"og:title": "Root Cause Analysis"
-"og:description": "Evidence-linked causal chains for every investigation."
+title: "Root cause analysis"
+sidebarTitle: "Root cause analysis"
+description: "What's in an RCA, how Rubix builds one, and how to read it well."
 ---
 
-Root Cause Analysis (RCA) is the investigation layer of the Agent Mesh. When an [Insight](/concepts/insights) has enough evidence for a single identifiable root cause, the RCA Pipeline Agent takes over and produces a structured report. That report is the artefact your team acts on and references later.
+A root cause analysis (RCA) is the report Rubix writes for an [incident](/concepts/incidents) or a group. It's what your team acts on and refers back to later.
 
-Every RCA is built on cited evidence. There is no "trust me" reasoning. Every causal link points back to the signal, log, metric, or change that justifies it.
+Every RCA is built on cited evidence. Each finding points to the tool result, log or change that supports it. Rubix can be wrong, so every RCA shows its evidence and lets you rate it.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/rca-evidence-light.png" alt="A claim in an RCA links to its evidence, and code checks that the quote matches what the tool returned" />
+  <img className="hidden dark:block" src="/images/guides/rca-evidence-dark.png" alt="A claim in an RCA links to its evidence, and code checks that the quote matches what the tool returned" />
+</Frame>
 
 ## What a report contains
 
 <AccordionGroup>
-  <Accordion title="Observed conditions" icon="eye">
-    The exact state of the affected resources when the incident started. Snapshots of metrics, events, configuration, and recent changes. Every data point links to its source.
+  <Accordion title="Verdict and confidence" icon="gauge">
+    Whether Rubix settled the cause, and how sure it is. See the table below.
   </Accordion>
-  <Accordion title="Causal chain" icon="diagram-project">
-    Each link reads "A caused B because C". Every link names the specific evidence behind it, so you can verify instead of trust.
+  <Accordion title="Root cause" icon="diagram-project">
+    What happened and why, with the evidence behind each step, so you can verify instead of trust.
   </Accordion>
-  <Accordion title="Recommended actions" icon="wand-magic-sparkles">
-    Ranked fixes. Each annotated with expected blast radius, estimated recovery time, and confidence score. High-confidence actions sit at the top.
+  <Accordion title="Fix and Tasks" icon="wrench">
+    The steps to fix it, and the [Tasks](/concepts/tasks) Rubix suggests. An RCA can suggest none.
   </Accordion>
-  <Accordion title="Prior art" icon="clock-rotate-left">
-    If similar shapes have been resolved before in this workspace, the prior RCAs are linked inline. Operator notes from those resolutions come with them.
+  <Accordion title="Impact and current state" icon="eye">
+    Who and what was affected, and where things stand now.
   </Accordion>
-  <Accordion title="Verification" icon="circle-check">
-    After an action runs, the stabilisation window is recorded. Verified, partial, or rollback-suggested outcomes are all tracked on the report.
+  <Accordion title="Contributing factors, rollback and timeline" icon="timeline">
+    What made it worse, how to undo the Fix, and the order things happened in.
   </Accordion>
-  <Accordion title="Timeline and audit" icon="timeline">
-    Every status change, approval, applied action, and comment. Actor and timestamp on each entry. Ready for compliance review.
+  <Accordion title="What limited the investigation" icon="circle-question">
+    What Rubix couldn't see or settle. A source it couldn't read is named here, with what to check.
   </Accordion>
 </AccordionGroup>
+
+### Verdicts
+
+| The report says | The incident shows | What it means |
+| --- | --- | --- |
+| Root cause found | Root cause | The tool results show the cause directly |
+| Probable cause | Likely cause | They point to it, but one link isn't shown |
+| Cause not determined | Not determined | They don't settle it |
+
+An unsettled RCA is still published, with what Rubix found and what it ruled out. Confidence is capped at 0.95. It's held at 0.5 when the verdict is Cause not determined or the claims aren't cited.
+
+## When an RCA starts
+
+An RCA doesn't start the second an incident opens. Many problems clear by themselves, and an RCA on those is wasted work.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/rca-wait-light.png" alt="Default wait before an RCA by severity: Critical none, High 2 minutes, Medium 5, Low 10" />
+  <img className="hidden dark:block" src="/images/guides/rca-wait-dark.png" alt="Default wait before an RCA by severity: Critical none, High 2 minutes, Medium 5, Low 10" />
+</Frame>
+
+Incidents from an observer then get a little longer, up to 10 minutes, for the observer to report a recovery. Critical skips that too. The incident page tells you when the RCA will start and what it's waiting for.
+
+Change the waits in **Settings > Incidents**.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/console/investigating-light.png" alt="An incident with its RCA in progress" />
+  <img className="hidden dark:block" src="/images/console/investigating-dark.png" alt="An incident with its RCA in progress" />
+</Frame>
 
 ## How an RCA is built
 
 <Steps titleSize="h3">
   <Step title="Scope the incident">
-    Start from the Insight that opened the case. Identify the directly affected resources and their one-hop neighbours in the Knowledge Graph.
+    Start from the incident or group, with its evidence, comments and every member. For a group, one RCA covers them all.
   </Step>
-  <Step title="Gather evidence">
-    Pull signals (metrics, logs, events), recent changes (deploys, IAM, config), and prior art from the Memory Engine over a time window that spans the incident.
+  <Step title="Gather context">
+    Pull past RCAs on the same thing and how your team rated them, the sources Rubix can read, and the links between them.
   </Step>
-  <Step title="Build the chain">
-    Correlate signals across the scoped resources. Every inferred relationship must cite the evidence that justifies it.
+  <Step title="Investigate">
+    Rubix tests each explanation against live data from your sources, and rules out what doesn't hold. A past RCA or a comment is a lead to test, not a finding. Investigations only read. The RCA can't change anything.
   </Step>
-  <Step title="Rank recommendations">
-    For each candidate action, estimate blast radius and recovery time. Reorder by confidence. Top-ranked goes to Execute.
+  <Step title="Check the answer">
+    Code checks that quotes match what the tools returned, and sets the limits on confidence.
   </Step>
-  <Step title="Verify the outcome">
-    After an action is approved and applied, watch the affected resources for the stabilisation window. Record the outcome on the report.
+  <Step title="Publish">
+    The report lands on the incident. If the RCA can't finish, it retries. If it still stops, the incident says so and you can run it again.
   </Step>
 </Steps>
 
-## What makes an RCA citable by AI
+## What makes an RCA easy to check
 
-Docs, post-mortems, and AI answer engines can all cite RubixKube RCAs because the evidence chain is structured. Three properties matter.
-
-<CardGroup cols={3}>
-  <Card title="Specific claims" icon="crosshairs">
-    "Memory used at crash: 487Mi (95%)" beats "high memory pressure". The specific number is the claim.
-  </Card>
-  <Card title="Direct citations" icon="link">
-    Every claim links to its underlying signal. No inferential leaps without evidence.
-  </Card>
-  <Card title="Structured sections" icon="list-tree">
-    Observed, Causal, Recommended, Verified. The same shape every time. Predictable.
-  </Card>
-</CardGroup>
+- **Specific claims.** "`orders-api` raised `DB_POOL_SIZE` to 25 at 14:02" beats "a config change". The specific fact is the claim.
+- **Direct citations.** Each claim shows the tool result it came from, quoted.
+- **The same sections.** Root cause, Fix, Impact, Rollback, in the same order every time.
 
 ## How to read an RCA well
 
 <Steps titleSize="h3">
-  <Step title="Read the title and the top-ranked action first">
-    Ninety per cent of the value is in the top of the report. If the recommendation is clearly right, skip to the action panel.
+  <Step title="Read the verdict and the Fix first">
+    If the verdict is Root cause found and the Fix looks right, go to the Tasks.
   </Step>
-  <Step title="Verify one or two links in the causal chain">
-    Click through on the signals that feel surprising. Confirm the claim matches the underlying data. This builds trust in the report and flags edge cases the model might have missed.
+  <Step title="Check one or two citations">
+    Pick the claims that surprise you. Confirm each matches the underlying data.
   </Step>
-  <Step title="Check prior art">
-    If a similar shape was resolved recently, the previous resolution's operator notes often apply. Read them before approving the new action.
+  <Step title="Read what limited it">
+    A missing source can change the answer. Connect it and run the RCA again.
   </Step>
-  <Step title="Act, or route, or reject">
-    Approve, route to a teammate, or reject with a reason. All three feed the Memory Engine.
+  <Step title="Rate it">
+    Under the root cause, answer **Was this the cause?** with Right, Partly right or Wrong. For Partly right or Wrong, say what it really was. Rubix reads that the next time it looks at a problem like this. A Right raises the report's confidence, up to 0.95, and a Wrong from anyone stops it rising.
   </Step>
 </Steps>
 
 ## Common questions
 
 <AccordionGroup>
-  <Accordion title="Why did my Insight not become an RCA?">
-    Not every anomaly has a single identifiable root cause. Multi-cause incidents stay as insights, with the causal analysis inline. If you want a deeper dive, escalate from the insight card and the RCA Pipeline will attempt a full report with the added context.
+  <Accordion title="Why did my incident not get an RCA?">
+    It recovered before the RCA started, triage found it was known and expected, or it's Recurring. The incident says which. You can start one with **Run the RCA again**.
   </Accordion>
-  <Accordion title="How long does it take to generate an RCA?">
-    Usually thirty seconds to a few minutes, depending on how wide the causal search is. Large blast radius incidents take longer because more evidence has to be correlated.
+  <Accordion title="How long does an RCA take?">
+    It depends on how much there is to check. A larger group or a problem that keeps coming back gets a deeper investigation, and that takes longer. The incident page shows progress while it runs.
   </Accordion>
   <Accordion title="Can I rerun an RCA with new context?">
-    Yes. On the report detail page, use **Rerun with context** and paste in the new information (a ticket link, a Slack thread, your own hypothesis). The pipeline takes the input into account.
+    Yes. Add what you know as a comment on the incident, then choose **Run the RCA again** from its menu. Rubix reads the comments. It skips every automated wait.
   </Accordion>
-  <Accordion title="Are RCAs exportable?">
-    Markdown and printable views are available on the report detail page. Public share links are scoped and revocable. Enterprise workspaces can export the raw JSON for archival or custom dashboards.
+  <Accordion title="Can I export an RCA?">
+    Yes. Use **Export as Markdown** on the report's menu.
   </Accordion>
 </AccordionGroup>
 
 ## Related concepts
 
 <CardGroup cols={2}>
-  <Card title="Insights" icon="lightbulb" href="/concepts/insights">
-    Where RCAs originate. Every RCA starts as an insight.
+  <Card title="Incidents" icon="triangle-exclamation" href="/concepts/incidents">
+    Where RCAs start. Every RCA belongs to an incident or a group.
   </Card>
-  <Card title="Actions" icon="play" href="/concepts/actions">
-    What happens once the RCA produces a recommendation.
+  <Card title="Tasks" icon="list-check" href="/concepts/tasks">
+    What happens once the RCA suggests a Fix.
   </Card>
 </CardGroup>

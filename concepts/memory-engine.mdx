@@ -1,81 +1,63 @@
 ---
-title: "The Memory Engine"
-sidebarTitle: "Memory Engine"
-description: "Private, compounding memory for your infrastructure. Every incident, RCA, and correction stays in your workspace and sharpens the next investigation."
-keywords: ["memory engine", "compounding memory", "eternal context", "institutional knowledge", "AI memory", "incident memory"]
-"og:title": "The Memory Engine"
-"og:description": "Private, compounding memory for your infrastructure."
+title: "RubixKube's memory"
+sidebarTitle: "Memory"
+description: "How RubixKube keeps every incident, RCA and correction, and uses them in the next investigation."
 ---
 
-Most infrastructure tools see your stack for the first time every time you log in. RubixKube remembers. The Memory Engine is what turns each incident into lasting knowledge your team and your agents can lean on.
+Most infrastructure tools see your stack for the first time every time you log in. RubixKube remembers. Its memory turns each incident into something your team and Rubix can use next time.
 
-It is private to your workspace, not shared across tenants, and gets sharper the longer it runs.
+It belongs to your organization, and the more incidents you work through, the more it has to offer.
 
-<Info>
-  The Memory Engine powers the "eternal context" idea on the [RubixKube homepage](https://rubixkube.ai). Every signal, session, and resolution builds a deeper model of your system. That model belongs to you.
-</Info>
+## What the memory stores
 
-## What the Memory Engine stores
+- **Incidents.** What broke, the evidence, the history of who did what.
+- **RCAs.** Every report, with its verdict and citations.
+- **Tasks and outcomes.** What was suggested, what was done, and whether a Fix held.
+- **Your team's words.** Comments on incidents, plus answers to "What fixed it?".
+- **Ratings.** Whether people said an RCA was Right, Partly right or Wrong, and what the cause really was.
+- **Topology.** What's running on each source, and what changed.
 
-<CardGroup cols={2}>
-  <Card title="Incident resolutions" icon="file-circle-check">
-    Every RCA report, the action that resolved it, and the verification outcome.
-  </Card>
-  <Card title="Operator context" icon="user-pen">
-    Short notes operators add on resolution ("peak traffic repeats every Tuesday"). These are gold for future matches.
-  </Card>
-  <Card title="Chat sessions" icon="comments">
-    Investigation threads, the questions asked, and which answers proved useful.
-  </Card>
-  <Card title="Graph deltas" icon="diagram-project">
-    Topology changes over time. What services existed when, and what depended on what.
-  </Card>
-  <Card title="Rejections" icon="circle-xmark">
-    Which recommendations your team turned down, and why. The system learns what not to suggest.
-  </Card>
-  <Card title="Policies" icon="shield-halved">
-    Guardian decisions and their outcomes, so policy drift stays measurable.
-  </Card>
-</CardGroup>
+## How memory helps the next incident
 
-## Why memory compounds
+Every incident adds to what Rubix starts with next time.
 
-Every incident produces new connections in the graph. Three compounding effects are worth naming explicitly.
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/memory-light.png" alt="The first time Rubix starts from scratch. What is kept, an RCA, a rating, a comment and what fixed it, shapes the next time" />
+  <img className="hidden dark:block" src="/images/guides/memory-dark.png" alt="The first time Rubix starts from scratch. What is kept, an RCA, a rating, a comment and what fixed it, shapes the next time" />
+</Frame>
 
 <Steps titleSize="h3">
-  <Step title="Pattern recognition sharpens">
-    The second time a similar signal shape appears, the RCA Pipeline starts with the previous causal chain as a hypothesis. Investigation time drops.
+  <Step title="Past RCAs become leads">
+    When a problem shows up again, the RCA starts with past RCAs on the same thing and how they were rated. Rubix tests each past cause against live data and says whether it held.
   </Step>
-  <Step title="Recommendation quality rises">
-    Rejected recommendations are weighted down. Applied-and-verified recommendations are weighted up. Your team's style shapes the defaults.
+  <Step title="Your ratings count">
+    A past RCA rated Wrong sends the next investigation to a deeper run. What you said it really was goes with it. Triage can use trusted past RCAs to mark an expected problem as known, so no RCA runs.
   </Step>
   <Step title="Context survives staff turnover">
-    Tribal knowledge gets written into the memory instead of trapped in one engineer's head. When they move on, the context stays.
+    What the team knows gets written down instead of staying in one engineer's head. When they move on, the context stays.
   </Step>
 </Steps>
 
 ## A concrete example
 
-An OOMKilled event in `payments-api`. First time RubixKube sees it, the RCA walks the full causal chain from scratch: memory curves, traffic patterns, recent deploys, code changes. Ten minutes of signal correlation.
+`payments-api` starts crash-looping. The first time, Rubix works through it from scratch: the logs, `orders-db` connections, recent deploys. It finds that a new `orders-api` version raised its database pool. The Fix is setting `DB_POOL_SIZE` back to 10, and someone comments that the pool setting changed in the same release as a load test.
 
-Ninety days later, the same shape appears in a different namespace. The Memory Engine surfaces the original RCA, the fix that worked, and the operator note ("raise the limit from 512Mi to 1Gi, campaign traffic is bursty"). Investigation time drops from ten minutes to thirty seconds. Action is approved, verification lands inside the next stabilisation window.
+Weeks later the same thing happens. The new RCA starts with the old one, its rating and that comment. Rubix checks the current pool size first, because that's what the last RCA points to, and says whether the old cause holds this time.
 
-The second incident took less effort than the first. The third takes less than the second. That is the compounding.
-
-## Privacy and tenancy
+## Privacy and scope
 
 <AccordionGroup>
   <Accordion title="Your memory is yours" icon="lock">
-    The Memory Engine is scoped to your workspace. Nothing is shared across tenants. There is no cross-pollination of operator notes or incident history between customers.
+    Each record belongs to one organization. RCAs read your organization's history, and nothing else. See [Safety and control](/concepts/guardrails).
   </Accordion>
-  <Accordion title="Retention is plan-driven" icon="clock">
-    Free tier keeps 7 days of history, Business keeps 30, Enterprise is unlimited. You can export or delete at any time.
+  <Accordion title="Sensitive content" icon="eye-slash">
+    On Kubernetes, the observer hides passwords, tokens, emails and similar values before logs or tool results leave your cluster. Change what's hidden in **Configuration > Privacy** on the source's page.
   </Accordion>
-  <Accordion title="Sensitive content is scoped" icon="eye-slash">
-    Signals that contain secrets or personal data can be excluded from memory by rule. The Observer supports per-environment redaction.
+  <Accordion title="Export" icon="file-export">
+    Each RCA exports as Markdown from its menu. Admins can export Rubix's activity as CSV or JSON from **Settings > Activity**.
   </Accordion>
-  <Accordion title="Export when you want" icon="file-export">
-    RCAs, sessions, and resolution notes export as Markdown or JSON. The graph itself exports as a structured dump for your archive.
+  <Accordion title="Deleting a source" icon="trash">
+    Deleting a source deletes its history and metrics, and it can't be undone.
   </Accordion>
 </AccordionGroup>
 
@@ -83,45 +65,32 @@ The second incident took less effort than the first. The third takes less than t
 
 Small habits make the memory far more useful.
 
-<CardGroup cols={2}>
-  <Card title="Write short resolution notes" icon="pen">
-    One or two sentences on what really worked, why it worked, and any context that would not be obvious to a newcomer.
-  </Card>
-  <Card title="Reject politely" icon="circle-xmark">
-    When a recommendation is wrong, reject with a reason. The memory uses the reason to tune future suggestions.
-  </Card>
-  <Card title="Rename recurring incidents" icon="tag">
-    Give repeating issues a clear name ("campaign-tuesday-memory-spike"). Matching surfaces faster.
-  </Card>
-  <Card title="Link to runbooks" icon="link">
-    Attach links to internal runbooks on the RCA. Next incident of the same shape shows them automatically.
-  </Card>
-</CardGroup>
+- **Comment on the incident.** One or two sentences on what worked and why, plus anything a newcomer wouldn't know. Rubix reads comments.
+- **Rate the RCA.** Answer **Was this the cause?**. If it's wrong, say what it really was.
+- **Answer "What fixed it?".** It takes a moment, and it's how RubixKube credits the right change.
+- **Teach it your runbooks.** Write them down as [skills](/concepts/skills), and Rubix loads them when they fit the problem.
 
 ## Common questions
 
 <AccordionGroup>
-  <Accordion title="Is the Memory Engine an embedding store?">
-    It uses embeddings under the hood, plus a graph model that tracks causal relationships and operator feedback. The two stay in sync, so similarity search and relationship queries both work against the same underlying data.
-  </Accordion>
   <Accordion title="Can I query the memory directly?">
-    Yes, through Chat. Questions like "have we seen this before" or "what did we do last time X happened" are first-class. The CLI supports the same.
+    Yes, through Chat. Questions like "have we seen this before" or "what did we do last time" work well. Your AI tools can ask the same through the [MCP server](/integrations/mcp).
   </Accordion>
-  <Accordion title="How does the Memory Engine handle old infrastructure that no longer exists?">
-    Decommissioned resources fall out of the active Knowledge Graph but stay in memory for retention purposes. Historical RCAs still reference them correctly, so post-mortems of past incidents do not break.
+  <Accordion title="What about infrastructure that no longer exists?">
+    Removed resources fall out of the live [knowledge graph](/concepts/knowledge-graph). Past RCAs still name them, so you can read an old incident as it was. Deleting the source is different, because that deletes its history.
   </Accordion>
-  <Accordion title="Does memory help across environments?">
-    Yes. If a pattern learned on staging applies to production, the memory surfaces it. If a pattern from one AWS account applies to another, the same holds. Scoping stays inside your workspace.
+  <Accordion title="Does memory help across sources?">
+    Yes, inside your organization. Rubix can search all your past incidents and RCAs, and links between sources tie them together.
   </Accordion>
 </AccordionGroup>
 
 ## Related concepts
 
 <CardGroup cols={2}>
-  <Card title="Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
-    The live model of your stack that the Memory Engine references.
+  <Card title="Knowledge graph" icon="diagram-project" href="/concepts/knowledge-graph">
+    The live model of your stack, next to the memory.
   </Card>
-  <Card title="Root Cause Analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
-    How RCAs leverage prior art from memory.
+  <Card title="Root cause analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
+    How RCAs use what the memory holds.
   </Card>
 </CardGroup>

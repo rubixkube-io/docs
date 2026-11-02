@@ -1,80 +1,43 @@
 ---
-title: "GitHub integration"
-sidebarTitle: "GitHub"
-description: "Give RubixKube agents read and write access to your GitHub repos so they can correlate deployments with incidents, cite PRs in RCAs, and propose soft remediations as pull requests."
-keywords: ["github integration", "rubixkube github", "deployment correlation", "pull request", "soft remediation", "gitops"]
-"og:title": "GitHub integration"
-"og:description": "Connect GitHub so agents can correlate deployments and propose fixes as pull requests."
+title: "GitHub"
+description: "Let Rubix read your repositories, commits and pull requests while it looks for what changed."
 ---
 
-Connect GitHub so RubixKube agents can see what shipped, correlate deployments with incidents, and propose soft remediations as pull requests instead of direct cluster changes.
-
-## What it unlocks
-
-<CardGroup cols={2}>
-  <Card title="Deploys and PRs in context" icon="rocket">
-    Agents can read recent deploys, merges, and commit history. RCAs cite the deploy that correlates with an incident when the evidence points that way.
-  </Card>
-  <Card title="Pull requests as a remediation surface" icon="code-pull-request">
-    For IaC and GitOps repos, agents can open PRs with the proposed change. Your review, your merge, your pipeline.
-  </Card>
-  <Card title="Issue tracking" icon="list-check">
-    Agents can create, read, and update issues linked to insights and RCA reports.
-  </Card>
-  <Card title="Evidence, not source" icon="shield-halved">
-    The integration reads metadata and diffs. Source code is not ingested or stored.
-  </Card>
-</CardGroup>
+Connect GitHub so Rubix can see what changed before something broke. If `orders-api` starts failing after a release, Rubix can read the commits and pull requests in that release and cite them in the RCA.
 
 ## Connect it
 
+GitHub connects with a token. There's no sign-in option.
+
 <Steps titleSize="h3">
-  <Step title="Open the Integrations page">
-    In the RubixKube console, go to **Integrations** and select **GitHub**.
+  <Step title="Create a token in GitHub">
+    Create a personal access token in GitHub. Give it read access to the repositories you want Rubix to see, and no more.
   </Step>
-  <Step title="Authenticate">
-    Install the RubixKube GitHub App into your organisation. An admin approves it once.
-  </Step>
-  <Step title="Configure access">
-    Pick the repositories RubixKube can see. Grant write access only to repositories where you want agents to open pull requests.
+  <Step title="Paste it in RubixKube">
+    Go to **Customize > Integrations**, pick **GitHub** and paste the token as a **Personal access token**.
   </Step>
 </Steps>
 
-Once connected, GitHub is available tenant-wide. Every agent across every environment can use it without additional per-environment setup.
+## What Rubix can read
 
-{/* TODO: screenshot of the Integrations page showing the GitHub card */}
+RubixKube connects in read-only mode, so Rubix can read repositories, commits, pull requests and issues but can't write to GitHub through this connection.
 
-## How the agents use it
+The token decides what Rubix can see. If a repository is missing, give the token access to it, then use **Replace token**. Press **Test** to run [the Reads check](/integrations/overview#see-what-a-connection-can-read).
 
-- During RCA, agents walk recent deploys and merges to the affected service as candidate causes, citing them as evidence.
-- For IaC and GitOps-managed infrastructure, soft remediations are proposed as pull requests against the relevant repo. See [Safety and Guardrails](/concepts/guardrails) for the full approval model.
-- Chat can answer questions like "what changed in payments before this spike" by walking the deploy and PR history.
 
-## Build custom workflows with skills
-
-Out of the box, the integration exposes read and PR-open capabilities to agents. To program specific workflows (auto-open a PR with a suggested config fix, weekly changelog digest, service-to-repo mapping rules), build a [Skill](/concepts/skills) on top of the connection. Skills are where you program RubixKube to behave the way your team needs.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Agents cannot see a repo">
-    The GitHub App is installed per-organisation with repo-level access. Open your organisation's **GitHub → Settings → Installations → RubixKube** and add the repo to the allowed list.
-  </Accordion>
-  <Accordion title="PR proposals fail">
-    Check that the target repo is included in the write scope. Reads work with a narrower scope than writes, so a repo can be readable without being writable.
-  </Accordion>
-</AccordionGroup>
-
-## Related guides
+## Related pages
 
 <CardGroup cols={2}>
   <Card title="GitLab" icon="gitlab" href="/integrations/gitlab">
-    Equivalent integration for GitLab-hosted repos and CI.
+    The same for GitLab.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose GitHub tools into custom workflows.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
   </Card>
-  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
-    Why PR-based remediation is the preferred path.
+  <Card title="Root cause analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
+    How Rubix uses what changed.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
   </Card>
 </CardGroup>

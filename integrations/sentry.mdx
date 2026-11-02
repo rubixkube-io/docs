@@ -1,77 +1,74 @@
 ---
-title: "Sentry integration"
-sidebarTitle: "Sentry"
-description: "Connect Sentry to RubixKube today via the custom integrations path. Agents can read issues, events, and releases to enrich investigations and RCAs."
-keywords: ["sentry integration", "rubixkube sentry", "error tracking", "observability integration"]
-"og:title": "Sentry integration"
-"og:description": "Connect Sentry to RubixKube via Custom MCP or Custom REST."
+title: "Sentry"
+description: "Turn Sentry issues and alerts into incidents, and let Rubix read Sentry while it investigates."
 ---
 
-Sentry connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+Connect Sentry so a new issue opens an incident in RubixKube, and resolving it in Sentry resolves it here. You can also connect Sentry as a tool Rubix reads while it investigates.
 
-## What to bring in
+## When you'd use this
 
-The signals that matter most when agents are investigating or writing RCAs:
+- **The problem is in your code, not your infrastructure.** An observer sees a healthy pod. Sentry sees the exception.
+- **A new error appeared after a release.** Rubix can look at what shipped and what else changed.
+- **You want errors and infrastructure in one place.** A Sentry issue and a crash-looping pod can land in the same group.
 
-- **Issues** (`/api/0/projects/{org}/{project}/issues/`) for error grouping, counts, and recency.
-- **Events** (`/api/0/issues/{issue_id}/events/`) for specific stack traces and breadcrumbs that explain a failure.
-- **Releases** (`/api/0/projects/{org}/{project}/releases/`) to correlate error spikes with deploys.
-- **Performance** (transactions, p95 latency by transaction name) if you have Sentry Performance.
-
-Read-only auth tokens are enough for all of the above.
-
-## Which path to pick
-
-<CardGroup cols={2}>
-  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
-    Sentry publishes a stable REST API. Point the custom REST integration at it with an OpenAPI wrapper.
-  </Card>
-  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
-    Wrap issue lookups and deploy correlation behind named tools (for example `sentry_top_issues_since(release)`).
-  </Card>
-</CardGroup>
-
-## Quick recipe: REST path
+## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Create a Sentry auth token">
-    In Sentry, create an internal integration with a read-only auth token covering the projects you want RubixKube to see.
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **Sentry**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
   </Step>
-  <Step title="Register the endpoint">
-    In the RubixKube console, go to **Integrations → Custom REST** and register the Sentry API.
+  <Step title="Create an internal integration in Sentry">
+    In Sentry, go to **Settings > Developer Settings > Custom Integrations** and create a new **Internal Integration**. Paste the URL as its webhook URL.
   </Step>
-  <Step title="Enable the calls you care about">
-    Start with issues list, single issue events, and releases. Transactions if you use Performance.
+  <Step title="Set its permissions and webhooks">
+    Give it **Read** access to **Issue & Event**, turn on **Alert Rule Action**, and tick the **issue** webhook. Save it.
   </Step>
-  <Step title="Set auth">
-    Add the auth token to the workspace secret vault. Map it to the `Authorization: Bearer <token>` header.
-  </Step>
-  <Step title="Scope to skills">
-    Attach the enabled endpoints to the skills that need Sentry context.
+  <Step title="Add it to your alert rules">
+    To send alerts as well as new issues, add the integration as an action on the Sentry alert rules you want.
   </Step>
 </Steps>
 
-Once connected, the integration is tenant-wide.
+## What opens an incident and what resolves it
 
-## Example tools worth having
+| Sentry event | What happens |
+|---|---|
+| Issue created or unresolved | Opens the incident |
+| Issue resolved or archived | Resolves the incident |
+| Alert rule fires | Opens the incident for that issue |
+| Metric alert critical or warning | Opens the incident |
+| Metric alert resolved | Resolves the incident |
 
-- `sentry_top_issues(project, window)` — returns the most frequent issues in the window with counts.
-- `sentry_issue_detail(issueId)` — returns the latest event, stack trace, and breadcrumbs.
-- `sentry_since_release(project, release)` — returns new issues introduced since a given release, useful after a deploy correlates with an incident.
-- `sentry_transaction_p95(service, window)` — returns p95 latency by transaction name.
+**Severity** for an issue comes from its level: `fatal` is critical, `error` is high, `warning` is medium, and anything else is low. A metric alert is critical when it's critical and medium when it's a warning.
 
-Define these as skills (or as MCP tools if you want them to wrap multiple calls).
+Each Sentry issue is one incident, and each metric alert is one incident.
 
-## Related guides
+## What you'll see
+
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what Sentry really sent.
+
+The automation **Sentry issues become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
+
+Each incident carries the alert's details and a link back to Sentry. Triage, the RCA and Tasks then work as they do for any other incident. For an alert rule, the incident includes the exception and the last frames of the stack trace.
+
+## What Rubix can read too
+
+To let Rubix read Sentry while it investigates, open **Customize > Integrations**, pick **Sentry**, and choose **Sign in with Sentry** or paste a **User auth token**.
+
+The connection's **Reads** section shows what Rubix can reach. See [the Reads check](/integrations/overview#see-what-a-connection-can-read).
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
-    The full REST flow with auth options and approval rules.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
   </Card>
-  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
-    When you want richer tool schemas and multi-call workflows.
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What happens after an incident opens.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose Sentry lookups into custom workflows.
+  <Card title="Linear" icon="list-check" href="/integrations/linear">
+    Open incidents from labelled tickets.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
   </Card>
 </CardGroup>

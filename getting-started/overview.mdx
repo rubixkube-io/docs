@@ -1,202 +1,147 @@
 ---
-title: "Welcome to RubixKube"
+title: "What RubixKube does"
 sidebarTitle: "Overview"
-description: "RubixKube is the Reliability Layer for the AI era. An AI-native mesh of agents that watches your infrastructure, diagnoses root cause, and keeps systems alive across Kubernetes, AWS, GCP, and Linux VMs."
-keywords: ["rubixkube overview", "site reliability intelligence", "SRI", "AI SRE platform", "reliability layer", "memory engine", "agent mesh", "root cause analysis", "incident response"]
-"og:title": "Welcome to RubixKube"
-"og:description": "The Reliability Layer for the AI era. Autonomous detection, diagnosis, and resolution across every environment."
+description: "What RubixKube does in plain words, one incident followed from start to finish, and who it's for."
 ---
 
-# AI is shipping your product. RubixKube keeps it alive.
+RubixKube helps your team run infrastructure with an agent. This page explains what it does and walks through one real-looking incident, so you know what to expect before you connect anything.
 
-RubixKube is the **Reliability Layer for the AI era**. An AI-native mesh of agents that watches your infrastructure continuously, diagnoses root cause when something breaks, and keeps systems alive while your team builds.
-
-Think of it as a **second brain for your infrastructure**:
+The product is RubixKube. The agent is Rubix.
 
 <Frame>
-  <img
-    style={{ borderRadius: '0.75rem' }}
-    src="/images/architecture.png"
-    alt="RubixKube Architecture: Detects, Investigates, Remembers, and Acts"
-  />
+  <img style={{ borderRadius: '0.75rem' }} src="/images/architecture.png" alt="How RubixKube works: it detects failures, investigates them, suggests and applies fixes, and remembers what happened" />
 </Frame>
 
-- **Observes and understands** your systems like a seasoned SRE
-- **Diagnoses** issues with evidence, and shows you the blast radius
-- **Proposes or applies** safe fixes, inside guardrails you control
-- **Connects** every failure to real business impact
+## How it works
 
-## Who is RubixKube for?
-
-<CardGroup cols={3}>
-  <Card title="SREs and platform teams" icon="server">
-    Cut MTTU from hours to minutes. Keep the on-call rotation sane.
-  </Card>
-  <Card title="DevOps engineers" icon="gear">
-    Fewer false alerts, more real answers. Spend time building, not grepping logs.
-  </Card>
-  <Card title="Engineering leaders" icon="chart-line">
-    Reliability becomes a metric you can actually report on. Revenue stays protected.
-  </Card>
-</CardGroup>
-
-## What production teams are seeing
-
-<CardGroup cols={3}>
-  <Card title="2.8 min MTTU" icon="stopwatch">
-    Mean time to understand each issue, measured across twelve production teams.
-  </Card>
-  <Card title="21x faster" icon="bolt">
-    Than manual investigation, with a full evidence trail on every answer.
-  </Card>
-  <Card title="98% detection" icon="radar">
-    Of material issues, paired with a 90% drop in alert noise.
-  </Card>
-</CardGroup>
-
-<Info>
-  Curious about the MTTU story? Read [Stop optimizing for MTTR, the real bottleneck is MTTU](https://rubixkube.ai/blog/stop-optimizing-for-mttr-the-real-bottleneck-is-mttu-ai-sre-solves-it) on the blog.
-</Info>
-
-## How RubixKube works
-
-RubixKube runs a mesh of specialised AI agents that each own a piece of the reliability workflow: observation, memory, root cause analysis, safe action. They share one knowledge graph of your infrastructure, so every incident makes the next one easier to solve.
-
-<Steps titleSize="h3">
-  <Step title="Observe">
-    Map every service, node, and edge across your environments. Learn what normal looks like.
+<Steps>
+  <Step title="Something reports a problem">
+    Observers run in your Kubernetes clusters, cloud accounts and servers. Tools you already use, such as Datadog or PagerDuty, send alerts by webhook. Each of these is a source.
   </Step>
-  <Step title="Plan">
-    When something drifts, gather logs, metrics, events, and recent changes. Correlate them into a causal chain.
+  <Step title="RubixKube opens an incident">
+    It sets severity and impact, and groups incidents that share a resource or a cause, so one problem doesn't turn into twenty RCAs.
   </Step>
-  <Step title="Execute">
-    Recommend or apply the right fix, within guardrails you control. Blast radius is calculated before anything runs.
+  <Step title="Rubix investigates">
+    After a short wait that depends on severity, Rubix reads what it can reach and writes an RCA. The RCA gives the cause, the evidence, and how sure Rubix is.
   </Step>
-  <Step title="Learn">
-    Every incident, correction, and conversation updates the Memory Engine. Your system gets sharper every week.
+  <Step title="Rubix suggests Tasks">
+    A Fix for the cause, and Follow-ups to stop it happening again. Your team assigns them and works through them.
+  </Step>
+  <Step title="The observer watches for recovery">
+    When the resource is healthy again, RubixKube records it and asks what fixed it. You can turn on closing incidents automatically in **Settings > Incidents**.
   </Step>
 </Steps>
 
-This is the **OPEL loop**: Observe, Plan, Execute, Learn. It is the core rhythm of the product.
+## One incident, start to finish
 
-<Info>
-  Read the [OPEL loop origin story](https://rubixkube.ai/blog/the-age-of-site-reliability-intelligence-sri) for the long-form explanation.
-</Info>
+Acme Payments runs `orders-api`, `payments-api` and `orders-db` in `prod-us-east-1`. Here's a normal Tuesday.
+
+A new `orders-api` version goes out and raises its database pool. `orders-db` runs out of connections. `payments-api` can't connect, and it starts crash looping.
+
+The observer in the cluster sees the crash loop and reports it. An incident opens: "payments-api is crash looping". The incident page shows when the RCA starts and what it's waiting for.
+
+Rubix reads the pod's logs and events and what changed before the crash. It connects the new `orders-api` version to the exhausted connections. The RCA names that as the root cause and cites the logs and events it used.
+
+The RCA suggests a Fix: "Set `DB_POOL_SIZE` back to 10". Someone on the team takes the Task. They ask Rubix to open the pull request, Rubix asks for approval first, and they approve it.
+
+After the change rolls out, `payments-api` stops crashing. The observer sees it stay healthy and reports the recovery. RubixKube asks what fixed it, the team answers, and the incident closes. Next time something similar happens, Rubix can read this RCA.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/console/rca-light.png" alt="RCA for payments-api with impact, root cause and contributing factors" />
+  <img className="hidden dark:block" src="/images/console/rca-dark.png" alt="RCA for payments-api with impact, root cause and contributing factors" />
+</Frame>
+
+## What Rubix can change
+
+That depends on the mode. A mode is set in **Settings > Modes**, and each chat can move up to the highest mode your organization allows.
+
+| Mode | What Rubix does |
+| --- | --- |
+| **Observe** | Reads and investigates. Nothing that changes anything runs. |
+| **Assist** | Can change things, and asks a person before each change. |
+| **Auto** | Changes things without asking. Destructive changes always ask. |
+
+A new organization starts in Observe, and Assist is the highest mode until an admin changes it. RCAs are read-only in every mode.
+
+## When Rubix gets it wrong
+
+Rubix can be wrong, so every RCA shows its evidence and says how sure it is. An RCA says **Root cause**, **Likely cause** or **Not determined**. When it can't tell, it says so. You can rate a stated cause with **Was this the cause?**, and read the evidence yourself.
 
 ## A system that learns your stack
 
-The loop runs on every incident. The interesting part is what happens between incidents. Most tools see your infrastructure for the first time, every time. RubixKube remembers. Every signal, session, and resolution builds a deeper model of your system, one that compounds over time and belongs entirely to you.
+Most tools see your infrastructure fresh every time. RubixKube keeps what it learns, so the next incident starts with more to go on.
 
-<CardGroup cols={4}>
+<CardGroup cols={2}>
   <Card title="Day one" icon="play">
-    Topology mapped. Every service, node, and edge, automatically.
+    Your sources are connected, and RubixKube maps what's running in them.
   </Card>
   <Card title="Week one" icon="diagram-project">
-    Dependencies understood. Upstream and downstream relationships known.
+    Links between sources build up, so a Datadog alert and a pod in your cluster read as the same thing.
   </Card>
   <Card title="Month one" icon="brain">
-    Causality emerging. Failure patterns surface before they fire.
+    New investigations read past RCAs, and what your team said fixed things.
   </Card>
   <Card title="Always" icon="infinity">
-    Yours, entirely. A model no other tool has, built only by being there.
+    Your comments and ratings stay with your organization and shape what Rubix does next.
   </Card>
 </CardGroup>
 
-Compounding memory is the point. Read how the [Memory Engine](/concepts/memory-engine) and the [Knowledge Graph](/concepts/knowledge-graph) turn every incident into durable institutional context.
+See [RubixKube's memory](/concepts/memory-engine) and the [knowledge graph](/concepts/knowledge-graph).
 
-## What environments are supported?
+## What you can connect
 
-RubixKube is environment-agnostic. One workspace can mix any of the following:
+One organization can mix any of these.
 
 <CardGroup cols={2}>
-  <Card title="Kubernetes" icon="dharmachakra">
-    EKS, GKE, AKS, KIND, and bare metal clusters on v1.24 or later. Installs via `kubectl apply`.
+  <Card title="Kubernetes" icon="dharmachakra" href="/environments/kubernetes">
+    EKS, GKE, AKS and self-managed clusters. One `kubectl` command.
   </Card>
-  <Card title="AWS" icon="aws">
-    Account-level observation across EC2, RDS, Lambda, S3, ELB, CloudTrail, and CloudWatch.
+  <Card title="AWS" icon="aws" href="/environments/aws">
+    Run the observer on a machine you have, or on a new EC2 instance.
   </Card>
-  <Card title="GCP" icon="google">
-    Project-level observation across GCE, GKE, Cloud SQL, Cloud Run, Cloud Storage, and Cloud Functions.
+  <Card title="Google Cloud" icon="google" href="/environments/gcp">
+    Run the observer on a machine you have, or on a new Compute Engine instance.
   </Card>
-  <Card title="Linux VMs" icon="server">
-    Any modern Linux host, cloud or on premise. CPU, memory, disk, process, and network signals.
+  <Card title="Servers and VMs" icon="server" href="/environments/vm">
+    Linux with systemd, or macOS.
   </Card>
-</CardGroup>
-
-<Info>
-  Azure workloads running on AKS are covered through the Kubernetes path. Subscription-level Azure observation (App Service, Azure VMs, managed data) is on the roadmap.
-</Info>
-
-## Root cause, not just the symptom
-
-Every anomaly RubixKube opens carries a full investigation: observed conditions, causal chain, and recommended actions. An answer, with evidence. Not just an alert.
-
-<CardGroup cols={2}>
-  <Card title="Magic Insights" icon="lightbulb" href="/using/insights">
-    Every anomaly we have opened, with a hypothesis, immediate steps, and a completed root cause when the evidence converges.
+  <Card title="Alert sources" icon="bell" href="/integrations/overview">
+    Datadog, PagerDuty, Grafana, Sentry, Jira, Linear, Observe, or your own webhook.
   </Card>
-  <Card title="RCA Reports" icon="file-magnifying-glass" href="/using/rca-reports">
-    Evidence-linked postmortems. Every claim cites the log, metric, or event that supports it.
+  <Card title="Tools Rubix can read" icon="plug" href="/integrations/catalog">
+    GitHub, GitLab, Notion, New Relic and more.
   </Card>
 </CardGroup>
 
-## Autonomous, not reckless
+## Who it's for
 
-RubixKube watches, analyses, and recommends. Your team decides what to do. Nothing changes in your environment without explicit approval, and every action is scoped by Guardian policies and audited end to end.
+RubixKube is for teams who look after services in production: platform, infrastructure and SRE engineers, and developers who run what they ship. If your team spends its time working out why something broke, this is the part Rubix takes on.
 
-<Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
-  The full safety model: least privilege, approvals, audits, and policy.
-</Card>
+You can work where you already are: the console, Slack, or your own AI tools over MCP.
 
-## The point of all this
+## Plans
 
-> Not a faster tool. A smarter system. And one that is entirely yours.
+| Plan | Environments | Investigations a month | Users |
+| --- | --- | --- | --- |
+| **Individual** | 1 | 10 | 1 |
+| **Business** | 3 | 100 | 5 |
+| **Enterprise** | Set for your organization | Set for your organization | Set for your organization |
 
-Every incident you resolve without RubixKube is context it never learns from. Every one you resolve with it makes the next one easier.
+Slack, Automations, Hooks, Webhooks, your own models, custom integrations and Members come with Business and Enterprise. See [pricing](https://rubixkube.ai/pricing).
 
-## Where to go next
+## Next
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
-    The ten-minute path from zero to your first investigation.
+    Get to your first incident.
   </Card>
-  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
-    Install steps for every supported environment.
+  <Card title="How RubixKube works" icon="diagram-project" href="/concepts/how-rubixkube-works">
+    The full path of an incident.
   </Card>
-  <Card title="Core concepts" icon="brain-circuit" href="/concepts/how-rubixkube-works">
-    Site Reliability Intelligence, the Agent Mesh, and the Memory Engine, from first principles.
+  <Card title="Modes" icon="shield-halved" href="/using/modes">
+    Set what Rubix can do on its own.
   </Card>
-  <Card title="Tutorials" icon="graduation-cap" href="/tutorials/monitor-infrastructure-health">
-    Hands-on scenarios you can run against a real environment.
-  </Card>
-</CardGroup>
-
-## Common questions
-
-<AccordionGroup>
-  <Accordion title="Do I need an existing observability stack?">
-    No. RubixKube brings its own observation layer. If you already run Prometheus, Datadog, New Relic, or similar, custom integrations let RubixKube read those signals too.
-  </Accordion>
-  <Accordion title="Does RubixKube need privileged cluster access?">
-    The Observer runs with read-only permissions by default. Any action that could change state requires an approval step, and every action is scoped by Guardian policies. See [Safety and Guardrails](/concepts/guardrails).
-  </Accordion>
-  <Accordion title="How much does the Observer cost to run?">
-    Typically around 255Mi RAM and under 10 millicores of CPU for the in-cluster Observer and Kubernetes MCP server combined. All heavier agents run in RubixKube Cloud, so your cluster stays light.
-  </Accordion>
-  <Accordion title="Can I try it without a real cluster?">
-    Yes. The [Kubernetes quickstart](/environments/kubernetes) supports KIND, so you can run the whole stack on a laptop.
-  </Accordion>
-</AccordionGroup>
-
-## Open source documentation
-
-These docs are open source. If you spot a gap, an unclear section, or an error, the fastest fix is a pull request.
-
-<CardGroup cols={2}>
-  <Card title="Contributing guide" icon="book-open" href="https://github.com/rubixkube-io/docs/blob/main/CONTRIBUTING.md">
-    How to propose edits, report issues, and run the docs locally.
-  </Card>
-  <Card title="GitHub repository" icon="github" href="https://github.com/rubixkube-io/docs">
-    Source for every page you are reading.
+  <Card title="What's new" icon="sparkles" href="/getting-started/whats-new">
+    What changed recently.
   </Card>
 </CardGroup>

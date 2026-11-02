@@ -22,7 +22,7 @@ If the CLI is not behaving, start here. Each section covers a common failure mod
     Typically a local firewall blocking the token exchange callback. Check outbound HTTPS to `api.rubixkube.ai:443`. Corporate proxies can also rewrite the request; set `HTTPS_PROXY` if needed.
   </Accordion>
   <Accordion title="401 Unauthorized after a successful login" icon="triangle-exclamation">
-    The token was invalidated (new workspace role, long inactivity). Force a clean re-login:
+    The token was invalidated (new organization role, long inactivity). Force a clean re-login:
 
     ```bash
     rubix logout
@@ -33,7 +33,7 @@ If the CLI is not behaving, start here. Each section covers a common failure mod
 
 ## Stale or conflicting auth
 
-If the CLI reports a workspace or user that is no longer correct:
+If the CLI reports an organization or user that is no longer correct:
 
 ```bash
 rubix logout

@@ -1,77 +1,111 @@
 ---
-title: "Datadog integration"
-sidebarTitle: "Datadog"
-description: "Connect Datadog to RubixKube today via the custom integrations path. Agents can query metrics, logs, monitors, and APM services to enrich investigations and RCAs."
-keywords: ["datadog integration", "rubixkube datadog", "observability integration", "APM", "datadog MCP", "datadog REST"]
-"og:title": "Datadog integration"
-"og:description": "Connect Datadog to RubixKube via Custom MCP or Custom REST."
+title: "Datadog"
+description: "Turn Datadog monitor alerts into incidents, and let Rubix read your metrics, logs and traces."
 ---
 
-Datadog connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams are up in under an hour via [Custom REST](/integrations/custom-rest), and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+Connect Datadog so a monitor that fires opens an incident in RubixKube, and its recovery resolves it. Your team then gets an investigation for each alert, without opening Datadog to start digging. You can also connect Datadog as a tool Rubix reads while it investigates, so its RCAs can use your logs and metrics.
 
-## What to bring in
+## When you'd use this
 
-The signals that matter most when agents are investigating or writing RCAs:
+- **Your monitors live in Datadog.** Keep them there, and get an investigation for each one that fires.
+- **You see the same problem twice.** Link Datadog to your cluster, and its alerts join the observer's group, with one RCA.
+- **You want RCAs to use your logs and metrics.** Add the connection as well, under [What Rubix can read too](#what-rubix-can-read-too).
 
-- **Metrics** (`/api/v1/query`, `/api/v2/metrics`) for service-level and infrastructure metrics.
-- **Logs search** (`/api/v2/logs/events/search`) for targeted log lookups during RCA.
-- **Monitors** (`/api/v1/monitor`) to surface monitor state and recent events as insight candidates.
-- **APM services and spans** (`/api/v2/apm/*`) for service-level health and latency breakdowns.
+## Connect it
 
-Read-only API keys are enough for all of the above.
-
-## Which path to pick
-
-<CardGroup cols={2}>
-  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
-    Datadog publishes a full OpenAPI spec. Upload it, enable the read endpoints, done.
-  </Card>
-  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
-    Wrap multiple calls behind named tools (for example `datadog_service_health`) or return streamed results.
-  </Card>
-</CardGroup>
-
-## Quick recipe: REST path
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/webhook-url-light.png" alt="The webhook URL for Datadog, shown once, with a Copy button and a line saying it is waiting for the first message" />
+  <img className="hidden dark:block" src="/images/guides/webhook-url-dark.png" alt="The webhook URL for Datadog, shown once, with a Copy button and a line saying it is waiting for the first message" />
+</Frame>
 
 <Steps titleSize="h3">
-  <Step title="Create a Datadog API key">
-    In Datadog, generate a read-scoped API key and an application key. Store both. No write scopes are needed for investigations.
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **Datadog**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
   </Step>
-  <Step title="Register the spec">
-    In the RubixKube console, go to **Integrations → Custom REST** and point it at Datadog's OpenAPI spec (or upload your own pruned copy).
+  <Step title="Add the webhook in Datadog">
+    In Datadog, go to **Integrations > Webhooks** and add a new webhook. Name it `rubixkube` and paste the URL.
   </Step>
-  <Step title="Enable the endpoints you care about">
-    Start with metrics query, logs search, monitor list, and APM services. Leave everything else disabled.
+  <Step title="Paste the payload">
+    Paste this into the webhook's **Payload** field. The Connect dialog shows the same text, with a copy button. RubixKube needs these fields to read the alert.
+
+```json
+{
+  "event_id": "$ID",
+  "transition": "$ALERT_TRANSITION",
+  "monitor_id": "$ALERT_ID",
+  "monitor": "$ALERT_TITLE",
+  "cycle_key": "$ALERT_CYCLE_KEY",
+  "priority": "$ALERT_PRIORITY",
+  "alert_type": "$ALERT_TYPE",
+  "title": "$EVENT_TITLE",
+  "message": "$EVENT_MSG",
+  "host": "$HOSTNAME",
+  "scope": "$ALERT_SCOPE",
+  "tags": "$TAGS",
+  "link": "$LINK",
+  "date": "$DATE"
+}
+```
   </Step>
-  <Step title="Set auth">
-    Add the API key and application key to the workspace secret vault. Map them to the required headers.
-  </Step>
-  <Step title="Scope to skills">
-    Attach the enabled endpoints to the skills that need Datadog context.
+  <Step title="Add it to your monitors">
+    Put `@webhook-rubixkube` in the message of each monitor you want. Monitors without it send nothing.
   </Step>
 </Steps>
 
-Once connected, the integration is tenant-wide.
+## What opens an incident and what resolves it
 
-## Example tools worth having
+| Monitor state | What happens |
+|---|---|
+| Triggered, Re-Triggered, No Data, Re-No Data, Renotify | Opens or updates the incident |
+| Warn, Re-Warn | Opens the incident one severity lower, with the RCA held |
+| Recovered | Resolves the incident |
 
-- `query_datadog_metric(metric, window)` — returns the recent values for a given metric.
-- `search_datadog_logs(service, window, query)` — returns recent matching log lines for context during an incident.
-- `list_firing_monitors(service)` — returns monitors currently in `ALERT` or `WARN` for a given service.
-- `get_apm_service_health(service, window)` — returns latency p50/p95/p99 and error rate for the window.
+**Severity** comes from the monitor's priority: P1 is critical, P2 high, P3 medium, P4 and P5 low. With no priority set, an `error` alert is high, a `warning` alert is medium, and anything else is low.
 
-Define these as skills (or as MCP tools if you need them to compose multiple calls).
+**Warnings.** A warning opens the incident one severity lower than the monitor's priority, so a P2 monitor warns at medium. Its RCA waits 15 minutes. If the monitor goes to Alert in that time, the RCA starts at once. You can turn this off or change the wait in the automation's settings.
 
-## Related guides
+**Which alerts count as the same incident.** One monitor plus one scope is one incident. If `Payments errors` alerts for `service:payments-api` and fires again while that incident is open, it updates the same incident. If it alerts for `service:orders-api`, that's a second incident.
+
+**Several scopes at once.** Alerts one monitor sends for several hosts or pods become one group with one RCA. You can turn this off in the automation's settings.
+
+A monitor tagged `impact:degradation` opens as a degradation, so RubixKube treats it as something that got slower. Any other monitor opens as a breakage.
+
+## What you'll see
+
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what Datadog really sent.
+
+The automation **Datadog alerts become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/datadog-sent-light.png" alt="What Datadog sent card on an incident: the monitor, scope, value and a link back" />
+  <img className="hidden dark:block" src="/images/guides/datadog-sent-dark.png" alt="What Datadog sent card on an incident: the monitor, scope, value and a link back" />
+</Frame>
+
+Each incident carries the alert's details and a link back to Datadog. Triage, the RCA and Tasks then work as they do for any other incident.
+
+## What Rubix can read too
+
+The webhook only carries alerts. To let Rubix look at Datadog while it investigates, open **Customize > Integrations**, pick **Datadog**, choose your Datadog site and connect in one of three ways.
+
+- **Sign in with Datadog.** A Datadog admin first adds `https://console.rubixkube.ai/oauth/callback` under **Organization Settings > MCP Server > MCP OAuth Redirect URLs**.
+- **Service account token.**
+- **API key and application key.**
+
+The connection's **Reads** section then shows what Rubix can reach: events, logs, monitors, metrics and traces. See [the Reads check](/integrations/overview#see-what-a-connection-can-read).
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
-    The full REST flow with auth options and approval rules.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
   </Card>
-  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
-    When you want richer tool schemas and multi-call workflows.
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What happens after an incident opens.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose Datadog endpoints into custom workflows.
+  <Card title="PagerDuty" icon="pager" href="/integrations/pagerduty">
+    Bring in the incidents your on-call team already has.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
   </Card>
 </CardGroup>

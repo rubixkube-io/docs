@@ -1,95 +1,114 @@
 ---
 title: "How RubixKube works"
-sidebarTitle: "How RubixKube Works"
-description: "The short version: a mesh of specialised AI agents runs the OPEL loop (Observe, Plan, Execute, Learn) against your infrastructure, backed by a memory that compounds over time."
-keywords: ["how RubixKube works", "site reliability intelligence architecture", "OPEL loop", "agent mesh", "AI SRE platform", "SRI"]
-"og:title": "How RubixKube works"
-"og:description": "A mesh of specialised AI agents running the OPEL loop, backed by a memory that compounds."
+sidebarTitle: "How RubixKube works"
+description: "What happens from the moment something breaks to the moment it's fixed, and where you stay in charge."
 ---
 
-RubixKube is built around one idea: reliability is not a dashboard, it is a loop. A mesh of specialised agents runs that loop continuously against every environment you connect. Each pass through the loop leaves the system sharper than it was before.
+RubixKube helps your team run infrastructure with an agent. Observers and connected tools report what breaks. RubixKube turns that into incidents, and **Rubix**, the agent, investigates them.
 
-This page is the five-minute tour of how the pieces fit. Each piece has its own deep-dive linked below.
+This page is the five-minute tour of how the pieces fit. Each piece has its own page, linked as you go.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/loop-light.png" alt="The loop: something reports it, an incident opens, triage and grouping, Rubix investigates, you get Tasks, it recovers, and the next incident starts with all of this" />
+  <img className="hidden dark:block" src="/images/guides/loop-dark.png" alt="The loop: something reports it, an incident opens, triage and grouping, Rubix investigates, you get Tasks, it recovers, and the next incident starts with all of this" />
+</Frame>
 
 ## The short version
 
-<CardGroup cols={2}>
-  <Card title="The OPEL loop" icon="rotate" href="/concepts/opel-loop">
-    Observe, Plan, Execute, Learn. The rhythm every agent follows.
-  </Card>
-  <Card title="The Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
-    Specialised agents that each own one slice of the loop.
-  </Card>
-  <Card title="The Memory Engine" icon="database" href="/concepts/memory-engine">
-    Private knowledge that grows with every incident.
-  </Card>
-  <Card title="The Knowledge Graph" icon="diagram-project" href="/concepts/knowledge-graph">
-    The live model of your stack that every agent shares.
-  </Card>
-</CardGroup>
+Here's the loop, using an ordinary example. A new `orders-api` version raises its database pool. Connections to `orders-db` run out, and `payments-api` starts crash-looping.
 
-## Why a loop, not a dashboard
+<Steps titleSize="h3">
+  <Step title="Something reports what broke">
+    The [observer](/concepts/observer-agent) in `prod-us-east-1` sees the crash loop. If you connected Datadog, PagerDuty or another tool, its alerts arrive by webhook as well.
+  </Step>
+  <Step title="RubixKube opens an incident">
+    Each report becomes an [incident](/concepts/incidents), or counts as another sighting of one that's already open.
+  </Step>
+  <Step title="It's triaged and grouped">
+    Triage sets the severity and decides what happens next. Incidents with the same cause or on the same resource join one group, so you get one investigation instead of five.
+  </Step>
+  <Step title="Rubix investigates">
+    Rubix reads logs, metrics, recent changes and past incidents, then writes a [root cause analysis](/concepts/root-cause-analysis). Every finding cites the evidence behind it, and the RCA says so when it can't settle the cause.
+  </Step>
+  <Step title="Rubix suggests Tasks">
+    The RCA suggests [Tasks](/concepts/tasks): a Fix for now, such as setting `DB_POOL_SIZE` back to 10, and Follow-ups so it doesn't happen again.
+  </Step>
+  <Step title="You decide how much Rubix does">
+    You pick how much Rubix does on its own. In [Observe](/using/modes) it reads. In Assist it asks before every change. In Auto it changes things without asking, and destructive actions still ask.
+  </Step>
+  <Step title="It's remembered">
+    The observer sees the recovery, and RubixKube records what fixed it. The next RCA on the same thing starts with that history, including how your team rated it.
+  </Step>
+</Steps>
 
-Traditional observability tools see your infrastructure for the first time every time you log in. Dashboards do not remember. Alerts do not learn. Every incident starts from scratch.
+## Why it's a loop
 
-RubixKube is built differently. A single OPEL loop runs across every environment, every hour of every day. It observes the state, plans what to do when state drifts, executes (with your approval) when a fix is needed, and learns from the outcome. The Memory Engine holds that learning. The next incident starts warmer than the previous one did.
+Most tools see your infrastructure for the first time every time you log in. Dashboards don't remember, and every incident starts from scratch.
+
+RubixKube keeps what it learns. Your team's comments, your answers to "What fixed it?" and your ratings on RCAs are all stored in [RubixKube's memory](/concepts/memory-engine), so the next incident starts with more context than the last one did.
 
 ## What you see, and when
 
 <Steps titleSize="h3">
-  <Step title="Day one: topology appears">
-    The Observer walks every connected environment and builds a live [Knowledge Graph](/concepts/knowledge-graph). Services, nodes, dependencies, relationships. You see the shape of your stack in under an hour.
+  <Step title="When you connect a source">
+    The observer reports what's running. The [knowledge graph](/concepts/knowledge-graph) fills with your services, nodes and how they connect, and the source's page shows it.
   </Step>
-  <Step title="Week one: baselines settle">
-    The system learns what normal looks like for every resource. Anomaly detection sharpens. Alert noise drops.
+  <Step title="When something breaks">
+    An incident appears, and the incident page shows when the RCA will start and how far along it is. Critical incidents start right away. Lower severities wait a few minutes in case the problem clears by itself.
   </Step>
-  <Step title="Month one: causality emerges">
-    The Memory Engine has enough incident history to spot repeating patterns. RCA reports surface prior-art fixes alongside the fresh investigation.
+  <Step title="After a few incidents">
+    Past RCAs come up in new investigations. Rubix treats a past cause as a lead to test, and the new report says whether it held.
   </Step>
-  <Step title="Ongoing: compounding value">
-    Every resolution you confirm feeds the graph. Every rejection teaches what not to recommend. The system is yours and only yours.
+  <Step title="Ongoing">
+    Every answer you give feeds the next run. A problem that keeps coming back is marked Recurring, and Rubix asks you to decide instead of investigating it again and again.
   </Step>
 </Steps>
 
-## Where each agent fits
+## Where each piece fits
 
-Each agent in the mesh owns one piece of the loop. None of them work in isolation. The shared Knowledge Graph is how they stay coordinated.
+Only the observer runs near your workload. Everything else runs in RubixKube, and you never install, upgrade or patch it.
 
-| Agent | Role | Loop phase |
+| Piece | What it does | Where it runs |
 | --- | --- | --- |
-| [Observer Agent](/concepts/observer-agent) | Watches every environment, collects signals | Observe |
-| [Memory Agent](/concepts/memory-engine) | Stores incidents, surfaces prior art | Observe, Learn |
-| [RCA Pipeline Agent](/concepts/root-cause-analysis) | Builds causal chains from signals | Plan |
-| [SRI Agent](/using/rubix-chat-agent) | Powers Chat, invokes [skills](/concepts/skills) | Plan, Execute |
-| Remediation Agent | Applies approved fixes safely | Execute |
-| [Guardian Agent](/concepts/guardrails) | Enforces policies, bounds blast radius | Execute |
+| [Observers](/concepts/observer-agent) | Watch a cluster, cloud account or machine and report what breaks | In your environment |
+| [Connected tools](/integrations/overview) | Send alerts by webhook, and give Rubix more to read | Your existing tools |
+| [Memory](/concepts/memory-engine) | Keeps incidents, RCAs, Tasks and what your team said | RubixKube |
+| [Knowledge graph](/concepts/knowledge-graph) | Connects your resources, incidents, changes and RCAs | RubixKube |
+| [Rubix](/using/rubix-chat-agent) | Investigates, answers in chat, and uses [skills](/concepts/skills) and tools | RubixKube |
+| [Automations](/using/automations) | Run triage, grouping, RCAs and the steps you build | RubixKube |
 
-Remediation and Guardian are live in production deployments. Observer, SRI, Memory, and RCA Pipeline are generally available today.
+Rubix is one agent, and you can add your own read-only specialists in **Customize > Agents**. Rubix hands them focused questions. [Custom integrations](/tutorials/add-custom-integrations) add tools Rubix can use.
 
 ## Where you start
 
 <CardGroup cols={2}>
-  <Card title="The OPEL Loop" icon="rotate" href="/concepts/opel-loop">
-    Read next if you want the mental model that makes everything else obvious.
+  <Card title="Incidents" icon="triangle-exclamation" href="/concepts/incidents">
+    Read next if you want to know what happens to each report.
   </Card>
   <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
     Read next if you want to see it running against a real environment.
+  </Card>
+  <Card title="Safety and control" icon="shield-halved" href="/concepts/guardrails">
+    Read next if you want to know what Rubix can reach and change.
   </Card>
 </CardGroup>
 
 ## Common questions
 
 <AccordionGroup>
-  <Accordion title="Is this just another monitoring tool?">
-    No. Monitoring tells you something is wrong. RubixKube tells you what is wrong, why it is wrong, and what to do about it. Every answer is cited back to the signal it came from.
+  <Accordion title="Is this another monitoring tool?">
+    No. Monitoring tells you something is wrong. RubixKube looks into what's wrong and why, and suggests what to do about it. Every RCA cites the evidence it came from, and Rubix can be wrong, so you can check it and rate it.
   </Accordion>
   <Accordion title="Does RubixKube replace Prometheus, Datadog, or similar?">
-    It does not have to. Those systems stay in place. Integrations are on the roadmap so their signal flows into the same Knowledge Graph your Observer is building. See [Integrations](/using/integrations).
+    It doesn't have to. Those systems stay in place. Connect them and their alerts become incidents next to what your observers report. See [Integrations](/integrations/overview).
   </Accordion>
-  <Accordion title="What kinds of environments work?">
-    Kubernetes (EKS, GKE, AKS, KIND, bare metal), AWS accounts, GCP projects, and Linux VMs. Azure on AKS works today via the Kubernetes path. Subscription-level Azure is on the roadmap.
+  <Accordion title="What can I connect?">
+    Kubernetes clusters (EKS, GKE, AKS, self-managed), AWS accounts, Google Cloud projects, Linux and macOS machines, and tools such as Datadog, PagerDuty, Grafana, Sentry, Jira, Linear and Observe. Any other tool can use [your own webhook](/integrations/webhooks).
+  </Accordion>
+  <Accordion title="Can two incidents overlap?">
+    Yes. Related ones join a group and share one RCA. Unrelated ones each get their own, and each RCA can read the same knowledge graph.
   </Accordion>
   <Accordion title="How is my data handled?">
-    The Memory Engine and Knowledge Graph belong to your workspace. They are not shared across tenants, and the raw signal streams stay inside the boundaries you configure. See [Safety and Guardrails](/concepts/guardrails).
+    Each record belongs to one organization. [Safety and control](/concepts/guardrails) lists what's collected, where it's stored and what's recorded.
   </Accordion>
 </AccordionGroup>

@@ -1,0 +1,102 @@
+---
+title: "Catalog"
+description: "Everything you can connect to RubixKube, grouped by what it's for."
+---
+
+This page lists the tools you can connect. **Customize > Integrations** is the live list for your organization, and it shows how each tool connects.
+
+## Alert sources
+
+These send RubixKube a webhook, and their events become incidents.
+
+- [Datadog](/integrations/datadog): monitor alerts.
+- [PagerDuty](/integrations/pagerduty): PagerDuty incidents.
+- [Grafana](/integrations/grafana): alert rules.
+- [Sentry](/integrations/sentry): issues and alerts.
+- [Jira](/integrations/jira): issues marked as incidents.
+- [Linear](/integrations/linear): issues labelled `incident`.
+- [Observe](/integrations/observe): monitor alarms.
+- [Your own webhook](/integrations/webhooks): anything that can post JSON.
+
+## Team and AI tools
+
+- [Slack](/integrations/slack): talk to Rubix and follow incidents in threads.
+- [Rubix MCP](/integrations/mcp): use RubixKube from Claude Code, Cursor, VS Code and other AI tools.
+
+## Monitoring, logs and errors
+
+- [Datadog](/integrations/datadog): metrics, logs, monitors and traces.
+- [Grafana Cloud](/integrations/grafana): dashboards and queries.
+- [New Relic](/integrations/new-relic): query your New Relic data.
+- Honeycomb: events and traces.
+- [Observe](/integrations/observe): logs, monitors and docs.
+- [Sentry](/integrations/sentry): errors and issues.
+- Axiom: logs and events.
+- Cloudflare: your Cloudflare account, including Workers logs.
+
+## Incidents and on-call
+
+- [PagerDuty](/integrations/pagerduty): incidents and change events.
+- incident.io: incidents.
+- Rootly: incidents.
+- [Atlassian Rovo](/integrations/atlassian-rovo): Jira and Confluence.
+
+## Code and deploys
+
+- [GitHub](/integrations/github): repositories, commits and pull requests.
+- [GitLab](/integrations/gitlab): projects, merge requests and pipelines.
+- Buildkite: pipelines and builds.
+- Netlify: sites and deploys.
+- Render: services, logs and deploys.
+
+## Cloud and data
+
+- DigitalOcean Kubernetes: clusters.
+- DigitalOcean Insights: monitoring.
+- DigitalOcean Databases: managed databases.
+- DigitalOcean Apps: App Platform.
+- Supabase: database logs and advisors, read only.
+- Neon: Postgres projects, read only.
+
+## Docs and planning
+
+- [Notion](/integrations/notion): runbooks and team docs.
+- [Linear](/integrations/linear): issues and projects.
+- Asana: tasks and projects.
+- ClickUp: tasks and docs.
+- monday.com: boards.
+- Airtable: bases, such as a service list or on-call roster.
+
+## Customer impact
+
+- Intercom: support conversations.
+- Stripe: payments and failed charges.
+
+## Reference
+
+These help Rubix look things up while it works.
+
+- AWS Knowledge: AWS documentation.
+- Microsoft Learn: Microsoft documentation.
+- Cloudflare Docs: Cloudflare documentation.
+- Context7: library documentation.
+- DeepWiki: documentation for code repositories.
+- Exa: web search, such as for a vendor outage.
+- RubixKube Docs: this documentation.
+
+## Connected another way
+
+- [Prometheus](/integrations/prometheus): through the Kubernetes observer.
+- [Dynatrace](/integrations/dynatrace): as a custom MCP server.
+- [Your own MCP server](/integrations/custom-mcp-servers) or [REST API](/integrations/custom-rest): **Business and Enterprise**.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
+  </Card>
+</CardGroup>

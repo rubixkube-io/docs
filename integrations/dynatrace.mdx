@@ -1,77 +1,51 @@
 ---
-title: "Dynatrace integration"
-sidebarTitle: "Dynatrace"
-description: "Connect Dynatrace to RubixKube today via the custom integrations path. Agents can pull problems, entity health, and metrics to enrich investigations and RCAs."
-keywords: ["dynatrace integration", "rubixkube dynatrace", "APM integration", "observability integration"]
-"og:title": "Dynatrace integration"
-"og:description": "Connect Dynatrace to RubixKube via Custom MCP or Custom REST."
+title: "Dynatrace"
+description: "Let Rubix read Dynatrace by adding its MCP server as a custom integration."
 ---
 
-Dynatrace connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+Connect Dynatrace so Rubix can query problems, logs, metrics and traces while it investigates. It connects as a custom MCP server, which is **Business and Enterprise**.
 
-## What to bring in
-
-The signals that matter most when agents are investigating or writing RCAs:
-
-- **Problems** (`/api/v2/problems`) to surface active problems as insight candidates.
-- **Entity health** (`/api/v2/entities`) for service, host, and process group state.
-- **Metrics** (`/api/v2/metrics/query`) for any metric Dynatrace is holding.
-- **Events** (`/api/v2/events`) for deploy markers, config changes, and availability events.
-
-Read-only API tokens are enough for all of the above.
-
-## Which path to pick
-
-<CardGroup cols={2}>
-  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
-    Dynatrace exposes OpenAPI for its Environment API. Upload, enable read endpoints, done.
-  </Card>
-  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
-    Wrap multiple calls behind named tools (for example `dynatrace_entity_health`).
-  </Card>
-</CardGroup>
-
-## Quick recipe: REST path
+## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Create a Dynatrace API token">
-    In Dynatrace, create a token with `entities.read`, `metrics.read`, `problems.read`, and `events.read` scopes. No write scopes required.
+  <Step title="Create a token in Dynatrace">
+    Create a platform token in Dynatrace with read access to the data you want Rubix to see.
   </Step>
-  <Step title="Register the spec">
-    In the RubixKube console, go to **Integrations → Custom REST** and upload the Dynatrace Environment API OpenAPI spec.
+  <Step title="Add the server">
+    Go to **Customize > Integrations** and choose **Add your own**. Pick **MCP server** and enter this address, with your environment id:
+
+```text
+https://<environment>.apps.dynatrace.com/platform-reserved/mcp-gateway/v0.1/servers/dynatrace-mcp/mcp
+```
   </Step>
-  <Step title="Enable the endpoints you care about">
-    Start with problems, entities, and metrics query.
+  <Step title="Paste the token">
+    Set **Sign-in** to **Token**, paste the platform token and choose **Add**.
   </Step>
-  <Step title="Set auth">
-    Add the API token to the workspace secret vault. Map it to the `Authorization: Api-Token <token>` header.
-  </Step>
-  <Step title="Scope to skills">
-    Attach the enabled endpoints to the skills that need Dynatrace context.
+  <Step title="Check it">
+    Choose **Check connection**. Rubix finds the server's tools when it connects.
   </Step>
 </Steps>
 
-Once connected, the integration is tenant-wide.
+## What Rubix can read
 
-## Example tools worth having
+The tools come from Dynatrace's own server, and the **Tools** list shows each one. Rubix sees what the token can see.
 
-- `dynatrace_active_problems(service)` — returns active problems affecting a given service.
-- `dynatrace_entity_health(entityId)` — returns availability, error rate, and response time for an entity.
-- `dynatrace_metric(metric, window)` — wraps metric query with a common default window.
-- `dynatrace_recent_events(service, window)` — returns deploy and config change events for the service.
+To send Dynatrace problems to RubixKube as incidents, point a Dynatrace webhook at [your own webhook](/integrations/webhooks).
 
-Define these as skills (or as MCP tools if you want them to compose multiple calls).
 
-## Related guides
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
-    The full REST flow with auth options and approval rules.
+  <Card title="Custom MCP servers" icon="server" href="/integrations/custom-mcp-servers">
+    How custom servers work.
   </Card>
-  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
-    When you want richer tool schemas and multi-call workflows.
+  <Card title="Your own webhook" icon="webhook" href="/integrations/webhooks">
+    Send incidents from anything that can post JSON.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose Dynatrace queries into custom workflows.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
   </Card>
 </CardGroup>

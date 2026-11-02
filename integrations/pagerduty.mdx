@@ -1,76 +1,71 @@
 ---
-title: "PagerDuty integration"
-sidebarTitle: "PagerDuty"
-description: "Connect PagerDuty so RubixKube agents can trigger incidents for critical insights, sync acknowledgement and resolution, and keep the on-call picture in step with RubixKube."
-keywords: ["pagerduty integration", "rubixkube pagerduty", "on-call", "incident alerts"]
-"og:title": "PagerDuty integration"
-"og:description": "Trigger on-call pages for critical insights. Sync ack and resolve state."
+title: "PagerDuty"
+description: "Turn PagerDuty incidents into RubixKube incidents, and let Rubix read PagerDuty while it investigates."
 ---
 
-Connect PagerDuty so RubixKube agents can page the right on-call when a high-severity insight lands, and so acknowledgement and resolution stay in step between the two systems.
+Connect PagerDuty so an incident there opens one in RubixKube, and resolving it there resolves it here. Rubix then works out the cause while your on-call process carries on as usual.
 
-## What it unlocks
+This goes one way, from PagerDuty into RubixKube. Nothing triggers, acknowledges or resolves anything in PagerDuty.
 
-<CardGroup cols={2}>
-  <Card title="Trigger incidents" icon="bell">
-    Agents can create PagerDuty incidents for insights that cross the severity bar you set.
-  </Card>
-  <Card title="Acknowledge and resolve" icon="arrows-rotate">
-    State flows both ways. Acking in PagerDuty reflects in RubixKube, and vice versa, so the same incident is not worked twice.
-  </Card>
-  <Card title="RCA attached" icon="file-magnifying-glass">
-    Every incident triggered by RubixKube carries a link to the RCA report (or the insight, if an RCA has not landed yet).
-  </Card>
-  <Card title="Tenant-wide by default" icon="globe">
-    Enable once. Every agent across every environment can use PagerDuty.
-  </Card>
-</CardGroup>
+## When you'd use this
+
+- **PagerDuty is how your team hears about problems.** Keep it. RubixKube adds the investigation behind each one.
+- **You want the cause next to the alert.** The person who picks up the incident can read what Rubix found so far.
+- **You use several tools.** PagerDuty incidents sit next to what observers and other tools report, and related ones group together.
 
 ## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Open the Integrations page">
-    In the RubixKube console, go to **Integrations** and select **PagerDuty**.
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **PagerDuty**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
   </Step>
-  <Step title="Authenticate">
-    Authorise with PagerDuty. An admin completes the flow and picks the services RubixKube can reach.
+  <Step title="Add the webhook in PagerDuty">
+    In PagerDuty, go to **Integrations > Generic Webhooks (v3)** and add a new webhook. Paste the URL.
   </Step>
-  <Step title="Configure access">
-    Choose the PagerDuty services and the default severity threshold. Anything at or above the threshold can trigger a page; anything below stays inside RubixKube and your chat tools.
+  <Step title="Pick the events">
+    Choose whether it covers your whole account, a team or one service. Subscribe to `incident.triggered`, `incident.reopened` and `incident.resolved`. RubixKube ignores other events.
   </Step>
 </Steps>
 
-Once connected, PagerDuty is available tenant-wide.
+## What opens an incident and what resolves it
 
-{/* TODO: screenshot of the Integrations page showing the PagerDuty card */}
+| PagerDuty event | What happens |
+|---|---|
+| `incident.triggered`, `incident.reopened` | Opens the incident |
+| `incident.resolved` | Resolves the incident |
+| Anything else, such as `incident.acknowledged` | Ignored |
 
-## How the agents use it
+**Severity** comes from the priority first: P1 is critical and P2 is high. Without those, high urgency is high, low urgency is low, and anything else is medium.
 
-- When an insight crosses the severity bar, agents can trigger the right PagerDuty service and attach the RCA (or the insight, if the RCA is still in flight).
-- Ack and resolve state stays in sync, so the on-call person does not see a ghost incident in RubixKube after they have worked it in PagerDuty.
+Each PagerDuty incident is one RubixKube incident. Rubix's RCA stays in RubixKube.
 
-## Build custom workflows with skills
+## What you'll see
 
-The connection exposes trigger and update capabilities. Specific workflows (per-team service routing, tighter thresholds for regulated environments, quieter thresholds for lab, auto-follow-up if the page has not been acked within N minutes) are built as [Skills](/concepts/skills). Skills are where you shape paging behaviour to your on-call model.
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what PagerDuty really sent.
 
-## Troubleshooting
+The automation **PagerDuty incidents become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
 
-<AccordionGroup>
-  <Accordion title="Pages do not fire">
-    Confirm the service is still connected in **Integrations → PagerDuty** and the severity threshold is set to a level the insight actually crosses.
-  </Accordion>
-  <Accordion title="Ack does not sync back to RubixKube">
-    Reauthorise the integration to refresh webhooks. Webhook delivery from PagerDuty can also be delayed briefly under load.
-  </Accordion>
-</AccordionGroup>
+Each incident carries the alert's details and a link back to PagerDuty. Triage, the RCA and Tasks then work as they do for any other incident.
 
-## Related guides
+## What Rubix can read too
+
+To let Rubix read PagerDuty while it investigates, open **Customize > Integrations**, pick **PagerDuty**, choose your region (US or EU) and paste a **User API key**.
+
+The connection's **Reads** section then shows what Rubix can reach: change events and incidents. See [the Reads check](/integrations/overview#see-what-a-connection-can-read).
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Slack" icon="slack" href="/integrations/slack">
-    Pair PagerDuty with Slack for day-to-day comms.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose paging capabilities into custom workflows.
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What happens after an incident opens.
+  </Card>
+  <Card title="Datadog" icon="dog" href="/integrations/datadog">
+    Send monitor alerts straight to RubixKube.
+  </Card>
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    Follow each incident in a Slack thread.
   </Card>
 </CardGroup>

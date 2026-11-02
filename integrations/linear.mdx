@@ -1,77 +1,68 @@
 ---
-title: "Linear integration"
-sidebarTitle: "Linear"
-description: "Connect Linear so RubixKube agents can read your projects, create tickets from insights and RCAs, and keep incident state in sync with the tool your team already tracks work in."
-keywords: ["linear integration", "rubixkube linear", "incident ticket", "issue tracker"]
-"og:title": "Linear integration"
-"og:description": "Create tickets from insights and RCAs. Keep state in sync with Linear."
+title: "Linear"
+description: "Turn the Linear issues your team labels incident into RubixKube incidents, and let Rubix read Linear."
 ---
 
-Connect Linear so RubixKube agents can see your projects and teams, create tickets from insights and RCAs, and keep incident state in sync with the tool your team already tracks work in.
+Connect Linear so an issue labelled `incident` opens an incident in RubixKube, and completing or cancelling it resolves it. Other issues are left alone. You can also connect Linear as a tool Rubix reads while it investigates.
 
-## What it unlocks
+## When you'd use this
 
-<CardGroup cols={2}>
-  <Card title="Read teams and projects" icon="users">
-    Agents know which team or project owns each service, so tickets land in the right place.
-  </Card>
-  <Card title="Create and update issues" icon="pen-to-square">
-    Open issues from insights or RCA reports with evidence and recommended actions prefilled.
-  </Card>
-  <Card title="Status awareness" icon="arrows-rotate">
-    Agents can read status and assignee on their own tickets to decide whether to escalate, update, or close.
-  </Card>
-  <Card title="Tenant-wide by default" icon="globe">
-    Enable once. Every agent across every environment can use Linear.
-  </Card>
-</CardGroup>
+- **Your team tracks work in Linear.** Add the `incident` label to an issue, and Rubix starts looking.
+- **You want Rubix to find related work.** With a connection, an RCA can read the issues around a problem.
 
 ## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Open the Integrations page">
-    In the RubixKube console, go to **Integrations** and select **Linear**.
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **Linear**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
   </Step>
-  <Step title="Authenticate">
-    Authorise with Linear. An admin completes the OAuth flow.
+  <Step title="Add the webhook in Linear">
+    In Linear, go to **Settings > API > Webhooks** and create a new webhook. Paste the URL.
   </Step>
-  <Step title="Configure access">
-    Pick the teams and projects RubixKube can work with. Optionally set a default team for tickets that have no explicit mapping.
+  <Step title="Pick what it covers">
+    Choose one team or all public teams, and tick the **Issues** resource type.
   </Step>
 </Steps>
 
-Once connected, Linear is available tenant-wide.
+## What opens an incident and what resolves it
 
-{/* TODO: screenshot of the Integrations page showing the Linear card */}
+| Linear event | What happens |
+|---|---|
+| An issue labelled `incident` is created | Opens the incident |
+| An issue labelled `incident` is updated | Opens or updates the incident, so adding the label to an existing issue opens one |
+| An issue labelled `incident` moves to completed or canceled | Resolves the incident |
+| An issue is removed | Resolves its incident, if it has one |
+| Anything else | Ignored |
 
-## How the agents use it
+**Severity** comes from the issue's priority: Urgent is critical, High is high, Medium is medium, Low is low. With no priority, it's medium.
 
-- Agents can create tickets from insights or RCAs with the full context attached.
-- Chat can answer questions about open incident tickets, ownership, and status.
-- Bridge skills can connect Linear to other tools in your stack, for example surfacing weekly ticket summaries into Notion.
+## What you'll see
 
-## Build custom workflows with skills
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what Linear really sent.
 
-The connection exposes Linear capabilities to agents. Specific workflows (auto-create tickets above a severity threshold, route to a team based on service ownership, weekly ticket digest, ticket-to-doc sync) are built as [Skills](/concepts/skills).
+The automation **Linear issues become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
 
-## Troubleshooting
+Each incident carries the alert's details and a link back to Linear. Triage, the RCA and Tasks then work as they do for any other incident.
 
-<AccordionGroup>
-  <Accordion title="Tickets land in the wrong team">
-    Either adjust the default team in the integration settings, or build a skill that maps services to Linear teams based on your ownership model.
-  </Accordion>
-  <Accordion title="Authentication fails after a while">
-    Reauthorise from **Integrations → Linear**. Long-lived OAuth tokens sometimes need a refresh.
-  </Accordion>
-</AccordionGroup>
+## What Rubix can read too
 
-## Related guides
+To let Rubix read Linear while it investigates, open **Customize > Integrations**, pick **Linear**, and choose **Sign in with Linear** or paste an **API key**.
+
+The connection's tools come from Linear's own server, and the **Tools** list shows each one. Anything that changes Linear follows your [modes](/using/modes).
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Notion" icon="book" href="/integrations/notion">
-    Pair with Linear for ticket-to-doc workflows.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose Linear capabilities into workflows.
+  <Card title="Jira" icon="jira" href="/integrations/jira">
+    The same idea for Jira.
+  </Card>
+  <Card title="Tasks" icon="list-check" href="/using/tasks">
+    Follow-ups Rubix proposes after an RCA.
+  </Card>
+  <Card title="Skills" icon="sparkles" href="/using/skills">
+    Teach Rubix how your team uses this tool.
   </Card>
 </CardGroup>

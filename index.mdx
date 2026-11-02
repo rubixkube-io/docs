@@ -1,98 +1,110 @@
 ---
-title: "RubixKube Documentation"
-description: "Site Reliability Intelligence that detects anomalies, diagnoses root cause, and resolves failures autonomously."
-keywords: ["rubixkube", "site reliability intelligence", "SRI", "AI SRE platform", "reliability layer", "memory engine", "agent mesh", "root cause analysis", "incident response"]
-"og:title": "RubixKube Documentation"
-"og:description": "Site Reliability Intelligence that detects anomalies, diagnoses root cause, and resolves failures autonomously."
-"og:image": "/images/talk-to-your-infra.png"
+title: "RubixKube docs"
+sidebarTitle: "Home"
+description: "RubixKube tells you what broke, why it broke, and what to do next. Start here to set it up and see what's new."
 ---
 
 <Frame>
-  <img
-    style={{ borderRadius: '0.75rem' }}
-    src="/images/talk-to-your-infra.png"
-    alt="RubixKube, Tame the chaos, Talk to your infra"
-  />
+  <img style={{ borderRadius: '0.75rem' }} src="/images/talk-to-your-infra.png" alt="RubixKube, Tame the chaos, Talk to your infra" />
 </Frame>
 
-**Welcome to the RubixKube Documentation.**
+RubixKube helps your team run infrastructure with an agent. Observers in your environments and the tools you already use report what breaks. RubixKube turns that into incidents. Rubix, the agent, looks into each one, writes an RCA with its evidence, and suggests Tasks: a Fix, plus Follow-ups for later.
 
-RubixKube is the Reliability Layer for the AI era. While most tools just tell you that something broke, RubixKube's mesh of AI agents continuously observes your stack, investigates failures, and provides verified root causes with actionable fixes in minutes.
+You stay in charge. You choose how much Rubix can do without asking, and every RCA shows its evidence so you can check the work.
 
-Explore the documentation below to set up your environment, understand the core concepts, and start talking to your infrastructure.
+<Frame>
+  <img className="block dark:hidden" src="/images/console/incidents-light.png" alt="Incidents list with one open incident, payments-api is crash looping" />
+  <img className="hidden dark:block" src="/images/console/incidents-dark.png" alt="Incidents list with one open incident, payments-api is crash looping" />
+</Frame>
 
-## Start Building
+## Start here
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
-    Connect your first environment and see your first investigation in under 10 minutes.
+    Sign up, connect a source, see your first incident and ask Rubix a question.
   </Card>
-  <Card title="How it Works" icon="brain-circuit" href="/getting-started/overview">
-    Understand the OPEL loop, the Agent Mesh, and how the Memory Engine compounds over time.
+  <Card title="What RubixKube does" icon="circle-info" href="/getting-started/overview">
+    The plain version, with one incident followed from start to finish.
   </Card>
-  <Card title="Platform Capabilities" icon="layer-group" href="/using/dashboard">
-    Explore Magic Insights, RCA Reports, Actions, and the Rubix Chat Agent.
+  <Card title="Connect a source" icon="plug" href="/getting-started/connect-your-environment">
+    Install an observer, or point a tool like Datadog at a webhook.
   </Card>
-  <Card title="Integrations" icon="plug" href="/integrations/custom-mcp-servers">
-    Connect GitHub, Slack, Datadog, PagerDuty, or build your own custom integrations.
-  </Card>
-</CardGroup>
-
-## Discover the Platform
-
-<CardGroup cols={3}>
-  <Card title="Magic Insights" icon="lightbulb" href="/using/insights">
-    Shift from raw alerts to complete investigations with evidence-linked hypotheses.
-  </Card>
-  <Card title="Root Cause Analysis" icon="file-magnifying-glass" href="/using/rca-reports">
-    Generate detailed, cited postmortems the moment an incident occurs.
-  </Card>
-  <Card title="Autonomous Action" icon="wand-magic-sparkles" href="/using/action">
-    Execute safe, scoped fixes with built-in blast radius calculations.
+  <Card title="Your first incident" icon="triangle-exclamation" href="/tutorials/first-incident">
+    Walk through an incident, its RCA and its Fix.
   </Card>
 </CardGroup>
 
-## Talk to Your Infrastructure
+## What's new
+
+<CardGroup cols={2}>
+  <Card title="Automations" icon="diagram-project" href="/using/automations">
+    Run Rubix on a trigger or a schedule, and see every run. Business and Enterprise.
+  </Card>
+  <Card title="Integrations and webhook sources" icon="plug" href="/integrations/overview">
+    Datadog, PagerDuty, Grafana, Sentry, Jira, Linear and Observe can open incidents here. So can your own webhooks.
+  </Card>
+  <Card title="Slack incident threads" icon="slack" href="/integrations/slack">
+    One thread per incident, kept up to date. Replies become comments.
+  </Card>
+  <Card title="MCP" icon="robot" href="/integrations/mcp">
+    Work with incidents, RCAs and Tasks from Claude Code, Cursor, VS Code and Claude.
+  </Card>
+  <Card title="Modes" icon="shield-halved" href="/using/modes">
+    Observe, Assist or Auto. Decide what Rubix can do on its own.
+  </Card>
+  <Card title="Everything new" icon="sparkles" href="/getting-started/whats-new">
+    The full list for October and November 2026.
+  </Card>
+</CardGroup>
+
+## Ask Rubix
+
+Rubix can see your sources and your incident history, so you can ask it what you'd ask a colleague. Try "Why is `payments-api` crash looping?" or "What changed in the last day?". It answers with what it found and where it found it.
 
 <Frame>
-  <img
-    style={{ borderRadius: '0.75rem' }}
-    src="/images/platform/chat.png"
-    alt="RubixKube Chat Agent"
-  />
+  <img className="block dark:hidden" src="/images/console/chat-light.png" alt="A chat with Rubix about a failing checkout, showing the tools it used and the pull request it opened" />
+  <img className="hidden dark:block" src="/images/console/chat-dark.png" alt="A chat with Rubix about a failing checkout, showing the tools it used and the pull request it opened" />
 </Frame>
 
-Stop grepping logs. Ask questions like *"Why are payments slow in ap-south-1?"* or *"What changed before this alert fired?"* and get a direct, cited answer from the AI agent that has been continuously watching your stack.
-
 <CardGroup cols={2}>
-  <Card title="Chat Basics" icon="messages" href="/tutorials/chat-basics">
-    Learn how to interact with the Rubix Chat Agent effectively.
+  <Card title="Chat with Rubix" icon="messages" href="/using/rubix-chat-agent">
+    Sessions, context, commands and approvals.
   </Card>
-  <Card title="Advanced Troubleshooting" icon="screwdriver-wrench" href="/tutorials/chat-troubleshooting">
-    Use chat to diagnose complex multi-service incidents.
+  <Card title="Prompts to try" icon="comment-dots" href="/tutorials/chat-prompts">
+    Questions that work well, by task.
   </Card>
 </CardGroup>
 
-## Developer Tools
+## Find your way around
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What broke, where it stands, and when the RCA starts.
+  </Card>
+  <Card title="RCAs" icon="file-magnifying-glass" href="/using/rca-reports">
+    The cause, the evidence, and how to rate it.
+  </Card>
+  <Card title="Tasks" icon="list-check" href="/using/tasks">
+    Fixes and Follow-ups, with owners.
+  </Card>
+  <Card title="Environments" icon="server" href="/using/environments">
+    Your sources and what each one sees.
+  </Card>
+  <Card title="Analytics" icon="chart-line" href="/using/analytics">
+    How incidents and RCAs are going over time.
+  </Card>
   <Card title="Rubix CLI" icon="terminal" href="/cli/overview">
-    Manage environments, run investigations, and interact with the Agent Mesh directly from your terminal.
-  </Card>
-  <Card title="Custom Agent Skills" icon="code" href="/tutorials/add-custom-agent-skills">
-    Extend RubixKube's capabilities by writing custom tools for the agents to use.
+    Ask from your terminal.
   </Card>
 </CardGroup>
 
-## Get Support
-
-Need help or have questions? We are here to assist.
+## Get help
 
 <CardGroup cols={2}>
-  <Card title="Email Support" icon="envelope" href="mailto:connect@rubixkube.ai">
-    Reach out to our engineering team directly at connect@rubixkube.ai.
+  <Card title="Troubleshooting" icon="wrench" href="/support/troubleshooting">
+    Real failures and the exact checks for each.
   </Card>
-  <Card title="Join the Community" icon="github" href="https://github.com/rubixkube-io">
-    Check out our open-source projects, report issues, and contribute on GitHub.
+  <Card title="Write to us" icon="envelope" href="mailto:connect@rubixkube.ai">
+    connect@rubixkube.ai
   </Card>
 </CardGroup>

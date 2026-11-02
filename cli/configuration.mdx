@@ -61,11 +61,11 @@ rubix model set <model-id>
 rubix model get
 ```
 
-Model availability depends on your plan. Enterprise accounts can restrict available models per workspace.
+Model availability depends on your plan. Enterprise accounts can restrict available models per organization.
 
 ## Switching agents (apps)
 
-If your workspace has multiple agent configurations (for example, different personas), you can switch which one new sessions default to:
+If your organization has multiple agent configurations (for example, different personas), you can switch which one new sessions default to:
 
 ```
 /agents
@@ -93,7 +93,7 @@ Two levels of clearing:
 
 ## Sensitive data and redaction
 
-The CLI does not log your prompts or responses anywhere local. Session content is stored in RubixKube Cloud according to your workspace retention policy. To delete a session entirely, run `rubix sessions` to list sessions, then delete through the web console.
+The CLI does not log your prompts or responses anywhere local. Session content is stored in RubixKube Cloud according to your organization retention policy. To delete a session entirely, run `rubix sessions` to list sessions, then delete through the web console.
 
 ## Where to go next
 

@@ -1,0 +1,91 @@
+---
+title: "Observe"
+description: "Turn Observe monitor alarms into incidents, and let Rubix read your Observe datasets."
+tag: "New"
+---
+
+Connect Observe so a new alarm opens an incident in RubixKube, and the alarm ending resolves it. You can also connect Observe as a tool Rubix reads while it investigates.
+
+## When you'd use this
+
+- **Your logs and monitors live in Observe.** Each alarm gets an investigation without anyone opening a worksheet.
+- **You want RCAs built on your own data.** With a connection, Rubix reads your Observe datasets as evidence.
+
+## Connect it
+
+<Steps titleSize="h3">
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **Observe**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
+  </Step>
+  <Step title="Create a shared action in Observe">
+    In Observe, go to **Monitors > View shared actions > New shared action** and choose **Webhook**. Paste the URL.
+  </Step>
+  <Step title="Paste the payload">
+    Paste this as the action's payload. The Connect dialog shows the same text, with a copy button.
+
+```json
+{
+  "event": "{{alert.type.eventType}}",
+  "alert_id": "{{{alert.id}}}",
+  "monitor_id": "{{monitor.id}}",
+  "monitor": "{{monitor.name}}",
+  "severity": "{{alert.severity.level}}",
+  "title": "{{alert.severity.level}}: {{monitor.name}}",
+  "description": "{{monitor.description}}",
+  "started_at": "{{alert.start.rfc3339}}",
+  "ended_at": "{{alert.end.rfc3339}}",
+  "url": "{{{alert.url}}}",
+  "data_url": "{{{alert.dataUrl}}}",
+  "values": [{{#alert.values}}{"name": "{{name}}", "value": "{{value}}"}{{^isLast}},{{/isLast}}{{/alert.values}}],
+  "tags": [{{#alert.tags}}{"name": "{{name}}", "value": "{{value}}"}{{^isLast}},{{/isLast}}{{/alert.tags}}],
+  "resources": [{{#alert.resources}}{"label": "{{label}}", "name": "{{value}}", "url": "{{{url}}}"}{{^isLast}},{{/isLast}}{{/alert.resources}}]
+}
+```
+  </Step>
+  <Step title="Attach it to your monitors">
+    Add the shared action to each monitor you want, and turn on end notifications. Without them, RubixKube never hears that the alarm ended.
+  </Step>
+</Steps>
+
+## What opens an incident and what resolves it
+
+| Observe event | What happens |
+|---|---|
+| `NewAlarm` | Opens the incident |
+| `AlarmConditionEnded` | Resolves the incident |
+| Anything else | Ignored |
+
+**Severity** comes from the alarm: Critical is critical, Error is high, Warning is medium, and anything else is low.
+
+Each alarm is one incident.
+
+## What you'll see
+
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what Observe really sent.
+
+The automation **Observe alerts become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
+
+Each incident carries the alert's details and a link back to Observe. Triage, the RCA and Tasks then work as they do for any other incident.
+
+## What Rubix can read too
+
+To let Rubix read Observe while it investigates, open **Customize > Integrations**, pick **Observe**, and enter your customer id and region. Your customer id is the number at the start of your Observe address: for `https://123456789012.observeinc.com`, it's `123456789012`. Then choose **Sign in with Observe** or paste an **API token**.
+
+The connection's **Reads** section shows what Rubix can reach: logs from each dataset, monitors and Observe's docs. See [the Reads check](/integrations/overview#see-what-a-connection-can-read).
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
+  </Card>
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What happens after an incident opens.
+  </Card>
+  <Card title="Datadog" icon="dog" href="/integrations/datadog">
+    Send monitor alerts from Datadog.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
+  </Card>
+</CardGroup>

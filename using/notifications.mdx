@@ -1,93 +1,66 @@
 ---
 title: "Notifications"
-sidebarTitle: "Notifications"
-description: "Route insights, RCA reports, and pending actions to the channels your team already uses. Slack, Microsoft Teams, PagerDuty, email."
-keywords: ["notifications", "alerting", "slack notifications", "teams notifications", "pagerduty", "incident alerts"]
-"og:title": "Notifications"
-"og:description": "Route insights, RCA reports, and pending actions to Slack, Teams, PagerDuty, or email."
+description: "Choose how you hear from RubixKube, and which Slack channel gets what."
 ---
 
-Health monitoring only pays off if the right person sees the signal. Notifications route every kind of RubixKube update (insights, RCA reports, pending approvals, action outcomes) to the channels your team already lives in.
+You should hear about what needs you, and not much else. Each person chooses how they hear from RubixKube. An admin chooses which Slack channels your team's messages go to.
 
-## Channels supported
+## When you'd use this
 
-<CardGroup cols={2}>
-  <Card title="Slack" icon="slack" href="/using/integrations">
-    Per-channel delivery for insights, RCAs, and action approvals.
-  </Card>
-  <Card title="Microsoft Teams" icon="microsoft" href="/using/integrations">
-    Per-channel delivery for the same update types.
-  </Card>
-  <Card title="PagerDuty" icon="bell" href="/using/integrations">
-    Promote critical insights to on-call pages. Configurable severity thresholds.
-  </Card>
-  <Card title="Email" icon="envelope">
-    A weekly digest and account notices, sent to each member's account email. Turn email on or off in your notification settings. Per-event alerts by email are not available yet.
-  </Card>
-  <Card title="Linear" icon="list-check" href="/using/integrations">
-    Turn RCAs into tickets with one click.
-  </Card>
-  <Card title="Webhooks" icon="webhook">
-    POST to any endpoint. For routing into your own internal systems.
-  </Card>
-</CardGroup>
+- **Too much email.** Turn off the **Email** switch. Mentions still reach your Inbox.
+- **Your team lives in Slack.** Send incidents to a channel, with a thread for each one.
+- **Leaders want a summary.** The weekly digest and a Reports channel cover that.
+- **You want a message for one specific case.** Build an [automation](/using/automations).
 
-## Events you can route
+<Frame>
+  <img className="block dark:hidden" src="/images/console/settings-notifications-light.png" alt="Notifications settings with switches for Email, Slack and In the console" />
+  <img className="hidden dark:block" src="/images/console/settings-notifications-dark.png" alt="Notifications settings with switches for Email, Slack and In the console" />
+</Frame>
 
-| Event | Trigger |
-| --- | --- |
-| Insight opened | New anomaly worth a human look |
-| Insight escalated | Severity crossed a threshold |
-| RCA Report ready | Investigation produced a causal chain |
-| Action approval needed | Remediation waiting on human sign-off |
-| Action applied | Fix landed, verification in progress |
-| Action verified or reverted | Stabilisation window closed |
-| Environment degraded | Observer or cloud-side agent unhealthy |
-| Budget or plan alert | Investigation quota or billing event |
+## Your switches
 
-## Routing rules
+**Settings > Notifications** has three switches. They're yours, not the whole team's.
 
-Every rule has four fields: **event type**, **scope** (environment, namespace, tag), **severity threshold**, and **destination**. A few shapes worth knowing.
+- **Email**: a weekly digest, and an email when someone mentions you.
+- **Slack**: messages in your team's Slack channel. This switch stays off until Slack is added in **Customize > Channels**.
+- **In the console**: the bell in the sidebar.
 
-<AccordionGroup>
-  <Accordion title="Per-service Slack routing" icon="slack">
-    Route payments-related insights to `#payments-ops`, platform insights to `#platform`, everything else to `#rubixkube`.
-  </Accordion>
-  <Accordion title="On-call escalation" icon="bell">
-    Insights at Critical severity in prod environments page PagerDuty. Everything else stays in chat.
-  </Accordion>
-  <Accordion title="RCA-to-ticket" icon="list-check">
-    Every verified RCA in prod opens a Linear ticket in the on-call team's queue. Details and link back to the report auto-populated.
-  </Accordion>
-  <Accordion title="Weekly email digest" icon="envelope">
-    Each member gets a weekly digest email with a summary of the week. Route individual insights to chat or PagerDuty instead.
-  </Accordion>
-</AccordionGroup>
+## The Inbox
 
-## Controls that keep signal-to-noise high
+The bell in the sidebar opens your **Inbox**, with a count of what's unread. You see things like new incidents, finished RCAs, new Tasks and Task updates, a question about what fixed an incident, and mentions.
+
+Switch between **Unread** and **All**, or use **Mark all as read**.
+
+## Slack channels
+
+Slack is on **Business and Enterprise**. An admin connects it once for the organization, see [Slack](/integrations/slack). Then **Customize > Channels** sets a channel per category:
+
+| Category | What goes there |
+|---|---|
+| **Incidents** | New incidents and groups, each in its own thread |
+| **Reports** | Weekly digests |
+| **Account** | Members, sources and tools |
+| **Uptime** | Uptime alerts |
+
+A category with no channel of its own reads **Same as Incidents**. If the console says "Invite @Rubix" next to a channel, add Rubix to that channel in Slack.
+
+## The weekly digest
+
+Each week, RubixKube sends a digest of what Rubix worked on, with a link to [Analytics](/using/analytics). It goes by email to everyone with the **Email** switch on, and to your Inbox. If nothing happened, you get a short note saying it was a silent week.
+
+## Mentions
+
+Type `@` in a comment on an incident, RCA or Task to tag someone. They hear about it through the bell and by email, following their own switches. Mention `@Rubix` to ask Rubix, and it replies in the thread.
+
+## Send your own
+
+To send a message when something specific happens, build an automation with a **Send a message** step. It can go to Slack, email or the in-app inbox. See [Automations](/using/automations).
 
 <CardGroup cols={2}>
-  <Card title="Severity thresholds" icon="sliders">
-    Start strict. Loosen if something important slipped through.
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    Connect Slack and work with Rubix in your channels.
   </Card>
-  <Card title="Quiet hours" icon="moon">
-    Suppress non-critical routes outside business hours.
-  </Card>
-  <Card title="Deduplication windows" icon="layer-group">
-    Similar insights within a window collapse into one notification.
-  </Card>
-  <Card title="Snooze and acknowledge" icon="bell-slash">
-    Silencing an insight in Slack or Teams syncs back to the console.
-  </Card>
-</CardGroup>
-
-## Related guides
-
-<CardGroup cols={2}>
-  <Card title="Integrations" icon="plug" href="/using/integrations">
-    Connect Slack, Teams, Linear, and PagerDuty.
-  </Card>
-  <Card title="Magic Insights" icon="lightbulb" href="/using/insights">
-    Where the events you route originate.
+  <Card title="Automations" icon="diagram-project" href="/using/automations">
+    Run steps when something happens.
   </Card>
 </CardGroup>

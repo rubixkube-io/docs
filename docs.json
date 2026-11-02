@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "RubixKube Docs",
-  "description": "Site Reliability Intelligence for modern infrastructure. Detect anomalies, diagnose root cause, and resolve failures across Kubernetes, AWS, GCP, and Linux VMs.",
+  "description": "RubixKube watches your infrastructure and connected tools, turns what breaks into incidents, and Rubix investigates each one and suggests the fix.",
   "colors": {
     "primary": "#2563EB",
     "light": "#3B82F6",
@@ -12,15 +12,14 @@
   "seo": {
     "indexing": "navigable",
     "metatags": {
-      "description": "Site Reliability Intelligence for modern infrastructure. Detect anomalies, diagnose root cause, and resolve failures across Kubernetes, AWS, GCP, and Linux VMs.",
-      "keywords": "site reliability intelligence, SRI, AI SRE, incident response, root cause analysis, RCA, kubernetes monitoring, AWS monitoring, GCP monitoring, azure monitoring, AKS, EKS, GKE, vm monitoring, bare metal monitoring, agent mesh, OPEL loop, AIOps, MTTU, observability",
+      "description": "RubixKube watches your infrastructure and connected tools, turns what breaks into incidents, and Rubix investigates each one and suggests the fix.",
       "author": "RubixKube",
       "robots": "index, follow",
       "googlebot": "index, follow",
       "theme-color": "#2563EB",
       "og:site_name": "RubixKube Docs",
       "og:type": "website",
-      "og:image": "/images/hero-light.png",
+      "og:image": "/images/console/incidents-light.png",
       "twitter:card": "summary_large_image",
       "twitter:site": "@RubixKubeHQ",
       "twitter:creator": "@RubixKubeHQ"
@@ -32,119 +31,134 @@
         "tab": "RubixKube Docs",
         "groups": [
           {
-            "group": "Documentation",
+            "group": "Get started",
             "pages": [
+              "getting-started/overview",
+              "getting-started/whats-new",
+              "getting-started/quickstart",
+              "getting-started/connect-your-environment"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "concepts/how-rubixkube-works",
+              "concepts/incidents",
+              "concepts/root-cause-analysis",
+              "concepts/tasks",
+              "concepts/environments",
+              "concepts/observer-agent",
+              "concepts/knowledge-graph",
+              "concepts/memory-engine",
+              "concepts/skills",
+              "concepts/guardrails"
+            ]
+          },
+          {
+            "group": "Work in the console",
+            "pages": [
+              "using/incidents",
+              "using/rca-reports",
+              "using/tasks",
+              "using/rubix-chat-agent",
+              "using/automations",
+              "using/analytics",
+              "using/environments"
+            ]
+          },
+          {
+            "group": "Connect a source",
+            "pages": [
+              "environments/kubernetes",
+              "environments/aws",
+              "environments/gcp",
+              "environments/azure",
+              "environments/vm"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/overview",
+              "integrations/catalog",
               {
-                "group": "Getting Started",
+                "group": "Alert sources",
                 "expanded": true,
                 "pages": [
-                  "getting-started/overview",
-                  "getting-started/quickstart",
-                  "getting-started/connect-your-environment"
+                  "integrations/datadog",
+                  "integrations/pagerduty",
+                  "integrations/grafana",
+                  "integrations/sentry",
+                  "integrations/jira",
+                  "integrations/linear",
+                  "integrations/observe",
+                  "integrations/webhooks"
                 ]
               },
               {
-                "group": "Core Concepts",
-                "expanded": false,
+                "group": "Slack and AI tools",
                 "pages": [
-                  "concepts/how-rubixkube-works",
-                  "concepts/opel-loop",
-                  "concepts/observer-agent",
-                  "concepts/memory-engine",
-                  "concepts/knowledge-graph",
-                  "concepts/agent-mesh",
-                  "concepts/skills",
-                  "concepts/insights",
-                  "concepts/root-cause-analysis",
-                  "concepts/actions",
-                  "concepts/environments",
-                  "concepts/guardrails"
+                  "integrations/slack",
+                  "integrations/mcp"
                 ]
               },
               {
-                "group": "Environments",
-                "expanded": false,
-                "pages": [
-                  "environments/kubernetes",
-                  "environments/aws",
-                  "environments/gcp",
-                  "environments/azure",
-                  "environments/vm"
-                ]
-              },
-              {
-                "group": "Platform Capabilities",
-                "expanded": false,
-                "pages": [
-                  "using/dashboard",
-                  "using/rubix-chat-agent",
-                  "using/insights",
-                  "using/action",
-                  "using/rca-reports",
-                  "using/analytics",
-                  "using/environments",
-                  "using/infrastructure",
-                  "using/integrations",
-                  "using/skills",
-                  "using/notifications",
-                  "using/workspace",
-                  "using/agent-skills-store"
-                ]
-              },
-              {
-                "group": "Integrations",
-                "expanded": false,
+                "group": "Tools Rubix can read",
                 "pages": [
                   "integrations/github",
                   "integrations/gitlab",
                   "integrations/notion",
                   "integrations/atlassian-rovo",
-                  "integrations/linear",
-                  "integrations/pagerduty",
-                  "integrations/slack",
-                  "integrations/microsoft-teams",
                   "integrations/new-relic",
-                  "integrations/datadog",
                   "integrations/dynatrace",
-                  "integrations/prometheus",
-                  "integrations/grafana",
-                  "integrations/sentry",
+                  "integrations/prometheus"
+                ]
+              },
+              {
+                "group": "Build your own",
+                "pages": [
                   "integrations/custom-mcp-servers",
                   "integrations/custom-rest",
                   "integrations/oauth-and-auth-types"
                 ]
-              },
-              {
-                "group": "Tutorials",
-                "expanded": false,
-                "pages": [
-                  "tutorials/monitor-infrastructure-health",
-                  "tutorials/automate-incident-remediation",
-                  {
-                    "group": "Talk to your infra",
-                    "expanded": false,
-                    "pages": [
-                      "tutorials/talk-to-infra",
-                      "tutorials/chat-basics",
-                      "tutorials/chat-troubleshooting",
-                      "tutorials/chat-advanced",
-                      "tutorials/chat-cost-analysis"
-                    ]
-                  },
-                  "tutorials/add-custom-agent-skills",
-                  "tutorials/add-custom-integrations"
-                ]
-              },
-              {
-                "group": "Support & Resources",
-                "expanded": false,
-                "pages": [
-                  "support/troubleshooting",
-                  "support/faq",
-                  "support/system-status",
-                  "support/glossary"
-                ]
               }
+            ]
+          },
+          {
+            "group": "Customize",
+            "pages": [
+              "using/skills",
+              "using/customize"
+            ]
+          },
+          {
+            "group": "Settings",
+            "pages": [
+              "using/modes",
+              "using/models",
+              "using/notifications",
+              "using/members",
+              "using/usage-and-plan",
+              "using/settings"
+            ]
+          },
+          {
+            "group": "Tutorials",
+            "pages": [
+              "tutorials/first-incident",
+              "tutorials/talk-to-infra",
+              "tutorials/chat-prompts",
+              "tutorials/add-custom-agent-skills",
+              "tutorials/add-custom-integrations"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "support/troubleshooting",
+              "support/faq",
+              "support/system-status",
+              "support/glossary"
             ]
           }
         ]
@@ -267,5 +281,79 @@
       "github": "https://github.com/rubixkube-io",
       "linkedin": "https://linkedin.com/company/rubixkube"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/concepts/agent-mesh",
+      "destination": "/concepts/how-rubixkube-works"
+    },
+    {
+      "source": "/concepts/opel-loop",
+      "destination": "/concepts/how-rubixkube-works"
+    },
+    {
+      "source": "/concepts/insights",
+      "destination": "/concepts/incidents"
+    },
+    {
+      "source": "/concepts/actions",
+      "destination": "/concepts/tasks"
+    },
+    {
+      "source": "/using/insights",
+      "destination": "/using/incidents"
+    },
+    {
+      "source": "/using/action",
+      "destination": "/using/tasks"
+    },
+    {
+      "source": "/using/workspace",
+      "destination": "/using/members"
+    },
+    {
+      "source": "/using/dashboard",
+      "destination": "/using/incidents"
+    },
+    {
+      "source": "/using/infrastructure",
+      "destination": "/using/environments"
+    },
+    {
+      "source": "/using/agent-skills-store",
+      "destination": "/using/skills"
+    },
+    {
+      "source": "/using/integrations",
+      "destination": "/integrations/overview"
+    },
+    {
+      "source": "/integrations/microsoft-teams",
+      "destination": "/integrations/overview"
+    },
+    {
+      "source": "/tutorials/monitor-infrastructure-health",
+      "destination": "/tutorials/first-incident"
+    },
+    {
+      "source": "/tutorials/automate-incident-remediation",
+      "destination": "/tutorials/first-incident"
+    },
+    {
+      "source": "/tutorials/chat-basics",
+      "destination": "/tutorials/chat-prompts"
+    },
+    {
+      "source": "/tutorials/chat-troubleshooting",
+      "destination": "/tutorials/chat-prompts"
+    },
+    {
+      "source": "/tutorials/chat-advanced",
+      "destination": "/tutorials/chat-prompts"
+    },
+    {
+      "source": "/tutorials/chat-cost-analysis",
+      "destination": "/tutorials/chat-prompts"
+    }
+  ]
 }

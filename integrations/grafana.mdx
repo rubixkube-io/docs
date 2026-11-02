@@ -1,76 +1,71 @@
 ---
-title: "Grafana integration"
-sidebarTitle: "Grafana"
-description: "Connect Grafana to RubixKube today via the custom integrations path. Agents can read dashboards, alert state, and datasource queries to enrich investigations and RCAs."
-keywords: ["grafana integration", "rubixkube grafana", "grafana alerting", "observability integration"]
-"og:title": "Grafana integration"
-"og:description": "Connect Grafana to RubixKube via Custom MCP or Custom REST."
+title: "Grafana"
+description: "Turn Grafana alerts into incidents, and let Rubix query Grafana Cloud while it investigates."
 ---
 
-Grafana connects to RubixKube today through the custom integrations path. There is no separate prebuilt app to install. Most teams start with [Custom REST](/integrations/custom-rest) and move to [Custom MCP](/integrations/custom-mcp-servers) when they want richer, semantic tools.
+Connect Grafana so a firing alert opens an incident in RubixKube, and its resolved message resolves it. This works with any Grafana that can send to a webhook. If you use Grafana Cloud, Rubix can also read it while it investigates.
 
-## What to bring in
+## When you'd use this
 
-The signals that matter most when agents are investigating or writing RCAs:
+- **Your alert rules live in Grafana.** Keep them there, and get an investigation for each one that fires.
+- **You run Prometheus.** A Grafana contact point is the simplest way to get those alerts into RubixKube.
+- **You self-host Grafana.** Webhook alerts work with any Grafana, not only Grafana Cloud.
 
-- **Alert state** (Grafana Alerting API) to surface firing alerts as insight candidates.
-- **Dashboards** (`/api/dashboards/*`) for the panels a team uses during an incident.
-- **Datasource proxy queries** (`/api/datasources/proxy/...`) to execute PromQL, LogQL, or SQL through Grafana's datasource layer.
-- **Annotations** to read deploy markers and runbook entries.
-
-Read-only service account tokens are enough for all of the above.
-
-## Which path to pick
-
-<CardGroup cols={2}>
-  <Card title="Start with REST" icon="network-wired" href="/integrations/custom-rest">
-    Grafana ships a stable HTTP API. Point the custom REST integration at it with an OpenAPI wrapper.
-  </Card>
-  <Card title="Move to MCP when you need more" icon="server" href="/integrations/custom-mcp-servers">
-    Wrap datasource queries behind named tools (for example `prom_via_grafana(service, window)`).
-  </Card>
-</CardGroup>
-
-## Quick recipe: REST path
+## Connect it
 
 <Steps titleSize="h3">
-  <Step title="Create a Grafana service account token">
-    In Grafana, create a service account with a read role and generate a token.
+  <Step title="Make its webhook in RubixKube">
+    Go to **Environments > Connect** and pick **Grafana**. Give it a name, then choose **Make its webhook**. Copy the URL. It's shown once, and anyone who has it can post to it.
   </Step>
-  <Step title="Register the endpoint">
-    In the RubixKube console, go to **Integrations → Custom REST** and register the Grafana API.
+  <Step title="Add a contact point in Grafana">
+    In Grafana, go to **Alerting > Contact points** and add a **Webhook** contact point. Paste the URL.
   </Step>
-  <Step title="Enable the calls you care about">
-    Start with alerts list, dashboard read, and datasource proxy queries for the specific datasources you want to reach through Grafana.
+  <Step title="Send one alert per message">
+    Under the webhook's optional settings, set **Max alerts per message** to 1. RubixKube reads only the first alert in a message, so a higher number hides the rest.
   </Step>
-  <Step title="Set auth">
-    Add the service account token to the workspace secret vault. Map it to the `Authorization: Bearer <token>` header.
-  </Step>
-  <Step title="Scope to skills">
-    Attach the enabled endpoints to the skills that need Grafana context.
+  <Step title="Route your alerts to it">
+    Add the contact point to the notification policy for the alerts you want.
   </Step>
 </Steps>
 
-For Grafana behind a VPN or private network, use [Custom MCP](/integrations/custom-mcp-servers) with a self-hosted server so no inbound exposure is needed.
+## What opens an incident and what resolves it
 
-## Example tools worth having
+| Alert status | What happens |
+|---|---|
+| `firing` | Opens or updates the incident |
+| `resolved` | Resolves the incident |
 
-- `grafana_firing_alerts(service)` — returns alerts currently firing that tag or match the service.
-- `grafana_dashboard(id)` — returns the panels and queries from a dashboard, useful for agents trying to reproduce what a human would look at.
-- `grafana_datasource_query(datasource, query, window)` — runs a query through Grafana's datasource proxy (PromQL, LogQL, SQL, etc).
+**Severity** comes from the alert's `severity` label: `critical` is critical, `high` or `error` is high, `warning` or `medium` is medium, `low` or `info` is low. With no label, it's medium.
 
-Define these as skills (or as MCP tools if you want them to wrap multiple calls).
+Each alert's own Grafana fingerprint decides which incident it belongs to, so a firing alert that repeats updates the same incident.
 
-## Related guides
+## What you'll see
+
+The source appears on **Environments** as soon as you make its webhook, then shows as connected when the first message arrives. Its page has an **Events** tab with the last 20 messages, so you can check what Grafana really sent.
+
+The automation **Grafana alerts become incidents** is on under **Automations**. If events arrive and no incident opens, the source page says so and offers **Turn on**.
+
+Each incident carries the alert's details and a link back to Grafana. Triage, the RCA and Tasks then work as they do for any other incident.
+
+## What Rubix can read too
+
+To let Rubix read Grafana Cloud, open **Customize > Integrations**, pick **Grafana Cloud** and sign in. RubixKube asks for read and query access, not write access.
+
+For a Grafana you run yourself, add its MCP server to the observer. See [Add your own MCP servers](/environments/kubernetes#add-your-own-mcp-servers).
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
-    The full REST flow with auth options and approval rules.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
   </Card>
-  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
-    When you want richer tool schemas and multi-call workflows.
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What happens after an incident opens.
   </Card>
-  <Card title="Skills" icon="sparkles" href="/concepts/skills">
-    How to compose Grafana queries into custom workflows.
+  <Card title="Prometheus" icon="fire" href="/integrations/prometheus">
+    Reach metrics inside your Kubernetes cluster.
+  </Card>
+  <Card title="Sign-in and tokens" icon="lock" href="/integrations/oauth-and-auth-types">
+    How connections sign in.
   </Card>
 </CardGroup>

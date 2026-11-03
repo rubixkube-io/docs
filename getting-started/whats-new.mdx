@@ -14,6 +14,14 @@ Here's what changed recently, newest first, and why you'd care. Some features ne
 - **A channel per category.** Send Incidents, Reports, Account and Uptime messages to different channels from **Customize > Channels**. Anything you don't set goes with Incidents. [Slack](/integrations/slack).
 - **Cards in Slack.** RCAs, Tasks and artifacts now show as cards, so you can read the main points without leaving the thread. [Slack](/integrations/slack).
 
+### Rubix CLI 0.1.2
+
+- **Same chat as the console.** Chats started in the terminal show in the console, and the other way round. Model, effort, response style and mode work as they do there, and approvals and questions from Rubix show in the terminal. [Chat in the terminal](/cli/usage).
+- **Browse.** Press the left arrow on an empty input, or run `rubix browse`, to search incidents, RCAs, Tasks, artifacts and chats full screen. Open one and close it, run the RCA again, rate it, move a Task or comment, with one key each. [Browse](/cli/browse).
+- **Ask once from a script.** `rubix -p "question"` prints Rubix's answer and exits, and anything you pipe in goes with the question. `rubix status`, `rubix incidents` and the other one-shot commands print text or `--json`. [Commands](/cli/commands).
+- **@ and your editor.** Type `@` to add an incident, RCA, Task, environment or file. Ctrl+G writes the message in your editor. [Chat in the terminal](/cli/usage).
+- **Node.js 22.12 or newer** is now needed. Update with `npm install -g @rubixkube/rubix@latest`. [Install and sign in](/cli/installation).
+
 ## October 2026
 
 ### Incidents and RCAs

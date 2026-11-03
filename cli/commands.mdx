@@ -1,147 +1,122 @@
 ---
-title: "Rubix CLI command reference"
-sidebarTitle: "Commands"
-description: "Every top-level command and every slash command in the Rubix CLI. Generated from the CLI source so it stays accurate."
-keywords: ["rubix cli commands", "rubix slash commands", "CLI reference", "rubixkube CLI commands"]
-"og:title": "Rubix CLI command reference"
-"og:description": "Every top-level command and slash command in the Rubix CLI."
+title: "Commands"
+description: "Every Rubix CLI command, slash command and key, in one place."
 ---
 
-Complete reference for the Rubix CLI. Top-level commands are what you run from the shell. Slash commands are what you run inside the chat UI.
+This page lists everything the CLI does. `rubix help` and `rubix help <command>` print the same list in your terminal, and `/help` or `?` shows the keys inside chat.
 
-## Top-level commands
+## Commands
 
-<AccordionGroup>
-  <Accordion title="rubix" icon="terminal">
-    Launch the interactive chat UI. Equivalent to `rubix chat` with no options.
+| Command | What it does |
+| --- | --- |
+| `rubix` | Opens chat |
+| `rubix chat [-s id] [-p text]` | Opens chat. `-s` opens an existing chat, `-p` sends a first message. |
+| `rubix -p "question"` | Asks Rubix once, prints the answer and exits |
+| `rubix ask "question"` | The same as `rubix -p` |
+| `rubix browse [tab] [search]` | Opens [Browse](/cli/browse), such as `rubix browse tasks owner:me` |
+| `rubix browse INC-12` | Opens one record in Browse |
+| `rubix status` | Open critical and high incidents, what needs you, Tasks waiting and your environments |
+| `rubix incidents [search]` | Lists incidents. Filters: `sev:high`, `env:prod`, `status:all` |
+| `rubix rcas [search]` | Lists RCAs. Filters: `sev:high`, `env:prod` |
+| `rubix tasks [search]` | Lists Tasks. Filters: `owner:me`, `priority:high`, `status:all` |
+| `rubix artifacts [search]` | Lists the artifacts Rubix made |
+| `rubix incident INC-12` | Shows an incident: what was detected, the RCA, Tasks and activity |
+| `rubix rca RCA-4` | Shows an RCA |
+| `rubix task TSK-30` | Shows a Task |
+| `rubix artifact <id>` | Shows an artifact |
+| `rubix sessions` | Lists your chats with their ids |
+| `rubix model` | Lists the models your organization can use |
+| `rubix login` / `rubix logout` | Signs in or out |
 
-    ```bash
-    rubix
-    ```
-  </Accordion>
-  <Accordion title="rubix chat" icon="comments">
-    Start interactive chat, optionally resuming a session or pre-sending a prompt.
+### Options
 
-    ```bash
-    rubix chat [options]
-    ```
+| Option | Works with | What it does |
+| --- | --- | --- |
+| `-e, --env <name>` | `-p`, `ask` | The environment to ask about |
+| `--json` | `-p`, `ask`, `status`, lists, records | Prints JSON |
+| `-n, --limit <n>` | lists | How many rows to show. 20 by default, up to 200. |
 
-    **Options**
+In a terminal, output has colour and links. When you pipe it, you get plain text. With `--json`, you get JSON.
 
-    | Flag | Description |
-    | --- | --- |
-    | `-s, --session-id <id>` | Resume an existing session by id. Find ids with `rubix sessions`. |
-    | `-p, --prompt <text>` | Send a prompt immediately after launch. Non-interactive when combined with a session-id. |
+### Asking once
 
-    **Examples**
+`rubix -p` joins anything you pipe in to the question, so `cat error.log | rubix -p "what does this mean?"` sends the log with it. The chat is saved, and the CLI prints `rubix chat -s <id>` so you can carry on there.
 
-    ```bash
-    rubix chat --session-id "abc-123"
-    rubix chat --prompt "What is the health of production?"
-    ```
-  </Accordion>
-  <Accordion title="rubix login" icon="right-to-bracket">
-    Authenticate with the device-code flow. Opens a browser URL for you to paste a short code and approve.
+If Rubix needs an approval or asks a question, the CLI says so, prints `rubix chat -s <id>` to answer it in chat, and exits with code 2. Other errors exit with code 1.
 
-    ```bash
-    rubix login
-    ```
+With `--json`, the answer looks like this:
 
-    Credentials persist at `~/.rubix/auth.json`.
-  </Accordion>
-  <Accordion title="rubix logout" icon="right-from-bracket">
-    Clear local authentication. The next `rubix` run prompts for device-code login again.
+```json
+{
+  "chat_id": "…",
+  "answer": "…",
+  "finished": true,
+  "waiting": null
+}
+```
 
-    ```bash
-    rubix logout
-    ```
-  </Accordion>
-  <Accordion title="rubix sessions" icon="list">
-    List your past chat sessions. Shows id, title, associated agent, and last update time.
-
-    ```bash
-    rubix sessions
-    ```
-
-    Use the id with `rubix chat --session-id <id>` to resume.
-  </Accordion>
-  <Accordion title="rubix model" icon="microchip">
-    Manage the AI model used for chat.
-
-    ```bash
-    rubix model [subcommand] [modelId]
-    ```
-
-    **Subcommands**
-
-    | Subcommand | Description |
-    | --- | --- |
-    | `list` | Show available models for your organization. |
-    | `get` | Print the currently selected model. |
-    | `set <modelId>` | Switch to a specific model for new sessions. |
-  </Accordion>
-</AccordionGroup>
+`waiting` says what Rubix is waiting for when it stopped for you.
 
 ## Slash commands
 
-Available inside the chat UI. Type `/` to open the menu, or type any command directly.
+Type `/` in chat for the list. Your organization's saved commands from **Customize > Commands** show in the same list.
 
-| Command | Purpose |
+| Command | What it does |
 | --- | --- |
-| `/login` | Authenticate via device-code flow |
-| `/logout` | Clear local authentication |
-| `/status` | Show authentication, session, and environment status |
-| `/resume` | Resume a previous conversation |
-| `/new` | Start a fresh conversation |
-| `/environments` | Switch the active environment |
-| `/refresh` | Refresh environments and dashboard stats |
-| `/models` | Switch the AI model for this session |
-| `/agents` | Switch the agent (app) binding for new sessions |
-| `/paste` | Insert clipboard content cleanly, bypassing terminal paste truncation |
-| `/send` | Send the last shell output into chat as context |
-| `/clear` | Clear visible conversation history (session is preserved) |
-| `/rename` | Rename the current session |
-| `/console` | Open the web console in your default browser |
-| `/docs` | Open RubixKube docs in your default browser |
-| `/help` | Toggle the keyboard shortcut and help panel |
-| `/exit` | Exit the Rubix CLI |
-| `/quit` | Alias for `/exit` |
-| `/untrust` | Remove the current folder from the trusted list |
+| `/new` | Starts a new chat |
+| `/resume` | Picks an earlier chat |
+| `/delete` | Deletes this chat for good, in the console too |
+| `/stop` | Stops Rubix's reply |
+| `/mode` | Observe, Assist or Auto, up to your organization's highest mode |
+| `/env [name]` | The environment Rubix looks at |
+| `/model` | The model for this chat |
+| `/effort` | How hard the model reasons |
+| `/style` | quiet, normal or verbose |
+| `/plan execute` / `/plan drop` | Runs or drops the plan Rubix wrote |
+| `/browse` | Opens Browse |
+| `/incidents`, `/rcas`, `/tasks`, `/artifacts`, `/chats` | Opens that tab in Browse, with an optional search |
+| `/incident INC-12`, `/rca RCA-4`, `/task TSK-30` | Opens one record |
+| `/refresh` | Refreshes environments and the home card |
+| `/pet` | Shows or hides Rubix above the input |
+| `/paste` | Pastes from the clipboard, for text too long for the terminal's paste |
+| `/send` | Sends the last shell command and its output to Rubix |
+| `/clear` | Clears the screen. The chat is kept. |
+| `/status` | Shows who you're signed in as and the chat you're in |
+| `/console`, `/docs` | Opens the console or these docs in your browser |
+| `/untrust` | Removes this folder from the trusted list |
+| `/login`, `/logout` | Signs in or out |
+| `/help` | Shows the keys |
+| `/exit`, `/quit` | Leaves the CLI |
 
-## Flags and environment variables
+## Keys in chat
 
-<AccordionGroup>
-  <Accordion title="--version" icon="tag">
-    Print the installed CLI version and exit.
+| Key | What it does |
+| --- | --- |
+| Enter | Sends the message, or queues it while Rubix is answering |
+| Shift+Enter | New line |
+| Tab | Uses a starter question on the home card |
+| Shift+Tab | Changes the mode |
+| Left arrow | Opens Browse, when the input is empty |
+| Up arrow | Edits the first queued message |
+| `@` | Adds an incident, RCA, Task, environment or file |
+| `!` | Runs a shell command, at the start of a line |
+| `?` | Shows the keys, when the input is empty |
+| Ctrl+G | Writes the message in your editor |
+| Ctrl+O | Shows or hides Rubix's full work on the last reply |
+| Ctrl+C | Stops Rubix's reply. Press it twice when idle to leave. |
+| Ctrl+D | Leaves, when the input is empty |
+| Ctrl+L | Clears the terminal |
+| Ctrl+A / Ctrl+E | Start or end of the line |
+| Ctrl+K | Deletes to the end of the line |
+| Esc | Closes a list or panel, or skips Rubix's question |
 
-    ```bash
-    rubix --version
-    ```
-  </Accordion>
-  <Accordion title="--help" icon="circle-question">
-    Print help for any command.
-
-    ```bash
-    rubix --help
-    rubix chat --help
-    rubix model --help
-    ```
-  </Accordion>
-  <Accordion title="RUBIX_API_KEY" icon="key">
-    Override the stored token for this invocation. Useful for CI or ephemeral runners. When set, the CLI skips the device-code prompt.
-  </Accordion>
-  <Accordion title="RUBIX_ENV_ID" icon="server">
-    Pin the environment for this invocation. Overrides any session default.
-  </Accordion>
-</AccordionGroup>
-
-## Where to go next
+When Rubix asks for approval: `y` approves once, `a` approves for this chat, `n` declines.
 
 <CardGroup cols={2}>
-  <Card title="Examples" icon="lightbulb" href="/cli/examples">
-    Concrete flows that combine the commands above.
+  <Card title="Browse" icon="table-list" href="/cli/browse">
+    Keys and actions in Browse.
   </Card>
-  <Card title="Configuration" icon="sliders" href="/cli/configuration">
-    Where credentials live and how folder trust works.
+  <Card title="Scripts and examples" icon="lightbulb" href="/cli/examples">
+    The commands in real use.
   </Card>
 </CardGroup>

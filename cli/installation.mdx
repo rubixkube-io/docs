@@ -1,99 +1,92 @@
 ---
-title: "Install the Rubix CLI"
+title: "Install and sign in"
 sidebarTitle: "Installation"
-description: "Install the Rubix CLI globally with npm, or run it without installing via npx. Node.js 18 or later required."
-keywords: ["install rubix cli", "npm install rubix", "rubixkube cli install", "npx rubix"]
-"og:title": "Install the Rubix CLI"
-"og:description": "Install with npm or run with npx. Node.js 18 or later."
+description: "Install the Rubix CLI with npm, sign in with a code in your browser, and keep it up to date."
 ---
 
-The Rubix CLI ships as `@rubixkube/rubix` on npm. Node.js 18 or later is the only prerequisite. A free [console.rubixkube.ai](https://console.rubixkube.ai) account is all you need to sign in.
+The CLI is the npm package `@rubixkube/rubix`. It needs Node.js 22.12 or newer and a RubixKube account.
 
 ## Install
 
 <Tabs>
-  <Tab title="Global install (recommended)">
+  <Tab title="npm">
     ```bash
     npm install -g @rubixkube/rubix
     ```
 
-    Binary: `rubix`.
+    This gives you the `rubix` command.
   </Tab>
-  <Tab title="One-off with npx">
+  <Tab title="npx">
     ```bash
     npx @rubixkube/rubix
     ```
 
-    Useful for trying the CLI without installing. Each run downloads the package; for repeat use the global install is faster.
-  </Tab>
-  <Tab title="Yarn or pnpm">
-    ```bash
-    yarn global add @rubixkube/rubix
-    # or
-    pnpm add -g @rubixkube/rubix
-    ```
+    Runs the CLI without installing it. Each run fetches the package, so install it if you'll use it often.
   </Tab>
 </Tabs>
 
-## Verify
+Check it worked:
 
 ```bash
 rubix --version
 ```
 
-You should see the installed semver (for example, `0.0.7`). If the command is not found, check that your global npm bin is on your `PATH`:
+If your shell says `rubix: command not found`, the folder npm installs global commands into isn't on your `PATH`. Run `npm prefix -g`, and add the `bin` folder inside it to your `PATH`.
+
+## Sign in
 
 ```bash
-npm bin -g
-# Add the printed path to your shell profile if needed
+rubix login
 ```
+
+If you run `rubix` before you've signed in, it opens on this screen. Choose **Login to RubixKube**.
+
+<Frame>
+  <img src="/images/cli/sign-in.png" alt="The Rubix CLI before sign-in, with setup steps, the prompt keys for commands, files and shell, and the choice to log in to RubixKube or exit" />
+</Frame>
+
+<Steps>
+  <Step title="Get a code">
+    The CLI prints a link and a short code, and opens the link in your browser when it can.
+  </Step>
+  <Step title="Approve it in the browser">
+    Sign in to RubixKube if you aren't already, check the code matches, and approve.
+  </Step>
+  <Step title="Back in the terminal">
+    The CLI sees the approval and you're signed in. Running `rubix` for the first time does the same thing if you haven't signed in yet.
+  </Step>
+</Steps>
+
+The sign-in is kept in `~/.rubix/auth.json` and renews itself, so you don't sign in every day. `rubix logout` removes it.
+
+Over SSH, where no browser opens, copy the link into a browser on your own machine. The code works from any device.
+
+## Trust the folder
+
+The first time you open chat in a folder, the CLI asks whether you trust it, because Rubix can read the files you name there with `@./path`. Choose **Trust this folder and continue**, or press Ctrl+C to leave. `/untrust` removes the current folder from the list. One-shot commands don't ask.
 
 ## Update
 
-Global install:
-
 ```bash
-npm update -g @rubixkube/rubix
+npm install -g @rubixkube/rubix@latest
 ```
 
-The CLI also prints a short update notice when a newer release is available.
+The CLI checks npm once a day and tells you when a newer version is out. [What's new](/getting-started/whats-new) lists what changed.
 
 ## Uninstall
 
 ```bash
 npm uninstall -g @rubixkube/rubix
+rm -rf ~/.rubix
 ```
 
-This removes the binary. Your local auth credentials at `~/.rubix/auth.json` stay untouched; delete that file too if you want a fully clean removal.
-
-## Requirements and support
+The second line removes your sign-in and settings. Leave it out if you'll install the CLI again.
 
 <CardGroup cols={2}>
-  <Card title="Node.js" icon="node-js">
-    Version **18 or later**. LTS releases recommended.
+  <Card title="Chat in the terminal" icon="comments" href="/cli/usage">
+    Your first chat, and the keys that help.
   </Card>
-  <Card title="Operating systems" icon="desktop">
-    macOS, Linux, and Windows (PowerShell and WSL both work).
-  </Card>
-  <Card title="Shell" icon="terminal">
-    Any POSIX-compatible shell, plus PowerShell on Windows. No special shell hooks required.
-  </Card>
-  <Card title="Account" icon="user" href="https://console.rubixkube.ai">
-    A RubixKube account. Sign up free at console.rubixkube.ai.
-  </Card>
-</CardGroup>
-
-## Air-gapped or restricted environments
-
-If npm registry access is blocked, mirror the package through your internal registry or reach out at [connect@rubixkube.ai](mailto:connect@rubixkube.ai) for a standalone tarball.
-
-## Where to go next
-
-<CardGroup cols={2}>
-  <Card title="Usage" icon="play" href="/cli/usage">
-    First-run login, starting a chat, keyboard shortcuts.
-  </Card>
-  <Card title="Commands" icon="list" href="/cli/commands">
-    Every top-level command and slash command.
+  <Card title="Troubleshooting" icon="wrench" href="/cli/troubleshooting">
+    When install or sign-in doesn't work.
   </Card>
 </CardGroup>

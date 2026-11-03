@@ -172,6 +172,7 @@
               "cli/overview",
               "cli/installation",
               "cli/usage",
+              "cli/browse",
               "cli/configuration",
               "cli/commands",
               "cli/examples",

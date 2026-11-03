@@ -1,0 +1,80 @@
+---
+title: "Browse"
+description: "Search your incidents, RCAs, Tasks, artifacts and chats full screen in the terminal, open one, and act on it with a single key."
+tag: "New"
+---
+
+Browse lets you work through your incidents, RCAs and Tasks in the terminal the way you would in the console: find one, read it, and do the next thing. You don't have to remember a command for each action.
+
+## When you'd use this
+
+- **You want to see what's open.** Open the Incidents tab, type `sev:high`, and move down the list with the preview beside it.
+- **You're picking up your work.** `rubix browse tasks owner:me` opens your Tasks. Move one to In progress with `s`.
+- **An incident needs a person.** Open it, read what Rubix found, then close it, run the RCA again or comment.
+- **An RCA got it right, or wrong.** Rate it with `v`, so Rubix learns from your answer.
+- **You want Rubix's take on a record.** Press `a`, and the record goes with your next chat message.
+
+## Open Browse
+
+- Press the left arrow on an empty input in chat, or type `/browse`.
+- Run `rubix browse` from the shell.
+- Go straight to a tab: `/incidents`, `/rcas`, `/tasks`, `/artifacts` or `/chats`. Add a search, such as `/incidents sev:high env:prod`.
+- Go straight to a record: `/incident INC-12`, `/rca RCA-4`, `/task TSK-30`, or `rubix browse INC-12`.
+
+From the shell, `rubix browse tasks owner:me` opens the Tasks tab with that search.
+
+## Find a record
+
+Browse has five tabs: **Incidents**, **RCAs**, **Tasks**, **Artifacts** and **Chats**. Tab and Shift+Tab move between them. One search box works on every tab. Start typing to search, and add filters:
+
+| Filter | Example | Works on |
+| --- | --- | --- |
+| `sev:` | `sev:high` | Incidents, RCAs |
+| `env:` | `env:prod` | Incidents, RCAs, Tasks |
+| `status:` | `status:open`, `status:all`, `status:resolved` | Incidents, Tasks |
+| `owner:` | `owner:me` | Tasks |
+| `priority:` | `priority:high` | Tasks |
+
+The arrow keys move through the list. If the terminal is at least 100 columns wide, a preview of the selected record shows beside it. Ctrl+R refreshes. If nothing matches and you typed plain words, Enter asks Rubix instead.
+
+## Read a record
+
+Enter, or the right arrow, opens the full record. An incident reads like it does in the console: what Rubix found, what was detected (with memory and CPU charts against the limit), its Tasks, and the activity with comments. The arrow keys and Page Up and Page Down scroll. Esc goes back to the list, and Esc again goes back to chat.
+
+## Act on it
+
+The actions for a record show at the bottom of it. Press the letter.
+
+| Key | Action | On |
+| --- | --- | --- |
+| `a` | Ask Rubix. The record goes with your next message. | Everything |
+| `m` | Comment | Incidents, RCAs, Tasks |
+| `o` | Open in the console | Everything |
+| `y` | Copy the link | Everything |
+| `c` | Close | Open incidents |
+| `w` | Answer **What fixed it?** | Incidents that ask |
+| `r` | Run RCA again | Incidents, RCAs |
+| `v` | Rate: Right, Partly or Wrong | RCAs |
+| `s` | Move to another status | Tasks |
+| `t` / `u` | Assign to me, or unassign | Tasks |
+
+Anything that changes a record asks first. Press `y` to go ahead. Each change is made as you, as if you'd done it in the console.
+
+## Use the mouse
+
+The wheel scrolls. Click a tab, a row or an action to pick it. Drag across text to select it, and it's copied when you let go. Shift-drag uses your terminal's own selection instead. Set `RUBIX_MOUSE=0` to turn the mouse off in Browse.
+
+<CardGroup cols={2}>
+  <Card title="Chat in the terminal" icon="comments" href="/cli/usage">
+    Ask Rubix about what you found.
+  </Card>
+  <Card title="Commands" icon="list" href="/cli/commands">
+    The same lists as one-shot commands.
+  </Card>
+  <Card title="Incidents" icon="triangle-exclamation" href="/using/incidents">
+    What each part of an incident means.
+  </Card>
+  <Card title="Tasks" icon="list-check" href="/using/tasks">
+    Statuses, owners and checks.
+  </Card>
+</CardGroup>

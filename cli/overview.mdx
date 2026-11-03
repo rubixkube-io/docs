@@ -1,82 +1,60 @@
 ---
-title: "Rubix CLI overview"
+title: "Rubix CLI"
 sidebarTitle: "Overview"
-description: "The Rubix CLI brings RubixKube to your terminal. Chat with infrastructure, investigate incidents, and run skills without leaving the command line."
-keywords: ["rubix cli", "rubixkube cli", "terminal AI SRE", "infrastructure chat cli", "AI SRE terminal"]
-"og:title": "Rubix CLI overview"
-"og:description": "RubixKube in your terminal."
+description: "Work with Rubix and your incidents, RCAs and Tasks from a terminal: chat, browse records, or ask once from a script."
 ---
 
-The **Rubix CLI** is the terminal-native front door to RubixKube. Same Rubix, same skills, same organization, launched with a single word.
+The Rubix CLI is for when you're already in a terminal and don't want to switch to a browser to ask Rubix something or check an incident. It's the same Rubix and the same organization as the console, so a chat you start in one shows up in the other.
+
+<Frame>
+  <img src="/images/cli/rubix.gif" alt="Rubix, drawn in pixels, waving, thinking, working and hopping" width="240" height="200" />
+</Frame>
 
 ```bash
+npm install -g @rubixkube/rubix
 rubix
 ```
 
-<Frame>
-  <img
-    src="/images/cli/welcome-screen.png"
-    alt="Rubix CLI welcome screen with the RUBIXKUBE ASCII logo, a 'What's New' panel for version 0.0.7, setup instructions for the device-code login, the prompt legend for commands, files, and shell, and options to log in or exit."
-  />
-  <Caption>The Rubix CLI on first launch. Release notes and setup steps on top, the prompt legend on the right, and the login entry point at the bottom.</Caption>
-</Frame>
+## When you'd use this
 
-Use it when you want to stay in a terminal: on-call triage, SSH-bound hosts, CI runs, or when you prefer a keyboard-driven flow over a browser tab.
+- **You're reading logs and something looks wrong.** Pipe them in: `cat error.log | rubix -p "what does this mean?"`.
+- **You want to see what's open without leaving the shell.** `rubix status` lists the critical and high incidents, what needs you, the Tasks waiting and your environments.
+- **You're working an incident.** Open it in Browse, read what Rubix found, run the RCA again, comment, or ask Rubix about it with one key.
+- **You want Rubix in a script.** One-shot commands print plain text or JSON and exit, so they fit in an alias, a cron job or a runbook.
+- **You'd rather write in your editor.** Ctrl+G opens the message in `$VISUAL` or `$EDITOR`, and saving brings it back.
 
-## What the CLI can do
+## Three ways to use it
 
-<CardGroup cols={2}>
-  <Card title="Chat with your infrastructure" icon="comments">
-    The same Rubix that runs in the console, in a terminal UI.
-  </Card>
-  <Card title="Resume past sessions" icon="rotate-left">
-    Sessions persist across restarts. Jump back into an earlier investigation anytime.
-  </Card>
-  <Card title="Switch environment context" icon="shuffle">
-    `/environments` retargets the conversation at a different cluster, cloud account, or VM group.
-  </Card>
-  <Card title="Run skills on demand" icon="sparkles">
-    Invoke any enabled skill with `/skills skill-name` (or let the agent intent-match).
-  </Card>
-  <Card title="Feed shell output back" icon="arrow-right-from-bracket">
-    `/send` pushes the last shell command's output into chat, no copy-paste needed.
-  </Card>
-  <Card title="Works everywhere" icon="terminal">
-    macOS, Linux, Windows. Any host with Node.js 18 or later.
-  </Card>
-</CardGroup>
+| | Start it with | What it's for |
+| --- | --- | --- |
+| **Chat** | `rubix` | A conversation with Rubix. Approvals, questions and modes work as in the console. |
+| **Browse** | `rubix browse`, or the left arrow on an empty input | Full-screen lists of incidents, RCAs, Tasks, artifacts and chats, with actions on single keys. |
+| **One-shot commands** | `rubix -p "..."`, `rubix status`, `rubix incidents` | Print an answer or a list and exit. For scripts and quick checks. |
 
-## Who it is for
+## Same Rubix as the console
 
-<CardGroup cols={3}>
-  <Card title="SREs and on-call" icon="user-headset">
-    Investigate incidents from the same terminal you already SSH from.
-  </Card>
-  <Card title="Platform engineers" icon="layer-group">
-    Script common investigations into your runbooks with `rubix chat --prompt`.
-  </Card>
-  <Card title="CI and automation" icon="gear">
-    Run scheduled skills non-interactively against any connected environment.
-  </Card>
-</CardGroup>
+The CLI talks to the same Rubix as the console's chat.
 
-## How it relates to the console
+- **Chats are shared.** A chat started in the terminal is in the console's chat list, and the other way round. A reply keeps running if you close the terminal, and reopening the chat follows it.
+- **Same controls.** Pick the model and effort, the response style (quiet, normal or verbose) and the mode (Observe, Assist or Auto). The mode can't go above your organization's highest mode. See [Modes](/using/modes).
+- **Same records.** Incidents, RCAs and Tasks use the same codes, such as INC-12, RCA-4 and TSK-30.
 
-The CLI and the [Rubix Chat Agent](/using/rubix-chat-agent) in the console share everything: sessions, skills, environments, Memory Engine, modes. Start a conversation on one surface, finish it on the other.
+## Requirements
 
-## Where to go next
+- Node.js 22.12 or newer.
+- A RubixKube account. Sign up at [console.rubixkube.ai](https://console.rubixkube.ai).
 
 <CardGroup cols={2}>
-  <Card title="Installation" icon="download" href="/cli/installation">
-    Install with npm, run with npx, or use the standalone binary.
+  <Card title="Install and sign in" icon="download" href="/cli/installation">
+    Install with npm and sign in with a code.
   </Card>
-  <Card title="Usage" icon="play" href="/cli/usage">
-    First-run login, launching chat, the fundamental keystrokes.
+  <Card title="Chat in the terminal" icon="comments" href="/cli/usage">
+    Approvals, @ mentions, environments and keys.
+  </Card>
+  <Card title="Browse" icon="table-list" href="/cli/browse">
+    Work through incidents, RCAs and Tasks.
   </Card>
   <Card title="Commands" icon="list" href="/cli/commands">
-    Reference for every command and slash command.
-  </Card>
-  <Card title="Examples" icon="lightbulb" href="/cli/examples">
-    Concrete flows for daily on-call, post-deploy verification, and more.
+    Every command, slash command and key.
   </Card>
 </CardGroup>

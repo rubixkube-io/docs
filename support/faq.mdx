@@ -1,89 +1,103 @@
 ---
-title: "Frequently Asked Questions"
-sidebarTitle: "FAQs"
-description: "Quick answers to common RubixKube questions."
+title: "FAQ"
+description: "Plain answers to common questions about RubixKube, Rubix, your data and plans."
 ---
 
-# Frequently Asked Questions
+If your question isn't here, write to connect@rubixkube.ai.
 
-## General
+## The basics
 
-### What is RubixKube?
-RubixKube is an AI-native Site Reliability Intelligence (SRI) platform. It goes beyond traditional monitoring by using specialized AI agents to detect anomalies, diagnose root causes, and recommend or execute remediation actions across your infrastructure.
+<AccordionGroup>
+  <Accordion title="What is RubixKube?">
+    RubixKube helps teams run infrastructure with an agent. It turns what breaks into incidents, investigates each one into an RCA, and suggests Tasks. Rubix is the agent you work with. See [What RubixKube does](/getting-started/overview).
+  </Accordion>
+  <Accordion title="What can I connect?">
+    Observers for Kubernetes, AWS, Google Cloud and servers or VMs running Linux or macOS. Also Datadog, PagerDuty, Grafana, Sentry, Jira, Linear and Observe by webhook, and your own webhooks. See [Connect a source](/getting-started/connect-your-environment).
+  </Accordion>
+  <Accordion title="How long does it take to see something?">
+    An observer usually reports in within a minute of the install. A tool's source appears on its first message. Incidents appear when something breaks.
+  </Accordion>
+  <Accordion title="What's the difference between a source and an environment?">
+    A source is a cluster, cloud account, machine or tool. An environment, such as staging, is a label you put across sources.
+  </Accordion>
+  <Accordion title="Does Microsoft Teams work?">
+    Not yet. It shows as **Coming soon** in **Customize > Channels**. Slack works today on Business and Enterprise.
+  </Accordion>
+</AccordionGroup>
 
-### What environments do you support?
-RubixKube supports Kubernetes (EKS, GKE, AKS, bare metal), AWS, GCP, Azure, and Linux VMs. You can manage multiple clusters and environments from a single tenant workspace.
+## Incidents and RCAs
 
-### What browsers are supported?
-The RubixKube Console supports the latest versions of Chrome, Edge, Safari, and Firefox.
+<AccordionGroup>
+  <Accordion title="Why hasn't my RCA started?">
+    There's a wait by severity: none for critical, 2 minutes for high, 5 for medium and 10 for low. Observers also hold an incident to confirm it, unless it's critical. The incident page says when the RCA starts. See [Troubleshooting](/support/troubleshooting#the-rca-hasnt-started).
+  </Accordion>
+  <Accordion title="Can I trust an RCA?">
+    Check it. Rubix can be wrong, so every RCA shows its evidence and its confidence. It says **Root cause**, **Likely cause** or **Not determined**. When it can't tell, it says so. Answer **Was this the cause?** so your team knows which ones held up.
+  </Accordion>
+  <Accordion title="Does every incident get an RCA?">
+    No. Incidents in a group share one RCA. Incidents that recover before the RCA starts don't get one, and neither do alerts triage marks as known. When no RCA is coming, you can start one with **Run RCA again**.
+  </Accordion>
+  <Accordion title="What does Needs you mean?">
+    The incident recovered, and RubixKube is waiting for someone to say what fixed it.
+  </Accordion>
+  <Accordion title="Do incidents close on their own?">
+    Only if you turn it on in **Settings > Incidents**. Otherwise they stay open until someone closes them. If a problem comes back later, RubixKube opens a new incident linked to the old one.
+  </Accordion>
+</AccordionGroup>
 
----
+## Rubix and changes
 
-## Setup & Installation
+<AccordionGroup>
+  <Accordion title="Will Rubix change things without asking?">
+    That depends on the mode. Observe changes nothing. Assist asks before each change. Auto changes things without asking, and destructive changes always ask. New organizations start in Observe, with Assist as the highest mode until an admin changes it. See [Modes](/using/modes).
+  </Accordion>
+  <Accordion title="Do RCAs change anything?">
+    No. RCAs only read. Rubix suggests Tasks, and people decide what to do with them.
+  </Accordion>
+  <Accordion title="Does Rubix apply the Fix on its own?">
+    A Fix is a Task, a piece of work with an owner. To have Rubix carry it out, ask it in chat, and the mode decides what happens next.
+  </Accordion>
+  <Accordion title="Can I add my own rules?">
+    Yes. Hooks run your own checks before Rubix changes something or reads a message, like a change freeze. They come with Business and Enterprise. See [Customize](/using/customize).
+  </Accordion>
+</AccordionGroup>
 
-### How do I connect my first cluster?
-Navigate to **Clusters → Connect Cluster** in the Console. You will be provided with a `kubectl apply` command to install the Observer agent. Once deployed, it connects automatically to the RubixKube control plane via NATS JetStream.
+## Your data
 
-### How long until data shows up?
-Data typically appears within 1–2 minutes after the Observer agent is successfully installed, depending on the size of your cluster and the volume of telemetry.
+<AccordionGroup>
+  <Accordion title="What does RubixKube store?">
+    Incidents, RCAs, Tasks and comments, plus the evidence behind them. Evidence can include events, log lines and what a tool's alert sent. Observers also send metadata and metrics, and tools send the webhook messages you point at RubixKube.
+  </Accordion>
+  <Accordion title="What can the Kubernetes observer read?">
+    Its role is in the manifest you apply, so you can read every line first. [Connect a source](/getting-started/connect-your-environment#what-an-observer-needs) has a summary.
+  </Accordion>
+  <Accordion title="How do people sign in?">
+    With email, Google or GitHub. For anything else, write to connect@rubixkube.ai.
+  </Accordion>
+  <Accordion title="How long do you keep my data, and where?">
+    Write to connect@rubixkube.ai and we'll tell you what applies to your plan.
+  </Accordion>
+</AccordionGroup>
 
-### Can I manage multiple clusters?
-Yes. Multi-cluster support is available on Pro and Enterprise plans. You can switch between clusters using the Cluster Selector in the Console header, and Insights/RCA reports will be scoped to the selected cluster.
+## Plans
 
----
+<AccordionGroup>
+  <Accordion title="What are the plans?">
+    Individual has 1 environment, 10 investigations a month and 1 user. Business has 3 environments, 100 investigations and 5 users. Enterprise is set for your organization. See [pricing](https://rubixkube.ai/pricing).
+  </Accordion>
+  <Accordion title="What needs a paid plan?">
+    Slack, Automations, Hooks, Webhooks, your own models, custom integrations, more than one environment, and inviting Members. Everything else is on Individual too.
+  </Accordion>
+  <Accordion title="Where do I see my usage?">
+    In **Settings > Usage and plan**, along with your AI token usage.
+  </Accordion>
+</AccordionGroup>
 
-## AI Agents & RCA
-
-### How does the AI detect incidents?
-The Observer agent continuously processes real-time telemetry (events, logs, metrics) within your cluster to identify anomalies. It then sends summarized and anonymized data (Insights and infrastructure snapshots) to the Memory Engine. The Memory Engine uses fingerprinting and state machines to build context, deduplicate issues, and trigger the RCA pipeline without ever receiving a raw dump of your logs or metrics.
-
-### What agents are available?
-RubixKube features multiple specialized agents:
-- **SRE Agent:** The primary agent for troubleshooting, analyzing Kubernetes graphs, logs, and metrics.
-- **Prism (Executive Agent):** Provides high-level, BLUF-style (Bottom Line Up Front) summaries for leadership.
-- **Expert SRE:** Conducts deep, specialized reliability analysis.
-
-### Can I trust the Root Cause Analysis (RCA)?
-Yes. Every RCA report includes a confidence score and direct links to the underlying evidence (logs, metrics, events) so your engineers can validate the AI's conclusions before taking action.
-
----
-
-## Integrations & Actions
-
-### What integrations are supported?
-RubixKube supports native integrations with Slack, PagerDuty, GitHub, GitLab, Linear, Notion, and major observability tools (Datadog, New Relic, Prometheus). We also support Custom MCP (Model Context Protocol) servers for extending agent capabilities.
-
-### How do Actions work?
-When an RCA identifies a fix, it can propose an Action. Actions follow a strict state machine (`todo` → `assigned` → `in_progress` → `review` → `completed`). Depending on your Guardrails configuration, actions can be executed automatically or require human approval.
-
----
-
-## Billing & Security
-
-### Do you store application data?
-No. The Observer agent only collects infrastructure metadata, events, and aggregated metrics. It does not inspect or store your application payloads or sensitive customer data.
-
-### What authentication methods are supported?
-We use Auth0 for secure authentication, supporting SSO (Google, GitHub) as well as standard email/password login. Enterprise plans include advanced SSO and SAML configurations.
-
-### How is my data isolated?
-RubixKube employs strict multi-tenancy. Every API request, database record, and NATS message is securely scoped by a unique `Tenant ID`.
-
----
-
-## Getting Help
-
-### Where can I get more help?
-- Check the [Troubleshooting Guide](/support/troubleshooting) for common issues.
-- Use the **Rubix Chat Agent** in the Console for interactive assistance.
-- Contact support at [connect@rubixkube.ai](mailto:connect@rubixkube.ai) with your Tenant ID, repro steps, and screenshots.
-
----
-
-## Related Guides
-- [Troubleshooting](/support/troubleshooting)
-- [Dashboard](/using/dashboard)
-- [Insights](/using/insights)
-- [Infrastructure](/using/infrastructure)
-- [Agents](/using/agents)
-- [Settings](/using/settings)
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/support/troubleshooting">
+    Fix something specific.
+  </Card>
+  <Card title="Glossary" icon="book" href="/support/glossary">
+    What each word means.
+  </Card>
+</CardGroup>

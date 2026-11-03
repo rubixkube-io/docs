@@ -1,174 +1,179 @@
 ---
-title: "Bare metal and Linux VMs with RubixKube"
-sidebarTitle: "Bare Metal / VMs"
-description: "Host-level monitoring for any Linux VM or bare metal server. CPU, memory, disk, network, process, and systemd signals."
-keywords: ["VM monitoring", "bare metal monitoring", "Linux monitoring", "host monitoring", "systemd monitoring", "server AI SRE"]
-"og:title": "Bare metal and Linux VMs with RubixKube"
-"og:description": "Host-level monitoring for any Linux VM or bare metal server."
+title: "Servers and VMs"
+sidebarTitle: "Servers and VMs"
+description: "Install the observer on a Linux server, VM or Mac to watch CPU, memory, disk, load and processes."
 ---
 
-RubixKube runs on any modern Linux host, cloud or on premise. Install the Observer as a systemd service and you get CPU, memory, disk, network, process, and service-level signals per host.
+Use this for machines that live outside your cloud accounts: bare metal, a one-off VM, a build server. The installer puts a small binary on the machine and runs it as a service.
 
-Useful for boxes that live outside your cloud accounts: bare metal in a colo, one-off VMs running legacy services, edge nodes, CI runners, anything with a shell.
+## Before you start
 
-## Prerequisites
-
-<CardGroup cols={2}>
-  <Card title="A Linux host" icon="server">
-    Ubuntu, Debian, RHEL, CentOS, Amazon Linux, or Alpine. x86_64 or arm64.
-  </Card>
-  <Card title="Basic tools" icon="terminal">
-    `curl` (or `wget`), `bash`, `systemd`, and sudo or root access.
-  </Card>
-  <Card title="Outbound access" icon="network-wired">
-    HTTPS to `api.rubixkube.ai:443` and TCP to `nats.rubixkube.ai:4222`, reachable from the host.
-  </Card>
-  <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
-    Create a new VM environment in the console to get your personal install command.
-  </Card>
-</CardGroup>
+- **Linux with systemd**, or **macOS**. On x86_64 or arm64. The installer stops on Linux without systemd, so Alpine doesn't work. Windows isn't supported yet.
+- `curl`, `bash`, and root or `sudo`.
+- Outbound access to `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222`, and `github.com:443` for the download.
+- An admin account in the [console](https://console.rubixkube.ai).
 
 ## Install
 
-On the target host:
+<Steps>
+  <Step title="Get your key">
+    In the console, open **Environments**, click **Connect** and pick **Servers and VMs**. Copy the key from step 2 of the dialog.
+  </Step>
+  <Step title="Run the installer on the machine">
+    ```bash
+    curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | sudo bash
+    ```
+
+    The dialog shows the command without `sudo`. Add it unless you're already root, because this install needs root.
+  </Step>
+  <Step title="Paste the key and answer the questions">
+    ```
+    RubixKube API Key: rk_...
+
+    What would you like to do?
+      1) Install Observer
+      2) Uninstall Observer
+    > 1
+
+    Where do you want to deploy the observer?
+      1) On this machine
+      2) Create a new AWS EC2 instance
+      3) Create a new GCP Compute Engine instance
+      4) Create a new Azure Virtual Machine
+    > 1
+
+    Which platform are you monitoring?
+      1) VM / host (Linux or macOS)
+      2) AWS
+      3) GCP
+      4) Azure
+    > 1
+    ```
+  </Step>
+  <Step title="Open it in the console">
+    The dialog updates by itself and says your machine is connected, usually within a minute. Add an environment label, then click **Open it**.
+  </Step>
+</Steps>
+
+The installer puts the binary at `/usr/local/bin/rk-observer` and its settings in `/etc/rk-observer/observer.env`. That file holds your API key and only root can read it. The machine's short hostname becomes the source's name.
+
+## Check the service
+
+<Tabs>
+  <Tab title="Linux">
+    The service is called `rk-observer`.
+
+    ```bash
+    sudo systemctl status rk-observer
+    sudo journalctl -u rk-observer -f
+    ```
+  </Tab>
+  <Tab title="macOS">
+    The service is a launchd daemon called `ai.rubixkube.observer`. Logs go to `/etc/rk-observer/observer.log`.
+
+    ```bash
+    sudo launchctl print system/ai.rubixkube.observer
+    sudo tail -f /etc/rk-observer/observer.log
+    ```
+  </Tab>
+</Tabs>
+
+## What the observer watches
+
+Every 30 seconds it checks the machine and reports a problem when a value crosses a limit.
+
+| Check | Default limit | Setting |
+|---|---|---|
+| CPU | 85% | `CPU_THRESHOLD` |
+| Memory | 85% | `MEMORY_THRESHOLD` |
+| Disk, per mount | 90% | `DISK_THRESHOLD` |
+| Swap | 50% | `SWAP_THRESHOLD` |
+| Load average | 2 × cores | `LOAD_AVG_THRESHOLD` (0 means 2 × cores) |
+| Zombie processes | Fixed | |
+
+It also sends a picture of the machine: processes, services, disks and network interfaces. You see these on the source's page.
+
+## Change the settings
+
+Settings live in `/etc/rk-observer/observer.env`. For example, to check every minute on Linux:
 
 ```bash
-curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
+sudo sed -i 's/^SYSTEM_POLL_INTERVAL=.*/SYSTEM_POLL_INTERVAL=60s/' /etc/rk-observer/observer.env
+sudo systemctl restart rk-observer
 ```
 
-<Warning>
-  Always copy the command from the console. The embedded API key scopes the Observer to your workspace.
-</Warning>
-
-## Interactive flow
-
-For a plain Linux host:
-
-```
-What would you like to do?
-  1) Install Observer
-  2) Uninstall Observer
-> 1
-
-Where do you want to deploy the observer?
-  1) On this machine
-  2) Create a new AWS EC2 instance
-  3) Create a new GCP Compute Engine instance
-> 1
-
-Which platform are you monitoring?
-  1) VM (generic Linux)
-  2) AWS
-  3) GCP
-> 1
-```
-
-The installer places a binary at `/usr/local/bin/rubixkube-observer`, config at `/etc/rubixkube/`, and registers a systemd unit named `rubixkube-observer`.
-
-## Verify
+On macOS, edit the file and then run:
 
 ```bash
-sudo systemctl status rubixkube-observer
+sudo launchctl kickstart -k system/ai.rubixkube.observer
 ```
 
-Expected:
+The **Configuration** panel in the console doesn't apply to this observer.
 
-```
-● rubixkube-observer.service - RubixKube Observer
-   Loaded: loaded
-   Active: active (running)
-```
+## Many machines
 
-Tail the logs:
-
-```bash
-sudo journalctl -u rubixkube-observer -f
-```
-
-Within a minute or two, the host shows up in **Environments** in the console, and Infrastructure Topology populates with system-level metrics.
-
-## What is being monitored
-
-| Signal | Detail |
-| --- | --- |
-| CPU | Per-core usage, load averages, steal time |
-| Memory | Used, available, swap, cached, buffers |
-| Disk | Usage per mount, read and write IOPS, latency |
-| Network | Per-interface throughput, errors, drops |
-| Processes | Top consumers by CPU and memory, zombie detection |
-| Systemd | Unit state for services you include in the scope list |
-| Kernel events | OOM kills, segfaults, reboots |
-
-## Monitoring many VMs at once
-
-Install the Observer on each host. All of them show up in the same environment group inside your workspace. Chat and Insights answer questions that span hosts ("which hosts are over 80% memory right now").
-
-For dozens of hosts, the install command is scriptable. Drop it into Ansible, Chef, cloud-init, or your configuration tool of choice. The embedded API key scopes every install to your workspace automatically.
-
-## Resource footprint
-
-Roughly **150Mi RAM** and **single-digit millicore CPU** during normal operation. The polling interval is 30 seconds by default. You can lengthen it if you are running on very small hosts:
-
-```bash
-sudo bash -c 'echo "SYSTEM_POLL_INTERVAL=60s" >> /etc/rubixkube/observer.env'
-sudo systemctl restart rubixkube-observer
-```
+Install on each machine. Each one is its own source, and you can put them all under one [environment label](/using/environments#label-a-source). The installer asks its questions in a terminal, so run it by hand on each machine.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Service will not start">
+  <Accordion title="The installer says it requires root">
+    Run it again with `sudo`, as shown in [Install](#install).
+  </Accordion>
+  <Accordion title="The installer says systemd is required">
+    On Linux the observer runs as a systemd service. A machine without systemd, such as Alpine, can't run this install.
+  </Accordion>
+  <Accordion title="The service won't start">
     ```bash
-    sudo journalctl -u rubixkube-observer -n 50
+    sudo journalctl -u rk-observer -n 50
     ```
 
-    Most common causes: invalid API key, permission denied on `/etc/rubixkube/` (check ownership), port already in use.
+    Check the API key in `/etc/rk-observer/observer.env`. On macOS, read `/etc/rk-observer/observer.log`.
   </Accordion>
-  <Accordion title="Metrics not appearing in console">
-    1. Confirm the service is running: `sudo systemctl status rubixkube-observer`.
-    2. Check connectivity: `curl -I https://api.rubixkube.ai`.
-    3. Check NATS reachability: `nc -zv nats.rubixkube.ai 4222`.
-    4. Wait two or three minutes for the first poll cycle.
-  </Accordion>
-  <Accordion title="High CPU or memory on a constrained host">
-    Lengthen the poll interval with `SYSTEM_POLL_INTERVAL=60s` (or `120s`) and restart. The Observer batches signals between polls, so longer intervals cost memory only linearly in the batch buffer.
-  </Accordion>
-  <Accordion title="Firewall blocking outbound traffic">
-    Ensure these outbound connections are allowed:
+  <Accordion title="The source doesn't appear in the console">
+    1. Check that the service is running.
+    2. Check the connections:
 
+    ```bash
+    curl -I https://api.rubixkube.ai
+    nc -zv nats.rubixkube.ai 4222
     ```
-    api.rubixkube.ai   TCP 443
-    nats.rubixkube.ai  TCP 4222
-    ```
-
-    Test connectivity: `curl -I https://api.rubixkube.ai && nc -zv nats.rubixkube.ai 4222`.
   </Accordion>
 </AccordionGroup>
 
 ## Uninstall
 
-Rerun the installer and pick option 2 (Uninstall Observer). It stops the systemd service, removes the binary and config, and cleans up the systemd unit.
-
-Manual cleanup if needed:
+Run the installer with `--uninstall`, so it doesn't ask for a key:
 
 ```bash
-sudo systemctl stop rubixkube-observer
-sudo systemctl disable rubixkube-observer
-sudo rm -f /etc/systemd/system/rubixkube-observer.service
-sudo rm -rf /etc/rubixkube /usr/local/bin/rubixkube-observer
+curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | sudo bash -s -- --uninstall
+```
+
+Pick **1) This machine (local install)**, then **1) VM / AWS (binary + systemd)**. It stops the service and removes the binary and `/etc/rk-observer`. Then delete the source in the console.
+
+To remove it by hand on Linux:
+
+```bash
+sudo systemctl stop rk-observer
+sudo systemctl disable rk-observer
+sudo rm -f /etc/systemd/system/rk-observer.service
+sudo rm -rf /etc/rk-observer /usr/local/bin/rk-observer
 sudo systemctl daemon-reload
 ```
 
-## Related guides
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
-    The full install flow covering every supported environment.
+  <Card title="Environments" icon="server" href="/using/environments">
+    The source page, labels and links.
   </Card>
-  <Card title="Observer Agent concept" icon="eye" href="/concepts/observer-agent">
-    What the Observer does and why it stays light.
+  <Card title="Observers" icon="eye" href="/concepts/observer-agent">
+    What an observer does and where it runs.
   </Card>
-  <Card title="First tutorial" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
-    Monitor infrastructure health once the Observer is live.
+  <Card title="AWS" icon="aws" href="/environments/aws">
+    Watch a whole AWS account.
+  </Card>
+  <Card title="Google Cloud" icon="google" href="/environments/gcp">
+    Watch a whole Google Cloud project.
   </Card>
 </CardGroup>

@@ -1,0 +1,274 @@
+---
+title: "Chat prompts"
+description: "Good questions to ask Rubix, ready to copy: understanding a problem, checking what changed, planning a change and looking at cost."
+---
+
+Copy any of these into a chat with Rubix and swap in your own names. Open a chat with **New session** in the sidebar, or click **Ask Rubix** on any page.
+
+## Ask better questions
+
+Name the thing you mean, where it runs and the time you care about. Rubix then has less to guess.
+
+| Instead of | Try |
+| --- | --- |
+| What's wrong? | Why is `payments-api` crash-looping in `prod-us-east-1`? |
+| Check the database | Is `orders-db` close to its connection limit? |
+| Any errors? | Find errors in the `orders-api` logs from the last hour. |
+
+Keep going in the same session. Rubix remembers the conversation, so "and what about `orders-api`?" works as a follow-up.
+
+## Understand a problem
+
+Start of the day:
+
+```
+How healthy are my environments? Point out anything that needs attention.
+```
+
+```
+Summarise my open incidents and what's causing them.
+```
+
+```
+What should I fix first, and why?
+```
+
+When something looks wrong:
+
+```
+Why is payments-api failing?
+```
+
+```
+Show me all failing pods in prod-us-east-1.
+```
+
+```
+Which services are affected?
+```
+
+```
+Find errors in the payments-api logs.
+```
+
+```
+What events happened to payments-api? Put them in order.
+```
+
+Looking for a pattern:
+
+```
+Which pods restarted the most this week, and why?
+```
+
+```
+Has payments-api failed like this before?
+```
+
+```
+Show me similar incidents and how they were fixed.
+```
+
+Checking resources:
+
+```
+Is any node or workload running out of memory or disk?
+```
+
+```
+Compare payments-api memory usage to its limits.
+```
+
+```
+Is orders-api being throttled?
+```
+
+Learning something new:
+
+```
+Explain CrashLoopBackOff in simple terms, using payments-api as the example.
+```
+
+```
+What's the difference between a Deployment and a Pod?
+```
+
+```
+How do resource limits work?
+```
+
+## Check what changed
+
+Most problems start with a change, so this is a good first question.
+
+```
+What changed in my environments today?
+```
+
+```
+What changed around orders-api in the last hour?
+```
+
+```
+Which deployments rolled back in the last 24 hours?
+```
+
+```
+How's the new orders-api version doing? Any errors in the logs?
+```
+
+```
+Compare orders-api resource usage to the previous version.
+```
+
+```
+Are the new pods coming up? Should I continue or roll back?
+```
+
+## Plan a change
+
+Rubix can think through a change with you in any mode. Whether it can make the change depends on your [mode](/using/modes).
+
+```
+Status of the orders-api deployment? Any recent problems with it?
+```
+
+```
+I'm about to raise the DB_POOL_SIZE on orders-api. What could go wrong?
+```
+
+```
+Validate this deployment.
+```
+
+Attach the YAML file to that last one before you send it.
+
+```
+What's the impact if this rollout fails?
+```
+
+```
+How do I roll back orders-api?
+```
+
+```
+Walk me through this Fix safely, one step at a time.
+```
+
+After an incident:
+
+```
+Summarise today's incidents, what caused each one and how long it lasted.
+```
+
+```
+Write a short summary of this session for my team.
+```
+
+## Cost questions
+
+Rubix answers from what your sources and connected tools can read, such as requests, limits and usage. If none of them carry billing data, treat any dollar amount in the answer as an estimate.
+
+Find waste:
+
+```
+Which pods use the most resources?
+```
+
+```
+Show me pods using much less than they request.
+```
+
+```
+Which nodes are underused? Can we move workloads onto fewer of them?
+```
+
+```
+Show me total resource allocation by namespace.
+```
+
+Compare:
+
+```
+Compare resource usage between production and staging.
+```
+
+```
+How has resource usage changed over the last month?
+```
+
+Right-size:
+
+```
+How can I reduce what orders-api requests without risking it?
+```
+
+```
+What's a good memory limit for payments-api, based on how it runs?
+```
+
+```
+Are there any performance problems since we changed the limits?
+```
+
+Plan ahead:
+
+```
+How much memory headroom does each node have?
+```
+
+```
+Which deployments need autoscaling?
+```
+
+```
+What would we need to handle twice today's traffic?
+```
+
+## Use @ and /
+
+Type `@` in a message to add context. You'll get a list of incidents, RCAs, Tasks, environments, past sessions, skills and time windows. Pick one and Rubix looks at that exact thing. When the chat is open beside a page, you can add that page too.
+
+Pick an incident, then ask:
+
+```
+What caused this, and what should I do next?
+```
+
+Pick an RCA, then ask:
+
+```
+Explain this to someone new to the team.
+```
+
+Pick an environment and the time window "Since the last deploy", then ask:
+
+```
+Anything to worry about?
+```
+
+Type `/` in an empty message box to open commands:
+
+| Command | What it does |
+| --- | --- |
+| `/new` | Starts a new session |
+| `/model` | Picks the model Rubix answers with |
+| `/mode` | Picks what Rubix can do in this session: observe, assist or auto |
+| `/env` | Picks the environment Rubix looks at |
+
+You can type the value straight after the command, such as `/mode assist`. `/mode` appears once a session has started. Commands your organization saved in **Customize > Commands** appear in the same menu and put a saved prompt in the message box.
+
+<CardGroup cols={2}>
+  <Card title="Talk to your infra" icon="comments" href="/tutorials/talk-to-infra">
+    How chatting with Rubix works.
+  </Card>
+  <Card title="Your first incident" icon="triangle-exclamation" href="/tutorials/first-incident">
+    Follow one incident from start to finish.
+  </Card>
+  <Card title="Rubix chat" icon="message" href="/using/rubix-chat-agent">
+    Everything in the chat, explained.
+  </Card>
+  <Card title="Add custom skills" icon="sparkles" href="/tutorials/add-custom-agent-skills">
+    Turn your best prompts into skills.
+  </Card>
+</CardGroup>

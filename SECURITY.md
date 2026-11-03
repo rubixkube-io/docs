@@ -1,69 +1,52 @@
 # Security Policy
 
-At RubixKube, we take security seriously. We appreciate the efforts of security researchers and community members who help us maintain the security and integrity of our platform.
+At RubixKube, we take security seriously. We appreciate the efforts of security researchers and community members who help us keep the platform safe.
 
-## 🔒 Reporting Security Vulnerabilities
+## Reporting security vulnerabilities
 
 **Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
 
-Instead, please report security vulnerabilities directly to our security team using one of the following methods:
+Instead, report them directly to our security team using one of these methods:
 
-### Primary Contact
 - **Email**: [security@rubixkube.ai](mailto:security@rubixkube.ai)
-- **PGP Key**: Available on request for encrypted communications
-- **Response Time**: We aim to acknowledge security reports within 24 hours
+- **GitHub**: use [private vulnerability reporting](https://github.com/rubixkube-io/community/security/advisories/new)
 
-### Alternative Contacts
-- **GitHub Security Advisory**: Use GitHub's [private vulnerability reporting](https://github.com/rubixkube-io/community/security/advisories/new)
-- **HackerOne**: We may establish a bug bounty program in the future
+## What to include in your report
 
-## 📋 What to Include in Your Report
+To help us investigate and respond quickly, please include the following.
 
-To help us investigate and respond quickly, please include the following information in your security report:
+### Required information
 
-### Required Information
-- **Vulnerability Type**: (e.g., XSS, SQL Injection, Authentication Bypass)
-- **Affected Component**: (e.g., API, Dashboard, Agent, etc.)
-- **Severity Assessment**: (Critical, High, Medium, Low)
-- **Affected Versions**: Which versions of RubixKube are impacted
+- **Vulnerability type**: for example XSS, SQL injection, authentication bypass
+- **Affected component**: for example API, console, observer
+- **Severity assessment**: Critical, High, Medium or Low
+- **Affected versions**: which versions of RubixKube are impacted
 
-### Technical Details
-- **Steps to Reproduce**: Clear, step-by-step instructions
-- **Proof of Concept**: Code or commands that demonstrate the issue
-- **Expected vs Actual Behavior**: What should happen vs. what actually happens
-- **Environment Details**: OS, Kubernetes version, RubixKube version, etc.
+### Technical details
 
-### Supporting Evidence
-- **Screenshots**: If applicable and helpful
-- **Error Messages**: Full error logs and stack traces
-- **Network Traffic**: Relevant HTTP requests/responses
-- **Configuration**: Any special configuration that may be relevant
+- **Steps to reproduce**: clear, step-by-step instructions
+- **Proof of concept**: code or commands that demonstrate the issue
+- **Expected and actual behavior**: what should happen and what happens
+- **Environment details**: OS, Kubernetes version, observer version
 
-## 🔄 Our Response Process
+### Supporting evidence
 
-### Acknowledgment
-- We will acknowledge your report within **24 hours**
-- We will assign a primary point of contact for follow-up questions
-- We may request additional information if needed
+- **Screenshots**: if helpful
+- **Error messages**: full error logs and stack traces
+- **Network traffic**: relevant HTTP requests and responses
+- **Configuration**: any special configuration that matters
 
-### Investigation
-- Our security team will investigate the reported vulnerability
-- We may reach out for clarification or additional details
-- Investigation typically takes **1-7 days** depending on complexity
+## Our response process
 
-### Resolution Timeline
-- **Critical/High Severity**: Initial fix within **7 days**, full resolution within **30 days**
-- **Medium Severity**: Initial fix within **30 days**, full resolution within **90 days**
-- **Low Severity**: Addressed in regular release cycle
+- We acknowledge your report and give you a point of contact for follow-up questions.
+- We investigate, and reach out if we need more detail.
+- We keep you updated on progress and tell you when the vulnerability is fixed.
+- We can credit you in our acknowledgments, with your permission.
 
-### Communication
-- We will keep you updated on our progress
-- You will be notified when the vulnerability is fixed
-- You may be credited in our security acknowledgments (with permission)
+## Vulnerability disclosure policy
 
-## 📢 Vulnerability Disclosure Policy
+### Responsible disclosure
 
-### Responsible Disclosure
 We believe in **responsible disclosure** and ask that you:
 
 1. **Do not exploit** the vulnerability for malicious purposes
@@ -71,35 +54,43 @@ We believe in **responsible disclosure** and ask that you:
 3. **Give us reasonable time** to investigate and fix the issue
 4. **Test on non-production systems** only
 
-### Public Disclosure
-- We will coordinate public disclosure with you
-- Security fixes are typically released as part of our regular update cycle
-- We may publish security advisories on our [security page](https://rubixkube.ai/security)
+### Public disclosure
 
-### Safe Harbor
+We coordinate public disclosure with you. Security fixes are released as part of our regular update cycle.
+
+### Safe harbor
+
 We consider security research conducted in accordance with this policy to be:
+
 - **Authorized** in accordance with the Computer Fraud and Abuse Act (CFAA)
 - **Exempt** from our Terms of Service prohibition against reverse engineering
 - **Protected** under our commitment not to pursue legal action
 
-## 🛡️ Security Considerations for Users
+## Security considerations for users
 
-### Best Practices
-- **Keep RubixKube updated** to the latest version
+### Best practices
+
+- **Keep your observers updated** to the latest version
 - **Use strong authentication** methods
 - **Follow the principle of least privilege** for API keys and access tokens
-- **Regularly rotate credentials** and API keys
+- **Rotate credentials** regularly
 - **Monitor your deployments** for unusual activity
+- **Review the observer manifest** before you apply it, and trim what you don't want
 
-### Security Features
-- **Encrypted Communication**: All API communications use TLS 1.3
-- **Access Controls**: Role-based access control (RBAC) for platform features
-- **Audit Logging**: Comprehensive logging of security-relevant events
-- **Automated Updates**: Security patches are automatically applied where possible
+### Security features
 
-## 📋 Vulnerability Severity Guidelines
+- **Modes**: Observe reads. Assist asks on every write. Auto writes without asking and asks on destructive actions.
+- **Traffic**: browser and API traffic uses HTTPS. The observer's connection to `nats.rubixkube.ai:4222` is an authenticated connection, outbound only.
+- **Access controls**: each member is an admin or a user. Each record belongs to one organization, and each request is scoped to it.
+- **Activity log**: Rubix's tool calls are recorded in **Settings > Activity**.
+- **Observer permissions**: the Kubernetes observer's `ClusterRole` can read Secrets, create `pods/exec`, and create and patch events. Its built-in tools only read. On a machine, the observer runs as root.
+- **Data region**: Google Cloud `us-central1`.
 
-We use the following severity guidelines to prioritize security issues:
+[Safety and control](https://docs.rubixkube.ai/concepts/guardrails) has the details.
+
+## Vulnerability severity guidelines
+
+We use these guidelines to prioritize security issues:
 
 | Severity | Description | Examples |
 |----------|-------------|----------|
@@ -108,49 +99,31 @@ We use the following severity guidelines to prioritize security issues:
 | **Medium** | Limited data exposure, denial of service, information disclosure | DoS affecting single user, limited info leak |
 | **Low** | Minor issues, best practice violations, cosmetic problems | Missing security headers, typos in security docs |
 
-## 🎯 Scope
+## Scope
 
 This security policy applies to:
-- **RubixKube Platform**: Core application and services
-- **Documentation**: Security-related documentation issues
-- **Infrastructure**: Cloud infrastructure and deployment configurations
-- **Dependencies**: Third-party libraries and dependencies we maintain
 
-**Out of Scope:**
-- Issues in third-party services (report to respective vendors)
+- **RubixKube platform**: core application and services
+- **Observers**: the software you install in your environment
+- **Documentation**: security-related documentation issues
+- **Infrastructure**: cloud infrastructure and deployment configurations
+- **Dependencies**: third-party libraries and dependencies we maintain
+
+**Out of scope:**
+
+- Issues in third-party services (report to the vendor)
 - Social engineering or physical security
-- Distributed Denial of Service (DDoS) attacks
+- Distributed denial of service (DDoS) attacks
 
-## 🙏 Acknowledgments
+## Additional resources
 
-We would like to thank the following individuals for their responsible disclosure of security vulnerabilities:
+- **[Safety and control](https://docs.rubixkube.ai/concepts/guardrails)**: what RubixKube can reach, change and record
+- **Security questions and certifications**: [security@rubixkube.ai](mailto:security@rubixkube.ai)
 
-### 2024
-- *Security researcher names will be added here with their permission*
+## Policy updates
 
-### 2023
-- *Historical acknowledgments will be maintained here*
-
-## 📞 Additional Resources
-
-### Security Documentation
-- **[Security Best Practices](https://docs.rubixkube.ai/using/security)**: Guidelines for secure deployment
-- **[API Security](https://docs.rubixkube.ai/api-reference/security)**: Authentication and authorization details
-- **[Compliance](https://rubixkube.ai/compliance)**: SOC 2, GDPR, and other compliance information
-
-### Getting Help
-- **General Support**: [support@rubixkube.ai](mailto:support@rubixkube.ai)
-- **Security Questions**: [security@rubixkube.ai](mailto:security@rubixkube.ai)
-- **Community Slack**: [#security](https://rubixkube-community.slack.com) channel
-
-## 🔄 Policy Updates
-
-This security policy may be updated periodically. The latest version is always available at:
-- **GitHub**: [rubixkube-io/docs/SECURITY.md](https://github.com/rubixkube-io/docs/blob/main/SECURITY.md)
-- **Website**: [rubixkube.ai/security](https://rubixkube.ai/security)
+This policy is updated from time to time. The latest version is always at [rubixkube-io/docs/SECURITY.md](https://github.com/rubixkube-io/docs/blob/main/SECURITY.md).
 
 ---
 
-**Thank you for helping keep RubixKube and our community safe! 🛡️**
-
-*Report received? We'll respond within 24 hours. Let's work together to make RubixKube the most secure infrastructure platform possible.*
+**Thank you for helping keep RubixKube and our community safe.**

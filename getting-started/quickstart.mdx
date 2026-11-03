@@ -1,63 +1,71 @@
 ---
 title: "Quickstart"
-sidebarTitle: "Quickstart"
-description: "The shortest path to RubixKube. Create an account, connect an environment, and ask your first question."
-keywords: ["rubixkube quickstart", "get started rubixkube", "AI SRE setup"]
-"og:title": "RubixKube Quickstart"
-"og:description": "The shortest path to RubixKube. Create an account, connect an environment, and ask your first question."
+description: "Sign up, name your organization, connect a source, see your first incident and ask Rubix a question."
 ---
 
-Three steps to get productive. Each one links out to the page that covers it in depth.
+This is the fast path from a new account to your first answer from Rubix. Connecting your first source takes a few minutes.
 
-<Frame>
-  <img
-    src="/images/platform/login.png"
-    alt="RubixKube welcome screen at console.rubixkube.ai with options to log in with email, GitHub, or Google, next to an example spike-detected card."
-  />
-  <Caption>Sign in at [console.rubixkube.ai](https://console.rubixkube.ai) with email, GitHub, or Google to start your workspace.</Caption>
-</Frame>
-
-<Steps titleSize="h3">
-  <Step title="Create your account">
-    Sign up at [console.rubixkube.ai](https://console.rubixkube.ai) using email, GitHub, or Google. Already have an account? Just [log in](https://console.rubixkube.ai).
-
-    The free tier covers one environment, up to five monitored apps, and ten investigations per month. See [Pricing](https://rubixkube.ai/pricing) for higher tiers.
+<Steps>
+  <Step title="Sign up">
+    Go to [console.rubixkube.ai](https://console.rubixkube.ai) and sign in with your email, Google or GitHub. New to RubixKube? Choose **Create an account**. If you sign up with an email address, confirm it from the link we send you.
   </Step>
+  <Step title="Name your organization">
+    Your team works in it together, so it's usually your company's name. New organizations start on the Individual plan: 1 environment, 10 investigations a month and 1 user. See [pricing](https://rubixkube.ai/pricing) for the other plans.
 
-  <Step title="Connect an environment">
-    RubixKube needs something to observe. Pick the environment you want to start with and run the install.
+    You land on the Welcome page. Its **Get ready** list is the rest of this guide, and Home keeps showing your progress until the list is done.
 
-    <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
-      Full install flow for Kubernetes, AWS, GCP, and Linux VMs. Five to ten minutes.
-    </Card>
+    <Frame>
+      <img className="block dark:hidden" src="/images/console/welcome-light.png" alt="Welcome page with the Get ready list" />
+      <img className="hidden dark:block" src="/images/console/welcome-dark.png" alt="Welcome page with the Get ready list" />
+    </Frame>
   </Step>
+  <Step title="Connect a source">
+    Under **Connect an environment**, pick a tile. For Kubernetes, run the command the console gives you, with `kubectl` pointed at your cluster. It usually reports in within a minute, and the dialog updates on its own.
 
-  <Step title="Ask your first question">
-    Once the environment card shows **Healthy**, open **Chat** in the console and try:
+    [Connect a source](/getting-started/connect-your-environment) covers the other kinds, including alerts from tools like Datadog.
+  </Step>
+  <Step title="Connect your tools">
+    This one can wait, but Rubix does better work with more to read. Under **Connect your tools**, choose **Browse integrations** and connect GitHub, Datadog, Sentry, Linear or others. Rubix uses them when it investigates.
+  </Step>
+  <Step title="See your first incident">
+    Open **Incidents**. When an observer or a connected tool reports a problem, it shows up here. Each row says where things stand.
 
+    The RCA doesn't start right away unless the incident is critical. The wait depends on severity, and the incident page tells you when the RCA starts. When it's done, the incident shows the cause and any Tasks Rubix suggests.
+
+    Nothing broken yet? That's fine. Choose **New incident** to report one by hand, or follow [Your first incident](/tutorials/first-incident). Rubix picks up a reported incident like any other, and its RCA counts as an investigation.
+  </Step>
+  <Step title="Ask Rubix">
+    Go to Home and ask something. These are good first questions:
+
+    ```text
+    How healthy is my environment right now?
+    What changed in the last day?
+    Is anything close to running out of memory or disk?
     ```
-    What is the health of the payments service?
-    Which resources restarted most in the last 24 hours?
-    Any hosts running above 80% memory right now?
-    ```
 
-    Answers come with cited evidence. Investigations worth escalating surface in **Insights** as RCA reports.
+    New organizations start in Observe mode, so Rubix reads and investigates but changes nothing. You can change that in [Modes](/using/modes).
   </Step>
 </Steps>
 
-## Where to go next
+On a Business or Enterprise plan, the list also has **Invite your team**. See [Members](/using/members).
+
+<Note>
+  Stuck? Write to connect@rubixkube.ai and include your Organization ID. It's in **Settings > General**.
+</Note>
+
+## Next
 
 <CardGroup cols={2}>
-  <Card title="Monitor infrastructure health" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
-    Set up the dashboard, insights, and notifications for your team.
+  <Card title="Your first incident" icon="triangle-exclamation" href="/tutorials/first-incident">
+    Follow an incident through its RCA and Fix.
   </Card>
-  <Card title="Understand the concepts" icon="brain-circuit" href="/concepts/how-rubixkube-works">
-    Site Reliability Intelligence, the Agent Mesh, and the OPEL loop.
+  <Card title="What RubixKube does" icon="circle-info" href="/getting-started/overview">
+    The full picture, with a worked example.
   </Card>
-  <Card title="Invite your team" icon="users" href="/using/workspace">
-    Roles, workspaces, and collaboration.
+  <Card title="Chat with Rubix" icon="messages" href="/using/rubix-chat-agent">
+    Get more from a session.
   </Card>
-  <Card title="Need help?" icon="life-ring" href="mailto:connect@rubixkube.ai">
-    Email connect@rubixkube.ai with your tenant ID. A human engineer will respond.
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    Get incidents where your team talks.
   </Card>
 </CardGroup>

@@ -1,198 +1,247 @@
 ---
-title: "GCP with RubixKube"
-sidebarTitle: "GCP"
-description: "Project-level observation across GCE, GKE, Cloud SQL, Cloud Run, Cloud Storage, and Cloud Functions. Installer creates the service account and attaches viewer roles."
-keywords: ["GCP monitoring", "GCE monitoring", "Cloud SQL monitoring", "Cloud Run monitoring", "GKE monitoring", "GCP AI SRE"]
-"og:title": "GCP with RubixKube"
-"og:description": "Project-level observation across GCE, GKE, Cloud SQL, Cloud Run, Cloud Storage, and Cloud Functions."
+title: "Google Cloud"
+description: "Connect a Google Cloud project by running the observer on a machine you have, or on a new Compute Engine instance."
 ---
 
-Connect a GCP project and the Observer maps every major service in it: GCE, GKE, Cloud SQL, Cloud Run, Cloud Storage, and Cloud Functions. The installer provisions a service account and attaches the right viewer roles automatically.
+Connect a Google Cloud project and the observer maps what's in it, then watches its metrics and logs. It reads through the Google Cloud APIs, so you run one observer for the project.
 
-You can run the Observer on an existing Linux VM inside your project, or let the installer create a fresh GCE instance.
+You pick where it runs. Either way, the observer is a Docker container.
 
-<Frame>
-  <img
-    src="/images/platform/connect-gcp.png"
-    alt="Connect Google Cloud dialog with a one-line installer command, the API key input, the list of what will be monitored (Compute Engine, GKE and Cloud Run, Cloud SQL, Cloud Monitoring), and a system requirements callout."
-  />
-  <Caption>The GCP connect flow in the console. The one-line installer deploys the Observer on a Compute Engine VM and authenticates through the service account or instance metadata.</Caption>
-</Frame>
+- **On this machine.** It runs as a container named `rk-observer` on a Linux host you already have, and reads with the Google Cloud credentials on that host.
+- **A new Compute Engine instance.** The installer creates an `e2-micro` instance, a service account and the network it needs.
 
-## Prerequisites
-
-<CardGroup cols={2}>
-  <Card title="gcloud authenticated" icon="google">
-    `gcloud config get-value project` returns the target project. You can switch projects mid-install.
-  </Card>
-  <Card title="IAM to create service accounts" icon="key">
-    The installer needs permission to create a service account and attach viewer roles. Project-level `Owner` or `Editor` works.
-  </Card>
-  <Card title="A Linux host" icon="server">
-    Either an existing GCE instance or any Linux VM with outbound HTTPS. The installer can also spin up a fresh GCE instance.
-  </Card>
-  <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
-    Create a new GCP environment in the console to get your personal install command.
-  </Card>
-</CardGroup>
 
 ## Install
 
-On the machine you want to run the Observer on:
-
-```bash
-curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
-```
-
-<Warning>
-  Always copy the command from the console. The embedded API key scopes the Observer to your workspace.
-</Warning>
-
-## Interactive flow
-
-For GCP:
-
-```
-What would you like to do?
-  1) Install Observer
-  2) Uninstall Observer
-> 1
-
-Where do you want to deploy the observer?
-  1) On this machine
-  2) Create a new AWS EC2 instance
-  3) Create a new GCP Compute Engine instance
-> 3   (or 1 to install on an existing VM)
-
-Which platform are you monitoring?
-  1) VM (generic Linux)
-  2) AWS
-  3) GCP
-> 3
-
-GCP Project ID [current-project]:
-GCP Region [us-central1]:
-```
-
-The installer enables the required APIs (compute, monitoring, logging), creates a service account, attaches viewer roles, and starts the Observer as a systemd service on the host (or boots a fresh GCE instance labelled `rubixkube=observer`).
-
-## Verify
+In the console, open **Environments**, click **Connect** and pick **Google Cloud**. Copy the key from step 2 of the dialog. Then follow one path.
 
 <Tabs>
-  <Tab title="Observer on an existing host">
-    ```bash
-    sudo systemctl status rubixkube-observer
-    ```
+  <Tab title="On this machine">
+    You need a Linux host with outbound access to `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222`, `ghcr.io:443` and the Google APIs. The installer installs Docker if it's missing, on systems with `apt-get`, `dnf` or `yum`.
 
-    Tail the logs:
+    This path doesn't create a service account or enable any APIs. Enable the APIs under [Permissions](#permissions), and give the credentials the roles listed there.
 
-    ```bash
-    sudo journalctl -u rubixkube-observer -f
-    ```
+    <Steps>
+      <Step title="Sign in as root">
+        The installer runs as root and mounts root's `~/.config/gcloud` into the container.
+
+        ```bash
+        sudo gcloud auth application-default login
+        ```
+      </Step>
+      <Step title="Run the installer as root">
+        ```bash
+        curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | sudo bash
+        ```
+
+        The dialog shows the command without `sudo`. Add it unless you're already root.
+      </Step>
+      <Step title="Answer the questions">
+        Paste your RubixKube key, then:
+
+        ```
+        What would you like to do?
+          1) Install Observer
+          2) Uninstall Observer
+        > 1
+
+        Where do you want to deploy the observer?
+          1) On this machine
+          2) Create a new AWS EC2 instance
+          3) Create a new GCP Compute Engine instance
+          4) Create a new Azure Virtual Machine
+        > 1
+
+        Which platform are you monitoring?
+          1) VM / host (Linux or macOS)
+          2) AWS
+          3) GCP
+          4) Azure
+        > 3
+
+        GCP Project ID:
+        ```
+      </Step>
+      <Step title="Check the container">
+        ```bash
+        sudo docker ps --filter name=rk-observer
+        sudo docker logs -f rk-observer
+        ```
+      </Step>
+    </Steps>
   </Tab>
-  <Tab title="Fresh GCE instance (option 3)">
-    ```bash
-    gcloud compute instances list --filter="labels.rubixkube=observer"
-    ```
+  <Tab title="A new Compute Engine instance">
+    You need `gcloud` on your machine, signed in with permission to enable APIs, create service accounts and custom roles, change IAM bindings, and create network resources and instances. The project needs the `default` network.
 
-    Expected:
+    <Note>
+      Everything it creates is in your project, so Google bills you for it. That includes Cloud NAT.
+    </Note>
 
-    ```
-    NAME                         ZONE           MACHINE_TYPE   STATUS
-    rk-observer-20251015120000   us-central1-a  e2-micro       RUNNING
-    ```
+    <Steps>
+      <Step title="Run the installer">
+        Don't use `sudo` here. The installer needs your own `gcloud` sign-in.
 
-    For boot-time errors:
+        ```bash
+        curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | bash
+        ```
+      </Step>
+      <Step title="Answer the questions">
+        Paste your RubixKube key, then:
 
-    ```bash
-    gcloud compute instances get-serial-port-output rk-observer-20251015120000
-    ```
+        ```
+        What would you like to do?
+          1) Install Observer
+          2) Uninstall Observer
+        > 1
+
+        Where do you want to deploy the observer?
+          1) On this machine
+          2) Create a new AWS EC2 instance
+          3) Create a new GCP Compute Engine instance
+          4) Create a new Azure Virtual Machine
+        > 3
+
+        GCP Project ID [your-project]:
+        Region [us-central1]:
+        ```
+      </Step>
+      <Step title="See what it created">
+        - Service account `rk-observer`, with the roles under [Permissions](#permissions)
+        - Custom role `RKObserverStorageViewer`
+        - Cloud Router `rk-observer-router` and Cloud NAT `rk-observer-nat`, because the instance has no public IP
+        - Egress firewall rules `rk-observer-allow-nats` (TCP 4222) and `rk-observer-allow-https` (TCP 443)
+        - An `e2-micro` instance on Container-Optimized OS in zone `<region>-a`, named `rk-observer-` plus the date, labelled `rubixkube=observer`
+      </Step>
+      <Step title="Check the instance">
+        It connects in about a minute.
+
+        ```bash
+        gcloud compute instances list --filter="labels.rubixkube=observer"
+        ```
+
+        To look for errors during boot:
+
+        ```bash
+        gcloud compute instances get-serial-port-output INSTANCE_NAME --zone=us-central1-a
+        ```
+      </Step>
+    </Steps>
   </Tab>
 </Tabs>
 
-Within a minute or two, the GCP environment card in the console switches from **Connecting** to **Healthy** and Infrastructure Topology populates with GCE instances, GKE clusters, and related resources.
+When the observer reports in, the dialog says the project is connected. Add an environment label, then click **Open it**.
 
-## What is being monitored
+## What the observer watches
 
-| Service | Signals |
-| --- | --- |
-| GCE | Instance state, CPU, memory, disk, network, scaling events |
-| GKE | Cluster and node pool state (clusters can also be connected directly via the [Kubernetes path](/environments/kubernetes) for deeper visibility) |
-| Cloud SQL | Instance health, connections, storage, replication lag |
-| Cloud Run | Service health, request rate, latency, cold starts |
-| Cloud Storage | Bucket inventory, access patterns, size trends |
-| Cloud Functions | Invocations, duration, errors |
-| Cloud Monitoring | Native metrics for every service above, plus any custom metrics you publish |
-| Cloud Logging | Reliability-relevant audit logs, filtered and correlated |
+| Service | What |
+|---|---|
+| Compute Engine | Instances, networks and forwarding rules |
+| GKE | Clusters. For what's inside one, [install the Kubernetes observer](/environments/kubernetes) too |
+| Cloud SQL | Instances |
+| Cloud Run | Services |
+| Cloud Functions | Functions |
+| Cloud Storage | Buckets |
+| Pub/Sub | Topics |
+| Cloud Monitoring | Metrics |
+| Cloud Logging | Error logs |
 
-## IAM scope
+It refreshes the inventory every 10 minutes, metrics every 2 minutes and logs every 5 minutes.
 
-The installer attaches the following roles to the service account:
+## Permissions
+
+The observer needs these roles on the project. A new instance gets them on its service account:
 
 - `roles/compute.viewer`
-- `roles/container.viewer`
-- `roles/storage.viewer`
 - `roles/monitoring.viewer`
 - `roles/logging.viewer`
 - `roles/cloudsql.viewer`
 - `roles/run.viewer`
+- `roles/cloudfunctions.viewer`
+- `roles/container.viewer`
+- `roles/pubsub.viewer`
+- `RKObserverStorageViewer`, a custom role with `storage.buckets.get` and `storage.buckets.list`
 
-No mutating roles. If you prefer to pre-create the service account with narrower scopes, [reach out](mailto:connect@rubixkube.ai) for a manual install path.
+`roles/logging.viewer` lets it read log contents, so check that fits your rules.
 
-## Multi-project setup
+These are the APIs the new-instance path enables. Run this yourself if you install on your own machine:
 
-Connect each project as its own environment. All of them feed the same workspace.
+```bash
+gcloud services enable compute.googleapis.com monitoring.googleapis.com \
+  logging.googleapis.com storage.googleapis.com sqladmin.googleapis.com \
+  run.googleapis.com cloudfunctions.googleapis.com container.googleapis.com \
+  pubsub.googleapis.com cloudresourcemanager.googleapis.com
+```
 
-For organisations with many projects under a common folder or organisation node, Enterprise customers can bulk-enroll. [Email us](mailto:connect@rubixkube.ai) to set this up.
+## More than one project
+
+Connect each project as its own source. Rubix can read across all of them, and you can put them under one [environment label](/using/environments#label-a-source).
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Observer service will not start">
+  <Accordion title="The container isn't running">
     ```bash
-    sudo journalctl -u rubixkube-observer -n 50
+    sudo docker logs rk-observer --tail 50
     ```
 
-    Most common causes: invalid API key, required APIs not enabled on the project, missing IAM permissions on the host's service account, outbound HTTPS blocked.
+    Check the API key in `/etc/rk-observer/observer.env`, and that outbound `api.rubixkube.ai:443` and `nats.rubixkube.ai:4222` are open.
   </Accordion>
-  <Accordion title="Required APIs not enabled">
-    Enable them manually if the installer was run without enable permissions:
+  <Accordion title="The installer warned about gcloud credentials">
+    It found nothing at `~/.config/gcloud`, so the container has nothing to sign in with. Run `sudo gcloud auth application-default login`, then run the installer again.
+  </Accordion>
+  <Accordion title="The installer can't pull the image">
+    The host can't reach `ghcr.io`. The image is `ghcr.io/rubixkube-io/observer-agent:gcp-latest`. Allow outbound HTTPS to `ghcr.io` and run the installer again.
+  </Accordion>
+  <Accordion title="Permission errors">
+    Check what the service account has:
 
     ```bash
-    gcloud services enable compute.googleapis.com container.googleapis.com \
-      sqladmin.googleapis.com monitoring.googleapis.com logging.googleapis.com \
-      run.googleapis.com cloudfunctions.googleapis.com
-    ```
-  </Accordion>
-  <Accordion title="Permission denied errors">
-    Verify the service account attached to the host:
-
-    ```bash
-    gcloud compute instances describe INSTANCE_NAME --format='value(serviceAccounts[0].email)'
-    gcloud projects get-iam-policy PROJECT_ID --flatten='bindings[].members' --filter='bindings.members:SA_EMAIL'
+    gcloud projects get-iam-policy PROJECT_ID --flatten='bindings[].members' --filter='bindings.members:rk-observer@PROJECT_ID.iam.gserviceaccount.com'
     ```
 
-    Attach missing roles from the list above.
-  </Accordion>
-  <Accordion title="Metrics missing for a service">
-    Either Cloud Monitoring does not have metrics for that service in the region yet, or the project does not have the service enabled. Enable the service and wait a few minutes for metrics to populate.
+    Add anything missing from [Permissions](#permissions).
   </Accordion>
 </AccordionGroup>
 
 ## Uninstall
 
-Rerun the installer and pick option 2. It stops the systemd service, removes the binary, and deletes the service account and role bindings (unless you ask it to keep them). If the Observer runs on an installer-created GCE instance, the uninstall also deletes the instance and any firewall rules it created.
+Run the installer with `--uninstall`, so it doesn't ask for a key. Which steps you follow depends on where the observer runs.
 
-## Related guides
+**On this machine:**
+
+```bash
+curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | sudo bash -s -- --uninstall
+```
+
+Pick **1) This machine (local install)**, then **2) GCP / Azure (Docker)**. It removes the container and `/etc/rk-observer`.
+
+**On a new Compute Engine instance:**
+
+```bash
+curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | bash -s -- --uninstall
+```
+
+Pick **3) GCP Compute Engine instance + IAM + network resources**, enter the project and region, then choose the instances.
+
+<Warning>
+  This permanently deletes the instances you pick, after you type `yes`. If you pick every instance, it also deletes the firewall rules, Cloud NAT, Cloud Router, the role bindings, the service account and the custom role. If you pick only some instances, those stay.
+</Warning>
+
+Then delete the source in the console.
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
-    The full install flow covering every supported environment.
+  <Card title="Environments" icon="server" href="/using/environments">
+    The source page, labels and links.
   </Card>
-  <Card title="Kubernetes (for GKE)" icon="dharmachakra" href="/environments/kubernetes">
-    For deeper pod-level visibility on GKE, install the Kubernetes Observer alongside the GCP project observer.
+  <Card title="Kubernetes" icon="dharmachakra" href="/environments/kubernetes">
+    See inside your GKE clusters.
   </Card>
-  <Card title="First tutorial" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
-    Monitor infrastructure health once the Observer is live.
+  <Card title="Observers" icon="eye" href="/concepts/observer-agent">
+    What an observer does and where it runs.
+  </Card>
+  <Card title="Your first incident" icon="heart-pulse" href="/tutorials/first-incident">
+    Follow an incident from start to finish.
   </Card>
 </CardGroup>

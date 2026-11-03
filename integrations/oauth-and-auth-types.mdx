@@ -1,146 +1,95 @@
 ---
-title: "OAuth and authentication types"
-sidebarTitle: "OAuth & Auth Types"
-description: "Reference for every authentication method RubixKube supports on integrations. API keys, OAuth 2.0, mTLS, signed requests, and more."
-keywords: ["oauth", "authentication", "API key", "mTLS", "token refresh", "integration auth", "rubixkube auth"]
-"og:title": "OAuth and authentication types"
-"og:description": "Reference for every authentication method RubixKube supports on integrations."
+title: "Sign-in and tokens"
+sidebarTitle: "Sign-in and tokens"
+description: "How connections sign in to your tools: OAuth, tokens, and the address an admin allows."
 ---
 
-Reference for every authentication method RubixKube supports on integrations. Pick the section for the scheme you need, or see the table below for a quick overview.
+Every connection reaches its tool in one of two ways. With sign-in (OAuth), you approve RubixKube in the tool and never hand over a password. With a token, you paste a key you made in the tool. The console shows the ways each tool accepts, and the first one is the usual choice.
 
-## Quick overview
+## Sign in with OAuth
 
-| Method | Best for | Secret storage |
-| --- | --- | --- |
-| API key or Bearer token | Simple internal APIs, machine-to-machine | Vault, per integration |
-| OAuth 2.0 Authorisation Code | User-scoped actions (Slack, Linear, Notion) | Vault with automated refresh |
-| OAuth 2.0 Client Credentials | Service-to-service with OAuth | Vault with automated refresh |
-| mTLS | Private APIs with network-level trust | Vault with client certificate |
-| HMAC signed requests | Webhooks, event ingestion | Vault with shared secret |
-| JWT in header | APIs that mint short-lived tokens | Vault with signing key, tokens minted just-in-time |
+Open a tool under **Customize > Integrations** and choose its sign-in button. A new tab opens on the tool. Sign in there and allow RubixKube, then come back. The tool shows as connected on its own.
 
-All secrets live in the workspace secret vault, encrypted at rest, scoped per integration, and never visible in agent prompts or logs.
+RubixKube gets an access token you can revoke at any time, here or in the tool. It refreshes that token on its own, so you stay connected.
 
-## API key or Bearer token
+### The address to allow
 
-The simplest option. A static credential passed in a header or query parameter.
+Some tools only accept sign-in from an address an admin has allowed. Add this one, once. The console shows it with a copy button.
 
-<CardGroup cols={2}>
-  <Card title="When to use" icon="circle-check">
-    Internal tools, machine-to-machine calls, read-only APIs.
-  </Card>
-  <Card title="When to avoid" icon="circle-xmark">
-    User-scoped actions, anything that needs per-user authorisation, anywhere a key rotation cadence is hard to run.
-  </Card>
-</CardGroup>
+```text
+https://console.rubixkube.ai/oauth/callback
+```
 
-Configure in **Integrations → [your integration] → Auth**. Set the header name (default `Authorization: Bearer <token>`) or the query parameter if the API is quirky.
+| Tool | Where an admin allows it |
+|---|---|
+| Datadog | **Organization Settings > MCP Server > MCP OAuth Redirect URLs** |
+| Atlassian Rovo | **Atlassian Administration > Rovo > Rovo MCP server > Domains**, as `https://console.rubixkube.ai/**` |
+| incident.io | **Settings > MCP**. Turn on MCP and add `console.rubixkube.ai` under allowed redirect domains |
 
-## OAuth 2.0 (Authorisation Code)
+A connection made before this address existed keeps its old one and goes on working. To move it, choose **Use the new sign-in address** on the connection.
 
-The standard flow for user-scoped integrations. RubixKube handles the redirect handshake and refresh cycle.
+### Your own OAuth app
 
-<Steps titleSize="h3">
-  <Step title="Register an OAuth app">
-    On the upstream tool (Slack, Linear, Atlassian, etc.), create an OAuth application. Set the redirect URL to `https://api.rubixkube.ai/oauth/callback`.
-  </Step>
-  <Step title="Add client credentials to RubixKube">
-    Paste the client ID and client secret into the integration's Auth tab.
-  </Step>
-  <Step title="Authorise">
-    Click **Connect**, sign in on the upstream tool, and approve the scopes RubixKube requests. The refresh token is stored in the vault.
-  </Step>
-  <Step title="Scope narrowly">
-    Request the smallest scope that works. If the upstream offers a dedicated "read" scope, pick that over "read and write".
-  </Step>
-</Steps>
+When you add a [custom MCP server](/integrations/custom-mcp-servers) with OAuth, RubixKube first asks the server how it signs in. If the server can register RubixKube itself, you have nothing to fill in. Otherwise, or if you choose **Use your own app**, enter a client ID and, if it has one, a client secret. Then give an issuer URL, or the authorization and token URLs, and any scopes. Set your app's redirect address to the one above.
 
-Refresh tokens rotate automatically. If an upstream invalidates the token (common after 90 days of inactivity), the integration card flags **Reauthorise needed**.
+## Use a token
 
-## OAuth 2.0 (Client Credentials)
+Paste the token in the tool's form. Give it the least access it needs. RubixKube stores it encrypted and uses it only to call that tool.
 
-Service-to-service with OAuth. No user interaction.
+Tools expect tokens in different forms, and RubixKube sends the right one for each catalog entry, so you paste the token alone.
 
-Supply the client ID, client secret, and token endpoint URL. Optional scope and audience claims. RubixKube fetches tokens just-in-time and caches them for their lifetime.
+| Form | Used by |
+|---|---|
+| `Authorization: Bearer <token>` | Most tools |
+| `Authorization: Token token=<key>` | PagerDuty |
+| `Authorization: Sentry-Bearer <token>` | Sentry |
+| `api-key: <key>` | New Relic |
+| `DD-API-KEY` and `DD-APPLICATION-KEY` | Datadog, with an API key and application key |
 
-## mTLS
+For your own integrations, the console offers these:
 
-For private APIs where you want network-level trust.
+| Sign-in | Custom MCP server | Custom REST API | How it's sent |
+|---|---|---|---|
+| No sign-in | Yes | Yes | Nothing is sent |
+| Token | Yes | Yes | `Authorization: Bearer <token>` |
+| API key | No | Yes | `Authorization: Token <key>` |
+| Username and password | No | Yes | Stored encrypted |
+| OAuth | Yes | No | Handled by sign-in |
 
-<Steps titleSize="h3">
-  <Step title="Obtain a client certificate">
-    Issue a client cert from your internal CA, scoped to the RubixKube Cloud egress identity.
-  </Step>
-  <Step title="Upload to the vault">
-    In the integration's Auth tab, upload the certificate (PEM) and private key. Configure the expected server certificate chain if needed.
-  </Step>
-  <Step title="Configure rotation">
-    Set a rotation reminder. RubixKube notifies the workspace admin 14 days before the cert expires.
-  </Step>
-</Steps>
+## When a connection stops working
 
-## HMAC signed requests
+| Status | What to do |
+|---|---|
+| Needs attention | The tool refused the sign-in or token. Choose **Sign in again** or **Replace token** |
+| Sign in to finish | The sign-in wasn't completed. Choose **Sign in** |
+| Turned off | Choose **Turn back on** |
 
-Common for webhook-style APIs. RubixKube signs each outbound call with a shared secret using HMAC-SHA256 (or SHA512).
-
-Configuration:
-
-- Shared secret in the vault.
-- Signed header name (default `X-Signature`).
-- Optional timestamp header for replay protection.
-
-## JWT in header
-
-APIs that require a short-lived JWT minted per request. RubixKube supports:
-
-- **HS256 / HS384 / HS512** with a shared secret.
-- **RS256 / RS384 / RS512** with an RSA private key.
-- **ES256 / ES384** with an EC private key.
-
-Claims (issuer, audience, subject, expiry, custom) are configurable per integration. Tokens are minted just-in-time and never persisted beyond their expiry.
-
-## Secret rotation
-
-All secret types support rotation without downtime.
-
-<AccordionGroup>
-  <Accordion title="How rotation works" icon="arrows-rotate">
-    Upload the new secret alongside the old one. RubixKube switches to the new secret on the next outbound call and retires the old one after a grace window.
-  </Accordion>
-  <Accordion title="Scheduled rotation" icon="calendar">
-    Configure a rotation cadence per integration. The workspace admin gets notified when a rotation is due.
-  </Accordion>
-  <Accordion title="Breakglass" icon="key">
-    Emergency rotation revokes the old secret immediately. Any in-flight calls fail, future calls use the new secret.
-  </Accordion>
-</AccordionGroup>
-
-## Audit
-
-Every auth event is audited: token issued, token refreshed, reauthorise required, rotation completed, cert expiring. Audit entries are immutable and retained per your plan.
+**Disconnect** stops Rubix using the tool and deletes the saved sign-in.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="OAuth loop redirecting indefinitely">
-    The redirect URL on the upstream app does not match `https://api.rubixkube.ai/oauth/callback` exactly. Check for trailing slashes or protocol mismatches.
+  <Accordion title="The tool refuses the redirect address">
+    An admin needs to allow `https://console.rubixkube.ai/oauth/callback` in the tool. Check for a trailing slash.
   </Accordion>
-  <Accordion title="mTLS handshake fails">
-    Most common cause is cert chain mismatch. Upload the intermediate certs into the vault alongside the client cert. Check SNI if the upstream uses multiple virtual hosts.
-  </Accordion>
-  <Accordion title="HMAC signature rejected">
-    Check the header name and the signing algorithm (usually SHA256). Some APIs include the request body hash, others include a timestamp. Match the upstream's canonicalisation exactly.
+  <Accordion title="The connection works but Rubix finds nothing">
+    Look at the tool's [Reads section](/integrations/overview#see-what-a-connection-can-read). A refused read shows the tool's own words and the fix.
   </Accordion>
 </AccordionGroup>
 
-## Related guides
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Custom REST Integrations" icon="network-wired" href="/integrations/custom-rest">
-    Where most auth configuration lives in practice.
+  <Card title="Custom MCP servers" icon="server" href="/integrations/custom-mcp-servers">
+    Add your own server.
   </Card>
-  <Card title="Custom MCP Servers" icon="server" href="/integrations/custom-mcp-servers">
-    Auth for internal MCP servers works the same way.
+  <Card title="Custom REST APIs" icon="network-wired" href="/integrations/custom-rest">
+    Add your own API.
+  </Card>
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    The two ways to connect a tool.
+  </Card>
+  <Card title="Catalog" icon="grid-2" href="/integrations/catalog">
+    Everything you can connect.
   </Card>
 </CardGroup>

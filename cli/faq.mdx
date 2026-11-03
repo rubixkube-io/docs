@@ -13,13 +13,13 @@ Quick answers to the questions we hear most.
 
 <AccordionGroup>
   <Accordion title="What is the Rubix CLI?">
-    A terminal-native client for RubixKube. Same SRI Agent, same skills, same workspace as the console. Launched with `rubix`.
+    A terminal-native client for RubixKube. Same Rubix, same skills, same organization as the console. Launched with `rubix`.
   </Accordion>
   <Accordion title="Do I need the console installed anything to use the CLI?">
     No. Sign up at [console.rubixkube.ai](https://console.rubixkube.ai) once, then run `rubix login` from the terminal. Everything else happens over HTTPS.
   </Accordion>
   <Accordion title="Does the CLI touch my infrastructure directly?">
-    No. The CLI sends your prompt to RubixKube Cloud, where the SRI Agent runs the same Guardian-gated flow as the console. Any mutating action requires explicit approval before it lands in your environment.
+    No. The CLI sends your prompt to RubixKube Cloud, where Rubix follows the same modes as the console. In Observe it changes nothing. In Assist it asks before each change. In Auto it changes things without asking and asks on destructive actions. See [Modes](/using/modes).
   </Accordion>
   <Accordion title="Is the CLI open source?">
     The docs and several SDKs are open source. The CLI itself is proprietary, installed from the public npm registry. [Reach out](mailto:connect@rubixkube.ai) if you need a private build for regulated environments.
@@ -53,7 +53,7 @@ Quick answers to the questions we hear most.
     Yes. Set `RUBIX_API_KEY` in the environment. Useful for CI and ephemeral runners. The CLI uses the env var and skips the browser prompt.
   </Accordion>
   <Accordion title="Can the CLI run shell commands for me?">
-    Only inside a trusted folder, and only when you ask via chat. Rubix drafts the command; running it still requires a confirmation step or explicit approval depending on your Guardian policy.
+    Only inside a trusted folder, and only when you ask via chat. Rubix drafts the command; running it still requires a confirmation step or explicit approval depending on your mode.
   </Accordion>
   <Accordion title="How do I rotate credentials?">
     `rubix logout && rubix login` re-issues a fresh token. Previous tokens are invalidated server-side.
@@ -72,8 +72,8 @@ Quick answers to the questions we hear most.
   <Accordion title="Can I see RCA reports in the terminal?">
     Chat can summarise them and link out. Full RCA reports render best in the console because of their evidence tables and graph views. Use `/console` from inside chat to jump over.
   </Accordion>
-  <Accordion title="Can I approve action recommendations from the CLI?">
-    Chat surfaces recommended actions and can deep-link you into the console for approval. Inline approval from the CLI is on the roadmap. For urgent cases, `/console` opens the right page directly.
+  <Accordion title="Can I approve recommended Fixes from the CLI?">
+    Chat shows recommended Fixes and can deep-link you into the console for approval. Inline approval from the CLI is on the roadmap. For urgent cases, `/console` opens the right page directly.
   </Accordion>
 </AccordionGroup>
 

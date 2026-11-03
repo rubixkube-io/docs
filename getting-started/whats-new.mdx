@@ -1,0 +1,91 @@
+---
+title: "What's new"
+description: "The highlights of what changed in RubixKube, newest first."
+tag: "New"
+---
+
+Here's what changed recently, newest first, and why you'd care. Some features need a plan: where that's so, the entry says **Business and Enterprise**.
+
+## November 2026
+
+### Slack
+
+- **Incident threads.** Each new incident or group gets its own Slack thread. The first message follows the incident's status, and replies in the thread become comments on the incident. [Slack](/integrations/slack). Business and Enterprise.
+- **A channel per category.** Send Incidents, Reports, Account and Uptime messages to different channels from **Customize > Channels**. Anything you don't set goes with Incidents. [Slack](/integrations/slack).
+- **Cards in Slack.** RCAs, Tasks and artifacts now show as cards, so you can read the main points without leaving the thread. [Slack](/integrations/slack).
+
+## October 2026
+
+### Incidents and RCAs
+
+- **The journey on every incident.** The incident page shows each step from detection to report and how many minutes each took. It also says when the RCA starts and what it's waiting for. [Incidents](/using/incidents).
+- **Recovery you can see.** Rows and pages say **Recovered**, who closed the incident, and what fixed it. Answer **What fixed it?** yourself or ask Rubix to check. [Incidents](/using/incidents).
+- **Groups.** Incidents on the same resource or with the same cause share one group and one RCA, across sources. Closing a group closes its members. [Incidents](/using/incidents).
+- **Triage before the RCA.** Triage sets severity and impact, can hold an RCA, and can mark an alert as known. You spend less time on noise. [Incidents](/using/incidents).
+- **Known noise says so.** When earlier RCAs show an alert is expected, the incident tells you, with **Ignore** and **Run RCA again**. [Incidents](/using/incidents).
+- **Something broke, or works worse.** Incidents now carry an impact, and you can filter to degradations. [Incidents](/using/incidents).
+- **Problems that come back.** A closed incident that returns opens a new incident linked to the old one. You set how often Rubix investigates a repeat in **Settings > Incidents**. [Settings](/using/settings).
+- **Urgent RCAs go first.** The wait before an RCA depends on severity, and urgent work runs ahead of the rest. [Root cause analysis](/concepts/root-cause-analysis).
+- **Run RCA again.** Start it from the RCA page or a list row. It skips every automatic wait. [RCAs](/using/rca-reports).
+- **Clearer RCA reports.** Reports gained charts, citations, structured evidence, a **Full report** tab and **Export as Markdown**. **Was this the cause?** shows only when the report states a cause. [RCAs](/using/rca-reports).
+- **Short codes.** INC-12, RCA-4 and TSK-30 work everywhere, including Rubix and MCP. It's easier to say "look at INC-12". [Incidents](/using/incidents).
+- **Comments and mentions.** Tag people with @, and mention @Rubix to ask it something on the incident. Mentions reach people through the bell and email. [Incidents](/using/incidents).
+- **One toolbar for lists.** Incidents, RCAs, Tasks and My tasks now filter, sort and group the same way. [Tasks](/using/tasks).
+
+### Rubix
+
+- **Rubix in the console.** Pin context with @, run commands with /, stop a reply partway, and see Rubix's work as quiet rows. Rubix can also make artifacts you can keep. [Chat with Rubix](/using/rubix-chat-agent).
+- **Modes.** Observe, Assist and Auto decide what Rubix can do on its own. An admin sets the default and the highest mode. [Modes](/using/modes).
+- **Response style.** Choose how much Rubix says while it works: Quiet, Normal or Verbose. [Modes](/using/modes).
+- **Commands, Agents and Hooks.** Turn common prompts into slash commands, add your own agents, and add your own checks before Rubix changes something. Hooks are for Business and Enterprise. [Customize](/using/customize).
+
+### Automations
+
+- **The Automations page.** Build automations with a trigger and steps, then see them in Overview and Runs. **Try it** tests a draft before you publish. [Automations](/using/automations). Business and Enterprise.
+- **System built-ins.** The System tab shows what RubixKube runs for you. When a built-in has a newer version, you see **Update available**. [Automations](/using/automations).
+
+### Integrations and webhooks
+
+- **Tools as sources.** Datadog, PagerDuty, Grafana, Sentry, Jira, Linear and Observe connect from **Environments** by webhook, and their alerts open incidents. Each source page shows its last messages. [Integrations overview](/integrations/overview).
+- **Your own webhooks.** Send events from your own tools from **Customize > Webhooks**. [Your own webhook](/integrations/webhooks). Business and Enterprise.
+- **See what a connection can read.** Each integration has a section showing what Rubix can read through it, so you know before an RCA needs it. [Integrations overview](/integrations/overview).
+- **Sign in the way each tool expects.** Connections now use each tool's own sign-in or token, so there's less to work out. [Sign-in and tokens](/integrations/oauth-and-auth-types).
+- **Custom MCP servers.** Add your own MCP servers. [Custom MCP servers](/integrations/custom-mcp-servers). Business and Enterprise.
+
+### Slack
+
+- **Slack answers from Rubix.** Mention Rubix in a channel and you get the same agent as in the console. [Slack](/integrations/slack).
+
+### MCP
+
+- **The RubixKube MCP server.** Read and update incidents, RCAs and Tasks from Claude Code, Cursor, VS Code and Claude. You sign in as yourself, and what you do is recorded under your name. [MCP](/integrations/mcp).
+- **Knowledge tools.** Your AI tool can search past incidents, find similar ones and ask what changed. [MCP](/integrations/mcp).
+
+### Sources and observers
+
+- **Environments are labels.** A source is a cluster, cloud account, machine or tool. An environment, such as staging, is a label across sources, and you can filter by it. [Environments](/concepts/environments).
+- **One page for every source.** Each source shows what's happening right now and what changed. [Environments](/using/environments).
+- **Links between sources.** Rubix asks whether two sources are the same thing, and you answer Yes, No or Skip. [Environments](/using/environments).
+- **Observer settings in the console.** Change timings, watch lists and rule values, and test a query rule, without touching the install. [Observers](/concepts/observer-agent).
+- **Early recovery and more pods.** Observers report recovery sooner, and large clusters can run more than one observer pod. [Kubernetes](/environments/kubernetes).
+
+### Analytics
+
+- **Five numbers.** Mean time to understand, Coverage, Noise removal, Speed and Accuracy, with a summary on top and a report you can download as a PDF. [Analytics](/using/analytics).
+- **A better weekly digest.** The email leads with what Rubix worked on and links to Analytics. [Notifications](/using/notifications).
+
+### Settings
+
+- **Models.** Add your own providers, and set the Primary and Worker models for your organization. Each chat can pick its own model. [Models](/using/models). Own providers are for Business and Enterprise.
+- **Usage and plan.** See your limits and how much of each you've used, with AI token usage. [Usage and plan](/using/usage-and-plan).
+- **Activity.** Filter, page through and export the record of what happened in your organization. Admins only. [Settings](/using/settings).
+- **Many organizations.** One person can belong to several organizations and switch between them. Sign-up now asks you to name yours, and invites join you directly. [Members](/using/members).
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
+    New here? Start with this.
+  </Card>
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    See everything you can connect.
+  </Card>
+</CardGroup>

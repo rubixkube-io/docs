@@ -1,173 +1,149 @@
 ---
-title: "Connect your environment"
-sidebarTitle: "Connect your environment"
-description: "Install the RubixKube Observer on Kubernetes, AWS, GCP, or a Linux VM. The Observer discovers your topology and streams signals to RubixKube Cloud."
-keywords: ["rubixkube install", "connect kubernetes", "connect AWS", "connect GCP", "connect VM", "observer install"]
-"og:title": "Connect your environment to RubixKube"
-"og:description": "Install the RubixKube Observer on Kubernetes, AWS, GCP, or a Linux VM."
+title: "Connect a source"
+sidebarTitle: "Connect a source"
+description: "Install an observer on Kubernetes, AWS, Google Cloud or a server, or connect a tool like Datadog by webhook."
 ---
 
-To get value from RubixKube, connect at least one environment. The Observer lives near your workload, discovers topology, and streams signals to RubixKube Cloud for correlation.
+RubixKube needs something to watch. A source is a Kubernetes cluster, cloud account, machine or tool. You can connect two kinds: an observer you install, or a tool that sends alerts by webhook. An observer is a good place to start, because Rubix can then read what's running.
 
-A single workspace can hold any mix: one EKS cluster, one AWS account, one GCP project, and a handful of VMs, all correlated in the same knowledge graph.
+Only admins connect sources. Open **Environments** and choose **Connect**, or pick a tile on the Welcome page.
 
 <Frame>
-  <img
-    src="/images/platform/connect-environment-picker.png"
-    alt="Connect your infrastructure picker with tiles for Kubernetes, Amazon AWS, Google Cloud, Bare Metal or VMs available today, and Microsoft Azure, Oracle Cloud, DigitalOcean, VMware, and OpenStack marked coming soon."
-  />
-  <Caption>The environment picker in the console. Kubernetes, AWS, GCP, and Bare Metal or VMs are available today. Azure, Oracle Cloud, DigitalOcean, VMware, and OpenStack are on the roadmap.</Caption>
+  <img className="block dark:hidden" src="/images/console/connect-source-light.png" alt="Connect a source dialog with tiles for each kind of source" />
+  <img className="hidden dark:block" src="/images/console/connect-source-dark.png" alt="Connect a source dialog with tiles for each kind of source" />
 </Frame>
 
-## Pick your path
+## Install an observer
 
-<CardGroup cols={2}>
-  <Card title="Kubernetes" icon="dharmachakra" href="/environments/kubernetes">
-    EKS, GKE, AKS, KIND, or any conformant cluster on v1.24 or later. Install via `kubectl apply`.
-  </Card>
-  <Card title="AWS" icon="aws" href="/environments/aws">
-    Account-level observation across EC2, RDS, Lambda, S3, ELB, CloudTrail, and CloudWatch.
-  </Card>
-  <Card title="GCP" icon="google" href="/environments/gcp">
-    Project-level observation across GCE, GKE, Cloud SQL, Cloud Run, Cloud Storage, and Cloud Functions.
-  </Card>
-  <Card title="Linux VMs" icon="server" href="/environments/vm">
-    Any modern Linux host. CPU, memory, disk, network, and per-process signals.
-  </Card>
-</CardGroup>
+An observer runs next to your systems, watches them and reports back to RubixKube. Pick one of these in the dialog:
 
-<Info>
-  Running on Azure? AKS clusters are supported today via the [Kubernetes path](/environments/kubernetes). Subscription-level Azure observation (App Service, Azure VMs, managed data) is on the roadmap. [Email us](mailto:connect@rubixkube.ai) to join the early-access list.
-</Info>
+| Tile | What it covers |
+| --- | --- |
+| [Kubernetes](/environments/kubernetes) | EKS, GKE, AKS, self-managed |
+| [Amazon AWS](/environments/aws) | EC2, ECS, RDS, Lambda |
+| [Google Cloud](/environments/gcp) | Compute Engine, GKE, Cloud SQL |
+| [Servers and VMs](/environments/vm) | Linux and macOS, bare metal or cloud |
 
-## The install, in three moves
+The console shows the exact command, with your key in it. Copy it from there.
 
-Every environment follows the same shape. The per-environment pages above cover the specifics.
+<Tabs>
+  <Tab title="Kubernetes">
+    With `kubectl` pointed at the cluster, run the command from the dialog:
 
-<Steps titleSize="h3">
-  <Step title="Copy the personal command from the console">
-    Open **Environments** in [console.rubixkube.ai](https://console.rubixkube.ai), create a new environment, and copy the install command. Your API key (starting with `rk_`) is already embedded, so you can paste and run.
-
-    The shape looks like this:
-
-    <CodeGroup>
-      ```bash Kubernetes
-      kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
-      ```
-
-      ```bash AWS, GCP, or Linux VM
-      curl -fsSL https://api.rubixkube.ai/install/observer.sh | bash -s -- --api-key=rk_YOUR_API_KEY
-      ```
-    </CodeGroup>
-
-    <Warning>
-      Always copy the command from the console. The embedded API key scopes the Observer to your workspace.
-    </Warning>
-  </Step>
-
-  <Step title="Run it against the target environment">
-    The Kubernetes manifest applies in one shot. The shell installer is interactive and asks where to deploy:
-
-    ```
-    What would you like to do?
-      1) Install Observer
-      2) Uninstall Observer
-    > 1
-
-    Where do you want to deploy the observer?
-      1) On this machine
-      2) Create a new AWS EC2 instance
-      3) Create a new GCP Compute Engine instance
-    > 1
+    ```bash
+    kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
     ```
 
-    Pick option 1 to install on the current host, option 2 to spin up a fresh EC2 instance, or option 3 for a fresh GCE instance. Follow the region and project prompts from there.
+    To check it, look for a `Running` pod:
+
+    ```bash
+    kubectl get pods -n rubixkube-system
+    ```
+  </Tab>
+  <Tab title="AWS or Google Cloud">
+    The command depends on where the observer will run. To create a new AWS EC2 or Google Compute Engine instance, run this from a machine signed in to the cloud account:
+
+    ```bash
+    curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | bash
+    ```
+
+    To run it on the machine you're on, add `sudo`, because that install needs root:
+
+    ```bash
+    curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | sudo bash
+    ```
+
+    Paste your key when the script asks for it, then answer its questions. On your own machine the observer runs in Docker, so check it with:
+
+    ```bash
+    sudo docker ps --filter name=rk-observer
+    ```
+
+    The [AWS](/environments/aws) and [Google Cloud](/environments/gcp) pages have every step.
+  </Tab>
+  <Tab title="Server or VM">
+    On the server, run this. It needs root:
+
+    ```bash
+    curl -fsSL "https://api.rubixkube.ai/install/observer.sh" | sudo bash
+    ```
+
+    Paste your key when the script asks for it. Choose to install, on this machine, as a VM or host. On Linux, check it with:
+
+    ```bash
+    sudo systemctl status rk-observer
+    ```
+
+    On macOS it runs as the launchd service `ai.rubixkube.observer`.
+  </Tab>
+</Tabs>
+
+The dialog waits for the observer to say hello, usually within a minute. When it does, you'll see that the source is connected, and you can add it to an environment there. Choose **Open it** to see the source.
+
+<Warning>
+  Treat your key like a password. It ties the observer to your organization. Anyone with it can connect an observer to your organization.
+</Warning>
+
+### What an observer needs
+
+Observers need outbound access to `api.rubixkube.ai:443` and `nats.rubixkube.ai:4222`.
+
+On Kubernetes, the observer is one pod in the `rubixkube-system` namespace. It requests 256Mi of memory and 250m of CPU, with limits of 768Mi and 1 CPU. That suits clusters up to about 50 nodes. Above that, the source page tells you how many pods to run.
+
+Its role allows `get`, `list` and `watch` on most resources, including Secrets, plus reading pod logs, `pods/exec` and writing events. Read the manifest at the install URL before you apply it if you want the whole list. [Safety and control](/concepts/guardrails) has more detail.
+
+## Connect a tool by webhook
+
+Tools you already use can open incidents here. In the same dialog, under **Or connect a platform you already use**, you'll find Datadog, PagerDuty, Grafana, Sentry, Jira, Linear and Observe.
+
+<Steps>
+  <Step title="Name it">
+    Pick the tile, name the source and choose **Make its webhook**.
   </Step>
-
-  <Step title="Verify it is running">
-    <Tabs>
-      <Tab title="Kubernetes">
-        ```bash
-        kubectl get pods -n rubixkube-system
-        ```
-
-        Wait for **STATUS** to show `Running`.
-      </Tab>
-      <Tab title="AWS (new EC2)">
-        ```bash
-        aws ec2 describe-instances \
-          --filters "Name=tag:rubixkube,Values=observer" \
-          --query 'Reservations[].Instances[].{ID:InstanceId,Status:State.Name}'
-        ```
-      </Tab>
-      <Tab title="GCP (new GCE)">
-        ```bash
-        gcloud compute instances list --filter="labels.rubixkube=observer"
-        ```
-      </Tab>
-      <Tab title="VM or existing host">
-        ```bash
-        sudo systemctl status rubixkube-observer
-        ```
-      </Tab>
-    </Tabs>
-
-    <Check>
-      In the console, the environment card switches from **Connecting** to **Healthy** within a minute or two and the Infrastructure view populates with a live topology.
-    </Check>
+  <Step title="Copy the URL">
+    The URL is shown once, and anyone with it can post to it. Store it somewhere safe.
+  </Step>
+  <Step title="Add it to the tool">
+    The dialog says where the webhook goes in that tool. For Datadog and Observe, it also gives you a payload to paste.
+  </Step>
+  <Step title="Wait for the first message">
+    The source registers itself on the first message. The dialog also turns on the automation that turns the tool's events into incidents.
   </Step>
 </Steps>
 
-## What the Observer does
+The dialog can also set up reading from the tool, so Rubix can look things up in it during an RCA. See the [Integrations overview](/integrations/overview) for every tool. To send your own events, see [Your own webhook](/integrations/webhooks).
 
-The Observer is deliberately light: it collects signals, maintains a local cache, and streams to RubixKube Cloud. It never sends raw payloads outside of what you configure.
+## Add sources to environments
 
-- **Discover.** Walks your environment through read-only APIs and builds a live topology.
-- **Stream.** Sends structured events, metrics, and state snapshots to RubixKube Cloud over HTTPS and NATS.
-- **Stay out of the way.** Read-only by default. No mutations without explicit approval, enforced by the Guardian agent.
+An environment, such as staging or production, is a label across sources. A cluster and the Datadog monitors that watch it can share one. Your plan sets how many you can use: Individual has 1, Business has 3, and Enterprise is set for your organization.
 
-## Requirements at a glance
+## What Rubix can do once connected
 
-| Environment | Install surface | Outbound network | Typical footprint |
-| --- | --- | --- | --- |
-| Kubernetes | `kubectl apply` manifest | `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222` | ~255Mi RAM, under 10 mCPU |
-| AWS | Shell installer on a VM, or new EC2 | Above, plus AWS APIs | ~200Mi RAM |
-| GCP | Shell installer on a VM, or new GCE | Above, plus GCP APIs | ~200Mi RAM |
-| Linux VM | Shell installer on the host | `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222` | ~150Mi RAM |
+The observer watches and reports. What Rubix can change is a separate choice, set by mode: Observe, Assist or Auto. New organizations start in Observe. See [Modes](/using/modes).
 
-## After you connect
+## Remove a source
+
+Open the source, then choose **Delete source** from its menu and type its name to confirm.
+
+<Warning>
+  Deleting can't be undone. For an observer source, its history and metrics are deleted, and the observer keeps running until you uninstall it. For a tool, its incidents, history, webhook and automation are deleted, and you should remove the webhook from the tool too.
+</Warning>
+
+To uninstall an observer from Kubernetes, run `kubectl delete -f` with the same URL you installed from. Everywhere else, run the install script again and choose **Uninstall Observer**.
+
+## Next
 
 <CardGroup cols={2}>
-  <Card title="Monitor infrastructure health" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
-    Set up the dashboard, insights, and notifications for your team.
+  <Card title="Your first incident" icon="triangle-exclamation" href="/tutorials/first-incident">
+    See what happens when something breaks.
   </Card>
-  <Card title="Understand Environments" icon="diagram-project" href="/using/environments">
-    Manage multiple environments, review health, and reorganise workspaces.
+  <Card title="Environments" icon="server" href="/using/environments">
+    Work with sources and labels.
   </Card>
-  <Card title="Set up integrations" icon="plug" href="/using/integrations">
-    Connect Slack, Linear, PagerDuty, and more.
+  <Card title="Integrations overview" icon="plug" href="/integrations/overview">
+    Connect the tools Rubix can read.
   </Card>
-  <Card title="Safety and Guardrails" icon="shield-halved" href="/concepts/guardrails">
-    Understand what RubixKube will and will not do on its own.
+  <Card title="Troubleshooting" icon="wrench" href="/support/troubleshooting">
+    Fix a source that won't connect.
   </Card>
 </CardGroup>
-
-## Common questions
-
-<AccordionGroup>
-  <Accordion title="Can I connect multiple environments at once?">
-    Yes. Each connection is independent, so you can run them in parallel. Free tier allows one environment, Business allows up to three, Enterprise is unlimited.
-  </Accordion>
-  <Accordion title="What permissions does the Observer need?">
-    Read-only by default, scoped to the platform you are monitoring. Anything that could change state needs explicit approval and is bounded by Guardian policies. See [Safety and Guardrails](/concepts/guardrails).
-  </Accordion>
-  <Accordion title="Does my data leave my environment?">
-    Structured events, metrics, and state snapshots stream to RubixKube Cloud for correlation. Raw payloads stay in your environment unless you explicitly enable them.
-  </Accordion>
-  <Accordion title="What if my cluster is air-gapped or behind strict egress?">
-    The Observer only needs outbound HTTPS to `api.rubixkube.ai:443` and outbound TCP to `nats.rubixkube.ai:4222`. If that is not possible, [reach out](mailto:connect@rubixkube.ai) and we can talk through a deployment mode that fits your controls.
-  </Accordion>
-  <Accordion title="How do I remove an environment?">
-    Delete it from **Environments** in the console, then run the appropriate uninstall. For Kubernetes: `kubectl delete -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"`. For shell installs: rerun the installer and pick **Uninstall Observer**.
-  </Accordion>
-</AccordionGroup>

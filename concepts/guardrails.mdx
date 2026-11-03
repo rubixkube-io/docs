@@ -1,270 +1,204 @@
 ---
-title: "Safety and Guardrails"
-sidebarTitle: "Safety & Guardrails"
-description: "How RubixKube stays autonomous without being reckless. Read-only by default, explicit approvals on every change, evidence-backed recommendations, and data handling you can actually audit."
-keywords: ["safety", "guardrails", "least privilege", "read only", "approval workflow", "AI safety", "responsible AIOps", "SOC 2", "GDPR", "multi-tenancy"]
-"og:title": "Safety and Guardrails"
-"og:description": "Autonomous without reckless. Least privilege, approvals on every change, audit on everything."
+title: "Safety and control"
+sidebarTitle: "Safety and control"
+description: "What RubixKube can reach in your environment, what Rubix can change, where your data goes, and what's on the record."
 ---
 
-RubixKube is autonomous, not reckless. The system can recommend and prepare changes at machine speed, but every mutation passes through controls you run. This page is the plain-English model of how the safety layer works.
+This page tells you what RubixKube can reach, what Rubix can change, and what gets recorded, so you can decide how far to trust it. If your question isn't answered here, email [security@rubixkube.ai](mailto:security@rubixkube.ai).
 
-In short: we watch, we analyse, we recommend. Your team decides what to do. Nothing changes without you.
+## What Rubix can do
 
-That is the default posture. Policies let you adjust it for lab environments, tighten it for regulated production, or route mutating changes through your existing GitOps pipeline.
+You choose how much Rubix does on its own. There are three modes.
 
-## Three safety layers
+| Mode | Reads | Changes | Destructive actions |
+| --- | --- | --- | --- |
+| **Observe** | Runs | Blocked | Blocked |
+| **Assist** | Runs | Asks each time | Asks each time |
+| **Auto** | Runs | Runs without asking | Asks each time |
 
-<CardGroup cols={3}>
-  <Card title="Least privilege, read only by default" icon="lock">
-    The Observer is the only component in your environment. Read only, scoped permissions, outbound only.
-  </Card>
-  <Card title="Explicit approvals on every change" icon="shield-halved">
-    Two approval shapes: in-product review, or a pull request against your infrastructure repo.
-  </Card>
-  <Card title="Audit on everything" icon="file-lines">
-    Every proposal, approval, payload, and outcome is recorded and exportable.
-  </Card>
-</CardGroup>
+New organizations start in Observe, with Assist as the highest mode anyone can use. Admins change both in **Settings > Modes**. People can switch a chat's mode up to that highest mode, never above it. See [Modes](/using/modes).
 
-## Layer 1: Least privilege
+<Frame>
+  <img className="block dark:hidden" src="/images/console/approval-light.png" alt="Rubix asking for approval before a change in chat" />
+  <img className="hidden dark:block" src="/images/console/approval-dark.png" alt="Rubix asking for approval before a change in chat" />
+</Frame>
 
-The Observer is the only RubixKube component deployed into your environment. It runs as a read-only workload. Cluster-admin is never required.
+<Warning>
+  In Auto, Rubix makes changes without asking. Only destructive actions stop for a person. Allow Auto only if you're comfortable with that for everything Rubix can reach.
+</Warning>
 
-### Kubernetes RBAC scope
+A few more rules apply in every mode.
 
-The Observer uses a Kubernetes `ServiceAccount` bound to a scoped `ClusterRole`. The role grants `get`, `list`, and `watch` on exactly these resource types:
+- **Allow in this chat.** When Rubix asks, you can approve one tool for the rest of the chat. This never applies to destructive actions, which ask every time.
+- **No answer means no.** If nobody answers an approval in time, the change doesn't run.
+- **Automations have nobody to ask.** An automation's Rubix step only reads, unless it's set to make changes and your highest mode is Auto. Anything that needs approval is refused. Add an approve step before it if a person should decide.
+- **RCAs only read.** An RCA investigation can't change anything. Custom agents in **Customize > Agents** only read too.
+- **Hooks.** On Business and Enterprise, a hook in **Customize > Hooks** can check Rubix's tool calls through a URL or a model. It can block a change, or require approval even in Auto.
 
-```
-pods, nodes, namespaces,
-deployments, replicasets,
-services, endpoints, ingress,
-events, configmaps
-```
+Rubix judges each tool from the labels on the tool itself. A tool with no labels is judged from a reviewed list of read tools, or for integrations from its name. If you connect a tool whose labels are wrong, Rubix relies on those labels, so review what you connect.
 
-No write permissions. No access to secret contents. Nothing outside this list.
+Rubix makes changes through connected tools. If you connect GitHub or GitLab, one of those changes can be a pull request. It's a change like any other for the mode, and the review and merge then happen in your own pipeline.
 
-### Configurable visibility
+## What an observer can reach
 
-You can tighten the scope further. The Observer supports:
+An observer is the only part of RubixKube that runs in your environment. What it can reach depends on the type.
 
-- **Inclusion and exclusion lists** by namespace, label, or resource type.
-- **Redaction rules** that strip sensitive patterns from signals before they leave your environment.
-- **Per-environment overrides** so staging and production can run different policies.
+### Kubernetes
 
-### Outbound-only network
+The observer uses a `ServiceAccount` bound to a `ClusterRole`. It doesn't need cluster-admin. It isn't read-only in the Kubernetes sense either, so here's exactly what the role grants.
 
-The Observer opens exactly two outbound connections. Nothing else.
-
-| Endpoint | Purpose | Protocol |
+| Access | Resources | What the manifest says it's for |
 | --- | --- | --- |
-| `nats.rubixkube.ai:4222` | Signal streaming | TCP with TLS |
-| `api.rubixkube.ai:443` | Registration, control, token exchange | HTTPS |
+| `get`, `list`, `watch` | Pods, services, endpoints, nodes, namespaces, events, ConfigMaps, **Secrets**, persistent volumes and claims, service accounts | Monitoring |
+| `get`, `list`, `watch` | Deployments, replicasets, daemonsets, statefulsets, ingresses, network policies, jobs, cronjobs, autoscalers, storage classes, volume attachments | Monitoring |
+| `get`, `list`, `watch` | Roles, role bindings, cluster roles, cluster role bindings | Read-only security analysis |
+| `get`, `list`, `watch` | Custom resource definitions | Monitoring |
+| `get`, `list` | Pod and node metrics | Metrics, if metrics-server is available |
+| `get`, `list` | `pods/log` | On-demand log collection |
+| **`create`** | **`pods/exec`** | Advanced troubleshooting when needed |
+| `create`, `patch` | Events | Alerts about configuration failures |
 
-No inbound ports are opened. No VPN, tunnel, or exposed service. If either endpoint is unreachable, the Observer buffers locally and catches up when the connection returns.
+It also gets a role in its own namespace to manage Leases, for choosing a leader and listing running observer pods.
 
-### Tokens and rotation
+So its service account can read every Secret in the cluster and can open an exec session in any pod. Here's what the observer's code does with that today.
 
-The Observer authenticates with an API key issued during registration. It exchanges that key for a short-lived JWT on every subsequent control-plane call. Tokens can be rotated or revoked at any time through the console or the API.
+- **Secrets.** It watches Secrets by metadata only, so their content doesn't reach it for change tracking. Its built-in Kubernetes tools return a Secret's key names and never its values.
+- **Exec.** Its built-in tools don't use `pods/exec`.
+- **Its own tools only read.** Rubix reaches the cluster through those tools. If you add your own MCP servers through the `mcp-config` ConfigMap, what those do is up to you.
 
-## Layer 2: Explicit approvals
+The pod runs as a non-root user, with a read-only root filesystem, no added Linux capabilities and no privilege escalation.
 
-RubixKube will recommend changes. It will not apply them without an explicit human approval. There are two shapes that approval can take, depending on how you operate.
+#### Review and trim the manifest
 
-### In-product approvals
+The install command applies a manifest from a URL. You can download it and read it first.
 
-Every proposed action surfaces in the Action Center with its scope, reasoning, evidence, and expected blast radius. Approvers click Approve to run the change. Rejecting with a reason sends the proposal back for a rethink, and the reason feeds future recommendations.
+```bash
+curl -o observer.yaml "https://api.rubixkube.ai/install/observer.yaml?apiKey=YOUR_API_KEY"
+kubectl apply -f observer.yaml
+```
 
-### Pull request based, for IaC and GitOps
+The file is plain Kubernetes YAML, so you can edit it before you apply it. Two trims are safe.
 
-If you already run infrastructure as code, RubixKube can propose changes as pull requests against your infrastructure repository instead of applying through an API call.
+- Remove the `pods/exec` rule. The built-in tools don't use it.
+- Remove `secrets` from the first rule. The observer then logs a line and skips Secret change tracking, and everything else keeps working.
 
-<CardGroup cols={2}>
-  <Card title="Supported workflows" icon="code-branch">
-    Terraform, Helm, Kustomize, Crossplane, ArgoCD, Flux. Any repo that drives your infrastructure.
-  </Card>
-  <Card title="How it looks" icon="code-pull-request">
-    A branch, a PR, a diff, a reviewer. Same flow your team already uses. RubixKube becomes one more contributor.
-  </Card>
-</CardGroup>
+Keep the rules for pods, nodes, deployments, services and replicasets, because detection depends on them.
 
-The review, the approval, and the merge happen in your pipeline. Nothing bypasses your existing checks. This is the preferred path for teams who already have a mature deployment flow.
+<Warning>
+  The file holds your API key in a Kubernetes `Secret`, so treat it as a credential. Keep your edited copy too. Applying a fresh manifest from the URL puts every rule back.
+</Warning>
 
-## Layer 3: Audit on everything
+### Cloud accounts
 
-Every action has a complete trail:
+The install script sets up read access.
 
-- **Actor**, which agent, skill, or user proposed the change.
-- **Approver**, who signed off.
-- **Scope**, exact resources affected.
-- **Payload**, the literal change (patch body, PR diff, or command).
-- **Outcome**, verified, partial, or reverted.
+- **AWS.** It shows a minimal IAM policy with only describe, get, list and similar read actions. You can use the `ReadOnlyAccess` managed policy instead.
+- **Google Cloud.** It creates a service account with viewer roles, such as `compute.viewer`, `monitoring.viewer` and `logging.viewer`.
 
-Audit records are immutable. Retention follows your plan and is configurable per workspace. Export is supported out of the box (JSON via API or on request).
+### Machines
 
-## Evidence-backed reasoning
+The installer needs root, and the observer runs as a root service on the host. Rubix can ask it to run shell commands for diagnosis. The observer checks each command against its list of allowed commands and blocked patterns. Treat it like any other service running as root on that machine.
 
-Every RCA report cites its evidence. Every recommended action carries a confidence score, an expected blast radius, and a reversibility plan. When confidence is low, you can [rerun the analysis](/concepts/root-cause-analysis) with additional context rather than act on shaky ground.
+## Network
 
-The confidence score is visible before you approve. Treat low-confidence actions the way you would treat a junior engineer's suggestion: plausible, worth discussing, not automatically correct.
+Nothing outside your network connects in to an observer. It opens two outbound connections.
 
-## Human in the loop
+| Endpoint | Purpose | Connection |
+| --- | --- | --- |
+| `api.rubixkube.ai:443` | Registration, heartbeats, settings | HTTPS, outbound |
+| `nats.rubixkube.ai:4222` | Incidents, topology, requests from Rubix | Authenticated connection, outbound only |
 
-Agents stop and ask when they need help. When an investigation runs into ambiguity, when an action carries more risk than expected, or when context is thin, the system escalates to a human rather than guess. This is the default behaviour, not a failure mode.
+With several replicas, Kubernetes observer pods also talk to each other on port 8090 inside their namespace.
 
-## What RubixKube sees, and what it does not
+Browser and API traffic uses HTTPS.
 
-<AccordionGroup>
-  <Accordion title="What RubixKube sees" icon="eye">
-    - Infrastructure state: resource health, pod, deployment, node, and service status.
-    - Topology: workload relationships and dependency graphs.
-    - Logs relevant to anomaly detection and RCA context.
-    - Metrics: CPU, memory, OpenTelemetry signals, golden metrics, health indicators.
-    - Events: Kubernetes events and condition changes.
-  </Accordion>
-  <Accordion title="What RubixKube does not see" icon="eye-slash">
-    - Customer application data.
-    - Personally identifiable information (PII).
-    - Secret contents. The Observer sees secret metadata (names, keys, revision) only, never values.
-    - Anything outside the scoped RBAC resources listed above.
-  </Accordion>
-</AccordionGroup>
+## Hide sensitive values
 
-### Obfuscation layer
+The Kubernetes observer replaces sensitive values in your cluster, before logs or tool results reach RubixKube. It's on by default. `jane@example.com` is sent as `<email:3f9a1c>`, and the same value always gets the same tag.
 
-The Observer applies a configurable obfuscation layer before signals leave your environment. Patterns to redact are set per workspace and per environment. Customers running against sensitive workloads typically tune this layer during onboarding.
+Open the source, then **Configuration > Privacy**. You can see what's hidden (keys, tokens, passwords, emails, cards, public IPs), turn each kind on or off, and add patterns of your own. If you turn it off, credentials and personal data in logs are sent as they are.
 
-## Multi-tenancy
+This works by matching patterns, so a value in an unusual format can get through. **Configuration > Ignore** stops problems being raised for a namespace or workload, and it doesn't hide those pods from the topology.
 
-Isolation is a foundational design principle, enforced at every layer of the platform:
+## What RubixKube stores, and where
 
-- **API.** Every request is tenant-scoped and validated server-side.
-- **Auth.** JWT claims carry tenant id. All token validation is tenant-bounded.
-- **Data stores.** Every collection and query is tenant-scoped at the repository layer.
-- **Knowledge graph.** All graph queries anchor to the tenant node. Cross-tenant traversal is architecturally impossible.
-- **Event bus.** Streaming topics include a tenant segment. Consumers are tenant isolated.
-- **AI agent sessions.** Context, memory, and tool access are bounded to the tenant.
+RubixKube stores the following for your organization.
 
-No tenant can see any other tenant's signals, RCAs, or memory.
+- Incidents and their evidence, which can include log lines and tool results.
+- RCAs, Tasks, comments and chats.
+- Topology, inventory and metrics from your sources.
 
-## Encryption
+Logs can contain whatever your applications write, so assume some application data reaches RubixKube unless your privacy rules hide it.
 
-<CardGroup cols={2}>
-  <Card title="In transit" icon="shield">
-    TLS 1.2 or later on every path. NATS signal streaming is TLS encrypted. API and UI traffic is HTTPS only.
-  </Card>
-  <Card title="At rest" icon="lock">
-    AES-256 on every durable store.
-  </Card>
-  <Card title="Key management" icon="key">
-    Managed keys on the hyperscaler today. Customer-managed keys (CMEK) are on the roadmap for enterprise customers.
-  </Card>
-  <Card title="Secrets" icon="vault">
-    Platform credentials are held in a centralised secrets manager with strict access controls.
-  </Card>
-</CardGroup>
+Data is stored in Google Cloud `us-central1`. RubixKube runs as a hosted service, so an observer needs to reach the two endpoints above. There's no air-gapped option.
 
-## Data ownership, export, and deletion
+By default Rubix runs on Google's Gemini models through Vertex AI. What Rubix reads, including evidence and tool results, goes to the model. On Business and Enterprise, you can add your own provider in **Settings > Models**, and then that provider receives it. See [Models](/using/models).
 
-<AccordionGroup>
-  <Accordion title="Your data is yours" icon="user-shield">
-    Customer data belongs to the customer at all times. RubixKube operates as the processor, not the owner.
-  </Accordion>
-  <Accordion title="Export" icon="file-export">
-    Tenant data is exportable in JSON via the API or on request. Use this for archival, regulator requests, or switching deployment modes.
-  </Accordion>
-  <Accordion title="Deletion on termination" icon="trash">
-    All tenant data is permanently deleted from every storage system within 30 days of termination. Written confirmation is provided on request.
-  </Accordion>
-</AccordionGroup>
+## Your organization
 
-## Agent-level safeguards
+Each record belongs to one organization. Members have one of two roles, admin or user. Admins control modes, members and sources.
 
-Network controls and RBAC protect the environment. Agent-level safeguards bound the agents themselves. RubixKube follows the practices laid out in Google's [ADK safety guidance](https://adk.dev/safety/).
+Deleting a source deletes its history and metrics. Deactivating an organization deletes nothing. To ask about deleting your organization's data, email [security@rubixkube.ai](mailto:security@rubixkube.ai).
 
-- **Scoped tool surface.** Each agent has an explicit list of tools it can call. The model cannot invent tools or reach beyond its declared surface.
-- **In-tool policy enforcement.** Tools validate their inputs against deterministic policies (tenant, environment, allowed scopes) before executing. Out-of-scope calls return an error to the agent without running.
-- **Pre-execution callbacks.** Every tool call is screened against the current workspace policy before it runs. A mismatch blocks the call and feeds the reason back to the agent.
-- **Safety filters on model I/O.** Provider-native content filters are enabled on the underlying LLMs. System prompts set scope and prohibited topics.
-- **Guard model screening.** A fast, light model screens inputs and tool outputs for prompt injection and jailbreak attempts before they reach the reasoning agent.
-- **PII redaction at the tool boundary.** PII detected in agent inputs or tool outputs is redacted before storage, logging, or onward model calls.
-- **Sandboxed code execution.** When an agent runs a command or a script, it runs inside a hermetic sandbox: no outbound network, no persistent state, full cleanup across runs. This prevents model-generated code from exfiltrating data or persisting across sessions.
-- **Output escaping in the UI.** Model-generated content is escaped before it renders in the console, so injected HTML or JavaScript cannot execute in a user's browser.
-- **Continuous evaluation.** Internal eval suites score agent outputs for correctness and alignment. New model versions must clear the bar before reaching production.
+## Rubix can be wrong
 
-Combined with least privilege, approvals, and audit, this keeps model errors recoverable rather than catastrophic.
+An RCA is an investigation by a model, so treat it as a strong lead. Some checks help you judge it.
 
-## Reducing hallucinations
+- **Evidence.** Each finding cites the tool result behind it, and code checks that quotes match what the tools returned.
+- **Verdicts.** The report says whether the cause was found, is probable, or wasn't determined.
+- **Confidence.** Code caps it at 0.95, and holds it at 0.5 when the cause isn't settled or the claims aren't cited.
+- **Your rating.** Answer **Was this the cause?** on the RCA. Rubix reads it next time.
 
-The agents use flagship frontier models from Anthropic, OpenAI, and Google. We layer the following on top of the base models:
+See [Root cause analysis](/concepts/root-cause-analysis).
 
-- **Targeted fine-tuning** on infrastructure reasoning tasks.
-- **Temperature controls** tuned per task through internal benchmarks.
-- **Tool-call boundaries** so each agent can only reach tools in its allowed list.
-- **Evidence requirement** on every claim, so an unfounded output cannot make it into an RCA.
+## What's on the record
 
-No single technique is a silver bullet. The combination of a narrow agent mesh, cited evidence, confidence scores, and mandatory approvals is what keeps the system recoverable when a model is wrong.
+**Settings > Activity** lists Rubix's tool calls, and admins can open it. Each row shows what ran, on what, for whom, the outcome (Ran, Blocked, Needed approval or Failed) and who or what decided. Filter by Changes, Reads or Hooks, and export as CSV or JSON.
 
-## Compliance
+<Frame>
+  <img className="block dark:hidden" src="/images/console/settings-activity-light.png" alt="The Activity page listing Rubix's tool calls and who decided each one" />
+  <img className="hidden dark:block" src="/images/console/settings-activity-dark.png" alt="The Activity page listing Rubix's tool calls and who decided each one" />
+</Frame>
 
-<CardGroup cols={2}>
-  <Card title="SOC 2 Type II" icon="certificate">
-    In progress. Type II report planned for Q3 2026.
-  </Card>
-  <Card title="GDPR" icon="shield-halved">
-    Data minimisation by design. Deletion requests honoured within 30 days.
-  </Card>
-  <Card title="ISO 27001 and PCI DSS" icon="clipboard-list">
-    Not currently in scope.
-  </Card>
-  <Card title="Detailed questionnaire" icon="envelope" href="mailto:security@rubixkube.ai">
-    For a full security questionnaire tailored to your deployment, contact security@rubixkube.ai.
-  </Card>
-</CardGroup>
+Incidents and Tasks keep their own history next to their comments: who changed what, and when, with Rubix and automations named as well as people.
 
-## Availability and incident response
+## Certifications and questionnaires
 
-- **Availability target:** 99.9% uptime (SLO). Formal SLA available for enterprise agreements.
-- **Status page:** [https://rubixkube.ai/status](https://rubixkube.ai/status)
-- **Security contact:** [security@rubixkube.ai](mailto:security@rubixkube.ai)
-- **Incident response:** on-call rotation in place. Security incidents are triaged within 24 hours, with customer notification as part of the response flow.
+For certifications, compliance questions or a security questionnaire, email [security@rubixkube.ai](mailto:security@rubixkube.ai). Our [security policy](https://github.com/rubixkube-io/docs/blob/main/SECURITY.md) explains how to report a vulnerability. Check live status on [System status](/support/system-status).
 
 ## Common questions
 
 <AccordionGroup>
-  <Accordion title="Does RubixKube ever apply changes without a human?">
-    Not in the default configuration. You can opt specific low-risk actions in specific environments into auto-approval, but this is opt-in, per environment, and audited. The default remains: human review before apply.
+  <Accordion title="Does Rubix ever change things without a person?">
+    Yes, if you allow it. In Auto, Rubix makes changes without asking, and destructive actions still ask. An automation can make changes when it's set to and your highest mode is Auto. In Observe, and by default, Rubix makes no changes.
+  </Accordion>
+  <Accordion title="Is the observer read-only?">
+    Its built-in tools only read. Its Kubernetes permissions are wider: it can read Secrets, create `pods/exec`, and create and patch events. On a machine it runs as root. The sections above have the details.
   </Accordion>
   <Accordion title="Can I run RubixKube in an air-gapped environment?">
-    Air-gapped is not supported in the current release. The platform needs outbound reachability to `api.rubixkube.ai:443` and `nats.rubixkube.ai:4222`. VPC-only and private-network deployments work as long as those two endpoints are reachable. A self-hosted option is on the roadmap for enterprise customers.
+    No. Observers need outbound access to `api.rubixkube.ai:443` and `nats.rubixkube.ai:4222`. Private networks work as long as those two endpoints are reachable.
   </Accordion>
-  <Accordion title="Where is my data stored and processed?">
-    On the RubixKube SaaS control plane. Primary data region is `ap-south-1` (Mumbai). Regional options for enterprise customers are on the roadmap. For specifics on your deployment, contact [security@rubixkube.ai](mailto:security@rubixkube.ai).
+  <Accordion title="Where is my data stored?">
+    In Google Cloud `us-central1`.
   </Accordion>
-  <Accordion title="How do I rotate or revoke Observer credentials?">
-    From the console or API. Revoke the API key, issue a new one, redeploy the Observer with the new key. The old token is invalidated immediately.
-  </Accordion>
-  <Accordion title="Is there a way to limit what the Observer sees?">
-    Yes. Use inclusion and exclusion lists by namespace, label, or resource type. You can also tune the obfuscation layer to redact sensitive patterns before signals leave your environment.
-  </Accordion>
-  <Accordion title="What happens to my data if I terminate the contract?">
-    All tenant data is permanently deleted from every storage system within 30 days. Written confirmation is provided on request. Export your data before termination if you need a copy.
+  <Accordion title="Is there a way to limit what the observer sees?">
+    On Kubernetes, yes. Trim the manifest, use **Configuration > Privacy** to hide values, and use **Configuration > Ignore** to stop incidents for a namespace or workload.
   </Accordion>
 </AccordionGroup>
 
 ## Related concepts
 
 <CardGroup cols={2}>
-  <Card title="Actions" icon="play" href="/concepts/actions">
-    The unit of change the approval flow evaluates.
+  <Card title="Modes" icon="sliders" href="/using/modes">
+    Set what Rubix can do.
   </Card>
-  <Card title="Observer Agent" icon="eye" href="/concepts/observer-agent">
-    The only component deployed in your environment, and why it stays read only.
+  <Card title="Observers" icon="eye" href="/concepts/observer-agent">
+    What runs in your environment.
   </Card>
-  <Card title="Agent Mesh" icon="network-wired" href="/concepts/agent-mesh">
-    The broader system the safety layer protects.
+  <Card title="Root cause analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
+    How evidence works end to end.
   </Card>
-  <Card title="Root Cause Analysis" icon="magnifying-glass" href="/concepts/root-cause-analysis">
-    How evidence-backed reasoning works end to end.
+  <Card title="Activity" icon="clock-rotate-left" href="/using/settings">
+    Where Rubix's tool calls are recorded.
   </Card>
 </CardGroup>

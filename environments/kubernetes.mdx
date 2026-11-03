@@ -1,116 +1,115 @@
 ---
-title: "Kubernetes with RubixKube"
-sidebarTitle: "Kubernetes"
-description: "Install the RubixKube Observer on any Kubernetes cluster. EKS, GKE, AKS, KIND, and bare metal clusters on v1.24 or later are all supported."
-keywords: ["kubernetes monitoring", "AKS monitoring", "EKS monitoring", "GKE monitoring", "kubectl install", "kubernetes AI SRE"]
-"og:title": "Kubernetes with RubixKube"
-"og:description": "Install the Observer on any Kubernetes cluster in about five minutes."
+title: "Kubernetes"
+description: "Install the observer on an EKS, GKE, AKS or self-managed cluster with one kubectl command."
 ---
 
-RubixKube runs on every conformant Kubernetes cluster on v1.24 or later. One `kubectl apply` installs the Observer into a dedicated namespace. Everything else runs in RubixKube Cloud.
+Install the observer so RubixKube can see your cluster: what's running, what changed and what breaks. One `kubectl apply` puts it in its own namespace. Your cluster runs the observer, and everything else runs in RubixKube.
 
-This page covers the install, what it deploys, common troubleshooting, and how to uninstall cleanly.
+## Before you start
 
-## Prerequisites
-
-<CardGroup cols={2}>
-  <Card title="kubectl configured" icon="terminal">
-    `kubectl get nodes` should succeed against the target cluster.
-  </Card>
-  <Card title="Cluster admin permissions" icon="key">
-    Required to create the `rubixkube-system` namespace, service account, and ClusterRole.
-  </Card>
-  <Card title="Outbound access" icon="network-wired">
-    HTTPS to `api.rubixkube.ai:443` and TCP to `nats.rubixkube.ai:4222`, reachable from the cluster.
-  </Card>
-  <Card title="A RubixKube workspace" icon="user" href="https://console.rubixkube.ai">
-    Sign in at console.rubixkube.ai. Create a new environment for this cluster.
-  </Card>
-</CardGroup>
+- `kubectl` pointed at the cluster. `kubectl get nodes` should work.
+- Permission to create a namespace, a ClusterRole and a ClusterRoleBinding.
+- Outbound access from the cluster to `api.rubixkube.ai:443`, `nats.rubixkube.ai:4222` and `ghcr.io:443` (the image).
+- An admin account in the [console](https://console.rubixkube.ai).
 
 ## Install
 
-Copy the personal install command from the console. Your API key (prefix `rk_`) is already embedded.
+<Steps>
+  <Step title="Copy your command">
+    In the console, open **Environments**, click **Connect** and pick **Kubernetes**. Copy the command. It already holds your API key.
+  </Step>
+  <Step title="Run it">
+    ```bash
+    kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
+    ```
 
-```bash
-kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
-```
+    You should see:
 
-<Warning>
-  Always copy the command from the console. The embedded API key scopes the Observer to your workspace.
-</Warning>
-
-You should see:
-
-```
-namespace/rubixkube-system created
-serviceaccount/rubixkube-observer created
-clusterrole.rbac.authorization.k8s.io/rubixkube-observer created
-clusterrolebinding.rbac.authorization.k8s.io/rubixkube-observer created
-deployment.apps/rubixkube-observer created
-```
-
-## Verify
-
-<Steps titleSize="h3">
+    ```
+    namespace/rubixkube-system created
+    secret/rubixkube-observer-config created
+    serviceaccount/rubixkube-observer created
+    clusterrole.rbac.authorization.k8s.io/rubixkube-observer created
+    clusterrolebinding.rbac.authorization.k8s.io/rubixkube-observer created
+    role.rbac.authorization.k8s.io/rubixkube-observer-leases created
+    rolebinding.rbac.authorization.k8s.io/rubixkube-observer-leases created
+    service/rubixkube-observer-peers created
+    deployment.apps/rubixkube-observer created
+    ```
+  </Step>
   <Step title="Check the pod">
     ```bash
     kubectl get pods -n rubixkube-system
     ```
 
-    Wait for **STATUS** to show `Running`:
+    Wait for **STATUS** to show `Running`. If it doesn't, read the logs:
 
-    ```
-    NAME                                  READY   STATUS    RESTARTS   AGE
-    rubixkube-observer-7d4b9c8f6d-abc12   1/1     Running   0          2m
-    ```
-  </Step>
-  <Step title="Tail the logs">
     ```bash
     kubectl logs -n rubixkube-system deployment/rubixkube-observer --tail=20
     ```
-
-    Expect to see `Connected to api.rubixkube.ai` and topology sweep messages within the first minute.
   </Step>
-  <Step title="Confirm in the console">
-    Open **Environments** in the console. The environment card should switch from **Connecting** to **Healthy** and the Infrastructure view should populate with nodes, namespaces, and workloads.
+  <Step title="Open it in the console">
+    The dialog updates by itself and says your cluster is connected, usually within a minute. Add an environment label, then click **Open it**.
   </Step>
 </Steps>
 
-## What is being monitored
+## What runs in your cluster
 
-The Observer collects signals for every native Kubernetes object plus the common extensions.
+By default, one pod in `rubixkube-system`. It serves its own read-only Kubernetes tools, so no separate MCP server runs.
 
-| Signal | Detail |
-| --- | --- |
-| Pods | State, restart count, resource usage, owner references |
-| Deployments, StatefulSets, DaemonSets | Replica health, rollout state, condition history |
-| Services and Ingress | Endpoint health, routing, LoadBalancer status |
-| Nodes | CPU, memory, disk, allocatable and capacity, pressure conditions |
-| Events | Cluster event bus, filtered and streamed structurally |
-| PVs and PVCs | Binding state, storage class, capacity |
-| ConfigMaps and Secrets (metadata only) | Names, keys, revision. No values unless explicitly enabled |
+| | Request | Limit |
+|---|---|---|
+| Memory | 256Mi | 768Mi |
+| CPU | 250m | 1 |
 
-## Footprint
+This suits clusters up to about 50 nodes. It runs as a non-root user with a read-only root filesystem and no Linux capabilities.
 
-The Observer is deliberately light.
+### Run more than one pod
 
-- One pod. The Observer serves its own read-only Kubernetes tools, so no separate MCP server runs.
-- About 20Mi of RAM and 10 millicores on a one-node test cluster with 32 workloads. The pod requests 128Mi and is limited to 512Mi.
-- Under **10 millicores of CPU** during normal operation.
-- Scales modestly with cluster size. Expect another 50Mi of RAM per 100 nodes.
+On a big cluster the source page tells you how many pods to run. Add `&replicas=` to the install address, from 1 to 5:
 
-Cloud-side agents (RCA Pipeline, Memory, Guardian, Remediation) run in RubixKube Cloud. Your cluster hosts only the Observer.
+```bash
+kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY&replicas=3"
+```
+
+Or scale it:
+
+```bash
+kubectl -n rubixkube-system scale deployment rubixkube-observer --replicas=3
+```
+
+With more than one pod, a Lease picks one as leader, and the leader hands each workload to one pod. You can also raise the memory limit instead.
+
+## What the role can do
+
+The observer's ClusterRole, `rubixkube-observer`, reads most of the cluster: pods, nodes, Services, ConfigMaps, workloads, networking, storage, RBAC objects and pod logs. It can also create events.
+
+Two permissions deserve a plain mention. The role has `get`, `list` and `watch` on `secrets`, and `create` on `pods/exec`, so that is what the observer's token can do in your cluster. The observer itself uses less. It watches only the metadata of Secrets, so their contents never reach it, its tools return key names and never values, and no observer code runs `pods/exec`. See [Safety and control](/concepts/guardrails) for how Rubix's actions are limited.
+
+## What the observer watches
+
+| What | Detail |
+|---|---|
+| Pods | State, restarts, resource use, owners |
+| Deployments, StatefulSets, DaemonSets | Replica health and rollouts |
+| Services and Ingresses | Which apps they send traffic to |
+| Nodes | Status and capacity |
+| Events | The cluster's own events |
+| ConfigMaps and Secrets | Metadata only, so RubixKube knows when one changed but not what's in it |
+
+Crash loops, out of memory, stuck pods and the other checks are all rules you can change. See [Change what an observer looks for](/using/environments#change-what-an-observer-looks-for). Those settings apply without a restart.
 
 ## Upgrade
 
-Run the install command again, copied from the console. It updates the Observer in place and keeps the environment, its history and its settings.
+Run the install command again, copied from the console. It updates the observer in place and keeps the environment, its history and its settings.
 
 ```bash
 kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
 ```
 
-Installs from before Observer 1.1.0 also ran a Kubernetes MCP server next to the Observer. It is no longer needed. Remove it after the upgrade:
+If you run more than one pod, keep `&replicas=` on the address. Without it, the apply sets the Deployment back to one pod.
+
+Installs from before observer 1.1.0 also ran a Kubernetes MCP server next to the observer. It's no longer needed. Remove it after the upgrade:
 
 ```bash
 kubectl -n rubixkube-system delete deploy/kubernetes-mcp-server svc/kubernetes-mcp-server sa/kubernetes-mcp-server
@@ -125,7 +124,7 @@ kubectl -n rubixkube-system edit configmap mcp-config
 
 ## Add your own MCP servers
 
-The Observer reads extra MCP servers from the optional ConfigMap `mcp-config` (key `mcp.json`) in `rubixkube-system`. The install command never overwrites it.
+The observer reads extra MCP servers from the optional ConfigMap `mcp-config` (key `mcp.json`) in `rubixkube-system`. The install command never overwrites it.
 
 ```bash
 kubectl -n rubixkube-system create configmap mcp-config --from-file=mcp.json=./mcp.json
@@ -140,59 +139,52 @@ kubectl -n rubixkube-system rollout restart deploy/rubixkube-observer
 }
 ```
 
-Each server's state (connected or failing, with the error) shows on the environment's page in the console.
+Each server's state, connected or failing with the error, shows under **Tools** on the source's page.
 
-## KIND and local development
+## Try it on KIND
 
-Same install command works on KIND. Useful when you want to evaluate without touching a real cluster.
+The same command works on a local KIND cluster, so you can try RubixKube without touching a real one.
 
 ```bash
 kind create cluster --name rubixkube-test
 kubectl apply -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
 ```
 
-KIND is the path most teams use for the [tutorials](/tutorials/monitor-infrastructure-health) before running against real infrastructure.
-
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Pod stuck in ImagePullBackOff">
-    The cluster cannot reach the Observer image registry. Check outbound egress to `api.rubixkube.ai:443`:
+    The cluster can't reach the image at `ghcr.io/rubixkube-io/observer-agent`. Test it from inside the cluster:
 
     ```bash
-    kubectl run test-curl --image=curlimages/curl -i --rm -- curl -I https://api.rubixkube.ai
+    kubectl run test-curl --image=curlimages/curl -i --rm --restart=Never -- curl -I https://ghcr.io
     ```
 
-    If this fails, your cluster is behind a proxy or egress policy. Allowlist the two endpoints or [reach out](mailto:connect@rubixkube.ai) for an air-gapped deployment path.
+    If this fails, a proxy or egress policy is in the way. Allow the three addresses listed under [Before you start](#before-you-start).
   </Accordion>
   <Accordion title="Pod in CrashLoopBackOff">
-    Almost always an invalid API key. Check the logs:
+    Read the logs from the last run:
 
     ```bash
     kubectl logs -n rubixkube-system deployment/rubixkube-observer --previous
     ```
 
-    If you see `401 Unauthorized` or `invalid api key`, reinstall with the command copied fresh from the console.
+    If they point at the API key, run the install command again, copied fresh from the console.
   </Accordion>
-  <Accordion title="Environment stuck on Connecting">
-    Three common causes:
-
-    1. Pod is not Running yet. Recheck `kubectl get pods -n rubixkube-system`.
-    2. Outbound TCP to `nats.rubixkube.ai:4222` is blocked. The control channel runs over HTTPS but the streaming channel uses NATS.
-    3. Clock skew on the node. Ensure NTP is running.
+  <Accordion title="The dialog keeps waiting">
+    1. Check that the pod is `Running` with `kubectl get pods -n rubixkube-system`.
+    2. Check that outbound TCP to `nats.rubixkube.ai:4222` is open. The observer needs it as well as HTTPS.
   </Accordion>
-  <Accordion title="Observer high memory or CPU">
-    Rare, but possible on very large clusters. Edit the deployment to raise limits, or reach out and we will help you size the Observer for your cluster shape.
+  <Accordion title="Observer running out of memory on a big cluster">
+    Run more pods, as above. The source page says how many. Or raise the limit:
 
     ```bash
     kubectl edit deployment rubixkube-observer -n rubixkube-system
     ```
+
+    The next install command you run sets the limit back to 768Mi.
   </Accordion>
 </AccordionGroup>
-
-## AKS and Azure
-
-AKS clusters are supported today on the Kubernetes path. Install exactly as you would on EKS or GKE. Subscription-level Azure observation (App Service, Azure VMs) is on the roadmap, see [Azure](/environments/azure).
 
 ## Uninstall
 
@@ -200,18 +192,21 @@ AKS clusters are supported today on the Kubernetes path. Install exactly as you 
 kubectl delete -f "https://api.rubixkube.ai/install/observer.yaml?apiKey=rk_YOUR_API_KEY"
 ```
 
-This removes the namespace, service account, ClusterRole, binding, and deployment. The environment card in the console can then be deleted.
+This removes everything the install created, including the namespace. The source stays in the console until you delete it there. An `mcp-config` ConfigMap goes with the namespace.
 
-## Related guides
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Connect your environment" icon="plug" href="/getting-started/connect-your-environment">
-    The full install flow covering every supported environment.
+  <Card title="Environments" icon="server" href="/using/environments">
+    The source page and the observer's Configuration.
   </Card>
-  <Card title="Observer Agent concept" icon="eye" href="/concepts/observer-agent">
-    What the Observer does, where it runs, what it sees.
+  <Card title="Observers" icon="eye" href="/concepts/observer-agent">
+    What an observer does and where it runs.
   </Card>
-  <Card title="First tutorial" icon="heart-pulse" href="/tutorials/monitor-infrastructure-health">
-    Monitor infrastructure health once the Observer is live.
+  <Card title="Safety and control" icon="shield" href="/concepts/guardrails">
+    What Rubix can and can't do.
+  </Card>
+  <Card title="Your first incident" icon="heart-pulse" href="/tutorials/first-incident">
+    Follow an incident from start to finish.
   </Card>
 </CardGroup>

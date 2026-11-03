@@ -1,137 +1,107 @@
 ---
 title: "Skills"
 sidebarTitle: "Skills"
-description: "Structured runbooks the SRI Agent can invoke. Turn operational know-how into reusable workflows with the open Agent Skills format."
-keywords: ["agent skills", "skills", "runbook automation", "agent skills format", "SRI agent skills", "custom skills"]
-"og:title": "Skills"
-"og:description": "Structured runbooks the SRI Agent can invoke. Powered by the open Agent Skills format."
+description: "Short runbooks that teach Rubix how your team does things, in the open Agent Skills format."
 ---
 
-Skills are short, structured runbooks the SRI Agent can invoke on demand. A skill turns "the way we do post-deploy verification on this team" or "the standard weekly cost review" into something the agent runs consistently, every time, for everyone.
+Skills are short, structured runbooks Rubix loads when it needs them. A skill turns "the way we do post-deploy verification on this team" or "the standard weekly cost review" into something Rubix follows consistently, every time, for everyone.
 
-Each skill uses the **open Agent Skills format** initiated by Anthropic and adopted across the industry (Cursor, Claude Code, GitHub Copilot). A skill written for RubixKube is portable to those tools, and vice versa.
+Skills use `SKILL.md`, the file from the **open Agent Skills** format, which tools such as Claude Code also read. You can upload a `SKILL.md` file you already have.
+
+<Frame>
+  <img className="block dark:hidden" src="/images/guides/skill-command-agent-light.png" alt="Skills, commands and agents compared: what each is, who starts it, and an example" />
+  <img className="hidden dark:block" src="/images/guides/skill-command-agent-dark.png" alt="Skills, commands and agents compared: what each is, who starts it, and an example" />
+</Frame>
 
 ## Why skills
 
-<CardGroup cols={2}>
-  <Card title="Consistent execution" icon="repeat">
-    The same runbook, every time, regardless of who is on call.
-  </Card>
-  <Card title="Narrow tool surface" icon="shield-halved">
-    Each skill declares exactly which tools it can use. Anything not listed is blocked.
-  </Card>
-  <Card title="Shared institutional knowledge" icon="users">
-    Tribal knowledge becomes shared capability. New team members inherit it on day one.
-  </Card>
-  <Card title="Portable format" icon="arrows-turn-to-dots">
-    Same file runs in Cursor, Claude Code, Copilot, or RubixKube.
-  </Card>
-</CardGroup>
+- **Consistent work.** The same runbook, regardless of who's asking.
+- **Shared knowledge.** What one person knows becomes something everyone gets. New members have it on day one.
+- **Used in RCAs too.** Rubix can load your skills during an investigation, so your runbooks shape the RCA.
+- **Portable format.** A `SKILL.md` is a plain file you can keep in a repo.
 
 ## Anatomy of a skill
 
-A skill is a YAML block plus plain-English instructions. Minimal shape:
+A skill is a short block of YAML plus plain-English instructions. Minimal shape:
 
-```yaml
+```markdown
+---
 name: post-deploy-verification
-scope: tenant
-agent: sre-agent
-description: Compare error rate, latency, and resource usage for a service against the last stable window.
-allowed_tools:
-  - fetch_infrastructure_snapshot
-  - fetch_deployment_history
-  - analyze_service_health
-instructions: |
-  1. Take a baseline from the last 30 minutes of the previous stable deployment.
-  2. Take the current window (10 minutes after the new rollout).
-  3. Compare error rate, p95 latency, CPU, and memory.
-  4. Flag any metric worse than 20% against baseline.
-  5. Summarise in a short Slack-ready paragraph.
+description: Compare error rate, latency and resource usage for a service against the last stable window.
+---
+
+1. Take a baseline from the last 30 minutes of the previous stable deployment.
+2. Take the current window (10 minutes after the new rollout).
+3. Compare error rate, p95 latency, CPU and memory.
+4. Flag any metric worse than 20% against baseline.
+5. Summarize in one short paragraph.
 ```
+
+The skill editor in **Customize > Skills** has these fields:
 
 | Field | Purpose |
 | --- | --- |
-| `name` | Unique handle, kebab-case. Used when invoking with `/skills`. |
-| `scope` | `system` (RubixKube-maintained) or `tenant` (your workspace). |
-| `agent` | Which agent can run this. Today only the SRI Agent is supported. |
-| `description` | One sentence. Used in the catalogue and for intent matching. |
-| `allowed_tools` | Explicit tool allowlist. Anything not listed is blocked. |
-| `instructions` | Plain-English runbook. Numbered steps work best. |
+| **Name** | Unique handle. Lowercase letters, numbers and dashes |
+| **When to use it** | One sentence. Rubix reads this to decide when the skill fits |
+| **Agent** | **Any agent**, or one of your custom agents |
+| **Tools it may use** | A list stored with the skill. It doesn't limit tools today, see Safety boundaries below |
+| **Instructions** | Plain-English runbook. Numbered steps work best |
 
-## System skills and custom skills
+## Built-in skills and custom skills
 
 <AccordionGroup>
-  <Accordion title="System skills" icon="star">
-    Shipped and maintained by RubixKube. Available in every workspace.
+  <Accordion title="Built-in skills" icon="star">
+    Shipped and maintained by RubixKube, and available in every organization. They cover Kubernetes, AWS, Google Cloud, machines, incidents and reviewing RCAs.
 
-    Current catalogue includes `kubernetes-cluster-triage`, `linear-tickets-to-notion`, and `research-devops-sre-infra`. See the full list in the [Agent Skills Store](/using/agent-skills-store).
+    See them in [Skills](/using/skills).
   </Accordion>
-  <Accordion title="Custom (tenant) skills" icon="pen">
-    Written by your team for your workflows. Scoped to your workspace. Versioned per save. Importable from any tool that speaks the open Agent Skills format.
+  <Accordion title="Custom skills" icon="pen">
+    Written by your team for your work, and scoped to your organization. A custom skill with the same name as a built-in one replaces it.
 
     Walkthrough: [How to add custom agent skills](/tutorials/add-custom-agent-skills).
   </Accordion>
 </AccordionGroup>
 
-## How a skill is invoked
+## How a skill is used
 
-<Steps titleSize="h3">
-  <Step title="Intent match">
-    A user asks a question in Chat. The SRI Agent compares the question against enabled skill descriptions. If there is a confident match, the skill runs automatically.
-  </Step>
-  <Step title="Explicit call">
-    A user types `/skills skill-name` in Chat (console or CLI). The skill runs against the current context.
-  </Step>
-  <Step title="Scheduled run">
-    Some skills are attached to schedules (daily handoff, weekly review). They run without manual invocation and post their output to the configured channel.
-  </Step>
-</Steps>
+Rubix sees the name and the **When to use it** line of every enabled skill. When a question or an investigation matches one, Rubix loads its instructions and follows them. So a clear description matters more than anything else on the page.
+
+To run something by name, use a command. [Commands](/using/customize) are `/` shortcuts for your team's playbooks.
 
 ## Safety boundaries
 
-Skills are not a bypass for Guardian policies. Any tool a skill calls that mutates state still requires the normal approval flow. The `allowed_tools` list tightens the safety surface further by preventing the agent from reaching for tools outside the list, even if a user's follow-up would otherwise lead there.
+A skill doesn't give Rubix any new access. Anything a skill tells Rubix to change still goes through the chat's [mode](/using/modes): Observe blocks it, Assist asks, and Auto goes ahead, with destructive actions still asking.
+
+The **Tools it may use** field doesn't enforce anything today, so don't rely on it to keep Rubix away from a tool. Use modes and [Hooks](/using/customize) for that.
 
 ## Design principles for good skills
 
-<CardGroup cols={2}>
-  <Card title="One clear job" icon="crosshairs">
-    Post-deploy verification, on-call handoff, cost review. Not "general ops".
-  </Card>
-  <Card title="Numbered steps" icon="list-ol">
-    Write instructions like a senior engineer's handover note. Imperative, ordered.
-  </Card>
-  <Card title="Specific thresholds" icon="sliders">
-    "20% worse than baseline" beats "significantly worse". The agent executes the number.
-  </Card>
-  <Card title="Narrow tool list" icon="shield-halved">
-    Fewer tools mean safer, more predictable runs.
-  </Card>
-</CardGroup>
+- **One clear job.** Post-deploy verification, handover notes, cost review. Not "general ops".
+- **Numbered steps.** Write instructions like a senior engineer's handover note. Imperative, ordered.
+- **Specific thresholds.** "20% worse than baseline" beats "significantly worse". Rubix follows the number.
+- **A clear "when".** Write **When to use it** the way someone would ask for it.
 
 ## Common questions
 
 <AccordionGroup>
   <Accordion title="Which agent runs skills?">
-    The SRI Agent. It is the conversational agent that powers Chat. Support for other agents (Remediation, Memory) is planned.
+    Rubix, in chat and in RCAs. A skill set to one of your custom agents is only for that agent.
   </Accordion>
-  <Accordion title="Do skills count against my investigation quota?">
-    A skill run counts as one investigation on your plan. Scheduled skills (daily handoff, weekly cost review) are usually the best use of the quota because they replace work that would otherwise be ad-hoc.
+  <Accordion title="Can I port a skill from another tool?">
+    Yes. Upload the `SKILL.md`. The name, description and instructions come across. Check any tool names in the instructions, since yours can differ.
   </Accordion>
-  <Accordion title="Can I port a skill from Cursor or Claude Code?">
-    Yes. The format is the same. Upload your `SKILL.md`, map any tool names that differ, and it runs.
-  </Accordion>
-  <Accordion title="How are skills versioned?">
-    Every save creates a revision inside the console. You can roll back a skill from its detail page. Git-based versioning via the RubixKube CLI is on the roadmap.
+  <Accordion title="What are the limits?">
+    A description can be 1,024 characters, and instructions 16 KB.
   </Accordion>
 </AccordionGroup>
 
 ## Related concepts
 
 <CardGroup cols={2}>
-  <Card title="Agent Skills Store" icon="store" href="/using/agent-skills-store">
-    Browse system skills and manage your custom catalogue.
+  <Card title="Skills in the console" icon="store" href="/using/skills">
+    Turn built-in skills on and off, and manage your own.
   </Card>
   <Card title="How to add custom agent skills" icon="plus" href="/tutorials/add-custom-agent-skills">
-    Step-by-step guide to writing and shipping your first skill.
+    Step-by-step guide to writing your first skill.
   </Card>
 </CardGroup>

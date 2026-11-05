@@ -355,6 +355,62 @@
     {
       "source": "/tutorials/chat-cost-analysis",
       "destination": "/tutorials/chat-prompts"
+    },
+    {
+      "source": "/getting-started/introduction",
+      "destination": "/getting-started/overview"
+    },
+    {
+      "source": "/getting-started/installation-kind",
+      "destination": "/environments/kubernetes"
+    },
+    {
+      "source": "/getting-started/installation-cloud",
+      "destination": "/getting-started/connect-your-environment"
+    },
+    {
+      "source": "/getting-started/sign-up",
+      "destination": "/getting-started/overview"
+    },
+    {
+      "source": "/getting-started/login",
+      "destination": "/getting-started/overview"
+    },
+    {
+      "source": "/login",
+      "destination": "/getting-started/overview"
+    },
+    {
+      "source": "/getting-started/disclaimers",
+      "destination": "/concepts/guardrails"
+    },
+    {
+      "source": "/tutorials/first-steps",
+      "destination": "/tutorials/first-incident"
+    },
+    {
+      "source": "/tutorials/rubixkube-in-action",
+      "destination": "/tutorials/first-incident"
+    },
+    {
+      "source": "/tutorials/break-pod-memory-oom",
+      "destination": "/tutorials/first-incident"
+    },
+    {
+      "source": "/tutorials/break-pod-image-error",
+      "destination": "/tutorials/first-incident"
+    },
+    {
+      "source": "/concepts/what-is-sri",
+      "destination": "/concepts/how-rubixkube-works"
+    },
+    {
+      "source": "/using/agents",
+      "destination": "/using/rubix-chat-agent"
+    },
+    {
+      "source": "/using/clusters",
+      "destination": "/using/environments"
     }
   ]
 }

@@ -57,6 +57,9 @@ Short answers to the questions we hear most. If yours is not here, the [Troubles
   <Accordion title="How much does Kepler cost?" icon="coins">
     Kepler runs locally and is free, with no seats or cloud limits. Cloud plans add team sync, shared memory, and hosted automations. Model usage is separate: keys you bring are billed by that provider directly. **Settings > Plan & Usage** shows your plan and what this month has cost so far.
   </Accordion>
+  <Accordion title="What happens when I reach a usage limit on the hosted models?" icon="gauge">
+    The hosted Kepler models have a 5-hour limit on each computer and a weekly limit on your account. Both reset on their own. If you have credit, it takes over when you reach either limit and your work carries on. A line under the composer says which limit was reached and when it resets, and after the reset your plan pays again. With no credit, or with credit turned off, the card above the composer offers **Buy credit**, **Use credit**, or a switch to another model you have connected. See [Credit](/kepler/settings#credit).
+  </Accordion>
   <Accordion title="Do watchers burn tokens while nothing is happening?" icon="eye">
     Most do not. A watcher is usually a plain background check with no model involved, and the model only runs when it fires. A watcher whose condition is in plain words needs a model to judge new output. With a [decision model](/kepler/decision-model) picked, that costs no tokens. Without one, it uses your worker model within a token budget for each watcher. Output that has not changed is never judged twice. See [Watchers](/kepler/watchers#watchers-that-judge-in-plain-words).
   </Accordion>

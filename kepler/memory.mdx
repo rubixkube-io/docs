@@ -11,11 +11,7 @@ Kepler keeps a local record of your services, incidents, conventions and runbook
 
 Open the Memory panel with `Cmd+M` (`Ctrl+M` on Windows and Linux). `/memory` in the chat opens the Memory settings.
 
-{/* SCREENSHOT: kepler/memory-graph.png : state: Memory panel open on the Graph tab, You at the centre, services, infra, tech, an incident and runbooks around it, the legend chips above */}
-<Frame>
-  <img src="/images/kepler/memory-graph.png" alt="The Kepler Memory panel on the Graph tab. You sits at the centre with services, infrastructure, technologies, an incident and two runbooks connected to it by labelled edges. Legend chips above count each kind and can filter the graph." />
-  <Caption>The Memory panel. Graph, Pages and Artifacts are the three tabs.</Caption>
-</Frame>
+{/* SCREENSHOT: kepler/memory-graph.png : state: Memory panel open on the Graph tab, You at the centre, services, infra, tech, an incident and runbooks around it, the legend chips above. Take it on a demo profile with no real service names. */}
 
 ## What Kepler remembers
 
@@ -45,7 +41,7 @@ Kepler's standing knowledge about you and your projects lives in three Markdown 
 
 | File | What it holds | Where it lives |
 |---|---|---|
-| `kepler.md` | Conventions and rules for a project (one per workspace) or for everything you do (one global file). | Global: `~/.kepler/kepler.md`. Workspace: `.kepler/kepler.md` inside the workspace folder. |
+| `kepler.md` | Conventions and rules for a project (one per workspace) or for everything you do (one global file). | Global: `~/.kepler/kepler.md`. Workspace: `kepler.md` at the root of the workspace folder. |
 | `pref.md` | How you like Kepler to work. | `~/.kepler/pref.md` |
 | `user.md` | Who you are: your role, your stack, what you look after. Kepler fills this in from what you tell it. | `~/.kepler/user.md` |
 

@@ -1,7 +1,7 @@
 ---
 title: "Kepler settings reference"
 sidebarTitle: "Settings"
-description: "Every Kepler setting, section by section: General, Appearance, Plan & Usage, Models, Tools & MCP, Customize, Permissions, Secrets, Gateway, Remote access, Memory, Watchers, Topology and Experiments."
+description: "Every Kepler setting, section by section: General, Appearance, Plan & Usage, Models, Tools & MCP, Customize, Permissions, Browser, Secrets, Gateway, Remote access, Memory, Watchers, Topology and Experiments."
 keywords: ["kepler settings", "kepler models", "bring your own model", "ollama kepler", "kepler context window", "kepler permissions settings", "decision model", "kepler customize"]
 "og:title": "Kepler settings reference"
 "og:description": "Every dial in one window."
@@ -31,6 +31,7 @@ Open Settings with `Cmd+,` (`Ctrl+,` on Windows and Linux) or run `/settings` in
 | Accent | Optionally override the theme's highlight colour. | The theme's own accent |
 | Interface scale | Zoom the whole UI. | |
 | Tool-call density | How much detail each tool card shows in the chat. | |
+| Response style | How much Kepler says while it works, in every chat. **Quiet** gives only the answer. **Normal** adds a short line before and after each step. **Verbose** also opens every step. `/style` in the chat sets the same thing. | Normal |
 
 ### Plan & Usage
 
@@ -114,6 +115,18 @@ One place for plugins, skills, hooks, slash commands and specialist agents, with
 
 What you have allowed for good, your command rules, the always-blocked list, and the Files, Shell and MCP servers switches, each set to allow, ask or block. See [Permissions](/kepler/permissions).
 
+### Browser
+
+Kepler can work in your own browser, with the sites you are already signed in to, or in the Browser panel inside Kepler.
+
+| Setting | What it does |
+|---|---|
+| Kepler for Chrome | **Set up** adds the Kepler for Chrome extension to your browser and shows whether it is connected. Works with Chrome, Edge, Brave, Arc, Vivaldi, Opera and Chromium. Kepler opens its own tabs there. |
+| Built-in browser | The Browser panel (`Cmd+B`). It has its own profile, so it has none of your browser's logins. **Clear browsing data** empties it. |
+| Open pages in | **Automatic** opens websites in your browser and localhost and local files in the built-in one. **Your browser** opens every page in yours. **Built-in** opens every page in the panel. In a chat you can also say "use my browser" or "use the built-in browser". |
+
+In either browser, Kepler asks before anything it can't undo, such as buying, sending a message, deleting or creating an account, in every posture. It never types passwords or one-time codes. At a sign-in, CAPTCHA or two-factor page it stops and waits for you.
+
 ### Secrets
 
 Named credentials for MCP servers, stored in your operating system keychain and referenced as `${NAME}`. Each row shows which integrations use it. See [Extend Kepler](/kepler/extend#secrets).
@@ -155,8 +168,7 @@ See [Topology](/kepler/topology).
 
 | Experiment | What it does |
 |---|---|
-| BrowserV2 | Kepler drives your own Chrome instead of the embedded browser panel: real cookies, real extensions, real logged-in sessions. Install the extension, connect, then enable. |
-| Command line | Install or update the `kepler` command, which drives the running app from any terminal with the same agent and the same sessions. |
+| CLI helper | Install or update the `kepler` command, which drives the running app from any terminal with the same agent and the same sessions. |
 
 <Note>
 Settings that talk to the agent show "Can't reach Kepler" if the app is still starting. Wait a moment and reopen the page.
